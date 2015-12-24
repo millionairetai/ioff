@@ -1,0 +1,12 @@
+include:
+  - codeception/common
+  - codeception/console
+  - codeception/work
+  - codeception/kpi
+  - codeception/hrm
+
+paths:
+  log: codeception/_output
+
+settings:
+  colors: true
