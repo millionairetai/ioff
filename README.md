@@ -8,7 +8,7 @@ The project includes three tiers:
 work, common, and console, hrm, kpi, cron each of which
 is a separate Yii application.
 
-========================================================================
+=======================================================================
 
 
 GETTING STARTED
