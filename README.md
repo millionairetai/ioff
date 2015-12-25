@@ -3,9 +3,11 @@
 
 Center office is developed base on Yii 2 framework.
 
-The project includes three tiers: work, common, and console, hrm, kpi, cron each of which
+The project includes three tiers: 
+work, common, and console, hrm, kpi, cron each of which
 is a separate Yii application.
-======================================
+
+=========================================================
 
 
 GETTING STARTED
