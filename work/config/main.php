@@ -11,11 +11,7 @@ return [
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'work\controllers',
     'bootstrap' => ['log'],
-    'modules' => [
-        'authority' => [
-            'class' => 'work\modules\authority\Authority',
-        ],
-    ],
+    'modules' => [],
     'components' => [
         'i18n' => [
             'translations' => [
