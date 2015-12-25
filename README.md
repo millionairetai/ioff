@@ -1,7 +1,8 @@
  CENTER OFFICE PROJECT - 20/12/2015  
 =====================================
 
-Center office is developed base on Yii 2 framework
+Center office is developed base on Yii 2 framework.
+
 The project includes three tiers: work, common, and console, hrm, kpi, cron each of which
 is a separate Yii application.
 ======================================
@@ -19,7 +20,8 @@ After you clone code from git and config on server you must install some followi
 
 CODING STANDARD
 -------
-To ensure consistency throughout the source code, keep these rules in mind as you are working:
+To ensure consistency throughout the source code, keep these rules in mind as you are working.
+
 1. Coding style should write as Yii standard.
 2. Each function not to much code line. It should divide in callable function to call from.
 3. Use try catch in each section of code for catching error.
@@ -34,7 +36,7 @@ LANGUAGE.
 
  JAVASCRIPT FRAMWORK
 -----
-    We use anglarjs framework. In case we can not use angular js, we can use jquery framework.
+We use anglarjs framework. In case we can not use angular js, we can use jquery framework.
 
 ASSET FILES.
 -----
@@ -44,11 +46,11 @@ ASSET FILES.
 
 YII2 VENDOR PHP
 ------------
-    Must install by composer and in vendor/yiisoft/...
+Must install by composer and in vendor/yiisoft/...
 
 CONFIG YII2
 ------------
-    Top-down level common -> package. It means common package will contain all of common configuration 
+Top-down level common -> package. It means common package will contain all of common configuration 
 and source code for all package. In each package, it should be same as package -> module.
  
 YII2 PHP COMMON SOURCE
@@ -60,4 +62,4 @@ With types are behavior, filter, event, class, service locator.
 
 TESTING
 -------
-    Test with chrome, internet explorer, firefox, opera browser and all case in the specification.
+Test with chrome, internet explorer, firefox, opera browser and all case in the specification.
