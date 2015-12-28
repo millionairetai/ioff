@@ -19,9 +19,10 @@ return [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
+            'class' => 'common\modules\authority\User',
             'identityClass' => 'common\models\Employee',
             'enableAutoLogin' => true,
-//            'loginUrl' => ['site/sign-in'],  
+            'loginUrl' => ['site/login'],  
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
@@ -44,8 +45,10 @@ return [
                 ],
             ],
         ],
+//        'assetManager' => [
+//            'appendTimestamp' => true,
+//        ],
     ],
-//    'on beforeRequest' => ['common\components\checkIfLogin', 'checkIfLogin'],
     'params' => [
         'defaultPackage' => 'work'
     ],

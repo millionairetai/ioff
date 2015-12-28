@@ -1,31 +1,27 @@
 <?php
+
 namespace common\controllers;
 
 use Yii;
-use common\controllers\CommonController;
+use common\controllers\CeController;
 use common\models\LoginForm;
 
 /**
- * Site controller
+ * Index controller
  */
-class SiteController extends CommonController
+class SiteController extends CeController
 {    
     public function actionIndex()
     {
-        if (!Yii::$app->user->isGuest) 
-        {
-            return $this->redirect('/' . Yii::$app->params['defaultPackage'] . '/web/index.php');
-        }
-
-        return $this->redirect('/common/web/index.php?r=site/login');
+        return $this->redirect('/' . Yii::$app->params['defaultPackage'] . '/web/index.php');
     }
          
     public function actionLogin()
     {
         $this->layout = 'login';
-//        if (!\Yii::$app->user->isGuest) {
-//            return $this->goHome();
-//        }
+        if (!\Yii::$app->user->isGuest) {
+            return $this->goHome();
+        }
 
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {

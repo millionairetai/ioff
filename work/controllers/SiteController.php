@@ -2,12 +2,12 @@
 namespace work\controllers;
 
 use Yii;
-use common\controllers\CommonController;
+use common\controllers\CeController;
 use common\models\LoginForm;
 /**
  * Site controller
  */
-class SiteController extends CommonController
+class SiteController extends CeController
 {
     public function actionIndex()
     {

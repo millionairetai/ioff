@@ -9,14 +9,14 @@ use kpi\models\SignupForm;
 use kpi\models\ContactForm;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
-use common\controllers\CommonController;
+use common\controllers\CeController;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 
 /**
  * Site controller
  */
-class SiteController extends CommonController
+class SiteController extends CeController
 {
     /**
      * Displays homepage.

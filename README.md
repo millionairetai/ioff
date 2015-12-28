@@ -29,8 +29,17 @@ To ensure consistency throughout the source code, keep these rules in mind as yo
 1. Coding style should write as Yii standard.
 2. Each function not to much code line. It should divide in callable function to call from.
 3. Use try catch in each section of code for catching error.
+4. No write php code logic in view template.
+5. When having any change for database, ex: add columns, add key, add default, you should
+write code in yii2 MIGRATION to deploy app afterward.
 
-LANGUAGE.
+PERFORMANCE 
+-----
+Yii2 framwork supported very strong technique about cache in many methods. 
+So, you should use appropriate cache for data if that data change rarely and big data to 
+improve system performance.
+
+LANGUAGE
 -----
 1. Both Vietnamese and English language with file language.
 2. Common message for all package(and common package) that's in common/messages folder. 
@@ -44,6 +53,7 @@ We use anglarjs framework. In case we can not use angular js, we can use jquery 
 
 ASSET FILES.
 -----
+You should install git and bower on your local computer.
 1. Common javascrip, css, fonts, plugin is in common/web/<type_asset>. Ex: common/web/css
 2. Javascript, css, fonts... of each package must in each package.
 3. Library javascript from vendor must be in vendor/bower and install by bower software.
@@ -67,3 +77,9 @@ With types are behavior, filter, event, class, service locator.
 TESTING
 -------
 Test with chrome, internet explorer, firefox, opera browser and all case in the specification.
+
+DATABASE DIAGRAM
+-------
+They're in scheme database folder.
+1. You can use visual paradigm community to read vpp file and change something from scheme.
+2. You can view from image file directly in 

@@ -40,7 +40,7 @@ CommondAsset::register($this);
                 <!-- /.login-logo -->
                 <!--<p class="login-box-msg"></p>-->
                 <?= $content ?>
-                <a href="#">I forgot my password</a><br>
+                <a href="#"><?= Yii::t('common', 'I forgot my password'); ?></a><br>
             </div>
             <!-- /.login-box-body -->
         </div>

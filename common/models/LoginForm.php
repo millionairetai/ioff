@@ -1,4 +1,5 @@
 <?php
+
 namespace common\models;
 
 use Yii;
@@ -13,7 +14,7 @@ class LoginForm extends Model
     public $password;
     public $rememberMe = true;
 
-    private $_user;
+    private $_employee;
 
 
     /**
@@ -30,6 +31,15 @@ class LoginForm extends Model
             ['password', 'validatePassword'],
         ];
     }
+    
+    public function attributeLabels()
+    {
+        return [
+            'rememberMe' => Yii::t('common', 'Remember me'),
+            'username'   => Yii::t('common', 'Username'),
+            'password'   => Yii::t('common', 'Password'),
+        ];
+    }
 
     /**
      * Validates the password.
@@ -41,9 +51,9 @@ class LoginForm extends Model
     public function validatePassword($attribute, $params)
     {
         if (!$this->hasErrors()) {
-            $user = $this->getEmployee();
-            if (!$user || !$user->validatePassword($this->password)) {
-                $this->addError($attribute, 'Incorrect username or password.');
+            $employee = $this->getEmployee();
+            if (!$employee || !$employee->validatePassword($this->password)) {
+                $this->addError($attribute, Yii::t('common', 'Incorrect username or password'));
             }
         }
     }
@@ -70,11 +80,11 @@ class LoginForm extends Model
      */
     protected function getEmployee()
     {
-        if ($this->_user === null) 
+        if ($this->_employee === null) 
         {
-            $this->_user = Employee::findByUsername($this->username);
+            $this->_employee = Employee::findByUsername($this->username);
         }
 
-        return $this->_user;
+        return $this->_employee;
     }
 }
