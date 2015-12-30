@@ -8,6 +8,6 @@ class CeActiveQuery extends ActiveQuery
 {
     public function active($state = true)
     {
-        return $this->andWhere(['active' => $state]);
+//        return $this->andWhere(['active' => $state]);
     }
 }

@@ -17,7 +17,7 @@ return [
                 'kpi*' => [
                     'class' => 'yii\i18n\PhpMessageSource',
                     'basePath' => '@kpi/messages',
-                    'on missingTranslation' => ['app\components\TranslationEventHandler', 'handleMissingTranslation'],
+                    'on missingTranslation' => ['common\components\events\TranslationEventHandler', 'handleMissingTranslation'],
                 ],
             ],
         ],

@@ -5,7 +5,7 @@ namespace common\models;
 use Yii;
 use yii\web\IdentityInterface;
 use yii\base\NotSupportedException;
-use yii\behaviors\TimestampBehavior;
+use common\components\db\CeActivieRecord;
 
 /**
  * This is the model class for table "employee".
@@ -64,20 +64,10 @@ use yii\behaviors\TimestampBehavior;
  * @property string $lastup_employee_id
  * @property integer $disabled
  */
-class Employee extends \yii\db\ActiveRecord implements IdentityInterface
+class Employee extends CeActivieRecord implements IdentityInterface
 {
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;
-   
-    /**
-     * @inheritdoc
-     */
-    public function behaviors()
-    {
-        return [
-            TimestampBehavior::className(),
-        ];
-    }
     
     /**
      * @inheritdoc

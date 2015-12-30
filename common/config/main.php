@@ -18,6 +18,10 @@ return [
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
+        'authManager' => [
+            'class' => 'common\modules\authority\AuthorityManager',
+            'allowCache' => false,
+        ],
         'user' => [
             'class' => 'common\modules\authority\User',
             'identityClass' => 'common\models\Employee',
@@ -41,7 +45,7 @@ return [
                 'common*' => [
                     'class' => 'yii\i18n\PhpMessageSource',
                     'basePath' => '@common/messages',
-                    'on missingTranslation' => ['app\components\TranslationEventHandler', 'handleMissingTranslation'],
+                    'on missingTranslation' => ['common\components\events\TranslationEventHandler', 'handleMissingTranslation'],
                 ],
             ],
         ],

@@ -18,6 +18,7 @@ class Authority extends \yii\base\Module {
             'class' => 'yii\i18n\PhpMessageSource',
             'forceTranslation' => true,
             'basePath' => '@common/modules/authority/messages',
+            'on missingTranslation' => ['common\components\events\TranslationEventHandler', 'handleMissingTranslation'],
             'fileMap' => [
                 'modules/authority' => 'authority.php'
             ],

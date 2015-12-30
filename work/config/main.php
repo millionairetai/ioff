@@ -18,7 +18,7 @@ return [
                 'work*' => [
                     'class' => 'yii\i18n\PhpMessageSource',
                     'basePath' => '@work/messages',
-                    'on missingTranslation' => ['app\components\TranslationEventHandler', 'handleMissingTranslation'],
+                    'on missingTranslation' => ['common\components\events\TranslationEventHandler', 'handleMissingTranslation'],
                 ],
             ],
         ],

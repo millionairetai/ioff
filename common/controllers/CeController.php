@@ -25,11 +25,10 @@ class CeController extends Controller
                         'allow' => true,
                     ],
                     [
-//                        'actions' => ['logout', 'index'],
                         'allow' => true,
                         'roles' => ['@'],
                         'matchCallback' => function ($rule, $action) {
-                            return Yii::$app->user->checkAuthority(Yii::$app->controller->action->id);
+                            return Yii::$app->user->can();
                         },
                         'denyCallback' => function ($rule, $action) {
                             throw new \Exception('You are not allowed to access this page');

@@ -6,62 +6,36 @@ use Yii;
 
 class User extends \yii\web\User
 {
-    /**
-     * Checks if the user can perform the operation as specified by the given permission.
-     *
-     * if super admin, the operation role is 'all', return true all the time.
-     *
-     *
-     * @param string $permissionName the name of the permission (e.g. "edit post") that needs access check.
-     * @param array $params name-value pairs that would be passed to the rules associated
-     * with the roles and permissions assigned to the user. A param with name 'user' is added to
-     * this array, which holds the value of [[id]].
-     * @param boolean $allowCaching whether to allow caching the result of access check.
-     * When this parameter is true (default), if the access check of an operation was performed
-     * before, its result will be directly returned when calling this method to check the same
-     * operation. If this parameter is false, this method will always call
-     * [[\yii\rbac\ManagerInterface::checkAccess()]] to obtain the up-to-date access result. Note that this
-     * caching is effective only within the same request and only works when `$params = []`.
-     * @return boolean whether the user can perform the operation as specified by the given permission.
-     */
-    public function can($permissionName, $params = [], $allowCaching = true)
-    {
-        if ($allowCaching && isset($this->_operations)) {
-           $operations =  $this->_operations;
-        } else {
-            $operations = AuthRole::findOne(Yii::$app->user->identity->auth_role)->operation_list;
-            $this->_operations = $operations;
-
-            //super admin
-            if ($operations == 'all')
-                return true;
-        }
-
-        if (strpos(';' . $operations . ';', $permissionName) === false)
-            return false;
-        else
-            return true;
-    }
+    protected $_authority = [];
     
-    public function checkAuthority($permissionName, $params = [], $allowCaching = true)
+    public function can($action_permission = null, $allowCaching = true)
     {
-        $params = [
-                                'package' => Yii::$app->id,
-                                'module'  => Yii::$app->module,
-                                'controller' => Yii::$app->controller->id, 
-                                'action' => Yii::$app->controller->action->id
-                            ];
-        
-        return true;
-        
-        if ($allowCaching && empty($params) && isset($this->_access[$permissionName])) {
-            return $this->_access[$permissionName];
+        //In case if user is admin, allow all of system's action.
+        if (Yii::$app->user->identity->is_admin) 
+        {
+            return true;
         }
         
-        $access = $this->getAuthManager()->checkAccess($this->getId(), $permissionName, $params);
+        //Get permission in case of user want to check authority with code, no check automatically.
+        if (!$action_permission) 
+        {
+            $action_permission = Yii::$app->controller->action->id;
+        }
         
-        if ($allowCaching && empty($params)) {
-            $this->_access[$permissionName] = $access;
+        //Get permission from cache before.
+        if ($allowCaching && empty($params) && isset($this->_authority[$action_permission])) {
+            return $this->_authority[Yii::$app->id][Yii::$app->controller->module->id][Yii::$app->controller->id][$action_permission];
+        }
+        
+        $params = [
+            'package_name'    => Yii::$app->id,
+            'module_name'     => Yii::$app->controller->module->id,
+            'controller_name' => Yii::$app->controller->id, 
+        ];
+        
+        $access = Yii::$app->authManager->checkAccess($this->getId(), $action_permission, $params);
+        if ($allowCaching) {
+            $this->_authority[Yii::$app->id][Yii::$app->controller->module->id][Yii::$app->controller->id][$action_permission] = $access;
         }
 
         return $access;

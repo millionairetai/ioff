@@ -20,5 +20,5 @@ $this->title = 'Authority';
 --------------11111
 <?php 
 echo Yii::t('authority', 'test');
-echo Yii::t('common', 'welcome');
+//echo Yii::t('common', 'welcome');
  ?>
