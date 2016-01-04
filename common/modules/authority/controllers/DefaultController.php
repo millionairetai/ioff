@@ -9,7 +9,8 @@ class DefaultController extends CeController
 {
     public function actionIndex()
     {
-        return $this->render('index');
+        return $this->redirect('authority/authority/');
+//        return $this->render('index');
     }
     
     public function actionTest()

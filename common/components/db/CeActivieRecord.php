@@ -4,10 +4,47 @@ namespace common\components\db;
 
 use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
+use yii\behaviors\BlameableBehavior;
+use yii\behaviors\AttributeBehavior;
 use yii\web\User;
 
 class CeActivieRecord extends ActiveRecord
 {   
+    /**
+    * Constant for disable mode
+    */
+    const STATUS_ENABLE  = 0;
+    const STATUS_DISABLE = 1;
+    const STATUS_ALL     = false;
+    
+    //Gender
+    const GENDER_MALE = 1;
+    const GENDER_FEMALE = 2;
+    
+    protected $_genders = array(
+        self::GENDER_MALE,
+        self::GENDER_FEMALE
+    );
+    
+    //Week
+    const DAY_OF_WEEK_MON = 1;
+    const DAY_OF_WEEK_TUE = 2;
+    const DAY_OF_WEEK_WED = 3;
+    const DAY_OF_WEEK_THU = 4;
+    const DAY_OF_WEEK_FRI = 5;
+    const DAY_OF_WEEK_SAT = 6;
+    const DAY_OF_WEEK_SUN = 7;
+
+    protected $_day_of_week_arr = array(
+            self::DAY_OF_WEEK_MON,
+            self::DAY_OF_WEEK_TUE,
+            self::DAY_OF_WEEK_WED,
+            self::DAY_OF_WEEK_THU,
+            self::DAY_OF_WEEK_FRI,
+            self::DAY_OF_WEEK_SAT,
+            self::DAY_OF_WEEK_SUN
+    );
+    
     public function behaviors()
     {
         return [
@@ -20,7 +57,44 @@ class CeActivieRecord extends ActiveRecord
                     User::EVENT_BEFORE_LOGOUT => ['last_login_datetime']
                 ],
             ],
+            [
+                'class' => BlameableBehavior::className(),
+                'createdByAttribute' => 'lastup_employee_id',
+                'updatedByAttribute' => 'lastup_employee_id',
+            ],
+            [
+                'class' => AttributeBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => 'disabled',
+                    ActiveRecord::EVENT_INIT => 'disabled',
+                ],
+                'value' => 0,
+            ],
         ];
+    }
+    
+    public static function find($tables = null)
+    {
+        $aWhere = [];
+        if ($tables) {
+            if (!is_array($tables)) {
+                $tables = [$tables];
+            }
+            
+            foreach ($tables as $table) {
+                $aWhere[$table . '.disabled'] = self::STATUS_ENABLE;
+            }
+            
+            return parent::find()->where($aWhere);
+        }
+        
+        return parent::find()->where(['disabled' => self::STATUS_ENABLE]);
+    }
+
+    public function delete()
+    {
+        $this->disabled = self::STATUS_DISABLE;
+        $this->save();
     }
     
     public function getBirthdateText()

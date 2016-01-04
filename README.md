@@ -5,9 +5,11 @@ CENTER OFFICE PROJECT - 20/12/2015
 
 Center office is developed base on Yii 2 framework.
 
-The project includes three tiers: 
+The project includes three main package: 
 work, common, and console, hrm, kpi, cron each of which
 is a separate Yii application.
+
+Center office has designed that can run on pc, mobile, tablet pc device.
 
 =======================================================================
 

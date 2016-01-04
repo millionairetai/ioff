@@ -1,0 +1,43 @@
+<?php
+
+use yii\helpers\Html;
+use yii\grid\GridView;
+
+/* @var $this yii\web\View */
+/* @var $searchModel common\modules\authority\models\ActionSearch */
+/* @var $dataProvider yii\data\ActiveDataProvider */
+
+$this->title = Yii::t('authority', 'Actions');
+$this->params['breadcrumbs'][] = $this->title;
+?>
+<div class="action-index">
+
+    <h1><?= Html::encode($this->title) ?></h1>
+    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+
+    <p>
+        <?= Html::a(Yii::t('authority', 'Create Action'), ['create'], ['class' => 'btn btn-success']) ?>
+    </p>
+
+    <?= GridView::widget([
+        'dataProvider' => $dataProvider,
+        'filterModel' => $searchModel,
+        'columns' => [
+            ['class' => 'yii\grid\SerialColumn'],
+
+            'id',
+            'controller_id',
+            'name',
+            'description:ntext',
+            'url:ntext',
+            // 'is_display_menu:boolean',
+            // 'datetime_created',
+            // 'lastup_datetime',
+            // 'lastup_employee_id',
+            // 'disabled:boolean',
+
+            ['class' => 'yii\grid\ActionColumn'],
+        ],
+    ]); ?>
+
+</div>

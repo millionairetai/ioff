@@ -13,4 +13,9 @@ class SiteController extends CeController
     {
         return $this->render('index');
     }
+    
+    public function actionTest() 
+    {
+        
+    }
 }

@@ -1,4 +1,5 @@
 <?php
+
 namespace common\controllers;
 
 use Yii;
@@ -19,10 +20,12 @@ class CeController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
+                'except' => ['login', 'error'],
                 'rules' => [
                     [
-                        'actions' => ['login', 'error'],
+                        'actions' => ['logout'],
                         'allow' => true,
+                        'roles' => ['@'],
                     ],
                     [
                         'allow' => true,
