@@ -12,6 +12,7 @@ return [
     'modules' => [
         'authority' => [
             'class' => 'common\modules\authority\Authority',
+            'defaultRoute' => 'default'
         ],
     ],
     'components' => [

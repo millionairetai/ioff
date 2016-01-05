@@ -7,7 +7,7 @@ use Yii;
 class Authority extends \yii\base\Module {
 
     public $controllerNamespace = 'common\modules\authority\controllers';
-
+    
     public function init() {
         parent::init();
         $this->registerTranslations();
