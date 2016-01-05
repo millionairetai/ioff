@@ -23,6 +23,10 @@ After you clone code from git and config on server you must install some followi
 3. You can refer information about configuration from CONFIG file.
 4. You should use netbean because that editor can supply you all necessary tool to develop,
  and change indent for 4 whitespace.
+5. Models for all packages will be in common/models. If a model is used to all package, they will be in
+common/models - ex: common/models/Employee.php. If a model only used by a package, it should be in 
+common/models/<package name> - ex: common/models/work/Task.php with task only use by work package.
+6. Upload folder will contain all of files is uploaded from users.
 
 CODING STANDARD
 -------
