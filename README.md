@@ -9,7 +9,7 @@ The project includes three main package:
 work, common, and console, hrm, kpi, cron each of which
 is a separate Yii application.
 
-Center office has designed that can run on pc, mobile, tablet pc device.
+Center office has designed that can run on PC, MOBILE, TABLET PC DEVICE.
 
 =======================================================================
 
@@ -18,7 +18,7 @@ GETTING STARTED
 ---------------
 After you clone code from git and config on server you must install some following application.
 
-1. install bower, nodejs and composer. You can refer them from web.
+1. Install bower, nodejs and composer. You can refer them from web.
 2. Set virtual host for server to path/to/<project folder>. For the best, host should be centeroffice.dev .
 3. You can refer information about configuration from CONFIG file.
 4. You should use netbean because that editor can supply you all necessary tool to develop,
