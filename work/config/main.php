@@ -11,7 +11,11 @@ return [
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'work\controllers',
     'bootstrap' => ['log'],
-    'modules' => [],
+	'modules' => [
+ 		'calendar' => [
+            'class' => 'work\modules\calendar\calendar',
+        ],
+    ],
     'components' => [
         'i18n' => [
             'translations' => [
