@@ -27,6 +27,7 @@ After you clone code from git and config on server you must install some followi
 common/models - ex: common/models/Employee.php. If a model only used by a package, it should be in 
 common/models/<package name> - ex: common/models/work/Task.php with task only use by work package.
 6. Upload folder will contain all of files is uploaded from users.
+7. All section of code should be caught exception error by try {} catch {} with php and javascript language.
 
 CODING STANDARD
 -------
@@ -86,6 +87,6 @@ Test with chrome, internet explorer, firefox, opera browser and all case in the 
 
 DATABASE DIAGRAM
 -------
-They're in scheme database folder.
+They're in scheme database_schema folder.
 1. You can use visual paradigm community to read vpp file and change something from scheme.
 2. You can view from image file directly in 
