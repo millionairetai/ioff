@@ -21,6 +21,9 @@ CommondAsset::register($this);
         <?= Html::csrfMetaTags() ?>
         <title><?= Html::encode($this->title) ?></title>
         <?php $this->head() ?>
+        <script src="/common/web/js/jquery.min.js"></script>
+        <script src="/common/web/js/moment.min.js"></script>
+        <script src="/common/web/js/fullcalendar.min.js"></script>
 
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
