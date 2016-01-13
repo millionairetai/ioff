@@ -118,6 +118,16 @@ class AssetBundle extends Object
     {
         return $view->registerAssetBundle(get_called_class());
     }
+    
+    /**
+     * Registers this asset bundle with a view.
+     * @param View $view the view to be registered with
+     * @return static the registered asset bundle instance
+     */
+    public static function registerPoint($view, $point)
+    {
+    	return $view->registerAssetBundle(get_called_class(), $point);
+    }
 
     /**
      * Initializes the bundle.

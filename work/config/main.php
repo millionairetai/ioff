@@ -14,6 +14,7 @@ return [
 	'modules' => [
  		'calendar' => [
             'class' => 'work\modules\calendar\calendar',
+ 			'defaultRoute' => 'event'
         ],
     ],
     'components' => [
