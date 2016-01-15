@@ -6,7 +6,7 @@ use common\assets\CommondAsset;
 use common\assets\CommonVendor;
 use yii\helpers\Html;
 use yii\web\View;
-CommondAsset::register($this);
+CommondAsset::registerPoint($this, View::POS_HEAD);
 CommonVendor::registerPoint($this, View::POS_HEAD);
 ?>
 <?php $this->beginPage() ?>

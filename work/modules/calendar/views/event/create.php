@@ -22,6 +22,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?= $form->field($model, 'name') ?>
         <?= $form->field($model, 'address') ?>
         <?= $form->field($model, 'description') ?>
+        <?= $form->field($model, 'disabled')->checkboxList([1,2,3]) ?>
         
         <?= Html::submitButton('Login') ?>
     <?php ActiveForm::end(); ?>

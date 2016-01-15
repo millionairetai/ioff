@@ -4,7 +4,7 @@
 var calendarDemoApp = angular.module('calendarDemoApp', ['ui.calendar', 'ui.bootstrap']);
 
 calendarDemoApp.controller('CalendarCtrl',
-   function($scope, $compile, $timeout, uiCalendarConfig) {
+   function($scope, $compile, $timeout, uiCalendarConfig, $http) {
     var date = new Date();
     var d = date.getDate();
     var m = date.getMonth();
@@ -18,23 +18,48 @@ calendarDemoApp.controller('CalendarCtrl',
             currentTimezone: 'America/Chicago' // an option!
     };
     /* event source that contains custom events on the scope */
-    $scope.events = [
+    /*$scope.events = [
       {title: 'All Day Event',start: new Date(y, m, 1)},
       {title: 'Long Event',start: new Date(y, m, d - 5),end: new Date(y, m, d - 2)},
       {id: 999,title: 'Repeating Event',start: new Date(y, m, d - 3, 16, 0),allDay: false},
       {id: 999,title: 'Repeating Event',start: new Date(y, m, d + 4, 16, 0),allDay: false},
       {title: 'Birthday Party',start: new Date(y, m, d + 1, 19, 0),end: new Date(y, m, d + 1, 22, 30),allDay: false},
       {title: 'Click for Google',start: new Date(y, m, 28),end: new Date(y, m, 29),url: 'http://google.com/'}
-    ];
+    ];*/
+    $scope.events = [];
+    $http.get(window.location.host + '/work/web/index.php?r=calendar/event/calendar').success(function(data){  //fetch new events from server, and push in array
+    	$scope.schedule = data;
+    		for(var i=0;i<data.length;i++)
+    			{
+    	            $scope.events.push({
+	            		//idx: data[i].idx,
+    	            	title: data[i].title,
+    	            	//description : data[i].description,
+    	            	allDay: false,
+    	            	//start: new Date(data[i].start),
+    	            	start: data[i].start,
+	            		//end:  new Date(data[i].end),
+    	            });
+    	     //calendar.fullCalendar('render'); //Tried even this, didn't work
+      }
+    });
     /* event source that calls a function on every view switch */
     $scope.eventsF = function (start, end, timezone, callback) {
       var s = new Date(start).getTime() / 1000;
       var e = new Date(end).getTime() / 1000;
       var m = new Date(start).getMonth();
       var events = [{title: 'Feed Me ' + m,start: s + (50000),end: s + (100000),allDay: false, className: ['customFeed']}];
-      callback(events);
+      //callback(events);
+      callback($scope.events);
+      
+      $('td.fc-day').bind('dblclick', function() {
+    	  $('.modal').modal('show')  
+      });
+      $('td.fc-day-number').bind('dblclick', function() {
+    	  $('.modal').modal('show')  
+      });
     };
-
+    console.log($("#calendar").fullCalendar('getDate'));
     $scope.calEventsExt = {
        color: '#f00',
        textColor: 'yellow',
@@ -99,7 +124,40 @@ calendarDemoApp.controller('CalendarCtrl',
         element.attr({'tooltip': event.title,
                       'tooltip-append-to-body': true});
         $compile(element)($scope);
+        
+        /*$('td.fc-day').bind('dblclick', function() {
+        	//alert('double click!');
+        	//$('.modal').modal('show')  
+        });*/
+ 	
+    	$('td.fc-day').bind('dblclick', function() {
+    		$('.modal').modal('show')  
+    	});
+    	$('td.fc-day-number').bind('dblclick', function() {
+    		$('.modal').modal('show')  
+    	});
     };
+    /* Bind date to input  */
+    $scope.dayClick = function( date, jsEvent, view, resourceObj ) { 
+    	var current_date = new Date;
+    	var current_hours = current_date.getHours();
+    	if (current_hours < 10) {
+    		current_hours = "0" + current_hours;
+        }
+    	var ampm = (current_hours >= 12) ? "PM" : "AM";
+    	var current_minute = current_date.getMinutes();
+    	if (current_minute < 10) {
+    		current_minute = "0" + current_minute;
+        }
+    	var current_time = current_hours + ":" + current_minute + ' ' + ampm;
+    	var get_date = date.format();
+    	var date = new Date(get_date);
+    	var format_date = ("0" + (date.getMonth() + 1)).slice(-2) + '/' + ("0" + date.getDate()).slice(-2) + '/' +  date.getFullYear();
+    	var hours = date.getHours();
+    	//$('#event-start_datetime').val(date.format());
+    	$('#event-start_datetime').val(format_date + ' ' + current_time);
+    };
+
     /* config object */
     $scope.uiConfig = {
       calendar:{
@@ -113,7 +171,8 @@ calendarDemoApp.controller('CalendarCtrl',
         eventClick: $scope.alertOnEventClick,
         eventDrop: $scope.alertOnDrop,
         eventResize: $scope.alertOnResize,
-        eventRender: $scope.eventRender
+        eventRender: $scope.eventRender,
+        dayClick: $scope.dayClick
       }
     };
 
@@ -129,7 +188,7 @@ calendarDemoApp.controller('CalendarCtrl',
       }
     };
     /* event sources array*/
-    $scope.eventSources = [$scope.events, $scope.eventSource, $scope.eventsF];
+    $scope.eventSources = [$scope.events, $scope.eventSource, $scope.eventsF, $scope.eventsE];
     $scope.eventSources2 = [$scope.calEventsExt, $scope.eventsF, $scope.events];
 });
 /* EOF */
@@ -248,3 +307,39 @@ calendarDemoApp.directive('modal', function () {
       }
     };
   });
+
+
+// check all checkbox
+
+calendarDemoApp.controller("ctrl", function($scope){
+	  
+	  $scope.options = [
+	    {value:'Option1', selected:true}, 
+	    {value:'Option2', selected:false}
+	  ];
+	  
+	  $scope.toggleAll = function() {
+	     var toggleStatus = !$scope.isAllSelected;
+	     angular.forEach($scope.options, function(itm){ itm.selected = toggleStatus; });
+	   
+	  }
+	  
+	  $scope.optionToggled = function(){
+	    $scope.isAllSelected = $scope.options.every(function(itm){ return itm.selected; })
+	  }
+	});
+
+//calendarDemoApp.controller("checkboxController", function checkboxController($scope) {
+//	$scope.digest();
+//	$scope.checkAll = function () {
+//	    if ($scope.selectedAll) {
+//	        $scope.selectedAll = true;
+//	    } else {
+//	        $scope.selectedAll = false;
+//	    }
+//	    angular.forEach($scope.Items, function (item) {
+//	        item.Selected = $scope.selectedAll;
+//	    });
+//
+//	};
+//	});

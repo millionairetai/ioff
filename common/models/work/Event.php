@@ -8,6 +8,7 @@ namespace common\models\work;
 
 use Yii;
 use common\components\db\CeActivieRecord;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "event".
@@ -72,5 +73,15 @@ class Event extends CeActivieRecord
             'lastup_employee_id' => 'Lastup Employee ID',
             'disabled' => 'Disabled',
         ];
+    }
+    
+    public static function getDepartmentNameCheckBox()
+    {
+    	return ArrayHelper::map(Department::find()->asArray()->all(), 'id', 'name');
+    }
+    
+    public static function getCalendarOption()
+    {
+    	return ArrayHelper::map(Calendar::find()->asArray()->all(), 'id', 'name');
     }
 }

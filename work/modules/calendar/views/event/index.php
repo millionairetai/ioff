@@ -1,8 +1,4 @@
 <?php
-use yii\helpers\Html;
-use yii\grid\GridView;
-use yii\widgets\ActiveForm;
-
 /* @var $this yii\web\View */
 /* @var $model common\models\calendar\event */
 
@@ -32,16 +28,22 @@ $this->params ['breadcrumbs'] [] = $this->title;
 								<div class="col-xs-12 col-md-8">
 									<div class="btn-toolbar">
 										<div class="btn-group">
-											<button class="btn btn-success" ng-click="changeView('month', 'myCalendar1')">Tháng</button>
-											<button class="btn btn-success" ng-click="changeView('agendaWeek', 'myCalendar1')">Tuần</button>
-											<button class="btn btn-success" ng-click="changeView('agendaDay', 'myCalendar1')">Ngày</button>
+											<button class="btn btn-success" ng-click="changeView('month', 'myCalendar1')"><?= Yii::t('app', 'Month');?></button>
+											<button class="btn btn-success" ng-click="changeView('agendaWeek', 'myCalendar1')"><?= Yii::t('app', 'Week');?></button>
+											<button class="btn btn-success" ng-click="changeView('agendaDay', 'myCalendar1')"><?= Yii::t('app', 'Day');?></button>
 										</div>
 									</div>
 								</div>
 								<div class="col-xs-6 col-md-4">
 									<div ng-controller="MainCtrl" class="container">
-										<button ng-click="toggleModal()" class="btn btn-primary">Add Event</button>
-										<?= $this->render('inc/_popup', ['model' => $model]) ?>
+										<button ng-click="toggleModal()" class="btn btn-primary"><?= Yii::t('app', 'Add Event');?></button>
+										<?= $this->render('inc/_popup', [
+												'event' => $model_event, 
+												'model_remind' => $model_remind, 
+												'inviation' => $model_inviation, 
+												'model_department' => $model_department,
+												'model_calendar' => $model_calendar
+										]) ?>
 									</div>
 								</div>
 							</div>
