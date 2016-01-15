@@ -21,6 +21,8 @@ class CommondAsset extends AssetBundle
     ];
     
     public $js = [
+    	'js/jquery.js',
+    	'js/jquery.min.js',
         'js/bootstrap/bootstrap.min.js',
         'js/jquery-ui.min.js',
         'js/raphael-min.js',
@@ -29,6 +31,11 @@ class CommondAsset extends AssetBundle
         'plugins/fastclick/fastclick.js',
         'js/app.min.js',
         'plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js',
+        'js/angular/angular.min.js',
+        'js/angular/angular.js',
+        'js/angular/angular-locale_vi-vn.js',
+        'js/angular/ui-bootstrap-tpls-0.9.0.js',
+    	'js/bootstrap-filestyle.js',
     ];
     
     public $depends = [

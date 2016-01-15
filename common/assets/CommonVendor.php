@@ -13,22 +13,23 @@ class CommonVendor extends AssetBundle
     		'works/calendar/css/fullcalendar.css',
 //     		'works/calendar/css/fullcalendar.print.css',
     		'works/calendar/css/fullcalendar.min.css',
+    		
+    		'works/calendar/css/datetimepicker/bootstrap-datetimepicker.css',
+    		'works/calendar/css/fileinput.css',
     ];
     
     public $js = [
-    		'works/calendar/js/jquery.js',
-    		'works/calendar/js/angular.js',
-    		'works/calendar/js/angular-locale_vi-vn.js',
-    		'works/calendar/js/ui-bootstrap-tpls-0.9.0.js',
     		'works/calendar/js/moment.js',
     		'works/calendar/js/calendar.js',
     		'works/calendar/js/calendarDemo.js',
     		'works/calendar/js/fullcalendar.js',
     		'works/calendar/js/fullcalendar.min.js',
     		'works/calendar/js/gcal.js',
-//     		'works/calendar/js/lib/jquery.min.js',
-//     		'works/calendar/js/lib/jquery-ui.custom.min.js',
-    		'works/calendar/js/lib/moment.min.js',
+    		'works/calendar/js/moment.min.js',
+    		
+    		'works/calendar/js/datetimepicker/bootstrap-datetimepicker.js',
+    		'works/calendar/js/datetimepicker/datetimeCustomize.js',
+    		'works/calendar/js/fileinput.js',
     		
     ];
     
