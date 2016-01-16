@@ -13,6 +13,24 @@ Center office has designed that can run on PC, MOBILE, TABLET PC DEVICE.
 
 =======================================================================
 
+PERFORMANCE***
+-----
+Yii2 framwork supported very strong technique about cache in many methods. 
+So, you should use appropriate cache for data if that data change rarely and big data to 
+improve system performance. Some cases you should consider to optimize your code to increase
+performance.
+
+Php.
+
+1. For variable only use one time, no declare.
+2. Only declare necessary variable.
+
+Mysql.
+
+1. No use join so much in case of joining many tables together.
+2. Select only necessary columns, no select redundant column or select all.
+3. Database query no loop so much.
+
 
 GETTING STARTED
 ---------------
@@ -26,6 +44,7 @@ After you clone code from git and config on server you must install some followi
 5. Models for all packages will be in common/models. If a model is used to all package, they will be in
 common/models - ex: common/models/Employee.php. If a model only used by a package, it should be in 
 common/models/<package name> - ex: common/models/work/Task.php with task only use by work package.
+    Notice: Models for form of module must be in module's models.
 6. Upload folder will contain all of files is uploaded from users.
 7. All section of code should be caught exception error by try {} catch {} with php and javascript language.
 
@@ -39,12 +58,7 @@ To ensure consistency throughout the source code, keep these rules in mind as yo
 4. No write php code logic in view template.
 5. When having any change for database, ex: add columns, add key, add default, you should
 write code in yii2 MIGRATION to deploy app afterward.
-
-PERFORMANCE 
------
-Yii2 framwork supported very strong technique about cache in many methods. 
-So, you should use appropriate cache for data if that data change rarely and big data to 
-improve system performance.
+6. JAVASCRIPT CODE must write in camel coding style
 
 LANGUAGE
 -----
