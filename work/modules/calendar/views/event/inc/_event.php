@@ -4,8 +4,6 @@ use yii\helpers\Html;
 use common\models\work\Calendar;
 use common\models\work\Event;
 ?>
-
-<?= $form->field($model_remind, 'is_remind')->checkbox() ?>
 <div class="tab-pane active" id="{{contentBaseId}}-1">
 <div class="accsection">
 				<div class="topwrap">
@@ -47,7 +45,7 @@ use common\models\work\Event;
 						
 						<div class="container">
 							<div class='col-md-3'>
-    							<?= $form->field($model_remind, 'owner_id')->checkbox() ?>
+    							<?= $form->field($model_remind, 'is_remind')->checkbox() ?>
 							</div>
 	
 							<div class='col-md-3'>
