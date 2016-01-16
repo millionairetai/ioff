@@ -45,8 +45,6 @@ class EventController extends CeController
         $model_department = new Department();
         $model_calendar = new Calendar();
         
-//         $model_department = $model_event->getDepartmentNameCheckBox();
-        
         return $this->render('index', [
 	        		'model_event' => $model_event,
 	        		'model_inviation' => $model_inviation,

@@ -21,7 +21,7 @@ $this->params ['breadcrumbs'] [] = $this->title;
 					<div class="span12">
 						<tabset>
 							<div class="alert-success calAlert" ng-show="alertMessage != undefined && alertMessage != ''">
-								<h4>{{alertMessage}}</h4>
+								<h4 stype="display : none"> {{alertMessage}}</h4>
 							</div>
 
 							<div class="row">

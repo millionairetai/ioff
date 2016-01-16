@@ -2,6 +2,8 @@
 
 namespace common\models\work;
 
+use common\components\db\CeActivieRecord;
+
 use Yii;
 
 /**
@@ -15,7 +17,7 @@ use Yii;
  * @property string $lastup_employee_id
  * @property boolean $disabled
  */
-class Calendar extends \yii\db\ActiveRecord
+class Calendar extends CeActivieRecord
 {
     /**
      * @inheritdoc
@@ -45,13 +47,13 @@ class Calendar extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'name' => 'Name',
-            'description' => 'Description',
-            'datetime_created' => 'Datetime Created',
-            'lastup_datetime' => 'Lastup Datetime',
-            'lastup_employee_id' => 'Lastup Employee ID',
-            'disabled' => 'Disabled',
+            'id' 				 => Yii::t('common', 'ID'),
+            'name' 				 => Yii::t('common', 'Event Calendar'),
+            'description' 		 => Yii::t('common', 'Description'),
+            'datetime_created' 	 => Yii::t('common', 'Datetime Created'),
+            'lastup_datetime' 	 => Yii::t('common', 'Lastup Datetime'),
+            'lastup_employee_id' => Yii::t('common', 'Lastup Employee ID'),
+            'disabled' 			 => Yii::t('common', 'Disabled'),
         ];
     }
 }

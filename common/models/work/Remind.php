@@ -2,6 +2,8 @@
 
 namespace common\models\work;
 
+use common\components\db\CeActivieRecord;
+
 use Yii;
 
 /**
@@ -21,8 +23,9 @@ use Yii;
  * @property string $lastup_employee_id
  * @property boolean $is_remind
  */
-class Remind extends \yii\db\ActiveRecord
+class Remind extends CeActivieRecord
 {
+	public $is_remind;
     /**
      * @inheritdoc
      */
@@ -38,7 +41,7 @@ class Remind extends \yii\db\ActiveRecord
     {
         return [
             [['employee_id', 'owner_id', 'remind_datetime', 'minute_before', 'repeated_time', 'datetime_created', 'lastup_datetime', 'lastup_employee_id'], 'integer'],
-            [['owner_table', 'repeated_time'], 'required'],
+            [['owner_table', 'repeated_time', 'minute_before'], 'required'],
             [['content'], 'string'],
             [['is_snoozing', 'is_remind'], 'boolean'],
             [['owner_table'], 'string', 'max' => 50]
@@ -51,19 +54,19 @@ class Remind extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'employee_id' => 'Employee ID',
-            'owner_id' => 'Owner ID',
-            'owner_table' => 'Owner Table',
-            'content' => 'Content',
-            'remind_datetime' => 'Remind Datetime',
-            'minute_before' => 'Minute Before',
-            'repeated_time' => 'Repeated Time',
-            'is_snoozing' => 'Is Snoozing',
-            'datetime_created' => 'Datetime Created',
-            'lastup_datetime' => 'Lastup Datetime',
-            'lastup_employee_id' => 'Lastup Employee ID',
-            'is_remind' => 'is_remind',
+            'id' 				 => Yii::t('common', 'ID'),
+            'employee_id' 		 => Yii::t('common', 'Employee ID'),
+            'owner_id' 			 => Yii::t('common', 'Owner ID'),
+            'owner_table' 		 => Yii::t('common', 'Owner Table'),
+            'content' 			 => Yii::t('common', 'Content'),
+            'remind_datetime' 	 => Yii::t('common', 'Remind Datetime'),
+            'minute_before' 	 => Yii::t('common', 'Minute Before'),
+            'repeated_time' 	 => Yii::t('common', 'Repeated Time'),
+            'is_snoozing' 		 => Yii::t('common', 'Is Snoozing'),
+            'datetime_created'   => Yii::t('common', 'Datetime Created'),
+            'lastup_datetime' 	 => Yii::t('common', 'Lastup Datetime'),
+            'lastup_employee_id' => Yii::t('common', 'Lastup Employee ID'),
+            'is_remind' 	 	 => Yii::t('common', 'is_remind'),
         ];
     }
     
