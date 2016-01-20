@@ -32,11 +32,14 @@ class CommondAsset extends AssetBundle
         'js/app.min.js',
         'plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js',
         'js/moment.min.js',
-        'js/fullcalendar.min.js'
+        'js/fullcalendar.min.js',
+        'js/app.js',
+        'js/login.js',
     ];
     
     public $depends = [
         'yii\web\YiiAsset',
+        'common\assets\AngularAsset',
 //        'yii\bootstrap\BootstrapAsset',
     ];
     

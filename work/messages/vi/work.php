@@ -1,5 +1,5 @@
 <?php
 
 return [
-  'work' => 'Công việc'  
+  'Descriptiron' => 'Mie ta'  
 ];

@@ -8,6 +8,7 @@ namespace common\models\work;
 
 use Yii;
 use common\components\db\CeActivieRecord;
+use yii\helpers\ArrayHelper;
 
 /**
  * This is the model class for table "event".
@@ -73,4 +74,4 @@ class Event extends CeActivieRecord
             'disabled' => 'Disabled',
         ];
     }
-}
+    }

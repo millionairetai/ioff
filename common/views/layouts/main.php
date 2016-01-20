@@ -11,7 +11,7 @@ CommondAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
-<html lang="<?= Yii::$app->language ?>">
+<html lang="<?= Yii::$app->language ?>" ng-app="centeroffice">
     <head>
         <meta charset="<?= Yii::$app->charset ?>">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -29,7 +29,7 @@ CommondAsset::register($this);
         <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
     </head>
-    <body class="hold-transition skin-blue-light sidebar-mini">
+    <body class="hold-transition skin-blue-light sidebar-mini" ng-controller="ce_controller">
 
         <?php $this->beginBody() ?>
         <div class="wrapper">

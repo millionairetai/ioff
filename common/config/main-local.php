@@ -6,6 +6,9 @@ $config = [
             'dsn' => 'mysql:host=localhost;dbname=centeroffice',
             'username' => 'root',
             'password' => '',
+//            'dsn' => 'mysql:host=202.92.4.33;dbname=rqihmqup_centeroffice',
+//            'username' => 'rqihmquphosting',
+//            'password' => '12345678',
             'charset' => 'utf8',
             'enableSchemaCache' => true,
             // Duration of schema cache.
