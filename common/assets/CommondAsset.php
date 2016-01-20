@@ -18,11 +18,11 @@ class CommondAsset extends AssetBundle
         'plugins/iCheck/flat/blue.css',
         'plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css',
         'css/site.css',
-        'css/fullcalendar.css',
-        'css/fullcalendar.print.css',
     ];
     
     public $js = [
+    	'js/jquery.js',
+    	'js/jquery.min.js',
         'js/bootstrap/bootstrap.min.js',
         'js/jquery-ui.min.js',
         'js/raphael-min.js',
@@ -31,10 +31,11 @@ class CommondAsset extends AssetBundle
         'plugins/fastclick/fastclick.js',
         'js/app.min.js',
         'plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js',
-        'js/moment.min.js',
-        'js/fullcalendar.min.js',
-        'js/app.js',
-        'js/login.js',
+        'js/angular/angular.min.js',
+        'js/angular/angular.js',
+        'js/angular/angular-locale_vi-vn.js',
+        'js/angular/ui-bootstrap-tpls-0.9.0.js',
+    	'js/bootstrap-filestyle.js',
     ];
     
     public $depends = [

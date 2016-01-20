@@ -5,13 +5,17 @@
  */
 namespace work\modules\calendar\controllers;
 
+use common\models\work\Department;
+
 use Yii;
-use common\models\calendar\event;
+use common\models\work\Event;
+use common\models\work\Invitation;
 use work\modules\calendar\models\eventSearch;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use common\controllers\CeController;
-
+use common\models\work\Remind;
+use common\models\work\Calendar;
 /**
  * EventController implements the CRUD actions for event model.
  */
@@ -35,13 +39,19 @@ class EventController extends CeController
      */
     public function actionIndex()
     {
-        $searchModel = new eventSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
+        $model_event = new Event();
+        $model_inviation = new Invitation();
+        $model_remind = new Remind();
+        $model_department = new Department();
+        $model_calendar = new Calendar();
+        
         return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+	        		'model_event' => $model_event,
+	        		'model_inviation' => $model_inviation,
+	        		'model_remind' => $model_remind,
+	        		'model_department' => $model_department,
+        			'model_calendar' => $model_calendar
+        		]);
     }
 
     /**
@@ -63,7 +73,7 @@ class EventController extends CeController
      */
     public function actionCreate()
     {
-        $model = new event();
+        $model = new eventSearch();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -74,6 +84,32 @@ class EventController extends CeController
         }
     }
 
+    /**
+     * @created date    2015/01/13
+     * 
+     * get calendar
+     */
+    public function actionCalendar() {
+        $this->layout=false;
+        header('Content-type: application/json');
+        $calendars = array(
+            array(
+                'title' => 'Long Event',
+                'start' => '2016-01-04'
+            ),
+            array(
+                'title' => 'test test test',
+                'start' => '2016-02-04'
+            ),
+        		array(
+        				'title' => 'test test test',
+        				'start' => '2016-04-04',
+        				'end' => '2016-04-05'
+        		)
+        );
+        echo json_encode($calendars);
+    }
+    
     /**
      * Updates an existing event model.
      * If update is successful, the browser will be redirected to the 'view' page.

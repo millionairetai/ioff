@@ -14,7 +14,12 @@ return [
 	'modules' => [
  		'calendar' => [
             'class' => 'work\modules\calendar\calendar',
+ 			'defaultRoute' => 'event'
         ],
+			'demo' => [
+					'class' => 'work\modules\demo\demo',
+					'defaultRoute' => 'event'
+			],
     ],
     'components' => [
         'i18n' => [

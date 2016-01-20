@@ -3,11 +3,11 @@
 /* @var $content string */
 
 use common\assets\CommondAsset;
+use common\assets\CommonVendor;
 use yii\helpers\Html;
-use yii\widgets\Breadcrumbs;
-use common\widgets\Alert;
-
-CommondAsset::register($this);
+use yii\web\View;
+CommondAsset::registerPoint($this, View::POS_HEAD);
+CommonVendor::registerPoint($this, View::POS_HEAD);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -21,15 +21,6 @@ CommondAsset::register($this);
         <?= Html::csrfMetaTags() ?>
         <title><?= Html::encode($this->title) ?></title>
         <?php $this->head() ?>
-        <script src="/common/web/js/jquery.min.js"></script>
-        <script src="/common/web/js/moment.min.js"></script>
-        <script src="/common/web/js/fullcalendar.min.js"></script>
-
-        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-        <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
         <![endif]-->
     </head>
     <body class="hold-transition skin-blue-light sidebar-mini" ng-controller="ce_controller">
