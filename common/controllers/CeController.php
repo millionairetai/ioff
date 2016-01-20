@@ -6,12 +6,11 @@ use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
-use common\controllers\ApiController;
 
 /**
  * Common controller
  */
-class CeController extends ApiController
+class CeController extends Controller
 {
     /**
      * @inheritdoc

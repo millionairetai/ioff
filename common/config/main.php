@@ -16,9 +16,9 @@ return [
         ],
     ],
     'components' => [
-//        'cache' => [
-//            'class' => 'yii\caching\FileCache',
-//        ],
+        'cache' => [
+            'class' => 'yii\caching\FileCache',
+        ],
         'authManager' => [
             'class' => 'common\modules\authority\AuthorityManager',
             'allowCache' => false,
