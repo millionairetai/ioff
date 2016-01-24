@@ -21,26 +21,27 @@ class CommondAsset extends AssetBundle
     ];
     
     public $js = [
-    	'js/jquery.js',
-    	'js/jquery.min.js',
-        'js/bootstrap/bootstrap.min.js',
-        'js/jquery-ui.min.js',
-        'js/raphael-min.js',
-        'plugins/sparkline/jquery.sparkline.min.js',
-        'plugins/slimScroll/jquery.slimscroll.min.js',
-        'plugins/fastclick/fastclick.js',
-        'js/app.min.js',
-        'plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js',
-        'js/angular/angular.min.js',
-        'js/angular/angular.js',
+//    	'js/jquery.js',
+//    	'js/jquery.min.js',
+//        'js/bootstrap/bootstrap.min.js',
+//         'js/jquery-ui.min.js',
+//         'js/raphael-min.js',
+//         'plugins/sparkline/jquery.sparkline.min.js',
+//         'plugins/slimScroll/jquery.slimscroll.min.js',
+//         'plugins/fastclick/fastclick.js',
+//        'js/app.min.js',
+//         'plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.all.min.js',
+//        'js/angular/angular.js',
         'js/angular/angular-locale_vi-vn.js',
         'js/angular/ui-bootstrap-tpls-0.9.0.js',
     	'js/bootstrap-filestyle.js',
-    ];
+        'js/app.js',
+        'js/login.js',
+    ];  
     
     public $depends = [
         'yii\web\YiiAsset',
-        'common\assets\AngularAsset',
+        'common\assets\AngularAsset'
 //        'yii\bootstrap\BootstrapAsset',
     ];
     
