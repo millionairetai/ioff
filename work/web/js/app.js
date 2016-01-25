@@ -1,5 +1,5 @@
 angular.module('centeroffice', []).constant('SITE_URL', '');
-var _a = angular.element;
+var a = angular.element;
 
 angular.module('centeroffice')
   .config(function ($urlRouterProvider, $httpProvider, $sceDelegateProvider, $compileProvider, $locationProvider) {

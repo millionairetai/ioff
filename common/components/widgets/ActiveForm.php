@@ -1,9 +1,4 @@
 <?php
-/**
- * @link http://www.yiiframework.com/
- * @copyright Copyright (c) 2008 Yii Software LLC
- * @license http://www.yiiframework.com/license/
- */
 
 namespace common\components\widgets;
 
@@ -66,11 +61,38 @@ use common\components\helpers\BaseHtml;
 class ActiveForm extends \yii\bootstrap\ActiveForm
 {
     /**
+     * @var string the function for ng-submit of angular js. When angularSubmit is set, post and 
+     * action attributes will be removed. 
+     */
+    public $angularSubmit = null;
+    
+    /**
      * @var string the default field class name when calling [[field()]] to create a new field.
      * @see fieldConfig
      */
     public $fieldClass = 'common\components\widgets\ActiveField';
 
+    public function init()
+    {
+        if (!in_array($this->layout, ['default', 'horizontal', 'inline'])) {
+            throw new InvalidConfigException('Invalid layout type: ' . $this->layout);
+        }
+
+        if ($this->layout !== 'default') {
+            Html::addCssClass($this->options, 'form-' . $this->layout);
+        }
+        
+        if (!isset($this->options['id'])) {
+            $this->options['id'] = $this->getId();
+        }
+        
+        if (!empty($this->angularSubmit)) {
+            $this->options['ng-submit'] = $this->angularSubmit;
+        }
+        
+        echo BaseHtml::beginForm($this->action, $this->method, $this->options);
+    }
+    
     /**
      * @inheritdoc
      * @return ActiveField the created ActiveField object

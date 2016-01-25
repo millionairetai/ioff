@@ -4,9 +4,58 @@ namespace common\components\helpers;
 
 use Yii;
 use yii\base\InvalidParamException;
+use yii\web\Request;
+use yii\helpers\Url;
 
 class BaseHtml extends \yii\helpers\BaseHtml
 {
+       
+    public static function beginForm($action = '', $method = 'post', $options = [])
+    {      
+        $action = Url::to($action);
+        $hiddenInputs = [];
+        $request = Yii::$app->getRequest();
+
+        if ($request instanceof Request) {
+            if (strcasecmp($method, 'get') && strcasecmp($method, 'post')) {
+                // simulate PUT, DELETE, etc. via POST
+                $hiddenInputs[] = parent::hiddenInput($request->methodParam, $method);
+                $method = 'post';
+            }
+            if ($request->enableCsrfValidation && !strcasecmp($method, 'post')) {
+                $hiddenInputs[] = parent::hiddenInput($request->csrfParam, $request->getCsrfToken());
+            }
+        }
+        
+        if (!strcasecmp($method, 'get') && ($pos = strpos($action, '?')) !== false) {
+            // query parameters in the action are ignored for GET method
+            // we use hidden fields to add them back
+            foreach (explode('&', substr($action, $pos + 1)) as $pair) {
+                if (($pos1 = strpos($pair, '=')) !== false) {
+                    $hiddenInputs[] = parent::hiddenInput(
+                        urldecode(substr($pair, 0, $pos1)),
+                        urldecode(substr($pair, $pos1 + 1))
+                    );
+                } else {
+                    $hiddenInputs[] = parent::hiddenInput(urldecode($pair), '');
+                }
+            }
+            $action = substr($action, 0, $pos);
+        }
+     
+        if (empty($options['ng-submit'])) {
+            $options['action'] = $action;
+            $options['method'] = $method;
+        }
+        
+        $form = parent::beginTag('form', $options);
+        
+        if (!empty($hiddenInputs)) {
+            $form .= "\n" . implode("\n", $hiddenInputs);
+        }
+
+        return $form;
+    }
 
     /**
      * Generates an appropriate input name angular for the specified attribute name or expression.
