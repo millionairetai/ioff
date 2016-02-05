@@ -35,7 +35,7 @@ CommondAsset::register($this);
         <div class="login-box">
             <div class="login-box-body">
                 <div class="login-logo">
-                    <a href><b>Center</b>Office</a>
+                    <a href><b>CENTER</b>OFFICE</a>
                 </div>
                 <!-- /.login-logo -->
                 <!--<p class="login-box-msg"></p>-->

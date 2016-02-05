@@ -126,4 +126,13 @@ class CeActivieRecord extends ActiveRecord
     {
         $this->datetime_created = strtotime($value);
     }
+    
+    public function fields()
+    {
+        return [
+            'datetime_created' => function () {
+                return date('d-m-y H:i', $this->datetime_created);
+            },
+        ];
+    }
 }

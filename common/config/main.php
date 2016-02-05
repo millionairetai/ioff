@@ -26,8 +26,8 @@ return [
         'user' => [
             'class' => 'common\modules\authority\User',
             'identityClass' => 'common\models\Employee',
-            'enableAutoLogin' => true,
-            'loginUrl' => ['site/login'],  
+//            'enableAutoLogin' => true,
+//            'loginUrl' => ['site/login'],  
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,
@@ -50,11 +50,11 @@ return [
                 ],
             ],
         ],
-//        'assetManager' => [
-//            'appendTimestamp' => true,
-//        ],
+        'assetManager' => [
+            'appendTimestamp' => true,
+        ],
     ],
     'params' => [
-        'defaultPackage' => 'work'
+        'defaultPackage' => 'frontend'
     ],
 ];

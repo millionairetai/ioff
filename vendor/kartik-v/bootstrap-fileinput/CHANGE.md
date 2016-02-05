@@ -1,6 +1,25 @@
 Change Log: `bootstrap-fileinput`
 =================================
 
+## version 4.3.0
+
+**Date:** 25-Jan-2016
+
+1. (enh #550): Correct Drag and drop issue with v4.2.9.
+
+## version 4.2.9
+
+**Date:** 22-Jan-2016
+
+1. (enh #489): Update documentation for `change` and `fileselect` events.
+2. (enh #521): Update Dutch Translations.
+3. (enh #523): Add new branch `sass` for `bootstrap-sass-official` support.
+4. (enh #530): Error alert box and preview thumbnail styling enhancements.
+5. (enh #531): Enhance/Fix typos of Arabic translation.
+6. (enh #534, enh #535): Ability to remove errored file thumbnails via `removeFromPreviewOnError`.
+7. (enh #541): Improve default slug callback to accept most characters.
+8. (enh #545): Refactor code to deep extend options correctly.
+
 ## version 4.2.8
 
 **Date:** 18-Nov-2015

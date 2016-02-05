@@ -32,8 +32,8 @@ return [
     'Development' => [
         'path' => 'dev',
         'setWritable' => [
-            'work/runtime',
-            'work/web/assets',
+            'frontend/runtime',
+            'frontend/web/assets',
             'kpi/runtime',
             'kpi/web/assets',
             'hrm/runtime',
@@ -44,7 +44,7 @@ return [
             'tests/codeception/bin/yii',
         ],
         'setCookieValidationKey' => [
-            'work/config/main-local.php',
+            'frontend/config/main-local.php',
             'kpi/config/main-local.php',
             'hrm/config/main-local.php',
         ],
@@ -52,8 +52,8 @@ return [
     'Production' => [
         'path' => 'prod',
         'setWritable' => [
-            'work/runtime',
-            'work/web/assets',
+            'frontend/runtime',
+            'frontend/web/assets',
             'kpi/runtime',
             'kpi/web/assets',
             'hrm/runtime',
@@ -63,7 +63,7 @@ return [
             'yii',
         ],
         'setCookieValidationKey' => [
-            'work/config/main-local.php',
+            'frontend/config/main-local.php',
             'kpi/config/main-local.php',
             'hrm/config/main-local.php',
         ],

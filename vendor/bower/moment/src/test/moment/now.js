@@ -12,6 +12,31 @@ test('now', function (assert) {
     assert.ok(momentNowTime <= afterMomentCreationTime, 'moment now() time should be now, not in the future');
 });
 
+test('now - Date mocked', function (assert) {
+    // We need to test mocking the global Date object, so disable 'Read Only' jshint check
+    /* jshint -W020 */
+    var RealDate = Date,
+        customTimeMs = moment('2015-01-01T01:30:00.000Z').valueOf();
+
+    function MockDate() {
+        return new RealDate(customTimeMs);
+    }
+
+    MockDate.now = function () {
+        return new MockDate().valueOf();
+    };
+
+    MockDate.prototype = RealDate.prototype;
+
+    Date = MockDate;
+
+    try {
+        assert.equal(moment().valueOf(), customTimeMs, 'moment now() time should use the global Date object');
+    } finally {
+        Date = RealDate;
+    }
+});
+
 test('now - custom value', function (assert) {
     var customTimeStr = '2015-01-01T01:30:00.000Z',
         customTime = moment(customTimeStr, moment.ISO_8601).valueOf(),

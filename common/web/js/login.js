@@ -12,9 +12,10 @@
     app.controller('ce_controller', function ($scope) {
         $scope.nameText = '1111';
         
-        $scope.test = function() {
-            console.log($scope.LoginForm.rememberMe);
-            alert($scope.LoginForm.rememberMe);
+        $scope.processForm = function() {
+            console.log($scope.LoginForm);
+            console.log(a('[name="_csrf"]').val());
+            alert($scope.LoginForm);
         }
     });
 

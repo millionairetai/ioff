@@ -9,13 +9,16 @@ class User extends \yii\web\User
     protected $_authority = [];
     
     public function can($action_permission = null, $params= [], $allowCaching = true)
-    {return true;
-        //In case if user is admin, allow all of system's action.
-        if (Yii::$app->user->identity->is_admin) 
-        {
-            return true;
-        }
+    {
+//        return true;
+//        //In case if user is admin, allow all of system's action.
+//        if (Yii::$app->user->identity->is_admin) 
+//        {
+//            return true;
+//        }
         
+        echo 111;die;
+//        var_dump(Yii::$app);die;
         //Get permission in case of user want to check authority with code, no check automatically.
         if (!$action_permission) 
         {
@@ -58,23 +61,24 @@ class User extends \yii\web\User
      * @return Response the redirection response if [[loginUrl]] is set
      * @throws ForbiddenHttpException the "Access Denied" HTTP exception if [[loginUrl]] is not set
      */
-    public function loginRequired($checkAjax = true)
-    {
-        $request = Yii::$app->getRequest();
-        if ($this->enableSession && (!$checkAjax || !$request->getIsAjax())) {
-            $this->setReturnUrl($request->getUrl());
-        }
-        
-        if ($this->loginUrl !== null) {
-            $loginUrl = (array) $this->loginUrl;
-           
-            if ($loginUrl[0] !== Yii::$app->requestedRoute) {
-                return Yii::$app->getResponse()->redirect('/common/web/index.php?r=site/login');
-            }
-        }
-        
-        throw new \yii\web\ForbiddenHttpException(Yii::t('yii', 'Login Required'));
-    }
+//    public function loginRequired($checkAjax = true)
+//    {
+//        $request = Yii::$app->getRequest();
+//        if ($this->enableSession && (!$checkAjax || !$request->getIsAjax())) {
+//            $this->setReturnUrl($request->getUrl());
+//        }
+//        
+//        if ($this->loginUrl !== null) {
+//            $loginUrl = (array) $this->loginUrl;
+//           
+//            if ($loginUrl[0] !== Yii::$app->requestedRoute) {
+//                return Yii::$app->getResponse()->redirect('/common/web/index.php?r=
+//                ');
+//            }
+//        }
+//        
+//        throw new \yii\web\ForbiddenHttpException(Yii::t('yii', 'Login Required'));
+//    }
     
     public function beforeSave($insert)
     {

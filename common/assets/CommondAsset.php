@@ -35,8 +35,8 @@ class CommondAsset extends AssetBundle
         'js/angular/angular-locale_vi-vn.js',
         'js/angular/ui-bootstrap-tpls-0.9.0.js',
     	'js/bootstrap-filestyle.js',
-        'js/app.js',
-        'js/login.js',
+//        'js/app.js',
+//        'js/login.js',
     ];  
     
     public $depends = [
@@ -47,7 +47,7 @@ class CommondAsset extends AssetBundle
     
     public function __construct($config = array()) {
         parent::__construct($config);
-        $this->basePath = str_replace(['work', 'hrm', 'kpi'], ['common'], Yii::getAlias("@webroot"));
+        $this->basePath = str_replace(['frontend', 'hrm', 'kpi'], ['common'], Yii::getAlias("@webroot"));
         
     }
 }

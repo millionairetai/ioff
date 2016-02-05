@@ -1,0 +1,13 @@
+RewriteEngine On
+#every request with options, response 200
+RewriteCond %{REQUEST_METHOD} OPTIONS
+RewriteRule ^(.*)$ 200 [QSA,L]
+
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -l [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^.*$ - [NC,L]
+
+RewriteRule ^.*$ index.php [NC,L]
+
+DirectoryIndex index.php
