@@ -24,10 +24,13 @@ CommonVendor::register($this);
         <meta property="og:title" content="Centeroffice"/>
         <meta property="og:image" content=""/>
         <meta property="og:description" content="Centerofficee is the system for company, organization"/>
-        <base href="<?php echo 'http://centeroffice.dev/'; ?>">   
+        <base href="<?php echo SITE_URL; ?>">   
         <?= Html::csrfMetaTags() ?>
         <title><?= Html::encode($this->title) ?></title>
         <?php $this->head() ?>
+        <link rel='stylesheet' href='/vendor/bower/angular-loading-bar/build/loading-bar.min.css' type='text/css' media='all' />    
+        <link rel="stylesheet" href="/vendor/bower/alertify-js/build/css/alertify.min.css" />
+        <link rel="stylesheet" href="/vendor/bower/alertify-js/build/css/themes/default.min.css" />
         <![endif]-->
     </head>
     <!--<body ng-class="{'hold-transition skin-blue-light sidebar-mini' : token, 'hold-transition login-page' : !token:}" class="">-->
@@ -57,7 +60,7 @@ CommonVendor::register($this);
 
         <?php $this->endBody() ?>
         <script type="text/javascript">
-            var SITE_URL = "<?php echo  'http://centeroffice.dev/'; ?>";
+            var SITE_URL = "<?php echo  SITE_URL; ?>";
         </script>  
         <script src="/vendor/bower/bootstrap/dist/js/bootstrap.js"></script>  
         <script src="/vendor/bower/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>        
@@ -68,6 +71,7 @@ CommonVendor::register($this);
         <script src="/vendor/bower/alertify-js/build/alertify.min.js"></script>
         <script src="/vendor/bower/ng-file-upload/angular-file-upload-shim.min.js"></script>
         <script src="/vendor/bower/ng-file-upload/angular-file-upload.min.js"></script> 
+        <script src="/vendor/bower/angular-loading-bar/build/loading-bar.min.js"></script>
         <script src="/frontend/app/app.js"></script>
         
         <script src="/frontend/app/components/filters.js"></script>

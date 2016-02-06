@@ -1,4 +1,3 @@
-
 angular.module('centeroffice', [
     'ui.bootstrap',
     'ui.router',
@@ -13,8 +12,8 @@ angular.module('centeroffice', [
 
 angular.module('centeroffice').config(function ($urlRouterProvider, $httpProvider, $sceDelegateProvider,
     cfpLoadingBarProvider, $compileProvider, $locationProvider) {
-    $sceDelegateProvider.resourceUrlWhitelist(['self', '*://www.youtube.com/**', '*://player.vimeo.com/video/**']);
-    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|skype):/);
+//    $sceDelegateProvider.resourceUrlWhitelist(['self', '*://www.youtube.com/**', '*://player.vimeo.com/video/**']);
+//    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|skype):/);
 
     /* Add New States Above */
 //    $urlRouterProvider.otherwise('/');
