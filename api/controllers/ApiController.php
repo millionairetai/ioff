@@ -71,7 +71,7 @@ class ApiController extends \yii\rest\Controller
      * 
      * @return void
      */
-    public function send($status = self::OK, $data = null, $isError = false) {
+    public static function send($status = self::OK, $data = null, $isError = false) {
         //Convert error's array to key => value to response to client.
         if ($isError) {
             $errors = [];
@@ -96,7 +96,59 @@ class ApiController extends \yii\rest\Controller
 
         return $data;
     }
+    
+    /**
+     * Send successful response ajax to client - status code: 200
+     * 
+     * @param type $data
+     * 
+     * @return string
+     */
+    public static function sendOk($data = null) {
+        return self::send(StatusMessage::OK, $data);
+    }
+    
+    /**
+     * Send response of valiation error ajax to client. Status code: 422
+     * 
+     * @param type $data
+     * 
+     * @return string
+     */
+    public static function sendValidation($data = null) {
+        return self::send(StatusMessage::UNPROCESSABLE_ENTITY, $data, true);
+    }
 
+    /**
+     * Send Unthorized response to client. Status code: 401
+     * 
+     * @param type $data
+     * 
+     * @return string
+     */
+    public static function sendUnauthorized($data = null) {
+        if (!empty($data)) {
+            return self::send(StatusMessage::UNAUTHORIZED, $data);
+        }
+        
+        return self::send(StatusMessage::UNAUTHORIZED);
+    }
+    
+    /**
+     * Send forbidden response to client. Status code: 401
+     * 
+     * @param type $data
+     * 
+     * @return string
+     */
+    public static function sendForbidden($data = null) {
+        if (!empty($data)) {
+            return self::send(StatusMessage::FORBIDDEN, $data);
+        }
+        
+        return self::send(StatusMessage::FORBIDDEN);
+    }
+    
     /**
      * Get request data from _request var
      * 

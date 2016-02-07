@@ -39,6 +39,8 @@ class StatusMessage
     const UNSUPPORTED_MEDIA_TYPE = 415;
     const REQUESTED_RANGE_NOT_SATISFIABLE = 416;
     const EXPECTATION_FAILED = 417;
+    const UNPROCESSABLE_ENTITY = 422;
+    const LOCK = 423;
     const INTERNAL_SERVER_ERROR = 500;
     const NOT_IMPLEMENTED = 501;
     const BAD_GATEWAY = 502;
@@ -87,6 +89,8 @@ class StatusMessage
             414 => 'Request-URI Too Long',
             415 => 'Unsupported Media Type',
             416 => 'Requested Range Not Satisfiable',
+            422 => 'Unprocessable Entity',
+            423 => 'Locked',
             417 => 'Expectation Failed',
             500 => 'Internal Server Error',
             501 => 'Not Implemented',

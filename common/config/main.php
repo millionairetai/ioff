@@ -50,9 +50,9 @@ return [
                 ],
             ],
         ],
-        'assetManager' => [
-            'appendTimestamp' => true,
-        ],
+//        'assetManager' => [
+//            'appendTimestamp' => true,
+//        ],
     ],
     'params' => [
         'defaultPackage' => 'frontend'

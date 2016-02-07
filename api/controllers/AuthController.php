@@ -25,9 +25,9 @@ class AuthController extends ApiController {
                 ];
                 
                 $token = JsonWebToken::createToken($basicInfo);
-                return $this->send(StatusMessage::OK, ['token' => $token]);
+                return self::sendOk(['token' => $token]);
             } else {
-                return $this->send(422, $loginForm->getErrors(), true);
+                return self::sendValidation($loginForm->getErrors());
             }
         }
     }
@@ -49,9 +49,9 @@ class AuthController extends ApiController {
     
     public function actionLogout() {
         if (Yii::$app->user->logout()) {
-            return $this->send(StatusMessage::OK, ['success' => true]);
+            return self::sendOk(StatusMessage::OK, ['success' => true]);
         }
         
-        return $this->send(StatusMessage::NOT_IMPLEMENTED, ['success' => false]);
+        return self::send(StatusMessage::NOT_IMPLEMENTED, ['success' => false]);
     }
 }

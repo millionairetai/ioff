@@ -8,8 +8,6 @@ angular.module('centeroffice', [
 ]).constant('SITE_URL', SITE_URL)
   .value('$a', angular.element);
 
-
-
 angular.module('centeroffice').config(function ($urlRouterProvider, $httpProvider, $sceDelegateProvider,
     cfpLoadingBarProvider, $compileProvider, $locationProvider) {
 //    $sceDelegateProvider.resourceUrlWhitelist(['self', '*://www.youtube.com/**', '*://player.vimeo.com/video/**']);
@@ -20,6 +18,8 @@ angular.module('centeroffice').config(function ($urlRouterProvider, $httpProvide
 
     $locationProvider.html5Mode(true);
     $httpProvider.interceptors.push('authInterceptor');
+    // enable http caching
+    $httpProvider.defaults.cache = true;
 
     //angular loading bar
     cfpLoadingBarProvider.includeSpinner = true;
@@ -52,7 +52,8 @@ angular.module('centeroffice').config(function ($urlRouterProvider, $httpProvide
     $rootScope.currStateName = '';
     $rootScope.token = $cookieStore.get('token');
     $rootScope.errors = {};
-    
+    //Cache
+    //http://stackoverflow.com/questions/14117653/how-to-cache-an-http-get-service-in-angularjs
     $rootScope.isLoading = function () {
         return $http.pendingRequests.length > 0;
     }
@@ -69,13 +70,19 @@ angular.module('centeroffice').config(function ($urlRouterProvider, $httpProvide
     $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
         checkLogin();
         $rootScope.currStateName = toState.name;
-
+        
+        console.log(toState);
+        console.log(toParams);
+        console.log(fromState);
+        console.log(fromParams);
+        
         if (toParams.token) {
             $cookieStore.put('token', toParams.token);
             authService.getCurrentUser().then(function (data) {
                 $rootScope.currUser = data;
             });
         }
+        
         //if the page need to be signing in      
         if (toState.authenticate) {
             //if user signed in

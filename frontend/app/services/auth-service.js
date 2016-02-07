@@ -12,13 +12,12 @@ angular.module('centeroffice').factory('authService', function ($http, userServi
         login: function (employee) {
             var deferred = $q.defer();
 
-            return $http.post('api/auth/login', employee)
-                    .success(function (data) {
-                        if (data) {
-                            $cookieStore.put('token', data.token);
-                        }
-                        deferred.resolve(data);
-                    }).error(function (data) {
+            return $http.post('api/auth/login', employee).success(function (data) {
+                if (data) {
+                    $cookieStore.put('token', data.token);
+                }
+                deferred.resolve(data);
+            }).error(function (data) {
                 deferred.reject(data);
             });
 
@@ -31,7 +30,6 @@ angular.module('centeroffice').factory('authService', function ($http, userServi
          */
         logout: function () {
             var deferred = $q.defer();
-//            var result = false;
 
             return $http.post('api/auth/logout').success(function (data) {
                 if (data) {
@@ -39,7 +37,6 @@ angular.module('centeroffice').factory('authService', function ($http, userServi
                     $rootScope.token = null;
                     $rootScope.currUser = {};
                     currentUser = {};
-//                    result = true;
                 }
 
                 deferred.resolve(data);
@@ -47,7 +44,6 @@ angular.module('centeroffice').factory('authService', function ($http, userServi
                 deferred.reject(data);
             });
 
-//            return result;
             return deferred.promise;
         },
         /**
