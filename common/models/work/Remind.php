@@ -2,7 +2,7 @@
 
 namespace common\models\work;
 
-use common\components\db\CeActivieRecord;
+use common\components\db\ActivieRecord;
 
 use Yii;
 
@@ -23,7 +23,7 @@ use Yii;
  * @property string $lastup_employee_id
  * @property boolean $is_remind
  */
-class Remind extends CeActivieRecord
+class Remind extends ActivieRecord
 {
 	public $is_remind;
     /**

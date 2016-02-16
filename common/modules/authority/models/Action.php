@@ -18,7 +18,7 @@ use Yii;
  * @property string $lastup_employee_id
  * @property boolean $disabled
  */
-class Action extends \common\components\db\CeActivieRecord
+class Action extends \common\components\db\ActiveRecord
 {
     /**
      * @inheritdoc

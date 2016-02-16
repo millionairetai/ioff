@@ -5,7 +5,7 @@ namespace common\models;
 use Yii;
 use yii\web\IdentityInterface;
 use yii\base\NotSupportedException;
-use common\components\db\CeActivieRecord;
+use common\components\db\ActiveRecord;
 
 /**
  * This is the model class for table "employee".
@@ -64,7 +64,7 @@ use common\components\db\CeActivieRecord;
  * @property string $lastup_employee_id
  * @property integer $disabled
  */
-class Employee extends CeActivieRecord implements IdentityInterface
+class Employee extends ActiveRecord implements IdentityInterface
 {
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;

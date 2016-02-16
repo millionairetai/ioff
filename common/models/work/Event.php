@@ -7,7 +7,7 @@
 namespace common\models\work;
 
 use Yii;
-use common\components\db\CeActivieRecord;
+use common\components\db\ActiveRecord;
 use yii\helpers\ArrayHelper;
 
 /**
@@ -28,7 +28,7 @@ use yii\helpers\ArrayHelper;
  * @property string $lastup_employee_id
  * @property boolean $disabled
  */
-class Event extends CeActivieRecord
+class Event extends ActiveRecord
 {
     /**
      * @inheritdoc

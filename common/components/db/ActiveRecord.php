@@ -2,13 +2,12 @@
 
 namespace common\components\db;
 
-use yii\db\ActiveRecord;
 use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\AttributeBehavior;
 use yii\web\User;
 
-class CeActivieRecord extends ActiveRecord
+class ActiveRecord extends \yii\db\ActiveRecord
 {   
     /**
     * Constant for disable mode

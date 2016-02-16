@@ -2,7 +2,7 @@
 
 namespace common\models\work;
 
-use common\components\db\CeActivieRecord;
+use common\components\db\ActiveRecord;
 
 use Yii;
 
@@ -18,7 +18,7 @@ use Yii;
  * @property string $lastup_employee_id
  * @property boolean $disabled
  */
-class Invitation extends CeActivieRecord
+class Invitation extends ActiveRecord
 {
     /**
      * @inheritdoc

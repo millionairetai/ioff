@@ -2,9 +2,8 @@
 
 namespace common\components\db;
 
-use yii\db\ActiveQuery;
 
-class CeActiveQuery extends ActiveQuery
+class ActiveQuery extends \yii\db\ActiveQuery
 {
     public function active($state = true)
     {
