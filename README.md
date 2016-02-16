@@ -60,6 +60,16 @@ To ensure consistency throughout the source code, keep these rules in mind as yo
 write code in yii2 MIGRATION to deploy app afterward.
 6. JAVASCRIPT CODE must write in camel coding style
 
+RULES FOR CALLING AJAX - RESTFULAPI
+-------
+We are using RestfulAPI for creating APIs, please follow these rules
+
+1. Use GET to get data
+2. Use POST to create new data
+3. Use PUT to update existing data
+4. Use DELETE to delete existing data
+5. System MUST verify access token before
+
 LANGUAGE
 -----
 1. Both Vietnamese and English language with file language.

@@ -16,7 +16,6 @@ return [
         'user' => [
             'class' => 'common\components\web\User',
             'identityClass' => 'common\models\Employee',
-//            'identityClass' => 'common\models\Employee',
 //            'enableAutoLogin' => true,
 //            'loginUrl'=>'auth/unauthorized',
         ],

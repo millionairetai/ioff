@@ -18,7 +18,7 @@ class CeActivieRecord extends ActiveRecord
     const STATUS_ALL     = false;
     
     //Gender
-    const GENDER_MALE = 1;
+    const GENDER_MALE   = 1;
     const GENDER_FEMALE = 2;
     
     protected $_genders = array(

@@ -100,14 +100,6 @@ angular.module('centeroffice').factory('authService', function ($http, userServi
             });
         },
         /**
-         * Check if a user is logged in
-         *
-         * @return {Boolean}
-         */
-        isLoggedIn: function () {
-//            return currentUser.hasOwnProperty('role');
-        },
-        /**
          * Waits for currentUser to resolve before checking if user is logged in
          */
         isLoggedInAsync: function (cb) {
@@ -158,7 +150,7 @@ angular.module('centeroffice').factory('authService', function ($http, userServi
          * @return {Boolean}
          */
         isAdmin: function () {
-            return currentUser.role === 'admin';
+            return currentUser.is_admin === 'admin';
         },
         /**
          * Get auth token
@@ -184,7 +176,7 @@ angular.module('centeroffice').factory('authService', function ($http, userServi
             var cb = callback || angular.noop;
             var deferred = $q.defer();
 
-            $http.get('/auth/local/confirmPasswordResetToken/' + token)
+            $http.get('/api/auth/confirmPasswordResetToken/' + token)
                     .success(function (data) {
                         //do login
 
@@ -203,7 +195,7 @@ angular.module('centeroffice').factory('authService', function ($http, userServi
             var cb = callback || angular.noop;
             var deferred = $q.defer();
 
-            $http.get('/auth/local/confirm-email/' + token)
+            $http.get('/api/auth/confirm-email/' + token)
                     .success(function (data) {
                         //do login
                         deferred.resolve(data);
