@@ -7,7 +7,7 @@ use common\components\web\StatusMessage;
 
 class ProjectController extends ApiController {
     
-    public function actionShow() {
-        
+    public function actionReport() {
+        return ['project' => 'default'];
     }
 }

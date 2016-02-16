@@ -1,6 +1,6 @@
 <?php
 
-namespace common\modules\authority;
+namespace common\components\web;
 
 use Yii;
 use yii\base\Component;
@@ -80,47 +80,38 @@ class AuthorityManager extends Component
     public function checkAccess($employeeId, $permissionName, $params = [])
     {
         $this->assignments = $this->cache->get($this->cacheKey);
-        if (!$this->assignments || !$this->allowCache) 
-        {
+        if (!$this->assignments || !$this->allowCache) {
             $this->assignments = $this->getAssignments($employeeId);
             $this->cache->set($this->cacheKey, $this->assignments);
         }
         
         Yii::trace("Checking authority: $permissionName", __METHOD__);
 
-        if (!empty($this->assignments[$params['package_name']][$params['module_name']][$params['controller_name']][$permissionName])) 
-        {
+        if (!empty($this->assignments[$params['controller_name']][$permissionName])) {
             return true;
         }
         
         return false;
     }
 
-    public function getAssignment($employeeId, $action_permission,$params_allocation = [])
+    public function getAssignment($employeeId,$action_permission,$params_allocation = [])
     {
-        if (empty($employeeId)) 
-        {
+        if (empty($employeeId)) {
             return null;
         }
 
-        $row = (new Query)
+        $query = (new Query)
             ->select([$this->authorityTable . '.name AS authority_name', 
-                $this->packageTable . '.column_name AS package_name',
-                $this->moduleTable . '.name AS module_name', 
-                $this->controllerTable . '.column_name AS controller_name', 
+                $this->controllerTable . '.name AS controller_name', 
                 $this->actionTable . '.name AS action_name'])
             ->from($this->employeeTable)
             ->join('INNER JOIN', $this->authorityTable, "{$this->employeeTable}.authority_id = {$this->authorityTable}.id")
             ->join('INNER JOIN', $this->authorityAssignmentTable, "{$this->authorityTable}.id = {$this->authorityAssignmentTable}.authority_id")
             ->join('INNER JOIN', $this->actionTable, "{$this->authorityAssignmentTable}.action_id = {$this->actionTable}.id")
             ->join('INNER JOIN', $this->controllerTable, "{$this->actionTable}.controller_id = {$this->controllerTable}.id")
-            ->join('INNER JOIN', $this->moduleTable, "{$this->controllerTable}.module_id = {$this->moduleTable}.id")
-            ->join('INNER JOIN', $this->packageTable, "{$this->moduleTable}.package_id = {$this->packageTable}.id")
             ->where([
                     "{$this->employeeTable}.id" => (string) $employeeId,
-                    "{$this->packageTable}.column_name" => $params_allocation['package_name'],
-                    "{$this->moduleTable}.name" => $params_allocation['module_name'],
-                    "{$this->controllerTable}.column_name" => $params_allocation['controller_name'],
+                    "{$this->controllerTable}.name" => $params_allocation['controller_name'],
                     "{$this->actionTable}.name" => $action_permission,
               ])
             ->one($this->db);
@@ -147,22 +138,18 @@ class AuthorityManager extends Component
 
         $query = (new Query)
             ->select([$this->authorityTable . '.name AS authority_name', 
-                $this->packageTable . '.column_name AS package_name',
-                $this->moduleTable . '.name AS module_name', 
-                $this->controllerTable . '.column_name AS controller_name', 
+                $this->controllerTable . '.name AS controller_name', 
                 $this->actionTable . '.name AS action_name'])
             ->from($this->employeeTable)
             ->join('INNER JOIN', $this->authorityTable, "{$this->employeeTable}.authority_id = {$this->authorityTable}.id")
             ->join('INNER JOIN', $this->authorityAssignmentTable, "{$this->authorityTable}.id = {$this->authorityAssignmentTable}.authority_id")
             ->join('INNER JOIN', $this->actionTable, "{$this->authorityAssignmentTable}.action_id = {$this->actionTable}.id")
             ->join('INNER JOIN', $this->controllerTable, "{$this->actionTable}.controller_id = {$this->controllerTable}.id")
-            ->join('INNER JOIN', $this->moduleTable, "{$this->controllerTable}.module_id = {$this->moduleTable}.id")
-            ->join('INNER JOIN', $this->packageTable, "{$this->moduleTable}.package_id = {$this->packageTable}.id")
             ->where(["{$this->employeeTable}.id" => (string) $employeeId]);
             
         $assignments = [];
         foreach ($query->all($this->db) as $row) {
-            $assignments[$row['package_name']][$row['module_name']][$row['controller_name']][$row['action_name']] = [
+            $assignments[$row['controller_name']][$row['action_name']] = [
                 'employee_id'    => $employeeId,
                 'authority_name' => $row['authority_name'],
                 'action_name'    => $row['action_name'],

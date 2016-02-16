@@ -6,6 +6,11 @@ angular.module('centeroffice').config(function ($stateProvider) {
     }).state('project.home', {
         url: '/home',
         templateUrl: '/frontend/app/modules/work/project/home/home.html',
-        controller: 'HomeCtrl'
+        controller: 'HomeCtrl',
+        auth: false
+    }).state('project.report', {
+        url: '/report',
+        templateUrl: '/frontend/app/modules/work/project/report/report.html',
+        controller: 'ReportCtrl',
     })
 });

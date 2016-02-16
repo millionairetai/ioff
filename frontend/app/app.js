@@ -9,7 +9,7 @@ angular.module('centeroffice', [
   .value('$a', angular.element);
 
 angular.module('centeroffice').config(function ($urlRouterProvider, $httpProvider, $sceDelegateProvider,
-    cfpLoadingBarProvider, $compileProvider, $locationProvider) {
+        cfpLoadingBarProvider, $compileProvider, $locationProvider) {
 //    $sceDelegateProvider.resourceUrlWhitelist(['self', '*://www.youtube.com/**', '*://player.vimeo.com/video/**']);
 //    $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|file|skype):/);
 
@@ -18,6 +18,7 @@ angular.module('centeroffice').config(function ($urlRouterProvider, $httpProvide
 
     $locationProvider.html5Mode(true);
     $httpProvider.interceptors.push('authInterceptor');
+    
     // enable http caching
     $httpProvider.defaults.cache = true;
 
@@ -47,12 +48,18 @@ angular.module('centeroffice').config(function ($urlRouterProvider, $httpProvide
             }
         }
     };
-}).run(function ($rootScope, $state, cfpLoadingBar, $cookieStore, SITE_URL, $anchorScroll, $window, $http) {
+}).run(function ($rootScope, $state, cfpLoadingBar, $cookieStore, $anchorScroll, $window,
+        $http, $cacheFactory, commonService) {
     cfpLoadingBar.start();
-    $rootScope.currStateName = '';
+
     $rootScope.token = $cookieStore.get('token');
+    $rootScope.cache = $cacheFactory('centeroffice');
+
+    $rootScope.currStateName = '';
+    $rootScope.stateData = {};
     $rootScope.errors = {};
-    //Cache
+
+
     //http://stackoverflow.com/questions/14117653/how-to-cache-an-http-get-service-in-angularjs
     $rootScope.isLoading = function () {
         return $http.pendingRequests.length > 0;
@@ -64,41 +71,25 @@ angular.module('centeroffice').config(function ($urlRouterProvider, $httpProvide
             $state.go('employee');
         }
     }
-    
+
     checkLogin();
 
     $rootScope.$on('$stateChangeStart', function (event, toState, toParams, fromState, fromParams) {
         checkLogin();
         $rootScope.currStateName = toState.name;
-        
-        console.log(toState);
-        console.log(toParams);
-        console.log(fromState);
-        console.log(fromParams);
-        
-        if (toParams.token) {
-            $cookieStore.put('token', toParams.token);
-            authService.getCurrentUser().then(function (data) {
-                $rootScope.currUser = data;
-            });
-        }
-        
-        //if the page need to be signing in      
-        if (toState.authenticate) {
-            //if user signed in
+
+        //authenticate  
+        if (toState.auth != false) {
             if ($cookieStore.get('token')) {
-                authService.getCurrentUser().then(function (data) {
-                    if (toState.roles) {
-                        //check if this user have permission to access this page
-                        if (!authService.hasRole(toState.roles)) {
-                            alertify.error('You don\'t have permission to access this page');
-                            $state.go('project.home');
-                        }
-                    }
+                commonService.prepareState(toState.name).success(function (data) {
+                    $state.go(toState.name);
+                }).error(function (data) {
+                    alertify.error($rootScope.$lang.you_dont_have_permission_to_access_this_page);
+                    $state.go(fromState.name);
                 });
             } else {
-                alertify.error('You don\'t have permission to access this page');
-                $state.go('project.home');
+                alertify.error($rootScope.$lang.you_dont_have_permission_to_access_this_page);
+                $state.go(fromState.name);
             }
         }
     });
@@ -114,8 +105,8 @@ angular.module('centeroffice').config(function ($urlRouterProvider, $httpProvide
             return retval;
         };
     };
+
     wrap('pushState');
     wrap('replaceState');
     /*End scroll to top*/
-
 });

@@ -20,7 +20,7 @@ return [
             'class' => 'yii\caching\FileCache',
         ],
         'authManager' => [
-            'class' => 'common\modules\authority\AuthorityManager',
+            'class' => 'common\components\web\AuthorityManager',
             'allowCache' => false,
         ],
         'user' => [

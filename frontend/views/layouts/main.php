@@ -76,6 +76,7 @@ CommonVendor::register($this);
         
         <script src="/frontend/app/components/filters.js"></script>
         
+        <script src="/frontend/app/services/common-service.js"></script>
         <script src="/frontend/app/services/user-service.js"></script>
         <script src="/frontend/app/services/auth-service.js"></script>
         

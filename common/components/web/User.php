@@ -12,36 +12,32 @@ class User extends \yii\web\User
     {
 //        return false;
         //In case if user is admin, allow all of system's action.
-        if (Yii::$app->user->identity->is_admin) 
-        {
+        if (Yii::$app->user->identity->is_admin) {
             return true;
         }
 
         //Get permission in case of user want to check authority with code, no check automatically.
-        if (!$action_permission) 
-        {
+        if (!$action_permission) {
             $action_permission = Yii::$app->controller->action->id;
         }
         
         //Get permission from cache before.
-        if ($allowCaching && empty($params) && isset($this->_authority[$action_permission])) {
-            return $this->_authority[Yii::$app->id][Yii::$app->controller->module->id][Yii::$app->controller->id][$action_permission];
+        if ($allowCaching && empty($params) && isset($this->_authority[Yii::$app->controller->id][$action_permission])) {
+            return $this->_authority[Yii::$app->controller->id][$action_permission];
         }
         
         $params = [
-            'package_name'    => Yii::$app->id,
-            'module_name'     => Yii::$app->controller->module->id,
             'controller_name' => Yii::$app->controller->id, 
         ];
         
         $access = Yii::$app->authManager->checkAccess($this->getId(), $action_permission, $params);
         if ($allowCaching) {
-            $this->_authority[Yii::$app->id][Yii::$app->controller->module->id][Yii::$app->controller->id][$action_permission] = $access;
+            $this->_authority[Yii::$app->controller->id][$action_permission] = $access;
         }
 
         return $access;
     }
-
+    
 
     /**
      * Redirects the user browser to the login page of common package 
@@ -59,24 +55,24 @@ class User extends \yii\web\User
      * @return Response the redirection response if [[loginUrl]] is set
      * @throws ForbiddenHttpException the "Access Denied" HTTP exception if [[loginUrl]] is not set
      */
-//    public function loginRequired($checkAjax = true)
-//    {
-//        $request = Yii::$app->getRequest();
-//        if ($this->enableSession && (!$checkAjax || !$request->getIsAjax())) {
-//            $this->setReturnUrl($request->getUrl());
-//        }
-//        
-//        if ($this->loginUrl !== null) {
-//            $loginUrl = (array) $this->loginUrl;
-//           
-//            if ($loginUrl[0] !== Yii::$app->requestedRoute) {
-//                return Yii::$app->getResponse()->redirect('/common/web/index.php?r=
-//                ');
-//            }
-//        }
-//        
-//        throw new \yii\web\ForbiddenHttpException(Yii::t('yii', 'Login Required'));
-//    }
+    public function loginRequired($checkAjax = true)
+    {
+        $request = Yii::$app->getRequest();
+        if ($this->enableSession && (!$checkAjax || !$request->getIsAjax())) {
+            $this->setReturnUrl($request->getUrl());
+        }
+        
+        if ($this->loginUrl !== null) {
+            $loginUrl = (array) $this->loginUrl;
+           
+            if ($loginUrl[0] !== Yii::$app->requestedRoute) {
+                return Yii::$app->getResponse()->redirect('/common/web/index.php?r=
+                ');
+            }
+        }
+        
+        throw new \yii\web\ForbiddenHttpException(Yii::t('yii', 'Login Required'));
+    }
     
     public function beforeSave($insert)
     {

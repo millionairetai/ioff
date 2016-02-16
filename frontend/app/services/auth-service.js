@@ -99,12 +99,6 @@ angular.module('centeroffice').factory('authService', function ($http, userServi
                 $rootScope.currUser = currentUser;
             });
         },
-//        hasRole: function (roles) {
-//            if (roles.indexOf(currentUser.role) !== -1) {
-//                return true;
-//            }
-//            return false;
-//        },
         /**
          * Check if a user is logged in
          *
