@@ -1,9 +1,9 @@
 angular.module('centeroffice').factory('commonService', function ($http, $q, $rootScope) {
     return {
-        prepareState: function (stateName) {
+        prepareState: function (url) {
             var deferred = $q.defer();
 
-            return $http.post('api/' + stateName.replace('.', '/')).success(function (data) {
+            return $http.post('api/' + url).success(function (data) {
                 if (data) {
                     $rootScope.stateData = data;
                 }

@@ -1,14 +1,16 @@
-
 <?php
 /* @var $this \yii\web\View */
 /* @var $content string */
 
 use common\assets\CommondAsset;
-use common\assets\CommonVendor;
+use common\assets\VendorAsset;
+use common\assets\FrontendAsset;
 use yii\helpers\Html;
 use yii\web\View;
+
 CommondAsset::register($this);
-CommonVendor::register($this);
+VendorAsset::register($this);
+FrontendAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -28,9 +30,6 @@ CommonVendor::register($this);
         <?= Html::csrfMetaTags() ?>
         <title><?= Html::encode($this->title) ?></title>
         <?php $this->head() ?>
-        <link rel='stylesheet' href='/vendor/bower/angular-loading-bar/build/loading-bar.min.css' type='text/css' media='all' />    
-        <link rel="stylesheet" href="/vendor/bower/alertify-js/build/css/alertify.min.css" />
-        <link rel="stylesheet" href="/vendor/bower/alertify-js/build/css/themes/default.min.css" />
         <![endif]-->
     </head>
     <!--<body ng-class="{'hold-transition skin-blue-light sidebar-mini' : token, 'hold-transition login-page' : !token:}" class="">-->
@@ -58,36 +57,10 @@ CommonVendor::register($this);
             </section>
         </div>
 
-        <?php $this->endBody() ?>
         <script type="text/javascript">
             var SITE_URL = "<?php echo  SITE_URL; ?>";
-        </script>  
-        <script src="/vendor/bower/bootstrap/dist/js/bootstrap.js"></script>  
-        <script src="/vendor/bower/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>        
-        <script src="/vendor/bower/angular-sanitize/angular-sanitize.min.js"></script>    
-        <script src="/vendor/bower/angular-ui-router/release/angular-ui-router.js"></script>
-        <script src="/vendor/bower/angular-loading-bar/build/loading-bar.js"></script>
-        <script src="/vendor/bower/angular-cookies/angular-cookies.min.js"></script>
-        <script src="/vendor/bower/alertify-js/build/alertify.min.js"></script>
-        <script src="/vendor/bower/ng-file-upload/angular-file-upload-shim.min.js"></script>
-        <script src="/vendor/bower/ng-file-upload/angular-file-upload.min.js"></script> 
-        <script src="/vendor/bower/angular-loading-bar/build/loading-bar.min.js"></script>
-        <script src="/frontend/app/app.js"></script>
-        
-        <script src="/frontend/app/components/filters.js"></script>
-        
-        <script src="/frontend/app/services/common-service.js"></script>
-        <script src="/frontend/app/services/user-service.js"></script>
-        <script src="/frontend/app/services/auth-service.js"></script>
-        
-        <script src="/frontend/app/modules/hrm/employee/router.js"></script>
-        <script src="/frontend/app/modules/hrm/employee/employee.js"></script>
-        <script src="/frontend/app/modules/hrm/employee/login/login.js"></script>
-        <script src="/frontend/app/modules/hrm/employee/logout/logout.js"></script>
-        <script src="/frontend/app/modules/work/project/router.js"></script>
-        <script src="/frontend/app/modules/work/project/project.js"></script>
-        <script src="/frontend/app/modules/work/project/home/home.js"></script>
-        <script src="/frontend/app/languages/<?= \Yii::$app->language;  ?>.js"></script>
+        </script>
+        <?php $this->endBody() ?>  
     </body>
 </html>
 <?php $this->endPage() ?>

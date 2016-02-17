@@ -15,7 +15,7 @@ angular.module('centeroffice').config(function ($urlRouterProvider, $httpProvide
 
     /* Add New States Above */
 //    $urlRouterProvider.otherwise('/');
-
+    
     $locationProvider.html5Mode(true);
     $httpProvider.interceptors.push('authInterceptor');
     
@@ -65,7 +65,7 @@ angular.module('centeroffice').config(function ($urlRouterProvider, $httpProvide
         return $http.pendingRequests.length > 0;
     }
 
-    $state.go('project.home');
+    $state.go('project-home');
     var checkLogin = function () {
         if (!$rootScope.token) {
             $state.go('employee');
@@ -80,17 +80,18 @@ angular.module('centeroffice').config(function ($urlRouterProvider, $httpProvide
 
         //authenticate  
         if (toState.auth != false) {
-            if ($cookieStore.get('token')) {
-                commonService.prepareState(toState.name).success(function (data) {
+//            event.preventDefault();
+//            if ($cookieStore.get('token')) {
+                commonService.prepareState(toState.url).success(function (data) {
                     $state.go(toState.name);
                 }).error(function (data) {
                     alertify.error($rootScope.$lang.you_dont_have_permission_to_access_this_page);
                     $state.go(fromState.name);
                 });
-            } else {
-                alertify.error($rootScope.$lang.you_dont_have_permission_to_access_this_page);
-                $state.go(fromState.name);
-            }
+//            } else {
+//                alertify.error($rootScope.$lang.you_dont_have_permission_to_access_this_page);
+//                $state.go(fromState.name);
+//            }
         }
     });
 

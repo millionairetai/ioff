@@ -7,7 +7,7 @@ return [
     'bootstrap' => ['log'],
     'modules' => [],
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
-    'language' => 'vi',
+    'language' => 'en',
 //    'sourceLanguage' => 'vi',
     'modules' => [
         'authority' => [

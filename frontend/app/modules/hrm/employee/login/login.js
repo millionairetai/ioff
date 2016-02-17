@@ -9,7 +9,7 @@ angular.module('centeroffice').controller('LoginCtrl', function ($rootScope, $sc
         if (form.$valid) {
             authService.login($scope.employee).then(function (data) {
                 $rootScope.token = data;
-                $state.go('project.home');
+                $state.go('project-home');
             }, function (data) {
                 $rootScope.errors = data.data;
             });
