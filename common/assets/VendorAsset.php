@@ -37,6 +37,5 @@ class VendorAsset extends AssetBundle
     public function __construct($config = array()) {
         parent::__construct($config);
         $this->basePath = str_replace(['frontend'], ['common'], Yii::getAlias("@webroot"));
-        
     }
 }

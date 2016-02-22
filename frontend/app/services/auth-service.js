@@ -1,4 +1,4 @@
-angular.module('centeroffice').factory('authService', function ($http, userService, $cookieStore, $q, $rootScope) {
+angular.module('centeroffice').factory('authService', function ($http, userService, $cookieStore, $q, $rootScope, commonService) {
     var currentUser = {};
 
     return {
@@ -10,18 +10,11 @@ angular.module('centeroffice').factory('authService', function ($http, userServi
          * @return {Promise}
          */
         login: function (employee) {
-            var deferred = $q.defer();
-
-            return $http.post('api/auth/login', employee).success(function (data) {
+            return commonService.post('api/auth/login', employee, function (data) {
                 if (data) {
                     $cookieStore.put('token', data.token);
                 }
-                deferred.resolve(data);
-            }).error(function (data) {
-                deferred.reject(data);
             });
-
-            return deferred.promise;
         },
         /**
          * Delete access token and user info

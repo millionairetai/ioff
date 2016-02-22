@@ -24,7 +24,7 @@ class AuthController extends ApiController {
                 return self::sendOk([
                         'token' => JsonWebToken::createToken(['id' => $employee->id]),
                         'actions' => (new AuthorityManager())->getAssignments($employee->id),
-                    ]);
+                ]);
             } else {
                 return self::sendValidation($loginForm->getErrors());
             }
@@ -41,7 +41,7 @@ class AuthController extends ApiController {
                     EmailHelper::sendNewPassword($user, $newPassword);
                 }
             } else {
-                return $this->send(StatusMessage::NOT_FOUND, ['email' => 'The email doesn\'t exist']);
+                return self::send(StatusMessage::NOT_FOUND, ['email' => 'The email doesn\'t exist']);
             }
         }
     }

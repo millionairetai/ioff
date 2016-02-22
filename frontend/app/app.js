@@ -25,7 +25,7 @@ angular.module('centeroffice').config(function ($urlRouterProvider, $httpProvide
     //angular loading bar
     cfpLoadingBarProvider.includeSpinner = true;
     cfpLoadingBarProvider.includeBar = true;
-}).factory('authInterceptor', function ($q, $cookieStore, $location) {
+}).factory('authInterceptor', function ($q, $cookieStore, $location, $rootScope) {
     return {
         // Add authorization token to headers
         request: function (config) {
@@ -35,12 +35,13 @@ angular.module('centeroffice').config(function ($urlRouterProvider, $httpProvide
             }
             return config;
         },
-        // Intercept 401s and redirect you to login
         responseError: function (response) {
-            if (response.status === 401) {
+            if (response.status === 401 || response.status === 403) {
                 $location.path('/');
-                // remove any stale tokens
+                // remove any stale tokens                
                 $cookieStore.remove('token');
+//                $rootScope.token = null;
+//                $rootScope.currUser = {};
                 return $q.reject(response);
             }
             else {
@@ -82,12 +83,7 @@ angular.module('centeroffice').config(function ($urlRouterProvider, $httpProvide
         if (toState.auth != false) {
 //            event.preventDefault();
 //            if ($cookieStore.get('token')) {
-                commonService.prepareState(toState.url).success(function (data) {
-                    $state.go(toState.name);
-                }).error(function (data) {
-                    alertify.error($rootScope.$lang.you_dont_have_permission_to_access_this_page);
-                    $state.go(fromState.name);
-                });
+                commonService.prepareState(toState.url, toState, fromState);
 //            } else {
 //                alertify.error($rootScope.$lang.you_dont_have_permission_to_access_this_page);
 //                $state.go(fromState.name);

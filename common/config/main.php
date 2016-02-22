@@ -7,7 +7,7 @@ return [
     'bootstrap' => ['log'],
     'modules' => [],
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
-    'language' => 'en',
+    'language' => 'vi',
 //    'sourceLanguage' => 'vi',
     'modules' => [
         'authority' => [
@@ -50,9 +50,10 @@ return [
                 ],
             ],
         ],
-//        'assetManager' => [
+        'assetManager' => [
+            'linkAssets' => true,
 //            'appendTimestamp' => true,
-//        ],
+        ],
     ],
     'params' => [
         'defaultPackage' => 'frontend'

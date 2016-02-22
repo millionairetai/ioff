@@ -43,7 +43,7 @@ return [
             'enablePrettyUrl' => true,
             'enableStrictParsing' => false,
             'showScriptName' => false,
-//            'rules' => require (__DIR__ . '/urlRules.php')
+            'rules' => require (__DIR__ . '/urlRules.php')
         ],
         'i18n' => [
             'translations' => [
