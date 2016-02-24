@@ -10,7 +10,8 @@
             forgot_password: 'Forgot password',
             username: 'Username',
             password: 'Password',
-            you_dont_have_permission_to_access_this_page: 'You don\'t have permission to access this page'
+            you_dont_have_permission_to_access_this_page: 'You don\'t have permission to access this page',
+            page_not_found:'Page not found'
         };
     });
 })(window.angular);

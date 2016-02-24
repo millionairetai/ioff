@@ -17,15 +17,25 @@ class ApiController extends \yii\rest\Controller
      */
     protected $_request = null;
     
-    public function behaviors()
-    {
+    public function __construct($id, $module, $config = array()) {
+        parent::__construct($id, $module, $config);
+        
+        if (!$this->_validateRequest()) {
+            $this->send(StatusMessage::FORBIDDEN);
+            Yii::$app->end();
+        }
+
+        $this->_getRequest();
+    }
+    
+    public function behaviors() {
         return [
             'access' => [
                 'class' => AccessControl::className(),
                 'except' => ['login', 'error'],
                 'rules' => [
                     [
-                        'actions' => ['logout'],
+                        'actions' => ['logout', 'can'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -51,15 +61,16 @@ class ApiController extends \yii\rest\Controller
         ];
     }
 
-    public function __construct($id, $module, $config = array()) {
-        parent::__construct($id, $module, $config);
-        
-        if (!$this->_validateRequest()) {
-            $this->send(StatusMessage::FORBIDDEN);
-            Yii::$app->end();
-        }
-
-        $this->_getRequest();
+    /**
+     * Check if having authority with controller and action.
+     * 
+     * @param string $controller
+     * @param string $action
+     * 
+     * @return boolean
+     */
+    public function isPermiss($controller, $action) {
+        return Yii::$app->user->can($action, ['controller_name' => $controller]);
     }
 
     /**

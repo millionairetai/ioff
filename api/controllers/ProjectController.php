@@ -10,4 +10,8 @@ class ProjectController extends ApiController {
     public function actionReport() {
         return ['project' => 'default'];
     }
+    
+    public function actionCreate() {
+        return ['create' => 'project'];
+    }
 }

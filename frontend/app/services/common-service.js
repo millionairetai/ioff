@@ -13,6 +13,19 @@ angular.module('centeroffice').factory('commonService', function ($http, $q, $ro
                 console.log(data);
             });
         },
+//        canAccess: function(controller, action) {
+//            var deferred = $q.defer();
+//            this.get('api/auth/can?controller=' + controller + '&action=' + action).success(function(response) {
+//                if (response.isPermiss) {
+//                    alert(323);
+//                   deferred.resolve(false);
+//                } else {
+//                    deferred.reject(true);
+//                }
+//            });
+//            
+//            return deferred.promise;
+//        },
         processError: function (errorFunc, data, noPopupError) {
             if (!noPopupError && data) {
                 switch (data.statusCode) {
@@ -20,7 +33,7 @@ angular.module('centeroffice').factory('commonService', function ($http, $q, $ro
                         alertify.error($rootScope.$lang.you_dont_have_permission_to_access_this_page);
                         break;
                     case 404:
-                        alertify.error('Page not found');
+                        alertify.error($rootScope.$lang.page_not_found);
                         break;
                 }
             }

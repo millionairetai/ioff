@@ -10,7 +10,8 @@
             forgot_password: 'Quên mật khẩu',
             username: 'Tài khoản',
             password: 'Mật khẩu',
-            you_dont_have_permission_to_access_this_page: 'Bạn không có quyền truy cập trang này'
+            you_dont_have_permission_to_access_this_page: 'Bạn không có quyền truy cập trang này',
+            page_not_found:'Không tìm thấy trang này'
         };
     });
 })(window.angular);

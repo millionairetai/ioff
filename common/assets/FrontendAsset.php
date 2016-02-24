@@ -22,7 +22,6 @@ class FrontendAsset extends AssetBundle
         'modules/hrm/employee/login/login.js',
         'modules/hrm/employee/logout/logout.js',
         'modules/work/project/router.js',
-        'modules/work/project/project.js',
         'modules/work/project/home/home.js',
         'modules/work/project/report/report.js',
     ];  

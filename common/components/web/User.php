@@ -4,12 +4,11 @@ namespace common\components\web;
 
 use Yii;
 
-class User extends \yii\web\User
-{
+class User extends \yii\web\User {
+
     protected $_authority = [];
-    
-    public function can($action_permission = null, $params= [], $allowCaching = true)
-    {
+
+    public function can($action_permission = null, $params = [], $allowCaching = true) {
 //        return false;
         //In case if user is admin, allow all of system's action.
         if (Yii::$app->user->identity->is_admin) {
@@ -20,24 +19,25 @@ class User extends \yii\web\User
         if (!$action_permission) {
             $action_permission = Yii::$app->controller->action->id;
         }
-        
+
         //Get permission from cache before.
         if ($allowCaching && empty($params) && isset($this->_authority[Yii::$app->controller->id][$action_permission])) {
             return $this->_authority[Yii::$app->controller->id][$action_permission];
         }
-        
-        $params = [
-            'controller_name' => Yii::$app->controller->id, 
-        ];
-        
+
+        if (!$params) {
+            $params = [
+                'controller_name' => Yii::$app->controller->id,
+            ];
+        }
+
         $access = Yii::$app->authManager->checkAccess($this->getId(), $action_permission, $params);
         if ($allowCaching) {
             $this->_authority[Yii::$app->controller->id][$action_permission] = $access;
         }
-
+        
         return $access;
     }
-    
 
     /**
      * Redirects the user browser to the login page of common package 
@@ -55,35 +55,34 @@ class User extends \yii\web\User
      * @return Response the redirection response if [[loginUrl]] is set
      * @throws ForbiddenHttpException the "Access Denied" HTTP exception if [[loginUrl]] is not set
      */
-    public function loginRequired($checkAjax = true)
-    {
+    public function loginRequired($checkAjax = true) {
         $request = Yii::$app->getRequest();
         if ($this->enableSession && (!$checkAjax || !$request->getIsAjax())) {
             $this->setReturnUrl($request->getUrl());
         }
-        
+
         if ($this->loginUrl !== null) {
             $loginUrl = (array) $this->loginUrl;
-           
+
             if ($loginUrl[0] !== Yii::$app->requestedRoute) {
                 return Yii::$app->getResponse()->redirect('/common/web/index.php?r=
                 ');
             }
         }
-        
+
         throw new \yii\web\ForbiddenHttpException(Yii::t('yii', 'Login Required'));
     }
-    
-    public function beforeSave($insert)
-    {
+
+    public function beforeSave($insert) {
         if (parent::beforeSave($insert)) {
             if ($this->isNewRecord) {
                 $this->auth_key = \Yii::$app->security->generateRandomString();
             }
-            
+
             return true;
         }
-        
+
         return false;
     }
+
 }

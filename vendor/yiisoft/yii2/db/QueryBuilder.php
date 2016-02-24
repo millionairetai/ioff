@@ -88,7 +88,7 @@ class QueryBuilder extends \yii\base\Object
         $query = $query->prepare($this);
 
         $params = empty($params) ? $query->params : array_merge($params, $query->params);
-
+//var_dump($query->params); echo 111;die;
         $clauses = [
             $this->buildSelect($query->select, $params, $query->distinct, $query->selectOption),
             $this->buildFrom($query->from, $params),

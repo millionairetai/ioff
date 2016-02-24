@@ -14,23 +14,23 @@ class AuthController extends ApiController {
     public function actionLogin() {
         if ($this->_request) {
             $loginForm = new LoginForm();
-            $loginForm->username   = $this->_request['username'];
-            $loginForm->password   = $this->_request['password'];
+            $loginForm->username = $this->_request['username'];
+            $loginForm->password = $this->_request['password'];
             $loginForm->rememberMe = $this->_request['rememberMe'];
-            
+
             if ($loginForm->login()) {
                 $employee = Employee::findOne(['username' => $this->_request['username']]);
-                
+
                 return self::sendOk([
-                        'token' => JsonWebToken::createToken(['id' => $employee->id]),
-                        'actions' => (new AuthorityManager())->getAssignments($employee->id),
+                            'token' => JsonWebToken::createToken(['id' => $employee->id]),
+                            'actions' => (new AuthorityManager())->getAssignments($employee->id),
                 ]);
             } else {
                 return self::sendValidation($loginForm->getErrors());
             }
         }
     }
-    
+
     public function actionForgotPassword() {
         if ($this->_request) {
             $user = User::findOne(['email' => $this->_request['email']]);
@@ -45,12 +45,16 @@ class AuthController extends ApiController {
             }
         }
     }
-    
+
     public function actionLogout() {
         if (Yii::$app->user->logout()) {
             return self::sendOk(['success' => true]);
         }
-        
+
         return self::send(StatusMessage::NOT_IMPLEMENTED, ['success' => false]);
     }
+
+//    public function actionCan($controller, $action) {
+//        return self::sendOk(['isPermiss' => $this->isPermiss($controller, $action)]);
+//    }
 }

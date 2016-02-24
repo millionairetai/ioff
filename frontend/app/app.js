@@ -36,7 +36,7 @@ angular.module('centeroffice').config(function ($urlRouterProvider, $httpProvide
             return config;
         },
         responseError: function (response) {
-            if (response.status === 401 || response.status === 403) {
+            if (response.status === 401) {
                 $location.path('/');
                 // remove any stale tokens                
                 $cookieStore.remove('token');

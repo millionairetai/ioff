@@ -155,7 +155,7 @@ class AuthorityManager extends Component
                 'action_name'    => $row['action_name'],
             ];
         }
-
+        
         return $assignments;
     }
 }
