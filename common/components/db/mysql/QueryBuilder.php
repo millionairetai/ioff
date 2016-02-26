@@ -26,12 +26,15 @@ class QueryBuilder extends \yii\db\mysql\QueryBuilder
         $query = $query->prepare($this);
         $params = empty($params) ? $query->params : array_merge($params, $query->params);
         
+        $where = $this->buildWhere($query->where, $params);
+        $where .= ($where ? " AND " : " WHERE ") . "{$query->from[0]}.`disabled`=" . ActiveRecord::STATUS_ENABLE;
+        //$query->from[0] --> first table join with others. Sql we get it has '... WHERE ... AND disabled=0'
+        
         $clauses = [
             $this->buildSelect($query->select, $params, $query->distinct, $query->selectOption),
             $this->buildFrom($query->from, $params),
             $this->buildJoin($query->join, $params),
-            $this->buildWhere($query->where, $params) . " AND {$query->from[0]}.`disabled`=" . ActiveRecord::STATUS_ENABLE, 
-            //$query->from[0] --> first table join with others. Sql we get it has '... WHERE ... AND disabled=0'
+            $where,
             $this->buildGroupBy($query->groupBy),
             $this->buildHaving($query->having, $params),
         ];
@@ -44,6 +47,7 @@ class QueryBuilder extends \yii\db\mysql\QueryBuilder
             $sql = "($sql){$this->separator}$union";
         }
 
+//        var_dump($clauses);
 //        echo implode('  ', $clauses) . '                                                                   ';
         return [$sql, $params];
     }

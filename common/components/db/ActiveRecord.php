@@ -71,24 +71,6 @@ class ActiveRecord extends \yii\db\ActiveRecord
             ],
         ];
     }
-    
-    public static function find($tables = null)
-    {
-        $aWhere = [];
-        if ($tables) {
-            if (!is_array($tables)) {
-                $tables = [$tables];
-            }
-            
-            foreach ($tables as $table) {
-                $aWhere[$table . '.disabled'] = self::STATUS_ENABLE;
-            }
-            
-            return parent::find()->where($aWhere);
-        }
-        
-        return parent::find()->where(['disabled' => self::STATUS_ENABLE]);
-    }
 
     public function delete()
     {
