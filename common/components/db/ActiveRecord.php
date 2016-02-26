@@ -67,7 +67,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
                     ActiveRecord::EVENT_BEFORE_INSERT => 'disabled',
                     ActiveRecord::EVENT_INIT => 'disabled',
                 ],
-                'value' => 0,
+                'value' => self::STATUS_ENABLE,
             ],
         ];
     }

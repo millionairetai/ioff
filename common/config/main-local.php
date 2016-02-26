@@ -2,7 +2,7 @@
 $config = [
     'components' => [
         'db' => [
-            'class' => 'yii\db\Connection',
+            'class' => 'common\components\db\Connection',
             'dsn' => 'mysql:host=localhost;dbname=centeroffice',
             'username' => 'root',
             'password' => '',

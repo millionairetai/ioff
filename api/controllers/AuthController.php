@@ -22,8 +22,8 @@ class AuthController extends ApiController {
                 $employee = Employee::findOne(['username' => $this->_request['username']]);
 
                 return self::sendOk([
-                            'token' => JsonWebToken::createToken(['id' => $employee->id]),
-                            'actions' => (new AuthorityManager())->getAssignments($employee->id),
+                    'token' => JsonWebToken::createToken(['id' => $employee->id]),
+                    'actions' => (new AuthorityManager())->getAssignments($employee->id),
                 ]);
             } else {
                 return self::sendValidation($loginForm->getErrors());

@@ -4,7 +4,7 @@ namespace common\components\web;
 
 use Yii;
 use yii\base\Component;
-use yii\db\Connection;
+use common\components\db\Connection;
 use yii\db\Query;
 use yii\di\Instance;
 

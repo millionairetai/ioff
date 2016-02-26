@@ -17,7 +17,6 @@ angular.module('centeroffice').factory('commonService', function ($http, $q, $ro
 //            var deferred = $q.defer();
 //            this.get('api/auth/can?controller=' + controller + '&action=' + action).success(function(response) {
 //                if (response.isPermiss) {
-//                    alert(323);
 //                   deferred.resolve(false);
 //                } else {
 //                    deferred.reject(true);

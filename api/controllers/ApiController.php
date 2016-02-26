@@ -35,7 +35,7 @@ class ApiController extends \yii\rest\Controller
                 'except' => ['login', 'error'],
                 'rules' => [
                     [
-                        'actions' => ['logout', 'can'],
+                        'actions' => ['logout'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
