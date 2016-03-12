@@ -1,0 +1,45 @@
+<section class="content-header">
+    <h1>
+        Adding Project
+    </h1>
+    <div class="tool-right">
+        <button class="btn btn-info" ng-click="save()" ><i class="fa fa-save"></i> {{$root.$lang.save}}</button>
+    </div>
+</section>
+<section class="content">
+
+    <!-- Default box -->
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">project Info</h3>
+                </div>
+                <!-- /.box-header -->
+                <!-- form start -->
+                <form class="form-horizontal">
+                    <div class="box-body">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label">{{$root.$lang.project_title}}</label>
+
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" ng-model='object.title'>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPassword3" class="col-sm-2 control-label">{{$root.$lang.project_description}}</label>
+
+                            <div class="col-sm-10">
+                                <textarea class="form-control" ng-model='object.description' ></textarea>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                </form>
+            </div>
+        </div>
+
+    </div><!-- /.box -->
+
+</section>
