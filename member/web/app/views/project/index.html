@@ -1,0 +1,39 @@
+<section class="content-header">
+    <h1>
+        Managing Project
+    </h1>
+    <div class="tool-right">
+        <a class="btn btn-info" href="#addProject"><i class="fa fa-plus-square"></i> {{$root.$lang.add_project}}</a>
+    </div>
+</section>
+<section class="content">
+
+    <!-- Default box -->
+    <div class="box">
+        <div class="box-header with-border">
+            <h3 class="box-title">List Project</h3>
+            <div class="box-tools pull-right">
+                <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
+                <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
+            </div>
+        </div>
+        <div class="box-body">
+            <table class="table table-striped">
+                <tr>
+                    <th>code</th>
+                    <th>Title</th>
+                    <th>Date</th>
+                </tr>
+                <tr ng-repeat="ob in collection">
+                    <td>{{ob.id}}</td>
+                    <td>{{ob.title}}</td>
+                    <td>{{ob.date}}</td>
+                </tr>
+            </table>
+        </div>
+        <div class="box-footer">
+            Footer
+        </div><!-- /.box-footer-->
+    </div><!-- /.box -->
+
+</section>
