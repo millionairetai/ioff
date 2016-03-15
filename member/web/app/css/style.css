@@ -42,3 +42,6 @@
         width: 380px;
     }
 }
+.modal-footer .btn{
+    font-family: sans-serif;
+}
