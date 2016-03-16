@@ -7,7 +7,7 @@ class NotAction extends Action
 {
     public function run()
     {
-        $this->controller->layout = "login";
+        $this->controller->layout = "error";
         return $this->controller->render('errors');
     }
 }
