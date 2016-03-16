@@ -94,7 +94,8 @@ appRoot.factory('apiService', ['$rootScope', '$http', '$location', 'alertify', f
                 });
             },
         };
-    }]);appRoot.factory('dialogMessage', ['$rootScope', "$modal", function ($rootScope, $modal) {
+    }]);
+appRoot.factory('dialogMessage', ['$rootScope', "$modal", function ($rootScope, $modal) {
 
         return {
             open: function (type, message, handle) {

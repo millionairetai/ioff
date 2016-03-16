@@ -1,3 +1,6 @@
+<?php 
+use yii\helpers\Url;
+?>
 <aside class="main-sidebar">
         <!-- sidebar: style can be found in sidebar.less -->
         <section class="sidebar">
@@ -40,12 +43,11 @@
                 <i class="fa fa-calendar"></i> <span>Calendar</span> 
               </a>
             </li>
-            
-            
-            
-            
-            
-            
+            <li>
+                <a href="<?php echo Url::to('index/logout')?>">
+                <i class="fa fa-sign-out"></i> <span> Logout</span> 
+              </a>
+            </li>
           </ul>
         </section>
         <!-- /.sidebar -->

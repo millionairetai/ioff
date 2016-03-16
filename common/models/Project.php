@@ -28,10 +28,10 @@ class Project extends \common\components\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'description', 'created'], 'required'],
+            [['name', 'description', 'created'], 'required'],
             [['description'], 'string'],
-            [['created'], 'safe'],
-            [['title'], 'string', 'max' => 255]
+            [['disabled'], 'safe'],
+            [['name'], 'string', 'max' => 255]
         ];
     }
 
@@ -42,9 +42,9 @@ class Project extends \common\components\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'title' => \Yii::t('common', 'project_title'),
+            'name' => 'Name',
             'description' => \Yii::t('common', 'project_description'),
-            'created' => 'Created',
+            'datetime_created' => 'Created',
         ];
     }
 }

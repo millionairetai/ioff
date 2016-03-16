@@ -23,7 +23,6 @@ class AppAsset extends AssetBundle
         'app/js/common/angular-animate.1.3.18.min.js',
         'app/js/plugins/bootstrap/ui-bootstrap-tpls-0.13.3.min.js',
         'app/js/plugins/angularRoute/angular-route.min.js',
-        //'app/js/plugins/alertify/alertify.js',
         'app/js/plugins/alertify/ngAlertify.js',
         'app/app.js',
         'app/router.js',
