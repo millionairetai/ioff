@@ -2,10 +2,12 @@
 
 namespace common\components\db;
 
+use Yii;
 use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\AttributeBehavior;
 use yii\web\User;
+use common\models\Employee;
 
 class ActiveRecord extends \yii\db\ActiveRecord
 {   
@@ -58,7 +60,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
             ],
             [
                 'class' => BlameableBehavior::className(),
-                'createdByAttribute' => 'lastup_employee_id',
+                'createdByAttribute' => 'created_employee_id',
                 'updatedByAttribute' => 'lastup_employee_id',
             ],
             [
@@ -68,6 +70,13 @@ class ActiveRecord extends \yii\db\ActiveRecord
                     ActiveRecord::EVENT_INIT => 'disabled',
                 ],
                 'value' => self::STATUS_ENABLE,
+            ],
+            [
+                'class' => AttributeBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => 'company_id',
+                ],
+                'value' => \Yii::$app->user->getCompanyId(),
             ],
         ];
     }

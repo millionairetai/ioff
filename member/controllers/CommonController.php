@@ -72,4 +72,21 @@ class CommonController extends Controller
         $result = ['error' => $error,'message' => $message,'objects' => $objects];
         return $result;
     }
+    
+    /**
+     * 
+     */
+    protected function getPagination($sql,&$currentPage,$itemPerPage,$params){
+        $countSql = preg_replace('/SELECT(.*?)FROM/','SELECT COUNT(*) FROM ',$sql);
+        $countCommand = \Yii::$app->getDb()->createCommand($countSql)->bindValues($params);//var_dump($countSql);die;
+        $totalItems = $countCommand->queryScalar();
+        /*$totalPages = ((int)($totalItems / $itemPerPage)) + (($totalItems % $itemPerPage) > 0?1:0);
+        if($currentPage > $totalPages){
+            $currentPage = $totalPages;
+        }
+        if($currentPage < 1){
+            $currentPage = 1;
+        }*/
+        return $totalItems;
+    }
 }

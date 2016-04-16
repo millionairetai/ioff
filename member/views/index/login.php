@@ -11,6 +11,11 @@ use yii\widgets\ActiveForm;
         <!--<br />-->
             <!--<p class="login-box-msg">Sign in to start your session</p>-->
         <?php $form = ActiveForm::begin(); ?>
+        <small>
+            <div>
+                <?php echo $form->errorSummary($model, ['header' => '','class' => 'alert text-left alert-danger '],'') ?>
+            </div>
+        </small>
         <div class="form-group has-feedback">
             <?php echo $form->field($model, 'username', ['template' => '{input}'])->textInput(array('placeholder' => 'User name')); ?>
             <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
@@ -21,13 +26,7 @@ use yii\widgets\ActiveForm;
         </div>
         <div class="row">
             <div class="col-xs-8">
-                <div class="checkbox icheck">
-                    <label class="">
-                        <div class="icheckbox_square-blue" aria-checked="false" aria-disabled="false" style="position: relative;">
-                            <?php echo $form->field($model, 'rememberMe')->checkbox(); ?>
-                        </div>
-                    </label>
-                </div>
+                <?php echo $form->field($model, 'rememberMe')->checkbox(); ?>
             </div>
             <!-- /.col -->
             <div class="col-xs-4">
@@ -37,10 +36,6 @@ use yii\widgets\ActiveForm;
         </div>
         <?php ActiveForm::end(); ?>
         <div class="text-center" style="margin: 10px 0px 0px 0px;"><a href="#" >I forgot my password</a></div>
-        <small>
-            <div>
-                <?php echo $form->errorSummary($model, ['class' => 'alert text-left alert-danger ']) ?>
-            </div>
-        </small> 
+         
     </div><!-- /.login-box-body -->
 </div><!-- /.login-box -->

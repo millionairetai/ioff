@@ -9,7 +9,7 @@ class User extends \yii\web\User
 
     protected $_authority = [];
 
-    public function can($action_permission = null, $params = [], $allowCaching = true) 
+    public function can($controller = null, $action = null, $allowCaching = true) 
     {
 //        return false;
         //In case if user is admin, allow all of system's action.
@@ -18,24 +18,22 @@ class User extends \yii\web\User
         }
 
         //Get permission in case of user want to check authority with code, no check automatically.
-        if (!$action_permission) {
-            $action_permission = Yii::$app->controller->action->id;
+        if (!$action) {
+            $action = Yii::$app->controller->action->id;
         }
 
         //Get permission from cache before.
-        if ($allowCaching && empty($params) && isset($this->_authority[Yii::$app->controller->id][$action_permission])) {
-            return $this->_authority[Yii::$app->controller->id][$action_permission];
+        if ($allowCaching && empty($controller) && isset($this->_authority[Yii::$app->controller->id][$action])) {
+            return $this->_authority[Yii::$app->controller->id][$action];
         }
 
-        if (!$params) {
-            $params = [
-                'controller_name' => Yii::$app->controller->id,
-            ];
+        if (!$controller) {
+            $controller = Yii::$app->controller->id;
         }
 
-        $access = Yii::$app->authManager->checkAccess($this->getId(), $action_permission, $params);
+        $access = Yii::$app->authManager->checkAccess($this->getId(), $action, $controller);
         if ($allowCaching) {
-            $this->_authority[Yii::$app->controller->id][$action_permission] = $access;
+            $this->_authority[Yii::$app->controller->id][$action] = $access;
         }
         
         return $access;
@@ -53,5 +51,15 @@ class User extends \yii\web\User
 
         return false;
     }
+  
+    /**
+     * Returns a value of employee's company_id
+     * @return integer
+     */
+    public function getCompanyId()
+    {
+        $identity = $this->getIdentity();
 
+        return $identity !== null ? $identity->getCompanyId() : null;
+    }
 }

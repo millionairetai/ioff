@@ -32,5 +32,10 @@ AppAsset::register($this);
         <?php echo $content?>
         <?php $this->endBody() ?>
     </body>
+    <script>
+        $('#loginform-rememberme').iCheck({
+              checkboxClass: 'icheckbox_square-blue',
+        });
+    </script>
 </html>
 <?php $this->endPage() ?>

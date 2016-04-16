@@ -121,7 +121,6 @@ class IndexController extends Controller
                 }
             }
         }
-        //echo "<pre>";var_dump($file_js);die;
         return $file_js;
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace common\models\work;
+namespace common\models;
 
 use common\components\db\ActiveRecord;
 

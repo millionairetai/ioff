@@ -6,7 +6,6 @@
 
 # netbeans project files
 nbproject
-/nbproject
 
 # zend studio for eclipse project files
 .buildpath
@@ -28,3 +27,6 @@ composer.phar
 phpunit.phar
 # local phpunit config
 /phpunit.xml
+
+#upload member folder 
+member/web/upload/*

@@ -11,6 +11,7 @@ use common\components\db\ActiveRecord;
  * This is the model class for table "employee".
  *
  * @property string $id
+ * @property string $company_id
  * @property string $manager_employee_id
  * @property integer $authority_id
  * @property string $position_id
@@ -77,13 +78,17 @@ class Employee extends ActiveRecord implements IdentityInterface
         return '{{%employee}}';
     }
 
+    public static function primaryKey()
+    {
+        return ['id'];
+    }
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['manager_employee_id', 'authority_id', 'position_id', 'department_id', 'bank_id', 'religion_id', 'marriage_status_id', 'nation_id', 'province_id', 'country_id', 'status_id', 'is_admin', 'birthdate', 'gender', 'card_issue_id', 'passport_expire', 'passport_issue', 'tax_date_issue', 'start_working_date', 'is_visible', 'last_activity_datetime', 'last_login_datetime', 'datetime_created', 'lastup_datetime', 'lastup_employee_id', 'disabled'], 'integer'],
+            [['company_id', 'manager_employee_id', 'authority_id', 'position_id', 'department_id', 'bank_id', 'religion_id', 'marriage_status_id', 'nation_id', 'province_id', 'country_id', 'status_id', 'is_admin', 'birthdate', 'gender', 'card_issue_id', 'passport_expire', 'passport_issue', 'tax_date_issue', 'start_working_date', 'is_visible', 'last_activity_datetime', 'last_login_datetime', 'datetime_created', 'lastup_datetime', 'lastup_employee_id', 'disabled'], 'integer'],
             [['authority_id', 'position_id', 'department_id', 'bank_id', 'religion_id', 'marriage_status_id', 'nation_id', 'province_id', 'country_id', 'status_id', 'firstname', 'lastname', 'username', 'password', 'email', 'birthdate'], 'required'],
             [['city_code', 'firstname', 'lastname', 'email', 'work_email'], 'string', 'max' => 99],
             [['username'], 'string', 'max' => 128],
@@ -107,6 +112,7 @@ class Employee extends ActiveRecord implements IdentityInterface
     {
         return [
             'id' => Yii::t('app', 'ID'),
+            'company_id' => 'company_id',
             'manager_employee_id' => Yii::t('app', 'Manager Employee ID'),
             'authority_id' => Yii::t('app', 'Authority ID'),
             'position_id' => Yii::t('app', 'Position ID'),
@@ -231,7 +237,12 @@ class Employee extends ActiveRecord implements IdentityInterface
     {
         return $this->getPrimaryKey();
     }
-
+    
+    public function getCompanyId()
+    {
+        return $this->company_id;
+    }
+    
     /**
      * @inheritdoc
      */
@@ -292,4 +303,50 @@ class Employee extends ActiveRecord implements IdentityInterface
     {
         $this->password_reset_token = null;
     }
+    
+    /**
+     * get image profile
+     * @return type
+     */
+    public function getImage(){
+        return Yii::$app->urlManager->baseUrl."/flies/employee/".$this->profile_image_path;
+    }
+    
+    
+    /**
+     * send email to employee
+     */
+    public function sendMail($dataSend,$themeEmail){
+        if(!$themeEmail){
+            return false;
+        }
+        $body = $themeEmail->body;
+        $subject = $themeEmail->subject;
+        foreach($dataSend as $key => $value){
+            $body = str_replace($key, $value, $body);
+        }
+        /*\Yii::$app->mailer->compose()
+        ->setFrom('from@domain.com')
+        ->setTo($this->email)
+        ->setSubject($subject)
+        ->setTextBody($body)
+        ->setHtmlBody($body)
+        ->send();*/
+        
+    }
+    
+    /**
+     * send sms to employee
+     */
+    public function sendSms($dataSend,$themeSms){
+        if(!$themeSms){
+            return false;
+        }
+        $body = $themeSms->body;
+        foreach($dataSend as $key => $value){
+            $body = str_replace($key, $value, $body);
+        }
+    }
+    
+    
 }

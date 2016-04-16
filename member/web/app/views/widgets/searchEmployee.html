@@ -1,0 +1,25 @@
+<script type="text/ng-template" id="searchEmployee">
+    <div  class="item-result">
+        <div class="item-result-name">
+            <img src="{{match.model.image}}" height="50" width="50" />
+            <div class="container-employee-search-info">
+                <strong>{{match.model.firstname}}</strong><br/>
+                <i>{{match.model.email}}</i>
+            </div>
+            <div class="clearBoth"></div>
+        </div>
+    </div>
+</script>
+<form class="form-inline search-form-product">
+    <div class="form-group width-full">
+        <div class="input-group width-full container-result">
+            <input type="text"  ng-model="keyword" typeahead="product.name for product in searchEmployee($viewValue)" typeahead-template-url="searchEmployee"  typeahead-on-select='handleSelected($item, $model, $label)' typeahead-no-results="noResults" class="form-control" typeahead-wait-ms="500" typeahead-min-length="1" />
+        </div>
+    </div>
+    <div class="form-group width-full container-no-result" ng-if="noResults">
+        <div class="input-group width-full show-no-result">
+            <span >{{$root.$lang.employee_empty}}</span>
+        </div>
+    </div>
+</form>
+

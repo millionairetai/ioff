@@ -13,6 +13,12 @@ class AppAsset extends AssetBundle
         'css/all-skins.min.css',
         'css/font-awesome/css/font-awesome.css',
         'app/js/plugins/alertify/css/alertify.css',
+        'app/js/plugins/uiSlider/jquery-ui.css',
+        'app/js/plugins/uiSlider/slider.css',
+        'app/js/plugins/icheck/all.css',
+        'app/js/plugins/select/select.css',
+        'app/js/plugins/tags/tags.css',
+        'app/js/plugins/tags/tags-bootstrap.css',
     ];
     public $js = [
         'js/bootstrap.min.js',
@@ -24,6 +30,12 @@ class AppAsset extends AssetBundle
         'app/js/plugins/bootstrap/ui-bootstrap-tpls-0.13.3.min.js',
         'app/js/plugins/angularRoute/angular-route.min.js',
         'app/js/plugins/alertify/ngAlertify.js',
+        'app/js/plugins/uiSlider/jquery-ui.min.js',
+        'app/js/plugins/uiSlider/slider.js',
+        'app/js/plugins/icheck/icheck.min.js',
+        'app/js/plugins/autoNumeric/autoNumeric.js',
+        'app/js/plugins/select/select.js',
+        'app/js/plugins/tags/tags.js',
         'app/app.js',
         'app/router.js',
         'app/minify/minify_service.js',
@@ -43,5 +55,6 @@ class AppAsset extends AssetBundle
         
         $lang = \Yii::$app->language;
         $this->js[] = "app/languages/{$lang}.js";
+        $this->js[] = "app/languages/date/{$lang}.js";
     }
 }

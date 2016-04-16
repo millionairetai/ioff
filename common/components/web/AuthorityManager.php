@@ -77,7 +77,7 @@ class AuthorityManager extends Component
     /**
      * @inheritdoc
      */
-    public function checkAccess($employeeId, $permissionName, $params = [])
+    public function checkAccess($employeeId, $permissionName, $controller = null)
     {
         $this->assignments = $this->cache->get($this->cacheKey);
         if (!$this->assignments || !$this->allowCache) {
@@ -87,14 +87,14 @@ class AuthorityManager extends Component
         
         Yii::trace("Checking authority: $permissionName", __METHOD__);
 
-        if (!empty($this->assignments[$params['controller_name']][$permissionName])) {
+        if (!empty($this->assignments[$controller][$permissionName])) {
             return true;
         }
         
         return false;
     }
 
-    public function getAssignment($employeeId,$action_permission,$params_allocation = [])
+    public function getAssignment($employeeId, $action, $controller = null)
     {
         if (empty($employeeId)) {
             return null;
@@ -111,8 +111,8 @@ class AuthorityManager extends Component
             ->join('INNER JOIN', $this->controllerTable, "{$this->actionTable}.controller_id = {$this->controllerTable}.id")
             ->where([
                     "{$this->employeeTable}.id" => (string) $employeeId,
-                    "{$this->controllerTable}.name" => $params_allocation['controller_name'],
-                    "{$this->actionTable}.name" => $action_permission,
+                    "{$this->controllerTable}.name" => $controller,
+                    "{$this->actionTable}.name" => $action,
               ])
             ->one($this->db);
 
