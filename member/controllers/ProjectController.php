@@ -39,7 +39,7 @@ class ProjectController extends ApiController {
                 'status_id' => $item['status_id'],
                 'status' => $item['status_name'],
                 'completed_percent' => $item['completed_percent'],
-                'description' => strlen($item['description']) > 70 ? (substr($item['description'], 0, 70) . "...") : $item['description'],
+                'description' => strlen($item['description']) > 250 ? (substr($item['description'], 0, 70) . "...") : $item['description'],
                 'theory' => $item['estimate_hour'] > 0 ? ((int)(($item['worked_hour'] / $item['estimate_hour'] ) * 100)) : 0 ,
             ];
         }

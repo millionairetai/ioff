@@ -3,7 +3,7 @@ return [
     'components' => [
         'db' => [
             'class' => 'common\components\db\Connection',
-            'dsn' => 'mysql:host=localhost;dbname=new_centeroffice',
+            'dsn' => 'mysql:host=localhost;dbname=centeroffice',
             'username' => 'root',
             'password' => '',
             'charset' => 'utf8',
