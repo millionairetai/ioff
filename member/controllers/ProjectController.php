@@ -111,17 +111,19 @@ class ProjectController extends ApiController {
                 $activity->employee_id = \Yii::$app->user->getId();
                 $activity->type = "create_project";
                 $activity->content = \Yii::$app->user->getIdentity()->firstname . " " . \Yii::t('common', 'created') . " " . $ob->name;
+                
                 if(!$activity->save()){
                     throw  new \Exception('Save record to table Activity fail');
                 }
 
                 //Employee activity
-                $employeeActivity = EmployeeActivity::find()->andWhere(['employee_id' => \Yii::$app->user->getId()])->one();
+                $employeeActivity = EmployeeActivity::find()->andCompanyId()->andWhere(['employee_id' => \Yii::$app->user->getId()])->one();
                 if (!$employeeActivity) {
                     $employeeActivity = new EmployeeActivity();
                     $employeeActivity->employee_id = \Yii::$app->user->getId();
                     $employeeActivity->activity_project = $employeeActivity->activity_total = 0;
                 }
+                
                 $employeeActivity->activity_project += 1;
                 $employeeActivity->activity_total += 1;
                 if(!$employeeActivity->save()){
@@ -130,7 +132,7 @@ class ProjectController extends ApiController {
                 //notifycation
                 $arrayEmployees = [];
                 $is_query = false;
-                $query = Employee::find();
+                $query = Employee::find()->andCompanyId();
                 if (isset($dataPost['departments']) && count($dataPost['departments'])) {
                     $is_query = true;
                     $query->orWhere(['department_id' => $dataPost['departments']]);
@@ -203,7 +205,7 @@ class ProjectController extends ApiController {
         $message = "";
         $objects = [];
 
-        $array = Status::find()->andWhere(['column_name' => 'project'])->all();
+        $array = Status::find()->andCompanyId()->andWhere(['column_name' => 'project'])->all();
         foreach ($array as $item) {
             $objects[] = [
                 'id' => $item->id,
@@ -222,7 +224,7 @@ class ProjectController extends ApiController {
         $message = "";
         $objects = [];
 
-        $array = Priority::find()->all();
+        $array = Priority::find()->andCompanyId()->all();
         foreach ($array as $item) {
             $objects[] = [
                 'id' => $item->id,
@@ -231,5 +233,4 @@ class ProjectController extends ApiController {
         }
         return $this->sendResponse($error, $message, $objects);
     }
-
 }

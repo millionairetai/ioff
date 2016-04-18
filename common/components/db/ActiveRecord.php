@@ -8,6 +8,7 @@ use yii\behaviors\BlameableBehavior;
 use yii\behaviors\AttributeBehavior;
 use yii\web\User;
 use common\models\Employee;
+use common\components\db\ActiveQuery;
 
 class ActiveRecord extends \yii\db\ActiveRecord
 {   
@@ -85,6 +86,15 @@ class ActiveRecord extends \yii\db\ActiveRecord
     {
         $this->disabled = self::STATUS_DISABLE;
         $this->save();
+    }
+    
+    /**
+     * @inheritdoc
+     * @return ActiveQuery the newly created [[ActiveQuery]] instance.
+     */
+    public static function find()
+    {
+        return new ActiveQuery(get_called_class());
     }
     
     public function getBirthdateText()

@@ -20,7 +20,7 @@ class DepartmentController extends ApiController {
         $error = false;
         $message = "";
         $objects = [];
-        $array = Department::find()->all();
+        $array = Department::find()->andCompanyId()->all();
         foreach($array as $item){
             $objects[] = [
                 'id' => $item->id,

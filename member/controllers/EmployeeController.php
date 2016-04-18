@@ -24,7 +24,7 @@ class EmployeeController extends ApiController {
         $departments = Yii::$app->request->post('departments',[]);
         $members = Yii::$app->request->post('members',[]);
         $manager = Yii::$app->request->post('manager',[]);
-        $query = Employee::find()->andWhere(['like','firstname',$keyword]);
+        $query = Employee::find()->andCompanyId()->andWhere(['like','firstname',$keyword]);
         
         //check department
         if(count($departments)){
