@@ -101,7 +101,7 @@ class ProjectController extends ApiController {
                     }
                 }
                 //move file
-                File::addFiles($_FILES, \Yii::$app->user->getId(),\Yii::$app->params['PathFileProject'],$ob->id,File::TABLE_PROJECT);
+                File::addFiles($_FILES,\Yii::$app->params['PathUpload'],$ob->id,File::TABLE_PROJECT);
 
                 //activity
                 $activity = new Activity();

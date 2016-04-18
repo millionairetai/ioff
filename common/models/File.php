@@ -75,15 +75,18 @@ class File extends \common\components\db\ActiveRecord
     /*
      * add file to table file
      */
-    public static function addFiles($files, $employee_id, $pathFolder, $owner_id, $table) {
+    public static function addFiles($files, $pathFolder, $owner_id, $table) {
         //only create folder when user upload files
         if(count($files) == 0){
             return false;
         }
-        $allow= array('image/jpeg','image/pjpeg','image/gif','image/png');
-        $group  = self::getPath($pathFolder);
-        $path = $pathFolder . $group . DIRECTORY_SEPARATOR;
+        
+        $employee_id = \Yii::$app->user->getId();
+        $allow = array('image/jpeg','image/pjpeg','image/gif','image/png');
+        $group = self::getPath($pathFolder);
+        $path = $pathFolder . DIRECTORY_SEPARATOR . $group . DIRECTORY_SEPARATOR;
         $employeeSpace = EmployeeSpace::find()->andWhere(['employee_id' => $employee_id])->one();
+        
         if(!$employeeSpace){
             $employeeSpace = new EmployeeSpace();
             $employeeSpace->employee_id = $employee_id;
@@ -102,14 +105,14 @@ class File extends \common\components\db\ActiveRecord
                 $message = $error;
             }
             else {
-                @move_uploaded_file($temp, $path.$file_name);
+                @move_uploaded_file($temp, $path . $file_name);
                 $fileRecord = new File();
                 $fileRecord->owner_id = $owner_id;
                 $fileRecord->employee_id = $employee_id;
                 $fileRecord->owner_object = $table;
                 $fileRecord->name = $name_file;
-                $fileRecord->path = $group.DIRECTORY_SEPARATOR.$file_name;
-                $fileRecord->is_image = in_array($type, $allow)?1:0;
+                $fileRecord->path = $group . DIRECTORY_SEPARATOR . $file_name;
+                $fileRecord->is_image = in_array($type, $allow) ? 1 : 0;
                 $fileRecord->file_type = $extension;
                 $fileRecord->file_size = $size;
                 $fileRecord->encoded_name = $file_name;
@@ -137,12 +140,20 @@ class File extends \common\components\db\ActiveRecord
     protected static function getPath($pathFolder){
         $year = date('Y');
         $month = date('m');
-        if (!is_dir($pathFolder . $year)) {
-            mkdir($pathFolder . $year, 0777);
+        $company_id = \Yii::$app->user->getCompanyId();
+        
+        if (!is_dir($pathFolder . DIRECTORY_SEPARATOR . $company_id)) {
+            mkdir($pathFolder . DIRECTORY_SEPARATOR . $company_id, 0777);
         }
-        if (!is_dir($pathFolder . DIRECTORY_SEPARATOR . $year . DIRECTORY_SEPARATOR.$month)) {
-            mkdir($pathFolder . DIRECTORY_SEPARATOR. $year . DIRECTORY_SEPARATOR . $month, 0777);
+
+        if (!is_dir($pathFolder . DIRECTORY_SEPARATOR . $company_id. DIRECTORY_SEPARATOR . $year)) {
+            mkdir($pathFolder . DIRECTORY_SEPARATOR . $company_id. DIRECTORY_SEPARATOR . $year, 0777);
         }
-        return $year . DIRECTORY_SEPARATOR . $month;
+        
+        if (!is_dir($pathFolder  . DIRECTORY_SEPARATOR . $company_id . DIRECTORY_SEPARATOR . $year . DIRECTORY_SEPARATOR . $month)) {
+            mkdir($pathFolder  . DIRECTORY_SEPARATOR . $company_id . DIRECTORY_SEPARATOR . $year . DIRECTORY_SEPARATOR . $month, 0777);
+        }
+        
+        return  $company_id . DIRECTORY_SEPARATOR . $year. DIRECTORY_SEPARATOR . $month;
     }
 }
