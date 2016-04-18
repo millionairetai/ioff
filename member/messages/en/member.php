@@ -6,7 +6,7 @@ return [
     'Password' => 'Mật khẩu',
     'Remember me' => 'Ghi nhớ?',
     'Login' => 'Đăng nhập',
-    'Incorrect username or password' => 'Tài khoản hoặc mật khẩu không hợp lệ',
+    'Incorrect email or password' => 'Email hoặc mật khẩu không hợp lệ',
     'error_system' => 'System is error, Please contact to admin',
     //project
     'project_manager' => 'Manager',

@@ -17,11 +17,11 @@ use yii\widgets\ActiveForm;
             </div>
         </small>
         <div class="form-group has-feedback">
-            <?php echo $form->field($model, 'username', ['template' => '{input}'])->textInput(array('placeholder' => 'User name')); ?>
+            <?php echo $form->field($model, 'email', ['template' => '{input}'])->textInput(array('placeholder' => 'Email')); ?>
             <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
         </div>
         <div class="form-group has-feedback">
-            <?php echo $form->field($model, 'password', ['template' => '{input}'])->passwordInput(array('placeholder' => 'Password')); ?>
+            <?php echo $form->field($model, 'password', ['template' => '{input}'])->passwordInput(array('placeholder' => \Yii::t('common', 'Password'))); ?>
             <span class="glyphicon glyphicon-lock form-control-feedback"></span>
         </div>
         <div class="row">
