@@ -90,20 +90,48 @@ class Project extends \common\components\db\ActiveRecord {
      * get project based on employee
      */
     public static function getProject($params, $currentPage = 1, $itemPerPage = 10) {
-        $sql = "SELECT project.id, project.name, project.description, project.status_id, project.completed_percent, project.worked_hour, project.estimate_hour, status.name as status_name 
-            FROM project  INNER JOIN status ON project.status_id=status.id         
-        WHERE (project.is_public=1 OR project.manager_project_id=:empolyee_id OR project.lastup_employee_id=:empolyee_id OR              
-        EXISTS(SELECT *              
-         FROM project_participant             
-         WHERE project_participant.project_id  = project.id AND project_participant.owner_table='employee' AND project_participant.owner_id=:empolyee_id AND project_participant.disabled=0               
-        ) OR              
-        EXISTS(SELECT *              
-         FROM project_participant             
-          INNER JOIN department ON department.id=project_participant.owner_id AND project_participant.owner_table='department' AND department.disabled=0             
-          INNER JOIN employee ON department.id=employee.department_id AND employee.id=:empolyee_id AND employee.disabled=0            
-         WHERE project_participant.project_id  = project.id AND project_participant.disabled=0         
-        )) AND project.disabled=0
-        ORDER BY project.datetime_created DESC";
+       $companyId = \Yii::$app->user->getCompanyId();
+       
+       $sql = 
+        " SELECT project.id, project.name, project.description, project.status_id," 
+       ."     project.completed_percent, project.worked_hour, project.estimate_hour, status.name as status_name" 
+       ." FROM project" 
+       ."     INNER JOIN status" 
+       ."         ON project.status_id=status.id"
+       ."             AND status.company_id={$companyId}"           
+       ." WHERE (" 
+       ."           project.is_public=1" 
+       ."           OR project.manager_project_id=:empolyee_id"
+       ."           OR project.created_employee_id=:empolyee_id"
+       ."           OR EXISTS("
+       ."                        SELECT *"              
+       ."                        FROM project_participant"             
+       ."                        WHERE project_participant.project_id = project.id"
+       ."                            AND project_participant.owner_table='employee'" 
+       ."                            AND project_participant.owner_id=:empolyee_id"
+       ."                            AND project_participant.company_id={$companyId}"
+       ."                            AND project_participant.disabled=" . self::STATUS_ENABLE               
+       ."           ) OR EXISTS("
+       ."                        SELECT *"
+       ."                        FROM project_participant"
+       ."                            INNER JOIN department"
+       ."                                ON department.id=project_participant.owner_id"
+       ."                                   AND project_participant.owner_table='department'"
+       ."                                   AND department.company_id={$companyId}"
+       ."                                   AND department.disabled=" . self::STATUS_ENABLE                
+       ."                            INNER JOIN employee"
+       ."                                ON department.id=employee.department_id"
+       ."                                   AND employee.id=:empolyee_id" 
+       ."                                   AND employee.company_id={$companyId}"       
+       ."                                   AND employee.disabled=" . self::STATUS_ENABLE               
+       ."                        WHERE project_participant.project_id=project.id"
+       ."                            AND project_participant.company_id={$companyId}"
+       ."                            AND project_participant.disabled=" . self::STATUS_ENABLE            
+       ."           )"
+       ."         )"
+       ."         AND project.company_id={$companyId}"               
+       ."         AND project.disabled=" . self::STATUS_ENABLE   
+       ." ORDER BY project.datetime_created DESC";
 
         $offset = $currentPage * $itemPerPage;
         $sql_limit = $sql;
@@ -113,5 +141,4 @@ class Project extends \common\components\db\ActiveRecord {
 
         return ['data' => $data, 'sql' => $sql];
     }
-
 }

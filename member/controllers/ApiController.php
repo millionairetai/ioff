@@ -8,9 +8,15 @@ use Yii;
 
 class ApiController extends CommonController 
 {
-
+    /**
+    * Company id 
+    */
+    protected $_companyId;
+    
     public function behaviors() 
     {
+        $this->_companyId = \Yii::$app->user->getCompanyId();
+        
         return [
             'access' => [
                 'class' => AccessControl::className(),
