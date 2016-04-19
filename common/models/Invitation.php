@@ -10,6 +10,7 @@ use Yii;
  * This is the model class for table "invitation".
  *
  * @property string $id
+ * @property string $company_id
  * @property string $event_id
  * @property string $owner_id
  * @property string $owner_table
@@ -35,7 +36,7 @@ class Invitation extends ActiveRecord
     {
         return [
             [['event_id', 'owner_id'], 'required'],
-            [['event_id', 'owner_id', 'datetime_created', 'lastup_datetime', 'lastup_employee_id'], 'integer'],
+            [['company_id', 'event_id', 'owner_id', 'datetime_created', 'lastup_datetime', 'lastup_employee_id'], 'integer'],
             [['disabled'], 'boolean'],
             [['owner_table'], 'string', 'max' => 99]
         ];
@@ -48,6 +49,7 @@ class Invitation extends ActiveRecord
     {
         return [
             'id' 				 => Yii::t('common', 'ID'),
+            'company_id' 				 => Yii::t('common', 'Company id'),
             'event_id' 			 => Yii::t('common', 'Event ID'),
             'owner_id' 			 => Yii::t('common', 'Owner ID'),
             'owner_table' 		 => Yii::t('common', 'Owner Table'),

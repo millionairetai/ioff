@@ -9,6 +9,7 @@ use Yii;
  *
  * @property string $id
  * @property string $owner_id
+ * @property string $company_id
  * @property string $owner_table
  * @property string $employee_id
  * @property string $owner_employee_id
@@ -37,7 +38,7 @@ class Notification extends \common\components\db\ActiveRecord
     {
         return [
             [['owner_id', 'owner_table', 'employee_id', 'type'], 'required'],
-            [['owner_id', 'employee_id', 'owner_employee_id', 'datetime_created', 'lastup_datetime', 'lastup_employee_id'], 'integer'],
+            [['company_id','owner_id', 'employee_id', 'owner_employee_id', 'datetime_created', 'lastup_datetime', 'lastup_employee_id'], 'integer'],
             [['content'], 'string'],
             [['disabled'], 'boolean'],
             [['owner_table'], 'string', 'max' => 50],
@@ -52,6 +53,7 @@ class Notification extends \common\components\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'company_id' => 'Company ID',
             'owner_id' => 'Owner ID',
             'owner_table' => 'Owner Table',
             'employee_id' => 'Employee ID',

@@ -23,10 +23,10 @@ use common\components\db\ActiveRecord;
  * @property string $province_id
  * @property string $country_id
  * @property integer $status_id
+ * @property string $language_id
  * @property string $city_code
  * @property string $firstname
  * @property string $lastname
- * @property string $username
  * @property string $password
  * @property string $email
  * @property integer $is_admin
@@ -53,8 +53,10 @@ use common\components\db\ActiveRecord;
  * @property string $tax_code
  * @property string $tax_department
  * @property string $start_working_date
+ * @property string $stop_working_date
  * @property integer $is_visible
  * @property string $profile_image_path
+ * @property string $language_code
  * @property string $password_reset_token
  * @property string $auth_key
  * @property string $last_activity_datetime
@@ -88,18 +90,17 @@ class Employee extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['company_id', 'manager_employee_id', 'authority_id', 'position_id', 'department_id', 'bank_id', 'religion_id', 'marriage_status_id', 'nation_id', 'province_id', 'country_id', 'status_id', 'is_admin', 'birthdate', 'gender', 'card_issue_id', 'passport_expire', 'passport_issue', 'tax_date_issue', 'start_working_date', 'is_visible', 'last_activity_datetime', 'last_login_datetime', 'datetime_created', 'lastup_datetime', 'lastup_employee_id', 'disabled'], 'integer'],
-            [['authority_id', 'position_id', 'department_id', 'bank_id', 'religion_id', 'marriage_status_id', 'nation_id', 'province_id', 'country_id', 'status_id', 'firstname', 'lastname', 'username', 'password', 'email', 'birthdate'], 'required'],
+            [['company_id', 'manager_employee_id', 'authority_id', 'position_id', 'department_id', 'bank_id', 'religion_id', 'marriage_status_id', 'nation_id', 'province_id', 'country_id', 'status_id', 'language_id', 'is_admin', 'birthdate', 'gender', 'card_issue_id', 'passport_expire', 'passport_issue', 'tax_date_issue', 'start_working_date', 'stop_working_date', 'is_visible', 'last_activity_datetime', 'last_login_datetime', 'datetime_created', 'lastup_datetime', 'lastup_employee_id', 'disabled'], 'integer'],
+            [['authority_id', 'position_id', 'department_id', 'bank_id', 'religion_id', 'marriage_status_id', 'nation_id', 'province_id', 'country_id', 'status_id', 'firstname', 'lastname', 'password', 'email', 'birthdate'], 'required'],
             [['city_code', 'firstname', 'lastname', 'email', 'work_email'], 'string', 'max' => 99],
-            [['username'], 'string', 'max' => 128],
             [['password'], 'string', 'max' => 64],
             [['code', 'telephone', 'mobile_phone', 'work_phone', 'card_place_id'], 'string', 'max' => 50],
             [['card_number'], 'string', 'max' => 30],
+            [['language_code'], 'string', 'max' => 10],
             [['street_address_1', 'street_address_2', 'passport_place', 'tax_department', 'profile_image_path', 'password_reset_token', 'last_ip_address'], 'string', 'max' => 255],
             [['card_number_id', 'bank_number', 'passport_number', 'zip_code', 'tax_code'], 'string', 'max' => 20],
             [['auth_key'], 'string', 'max' => 32],
             [['email'], 'unique'],
-            [['username'], 'unique'],
             [['status'], 'default', 'value' => self::STATUS_ACTIVE],
             [['status'], 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
         ];
@@ -124,10 +125,10 @@ class Employee extends ActiveRecord implements IdentityInterface
             'province_id' => Yii::t('app', 'Province ID'),
             'country_id' => Yii::t('app', 'Country ID'),
             'status_id' => Yii::t('app', 'Status ID'),
+            'language_id' => Yii::t('app', 'Language ID'),
             'city_code' => Yii::t('app', 'City Code'),
             'firstname' => Yii::t('app', 'Firstname'),
             'lastname' => Yii::t('app', 'Lastname'),
-            'username' => Yii::t('app', 'Username'),
             'password' => Yii::t('app', 'Password'),
             'email' => Yii::t('app', 'Email'),
             'is_admin' => Yii::t('app', 'Is Admin'),
@@ -154,8 +155,10 @@ class Employee extends ActiveRecord implements IdentityInterface
             'tax_code' => Yii::t('app', 'Tax Code'),
             'tax_department' => Yii::t('app', 'Tax Department'),
             'start_working_date' => Yii::t('app', 'Start Working Date'),
+            'stop_working_date'  => Yii::t('app', 'Stop Working Date'),
             'is_visible' => Yii::t('app', 'Is Visible'),
             'profile_image_path' => Yii::t('app', 'Profile Image Path'),
+            'language_code' => Yii::t('app', 'Language code'),
             'password_reset_token' => Yii::t('app', 'Password Reset Token'),
             'auth_key' => Yii::t('app', 'Auth Key'),
             'last_activity_datetime' => Yii::t('app', 'Last Activity Datetime'),
@@ -182,17 +185,6 @@ class Employee extends ActiveRecord implements IdentityInterface
     public static function findIdentityByAccessToken($token, $type = null)
     {
         throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
-    }
-
-    /**
-     * Finds user by username
-     *
-     * @param string $username
-     * @return static|null
-     */
-    public static function findByUsername($username)
-    {
-        return static::findOne(['username' => $username, 'status_id' => self::STATUS_ACTIVE]);
     }
 
     /**

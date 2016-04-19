@@ -10,6 +10,7 @@ use Yii;
  * This is the model class for table "remind".
  *
  * @property string $id
+ * @property string $company_id
  * @property string $employee_id
  * @property string $owner_id
  * @property string $owner_table
@@ -40,7 +41,7 @@ class Remind extends ActivieRecord
     public function rules()
     {
         return [
-            [['employee_id', 'owner_id', 'remind_datetime', 'minute_before', 'repeated_time', 'datetime_created', 'lastup_datetime', 'lastup_employee_id'], 'integer'],
+            [['company_id', 'employee_id', 'owner_id', 'remind_datetime', 'minute_before', 'repeated_time', 'datetime_created', 'lastup_datetime', 'lastup_employee_id'], 'integer'],
             [['owner_table', 'repeated_time', 'minute_before'], 'required'],
             [['content'], 'string'],
             [['is_snoozing', 'is_remind'], 'boolean'],
@@ -55,6 +56,7 @@ class Remind extends ActivieRecord
     {
         return [
             'id' 				 => Yii::t('common', 'ID'),
+            'company_id' 		=> Yii::t('common', 'Company id'),
             'employee_id' 		 => Yii::t('common', 'Employee ID'),
             'owner_id' 			 => Yii::t('common', 'Owner ID'),
             'owner_table' 		 => Yii::t('common', 'Owner Table'),

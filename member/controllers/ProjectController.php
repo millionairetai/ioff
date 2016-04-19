@@ -26,12 +26,12 @@ class ProjectController extends ApiController {
         $itemPerPage = \Yii::$app->request->post('itemPerPage', 10);
         $currentPage = \Yii::$app->request->post('currentPage', 1);
         //fetch data
-        
+
         $params = [':empolyee_id' => \Yii::$app->user->getId()];
         $result = Project::getProject($params, $currentPage, $itemPerPage);
         $totalItems = $this->getPagination($result['sql'], $currentPage, $itemPerPage, $params);
-        
-        
+
+
         foreach ($result['data'] as $item) {
             $collection[] = [
                 'id' => $item['id'],
@@ -40,7 +40,7 @@ class ProjectController extends ApiController {
                 'status' => $item['status_name'],
                 'completed_percent' => $item['completed_percent'],
                 'description' => strlen($item['description']) > 250 ? (substr($item['description'], 0, 70) . "...") : $item['description'],
-                'theory' => $item['estimate_hour'] > 0 ? ((int)(($item['worked_hour'] / $item['estimate_hour'] ) * 100)) : 0 ,
+                'theory' => $item['estimate_hour'] > 0 ? ((int) (($item['worked_hour'] / $item['estimate_hour'] ) * 100)) : 0,
             ];
         }
         $objects['collection'] = $collection;
@@ -56,7 +56,7 @@ class ProjectController extends ApiController {
         $message = "";
         $objects = [];
         $dataPost = [];
-        
+
         $project_json = \Yii::$app->request->post('project', '');
         if (strlen($project_json)) {
             $dataPost = json_decode($project_json, true);
@@ -83,8 +83,9 @@ class ProjectController extends ApiController {
                         $proPa->project_id = $ob->id;
                         $proPa->owner_id = $value;
                         $proPa->owner_table = ProjectParticipant::TABLE_DEPARTMENT;
-                        if(!$proPa->save()){
-                            throw  new \Exception('Save record to table ProjectParticipant fail');
+                        
+                        if (!$proPa->save()) {
+                            throw new \Exception('Save record to table ProjectParticipant fail');
                         }
                     }
                 }
@@ -95,13 +96,15 @@ class ProjectController extends ApiController {
                         $proPa->project_id = $ob->id;
                         $proPa->owner_id = $item['id'];
                         $proPa->owner_table = ProjectParticipant::TABLE_EMPLOYEE;
-                        if(!$proPa->save()){
+                        
+                        if (!$proPa->save()) {
                             throw new \Exception('Save record to table ProjectParticipant fail');
                         }
                     }
                 }
+                
                 //move file
-                File::addFiles($_FILES,\Yii::$app->params['PathUpload'],$ob->id,File::TABLE_PROJECT);
+                File::addFiles($_FILES, \Yii::$app->params['PathUpload'], $ob->id, File::TABLE_PROJECT);
 
                 //activity
                 $activity = new Activity();
@@ -111,9 +114,9 @@ class ProjectController extends ApiController {
                 $activity->employee_id = \Yii::$app->user->getId();
                 $activity->type = "create_project";
                 $activity->content = \Yii::$app->user->getIdentity()->firstname . " " . \Yii::t('common', 'created') . " " . $ob->name;
-                
-                if(!$activity->save()){
-                    throw  new \Exception('Save record to table Activity fail');
+
+                if (!$activity->save()) {
+                    throw new \Exception('Save record to table Activity fail');
                 }
 
                 //Employee activity
@@ -123,20 +126,22 @@ class ProjectController extends ApiController {
                     $employeeActivity->employee_id = \Yii::$app->user->getId();
                     $employeeActivity->activity_project = $employeeActivity->activity_total = 0;
                 }
-                
+
                 $employeeActivity->activity_project += 1;
                 $employeeActivity->activity_total += 1;
-                if(!$employeeActivity->save()){
-                    throw  new \Exception('Save record to table EmployeeActivity fail');
+                if (!$employeeActivity->save()) {
+                    throw new \Exception('Save record to table EmployeeActivity fail');
                 }
                 //notifycation
                 $arrayEmployees = [];
                 $is_query = false;
                 $query = Employee::find()->andCompanyId();
+                
                 if (isset($dataPost['departments']) && count($dataPost['departments'])) {
                     $is_query = true;
                     $query->orWhere(['department_id' => $dataPost['departments']]);
                 }
+                
                 if (isset($dataPost['members']) && count($dataPost['members'])) {
                     $is_query = true;
                     $idEmployees = [];
@@ -145,6 +150,7 @@ class ProjectController extends ApiController {
                     }
                     $query->orWhere(['id' => $idEmployees]);
                 }
+                
                 if ($is_query) {
                     $content = \Yii::$app->user->getIdentity()->firstname . " " . \Yii::t('common', 'created') . " " . $ob->name;
                     $arrayEmployees = $query->all();
@@ -152,6 +158,7 @@ class ProjectController extends ApiController {
                         '{creator name}' => \Yii::$app->user->getIdentity()->firstname,
                         '{project name}' => $ob->name
                     ];
+                    
                     foreach ($arrayEmployees as $item) {
                         $no = new Notification();
                         $no->owner_id = $ob->id;
@@ -160,16 +167,18 @@ class ProjectController extends ApiController {
                         $no->owner_employee_id = \Yii::$app->user->getId();
                         $no->type = "create_project";
                         $no->content = $content;
-                        if(!$no->save()){
-                            throw  new \Exception('Save record to table Notification fail');
+                        
+                        if (!$no->save()) {
+                            throw new \Exception('Save record to table Notification fail');
                         }
+                        
                         //send email 
                         $themeEmail = \common\models\EmailTemplate::getThemeCreateProject();
                         $item->sendMail($dataSend, $themeEmail);
 
                         //send sms
                         if ($ob->sms) {
-                            $themeSms = "";//\common\models\SmsTemplate::getThemeCreateProject();
+                            $themeSms = ""; //\common\models\SmsTemplate::getThemeCreateProject();
                             $item->sendSms($dataSend, $themeEmail);
                             $sms = new \common\models\Sms();
                             $sms->owner_id = $ob->id;
@@ -178,7 +187,8 @@ class ProjectController extends ApiController {
                             $sms->content = $content;
                             $sms->is_success = 1;
                             $sms->fee = 0;
-                            if(!$sms->save()){
+                            
+                            if (!$sms->save()) {
                                 throw new \Exception('Save record to table Sms fail');
                             }
                         }
@@ -192,7 +202,7 @@ class ProjectController extends ApiController {
             $message = \Yii::t('member', 'error_system');
             return $this->sendResponse($error, $message, $objects);
         }
-        
+
         return $this->sendResponse($error, $message, $objects);
     }
 

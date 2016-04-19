@@ -8,6 +8,7 @@ use Yii;
  * This is the model class for table "status".
  *
  * @property integer $id
+ * @property integer $company_id
  * @property string $name
  * @property string $description
  * @property string $column_name
@@ -34,7 +35,7 @@ class Status extends \common\components\db\ActiveRecord
         return [
             [['name', 'column_name'], 'required'],
             [['description'], 'string'],
-            [['datetime_created', 'lastup_datetime', 'lastup_employee_id'], 'integer'],
+            [['company_id', 'datetime_created', 'lastup_datetime', 'lastup_employee_id'], 'integer'],
             [['disabled'], 'boolean'],
             [['name'], 'string', 'max' => 255],
             [['column_name'], 'string', 'max' => 99]
@@ -48,6 +49,7 @@ class Status extends \common\components\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'company_id' => 'Company id',
             'name' => 'Name',
             'description' => 'Description',
             'column_name' => 'Column Name',

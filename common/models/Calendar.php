@@ -10,6 +10,7 @@ use Yii;
  * This is the model class for table "calendar".
  *
  * @property integer $id
+ * @property integer $company_id
  * @property string $name
  * @property string $description
  * @property string $datetime_created
@@ -35,7 +36,7 @@ class Calendar extends ActiveRecord
         return [
             [['name', 'description'], 'required'],
             [['description'], 'string'],
-            [['datetime_created', 'lastup_datetime', 'lastup_employee_id'], 'integer'],
+            [['company_id','datetime_created', 'lastup_datetime', 'lastup_employee_id'], 'integer'],
             [['disabled'], 'boolean'],
             [['name'], 'string', 'max' => 255]
         ];
@@ -48,6 +49,7 @@ class Calendar extends ActiveRecord
     {
         return [
             'id' 				 => Yii::t('common', 'ID'),
+            'company_id' 		 => Yii::t('common', 'Company id'),
             'name' 				 => Yii::t('common', 'Event Calendar'),
             'description' 		 => Yii::t('common', 'Description'),
             'datetime_created' 	 => Yii::t('common', 'Datetime Created'),

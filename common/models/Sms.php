@@ -8,6 +8,7 @@ use Yii;
  * This is the model class for table "sms".
  *
  * @property string $id
+ * @property string $company_id
  * @property string $owner_id
  * @property string $employee_id
  * @property string $owner_table
@@ -37,7 +38,7 @@ class Sms extends \common\components\db\ActiveRecord
     public function rules()
     {
         return [
-            [['owner_id', 'employee_id', 'fee', 'datetime_created', 'lastup_datetime', 'lastup_employee_id'], 'integer'],
+            [['company_id', 'owner_id', 'employee_id', 'fee', 'datetime_created', 'lastup_datetime', 'lastup_employee_id'], 'integer'],
             [['owner_table', 'content'], 'required'],
             [['is_success', 'disabled'], 'boolean'],
             [['owner_table'], 'string', 'max' => 50],
@@ -52,6 +53,7 @@ class Sms extends \common\components\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'company_id' => 'Company id',
             'owner_id' => 'Owner ID',
             'employee_id' => 'Employee ID',
             'owner_table' => 'Owner Table',

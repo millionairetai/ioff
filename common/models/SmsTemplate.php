@@ -9,6 +9,7 @@ use Yii;
  *
  * @property integer $id
  * @property integer $sending_template_group_id
+ * @property integer $language_id
  * @property string $body
  * @property string $column_name
  * @property string $default_from_phone_no
@@ -35,7 +36,7 @@ class SmsTemplate extends \common\components\db\ActiveRecord
     {
         return [
             [['sending_template_group_id', 'body', 'column_name'], 'required'],
-            [['sending_template_group_id', 'datetime_created', 'lastup_datetime', 'lastup_employee_id'], 'integer'],
+            [['sending_template_group_id', 'language_id', 'datetime_created', 'lastup_datetime', 'lastup_employee_id'], 'integer'],
             [['body'], 'string'],
             [['disabled'], 'boolean'],
             [['column_name'], 'string', 'max' => 99],
@@ -51,6 +52,7 @@ class SmsTemplate extends \common\components\db\ActiveRecord
         return [
             'id' => 'ID',
             'sending_template_group_id' => 'Sending Template Group ID',
+            'language_id' => 'Language ID',
             'body' => 'Body',
             'column_name' => 'Column Name',
             'default_from_phone_no' => 'Default From Phone No',

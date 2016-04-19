@@ -9,6 +9,7 @@ use Yii;
  *
  * @property integer $id
  * @property integer $sending_template_group_id
+ * @property integer $language_id 
  * @property string $subject
  * @property string $body
  * @property string $column_name
@@ -37,7 +38,7 @@ class EmailTemplate extends \common\components\db\ActiveRecord
     {
         return [
             [['sending_template_group_id', 'subject', 'body', 'column_name'], 'required'],
-            [['sending_template_group_id', 'datetime_created', 'lastup_datetime', 'lastup_employee_id'], 'integer'],
+            [['language_id', 'sending_template_group_id', 'datetime_created', 'lastup_datetime', 'lastup_employee_id'], 'integer'],
             [['body', 'remark'], 'string'],
             [['disabled'], 'boolean'],
             [['subject', 'default_from_email'], 'string', 'max' => 255],
@@ -54,6 +55,7 @@ class EmailTemplate extends \common\components\db\ActiveRecord
         return [
             'id' => 'ID',
             'sending_template_group_id' => 'Sending Template Group ID',
+            'language_id' => 'Language id',
             'subject' => 'Subject',
             'body' => 'Body',
             'column_name' => 'Column Name',

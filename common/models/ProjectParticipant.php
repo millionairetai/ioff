@@ -8,6 +8,7 @@ use Yii;
  * This is the model class for table "project_participant".
  *
  * @property string $id
+ * @property string $company_id
  * @property string $project_id
  * @property string $owner_id
  * @property string $owner_table
@@ -36,7 +37,7 @@ class ProjectParticipant extends \common\components\db\ActiveRecord
     {
         return [
             [['project_id', 'owner_id', 'owner_table'], 'required'],
-            [['project_id', 'owner_id', 'datetime_created', 'lastup_datetime', 'lastup_employee_id'], 'integer'],
+            [['company_id', 'project_id', 'owner_id', 'datetime_created', 'lastup_datetime', 'lastup_employee_id'], 'integer'],
             [['disabled'], 'boolean'],
             [['owner_table'], 'string', 'max' => 50]
         ];
@@ -49,6 +50,7 @@ class ProjectParticipant extends \common\components\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'company_id' => 'Company ID',
             'project_id' => 'Project ID',
             'owner_id' => 'Owner ID',
             'owner_table' => 'Owner Table',

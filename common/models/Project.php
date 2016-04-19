@@ -8,6 +8,7 @@ use Yii;
  * This is the model class for table "project".
  *
  * @property string $id
+ * @property string $company_id
  * @property string $manager_project_id
  * @property integer $priority_id
  * @property integer $status_id
@@ -29,6 +30,7 @@ use Yii;
 class Project extends \common\components\db\ActiveRecord {
 
     public $sms = 0;
+
     /**
      * @inheritdoc
      */
@@ -41,12 +43,12 @@ class Project extends \common\components\db\ActiveRecord {
      */
     public function rules() {
         return [
-            [[ 'priority_id', 'status_id', 'parent_id', 'name', 'description', 'description_parse'], 'required','message' => Yii::t('member', 'validate_required')],
-            [['manager_project_id', 'priority_id', 'status_id', 'parent_id', 'completed_percent', 'estimate_hour', 'worked_hour', 'datetime_created', 'lastup_datetime', 'lastup_employee_id'], 'integer','message' => Yii::t('member', 'validate_integer')],
-            [['description', 'description_parse'], 'string','message' => Yii::t('member', 'validate_string')],
-            [['is_public', 'disabled'], 'boolean','message' => Yii::t('member', 'validate_boolean')],
-            [['name'], 'string', 'max' => 255,'tooLong' => Yii::t('member', 'validate_max_length')],
-            [['start_datetime', 'duedatetime','sms'],'safe']
+            [['priority_id', 'status_id', 'parent_id', 'name', 'description', 'description_parse'], 'required', 'message' => Yii::t('member', 'validate_required')],
+            [['company_id','manager_project_id', 'priority_id', 'status_id', 'parent_id', 'completed_percent', 'estimate_hour', 'worked_hour', 'datetime_created', 'lastup_datetime', 'lastup_employee_id'], 'integer', 'message' => Yii::t('member', 'validate_integer')],
+            [['description', 'description_parse'], 'string', 'message' => Yii::t('member', 'validate_string')],
+            [['is_public', 'disabled'], 'boolean', 'message' => Yii::t('member', 'validate_boolean')],
+            [['name'], 'string', 'max' => 255, 'tooLong' => Yii::t('member', 'validate_max_length')],
+            [['start_datetime', 'duedatetime', 'sms'], 'safe']
         ];
     }
 
@@ -56,6 +58,7 @@ class Project extends \common\components\db\ActiveRecord {
     public function attributeLabels() {
         return [
             'id' => 'ID',
+            'company_id' => 'Company id',
             'manager_project_id' => Yii::t('member', 'project_manager'),
             'priority_id' => Yii::t('member', 'project_priority'),
             'status_id' => Yii::t('member', 'project_status'),
@@ -75,20 +78,20 @@ class Project extends \common\components\db\ActiveRecord {
             'disabled' => Yii::t('member', 'disabled'),
         ];
     }
-    
+
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getStatus()
-    {
+    public function getStatus() {
         return $this->hasOne(Status::className(), ['id' => 'status_id']);
     }
-    
+
     /**
      * get project based on employee
      */
-    public static function getProject($params,$currentPage = 1,$itemPerPage = 10){
-        $sql = "SELECT project.id,project.name,project.description,project.status_id,project.completed_percent,project.worked_hour,project.estimate_hour,status.name as status_name FROM project  INNER JOIN status ON project.status_id =   status.id         
+    public static function getProject($params, $currentPage = 1, $itemPerPage = 10) {
+        $sql = "SELECT project.id, project.name, project.description, project.status_id, project.completed_percent, project.worked_hour, project.estimate_hour, status.name as status_name 
+            FROM project  INNER JOIN status ON project.status_id=status.id         
         WHERE (project.is_public=1 OR project.manager_project_id=:empolyee_id OR project.lastup_employee_id=:empolyee_id OR              
         EXISTS(SELECT *              
          FROM project_participant             
@@ -101,16 +104,14 @@ class Project extends \common\components\db\ActiveRecord {
          WHERE project_participant.project_id  = project.id AND project_participant.disabled=0         
         )) AND project.disabled=0
         ORDER BY project.datetime_created DESC";
-        
-        $offset = $currentPage  * $itemPerPage;
+
+        $offset = $currentPage * $itemPerPage;
         $sql_limit = $sql;
         $sql_limit .= " limit 0 ," . $offset;
         $command = \Yii::$app->getDb()->createCommand($sql_limit)->bindValues($params);
         $data = $command->queryAll();
-        
-        return ['data' => $data,'sql' => $sql];
-    }
 
-    
+        return ['data' => $data, 'sql' => $sql];
+    }
 
 }

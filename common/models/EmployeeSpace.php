@@ -8,6 +8,7 @@ use Yii;
  * This is the model class for table "employee_space".
  *
  * @property integer $id
+ * @property integer $company_id
  * @property integer $employee_id
  * @property string $space_project
  * @property string $space_task
@@ -42,7 +43,7 @@ class EmployeeSpace extends \common\components\db\ActiveRecord
     {
         return [
             [['employee_id'], 'required'],
-            [['employee_id', 'space_project', 'space_task', 'space_calendar', 'space_annoucement', 'space_statergy_map', 'space_kpi', 'space_employee', 'space_contract', 'space_subject', 'space_post', 'space_total', 'datetime_created', 'lastup_datetime', 'lastup_employee_id'], 'integer'],
+            [['company_id','employee_id', 'space_project', 'space_task', 'space_calendar', 'space_annoucement', 'space_statergy_map', 'space_kpi', 'space_employee', 'space_contract', 'space_subject', 'space_post', 'space_total', 'datetime_created', 'lastup_datetime', 'lastup_employee_id'], 'integer'],
             [['disabled'], 'boolean']
         ];
     }
@@ -54,6 +55,7 @@ class EmployeeSpace extends \common\components\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'company_id' => 'Company ID',
             'employee_id' => 'Employee ID',
             'space_project' => 'Space  Project',
             'space_task' => 'Space Task',

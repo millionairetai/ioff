@@ -8,6 +8,7 @@ use Yii;
  * This is the model class for table "file".
  *
  * @property string $id
+ * @property string $company_id
  * @property string $owner_id
  * @property string $employee_id
  * @property string $owner_object
@@ -41,7 +42,7 @@ class File extends \common\components\db\ActiveRecord
     {
         return [
             [['owner_id', 'owner_object', 'name', 'encoded_name', 'path'], 'required'],
-            [['owner_id', 'employee_id', 'file_size', 'lastup_datetime', 'datetime_created', 'lastup_employee_id'], 'integer'],
+            [['company_id', 'owner_id', 'employee_id', 'file_size', 'lastup_datetime', 'datetime_created', 'lastup_employee_id'], 'integer'],
             [['path'], 'string'],
             [['is_image', 'disabled'], 'boolean'],
             [['owner_object', 'name', 'encoded_name', 'file_type'], 'string', 'max' => 255]
@@ -56,6 +57,7 @@ class File extends \common\components\db\ActiveRecord
         return [
             'id' => 'ID',
             'owner_id' => 'Owner ID',
+            'company_id' => 'Owner ID',
             'employee_id' => 'Employee ID',
             'owner_object' => 'Owner Object',
             'name' => 'Name',

@@ -14,6 +14,7 @@ use yii\helpers\ArrayHelper;
  * This is the model class for table "event".
  *
  * @property string $id
+ * @property string $company_id
  * @property integer $calendar_id
  * @property string $employee_id
  * @property string $name
@@ -44,7 +45,7 @@ class Event extends ActiveRecord
     public function rules()
     {
         return [
-            [['calendar_id', 'employee_id', 'datetime_created', 'lastup_datetime', 'lastup_employee_id'], 'integer'],
+            [['company_id', 'calendar_id', 'employee_id', 'datetime_created', 'lastup_datetime', 'lastup_employee_id'], 'integer'],
             [['employee_id', 'name', 'description', 'description_parse', 'start_datetime', 'end_datetime', 'address' ], 'required'],
             [['description', 'description_parse'], 'string'],
             [['is_public', 'disabled'], 'boolean'],
@@ -61,6 +62,7 @@ class Event extends ActiveRecord
     {
         return [
             'id' 				 => Yii::t('common', 'ID'),
+            'company_id' 	     => Yii::t('common', 'Company ID'),
             'calendar_id' 		 => Yii::t('common', 'Calendar ID'),
             'employee_id' 		 => Yii::t('common', 'Employee ID'),
             'name' 				 => Yii::t('common','Name'),

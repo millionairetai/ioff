@@ -8,6 +8,7 @@ use Yii;
  * This is the model class for table "priority".
  *
  * @property integer $id
+ * @property integer $company_id
  * @property string $name
  * @property string $description
  * @property string $datetime_created
@@ -33,7 +34,7 @@ class Priority extends \common\components\db\ActiveRecord
         return [
             [['name', 'datetime_created', 'lastup_datetime', 'lastup_employee_id'], 'required'],
             [['description'], 'string'],
-            [['datetime_created', 'lastup_datetime', 'lastup_employee_id'], 'integer'],
+            [['company_id','datetime_created', 'lastup_datetime', 'lastup_employee_id'], 'integer'],
             [['disabled'], 'boolean'],
             [['name'], 'string', 'max' => 255]
         ];
@@ -46,6 +47,7 @@ class Priority extends \common\components\db\ActiveRecord
     {
         return [
             'id' => 'ID',
+            'company_id' => 'Company id',
             'name' => 'Name',
             'description' => 'Description',
             'datetime_created' => 'Datetime Created',
