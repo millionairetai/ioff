@@ -9,6 +9,31 @@
 /*!40101 SET NAMES utf8mb4 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+
+-- Dumping database structure for centeroffice
+CREATE DATABASE IF NOT EXISTS `centeroffice` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci */;
+USE `centeroffice`;
+
+
+-- Dumping structure for table centeroffice.action
+CREATE TABLE IF NOT EXISTS `action` (
+  `id` smallint(6) unsigned NOT NULL AUTO_INCREMENT,
+  `controller_id` smallint(6) unsigned NOT NULL DEFAULT '0',
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `description` text COLLATE utf8_unicode_ci,
+  `url` text COLLATE utf8_unicode_ci,
+  `is_display_menu` bit(1) NOT NULL DEFAULT b'0',
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `controller_id` (`controller_id`),
+  KEY `is_display_menu` (`is_display_menu`),
+  KEY `name` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 -- Dumping data for table centeroffice.action: ~11 rows (approximately)
 /*!40000 ALTER TABLE `action` DISABLE KEYS */;
 INSERT INTO `action` (`id`, `controller_id`, `name`, `description`, `url`, `is_display_menu`, `datetime_created`, `lastup_datetime`, `created_employee_id`, `lastup_employee_id`, `disabled`) VALUES
@@ -25,7 +50,34 @@ INSERT INTO `action` (`id`, `controller_id`, `name`, `description`, `url`, `is_d
 	(16, 3, 'create', 'asweiow', NULL, b'0', 1451553718, 1451557205, 0, 2, b'0');
 /*!40000 ALTER TABLE `action` ENABLE KEYS */;
 
--- Dumping data for table centeroffice.activity: ~49 rows (approximately)
+
+-- Dumping structure for table centeroffice.activity
+CREATE TABLE IF NOT EXISTS `activity` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `owner_id` bigint(20) unsigned NOT NULL,
+  `owner_table` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `employee_id` int(11) unsigned NOT NULL,
+  `parent_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `type` varchar(99) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Unique column',
+  `content` text COLLATE utf8_unicode_ci,
+  `total_comment` int(11) unsigned DEFAULT '0',
+  `total_like` int(11) unsigned DEFAULT '0',
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `owner_id` (`owner_id`),
+  KEY `owner_table` (`owner_table`),
+  KEY `employee_id` (`employee_id`),
+  KEY `parent_employee_id` (`parent_employee_id`),
+  KEY `type` (`type`),
+  KEY `company_id` (`company_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- Dumping data for table centeroffice.activity: ~51 rows (approximately)
 /*!40000 ALTER TABLE `activity` DISABLE KEYS */;
 INSERT INTO `activity` (`id`, `company_id`, `owner_id`, `owner_table`, `employee_id`, `parent_employee_id`, `type`, `content`, `total_comment`, `total_like`, `datetime_created`, `lastup_datetime`, `created_employee_id`, `lastup_employee_id`, `disabled`) VALUES
 	(1, 0, 1, 'project', 1, 0, 'create_project', 'kk  Ngày tạo  Test new databaseTest new databaseTest new databaseTest new database', 0, 0, 1460106767, 1460106767, 1, 1, b'0'),
@@ -81,23 +133,121 @@ INSERT INTO `activity` (`id`, `company_id`, `owner_id`, `owner_table`, `employee
 	(51, 2, 63, 'project', 21, 0, 'create_project', 'ta hong gam  đã tạo  Vu thuy trinh company 1 no see', 0, 0, 1461053399, 1461053399, 21, 21, b'0');
 /*!40000 ALTER TABLE `activity` ENABLE KEYS */;
 
+
+-- Dumping structure for table centeroffice.activity_post
+CREATE TABLE IF NOT EXISTS `activity_post` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) NOT NULL DEFAULT '0',
+  `owner_id` int(11) NOT NULL DEFAULT '0',
+  `employee_id` int(11) NOT NULL DEFAULT '0',
+  `owner_table` varchar(99) COLLATE utf8_unicode_ci NOT NULL,
+  `parent_employee_id` bigint(20) NOT NULL DEFAULT '0',
+  `parent_id` bigint(20) NOT NULL DEFAULT '0',
+  `content` text COLLATE utf8_unicode_ci NOT NULL,
+  `content_parse` text COLLATE utf8_unicode_ci NOT NULL,
+  `datetime_created` int(11) NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `owner_id` (`owner_id`),
+  KEY `employee_id` (`employee_id`),
+  KEY `owner_table` (`owner_table`),
+  KEY `parent_employee_id` (`parent_employee_id`),
+  KEY `parent_id` (`parent_id`),
+  KEY `company_id` (`company_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 -- Dumping data for table centeroffice.activity_post: ~0 rows (approximately)
 /*!40000 ALTER TABLE `activity_post` DISABLE KEYS */;
 /*!40000 ALTER TABLE `activity_post` ENABLE KEYS */;
+
+
+-- Dumping structure for table centeroffice.annoucement
+CREATE TABLE IF NOT EXISTS `annoucement` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `description` text COLLATE utf8_unicode_ci NOT NULL,
+  `description_parse` text COLLATE utf8_unicode_ci NOT NULL,
+  `is_importance` bit(1) NOT NULL DEFAULT b'0',
+  `date_new_to` int(11) unsigned DEFAULT '0',
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `employee_id` (`employee_id`),
+  KEY `company_id` (`company_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Dumping data for table centeroffice.annoucement: ~0 rows (approximately)
 /*!40000 ALTER TABLE `annoucement` DISABLE KEYS */;
 /*!40000 ALTER TABLE `annoucement` ENABLE KEYS */;
 
+
+-- Dumping structure for table centeroffice.attend_choice_event
+CREATE TABLE IF NOT EXISTS `attend_choice_event` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` int(11) unsigned NOT NULL DEFAULT '0',
+  `column_name` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'no_confirm',
+  `description` mediumtext COLLATE utf8_unicode_ci,
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `column_name` (`column_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 -- Dumping data for table centeroffice.attend_choice_event: ~0 rows (approximately)
 /*!40000 ALTER TABLE `attend_choice_event` DISABLE KEYS */;
 /*!40000 ALTER TABLE `attend_choice_event` ENABLE KEYS */;
+
+
+-- Dumping structure for table centeroffice.authority
+CREATE TABLE IF NOT EXISTS `authority` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Unique column',
+  `description` text COLLATE utf8_unicode_ci,
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `name` (`name`),
+  KEY `company_id` (`company_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Dumping data for table centeroffice.authority: ~1 rows (approximately)
 /*!40000 ALTER TABLE `authority` DISABLE KEYS */;
 INSERT INTO `authority` (`id`, `company_id`, `name`, `description`, `datetime_created`, `lastup_datetime`, `created_employee_id`, `lastup_employee_id`, `disabled`) VALUES
 	(1, 0, 'Tổng giám đốc', 'Quyền cho tổng giám đốc', 0, 0, 0, 0, b'0');
 /*!40000 ALTER TABLE `authority` ENABLE KEYS */;
+
+
+-- Dumping structure for table centeroffice.authority_assigment
+CREATE TABLE IF NOT EXISTS `authority_assigment` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `authority_id` smallint(6) unsigned NOT NULL,
+  `action_id` smallint(6) unsigned NOT NULL,
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `action_id` (`action_id`),
+  KEY `authority_id` (`authority_id`),
+  KEY `company_id` (`company_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Dumping data for table centeroffice.authority_assigment: ~4 rows (approximately)
 /*!40000 ALTER TABLE `authority_assigment` DISABLE KEYS */;
@@ -108,17 +258,80 @@ INSERT INTO `authority_assigment` (`id`, `company_id`, `authority_id`, `action_i
 	(4, 0, 1, 16, 0, 0, 0, 0, b'0');
 /*!40000 ALTER TABLE `authority_assigment` ENABLE KEYS */;
 
+
+-- Dumping structure for table centeroffice.bank
+CREATE TABLE IF NOT EXISTS `bank` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Unique column',
+  `address` text COLLATE utf8_unicode_ci,
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 -- Dumping data for table centeroffice.bank: ~0 rows (approximately)
 /*!40000 ALTER TABLE `bank` DISABLE KEYS */;
 /*!40000 ALTER TABLE `bank` ENABLE KEYS */;
+
+
+-- Dumping structure for table centeroffice.business_type
+CREATE TABLE IF NOT EXISTS `business_type` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `description` mediumtext COLLATE utf8_unicode_ci,
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Dumping data for table centeroffice.business_type: ~0 rows (approximately)
 /*!40000 ALTER TABLE `business_type` DISABLE KEYS */;
 /*!40000 ALTER TABLE `business_type` ENABLE KEYS */;
 
+
+-- Dumping structure for table centeroffice.cache
+CREATE TABLE IF NOT EXISTS `cache` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `cache_hash` mediumtext COLLATE utf8_unicode_ci NOT NULL,
+  `cache_data` mediumtext COLLATE utf8_unicode_ci NOT NULL,
+  `owner_table` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `owner_table` (`owner_table`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 -- Dumping data for table centeroffice.cache: ~0 rows (approximately)
 /*!40000 ALTER TABLE `cache` DISABLE KEYS */;
 /*!40000 ALTER TABLE `cache` ENABLE KEYS */;
+
+
+-- Dumping structure for table centeroffice.calendar
+CREATE TABLE IF NOT EXISTS `calendar` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Unique column',
+  `description` text COLLATE utf8_unicode_ci NOT NULL,
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `name` (`name`),
+  KEY `company_id` (`company_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Dumping data for table centeroffice.calendar: ~1 rows (approximately)
 /*!40000 ALTER TABLE `calendar` DISABLE KEYS */;
@@ -126,13 +339,82 @@ INSERT INTO `calendar` (`id`, `company_id`, `name`, `description`, `datetime_cre
 	(1, 0, 'traning', '', 0, 0, 0, 0, b'0');
 /*!40000 ALTER TABLE `calendar` ENABLE KEYS */;
 
+
+-- Dumping structure for table centeroffice.campaign
+CREATE TABLE IF NOT EXISTS `campaign` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `staff_id` mediumint(9) unsigned NOT NULL DEFAULT '0',
+  `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `description` text COLLATE utf8_unicode_ci NOT NULL,
+  `start_date` int(11) unsigned NOT NULL DEFAULT '0',
+  `end_date` int(11) unsigned NOT NULL DEFAULT '0',
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `staff_id` (`staff_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 -- Dumping data for table centeroffice.campaign: ~0 rows (approximately)
 /*!40000 ALTER TABLE `campaign` DISABLE KEYS */;
 /*!40000 ALTER TABLE `campaign` ENABLE KEYS */;
 
+
+-- Dumping structure for table centeroffice.comment
+CREATE TABLE IF NOT EXISTS `comment` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `parent_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `activity_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `content` mediumtext COLLATE utf8_unicode_ci NOT NULL,
+  `total_like` int(11) unsigned NOT NULL DEFAULT '0',
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `employee_id` (`employee_id`),
+  KEY `parent_employee_id` (`parent_employee_id`),
+  KEY `activity_post_id` (`activity_id`),
+  KEY `company_id` (`company_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 -- Dumping data for table centeroffice.comment: ~0 rows (approximately)
 /*!40000 ALTER TABLE `comment` DISABLE KEYS */;
 /*!40000 ALTER TABLE `comment` ENABLE KEYS */;
+
+
+-- Dumping structure for table centeroffice.company
+CREATE TABLE IF NOT EXISTS `company` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `status_id` smallint(6) unsigned NOT NULL DEFAULT '0',
+  `plan_type_detail_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `language_id` smallint(6) unsigned NOT NULL DEFAULT '0',
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `email` varchar(99) COLLATE utf8_unicode_ci NOT NULL,
+  `address` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `phone_no` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `domain` varchar(99) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `profile_image_path` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `description_title` mediumtext COLLATE utf8_unicode_ci,
+  `description` text COLLATE utf8_unicode_ci,
+  `start_date` int(11) unsigned NOT NULL DEFAULT '0',
+  `expired_date` int(11) unsigned NOT NULL DEFAULT '0',
+  `language_code` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `name` (`name`),
+  KEY `email` (`email`),
+  KEY `plan_type_detail_id` (`plan_type_detail_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Dumping data for table centeroffice.company: ~2 rows (approximately)
 /*!40000 ALTER TABLE `company` DISABLE KEYS */;
@@ -141,9 +423,44 @@ INSERT INTO `company` (`id`, `status_id`, `plan_type_detail_id`, `language_id`, 
 	(2, 1, 0, 0, 'Inet', '', NULL, '', NULL, NULL, NULL, NULL, 0, 0, '', 0, 0, 0, 0, b'0');
 /*!40000 ALTER TABLE `company` ENABLE KEYS */;
 
+
+-- Dumping structure for table centeroffice.company_allocation
+CREATE TABLE IF NOT EXISTS `company_allocation` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) unsigned NOT NULL,
+  `business_type_id` int(11) unsigned NOT NULL,
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `company_id` (`company_id`),
+  KEY `business_type_id` (`business_type_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 -- Dumping data for table centeroffice.company_allocation: ~0 rows (approximately)
 /*!40000 ALTER TABLE `company_allocation` DISABLE KEYS */;
 /*!40000 ALTER TABLE `company_allocation` ENABLE KEYS */;
+
+
+-- Dumping structure for table centeroffice.controller
+CREATE TABLE IF NOT EXISTS `controller` (
+  `id` smallint(6) unsigned NOT NULL AUTO_INCREMENT,
+  `package_id` smallint(6) unsigned NOT NULL DEFAULT '0',
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Unique column',
+  `description` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `package_name` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `name` (`name`),
+  KEY `package_id` (`package_id`),
+  KEY `package_name` (`package_name`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Dumping data for table centeroffice.controller: ~3 rows (approximately)
 /*!40000 ALTER TABLE `controller` DISABLE KEYS */;
@@ -153,9 +470,40 @@ INSERT INTO `controller` (`id`, `package_id`, `name`, `description`, `package_na
 	(3, 0, 'Project', NULL, NULL, 0, 0, 0, 0, b'0');
 /*!40000 ALTER TABLE `controller` ENABLE KEYS */;
 
+
+-- Dumping structure for table centeroffice.country
+CREATE TABLE IF NOT EXISTS `country` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Unique column',
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 -- Dumping data for table centeroffice.country: ~0 rows (approximately)
 /*!40000 ALTER TABLE `country` DISABLE KEYS */;
 /*!40000 ALTER TABLE `country` ENABLE KEYS */;
+
+
+-- Dumping structure for table centeroffice.department
+CREATE TABLE IF NOT EXISTS `department` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Unique column',
+  `description` text COLLATE utf8_unicode_ci,
+  `datetime_created` int(11) NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `name` (`name`),
+  KEY `company_id` (`company_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Dumping data for table centeroffice.department: ~6 rows (approximately)
 /*!40000 ALTER TABLE `department` DISABLE KEYS */;
@@ -168,9 +516,50 @@ INSERT INTO `department` (`id`, `company_id`, `name`, `description`, `datetime_c
 	(6, 1, 'Giám đốc', NULL, 0, 0, 0, 0, b'0');
 /*!40000 ALTER TABLE `department` ENABLE KEYS */;
 
+
+-- Dumping structure for table centeroffice.department_annoucement
+CREATE TABLE IF NOT EXISTS `department_annoucement` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `department_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `annoucement_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `department_id` (`department_id`),
+  KEY `annoucement_id` (`annoucement_id`),
+  KEY `company_id` (`company_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 -- Dumping data for table centeroffice.department_annoucement: ~0 rows (approximately)
 /*!40000 ALTER TABLE `department_annoucement` DISABLE KEYS */;
 /*!40000 ALTER TABLE `department_annoucement` ENABLE KEYS */;
+
+
+-- Dumping structure for table centeroffice.email_template
+CREATE TABLE IF NOT EXISTS `email_template` (
+  `id` smallint(6) unsigned NOT NULL AUTO_INCREMENT,
+  `sending_template_group_id` smallint(6) unsigned NOT NULL DEFAULT '0',
+  `language_id` smallint(6) unsigned NOT NULL DEFAULT '0',
+  `subject` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `body` mediumtext COLLATE utf8_unicode_ci NOT NULL,
+  `column_name` varchar(99) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Unique column',
+  `default_from_email` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `remark` text COLLATE utf8_unicode_ci,
+  `language_code` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `sending_template_group_id` (`sending_template_group_id`),
+  KEY `column_name` (`column_name`),
+  KEY `language_code` (`language_code`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Dumping data for table centeroffice.email_template: ~4 rows (approximately)
 /*!40000 ALTER TABLE `email_template` DISABLE KEYS */;
@@ -180,6 +569,75 @@ INSERT INTO `email_template` (`id`, `sending_template_group_id`, `language_id`, 
 	(3, 1, 0, 'Sự kiện mới', '{creator name} đã tạo sự kiện {event name}', 'create_event', 'admin@centeroffice.vn', NULL, 'vi', 0, 0, 0, 0, b'0'),
 	(4, 1, 0, 'Edit event', '{creator name}đã chỉnh sửa lại sự kiện {event name}', 'edit_event', 'admin@centeroffice.vn', NULL, 'vi', 0, 0, 0, 0, b'0');
 /*!40000 ALTER TABLE `email_template` ENABLE KEYS */;
+
+
+-- Dumping structure for table centeroffice.employee
+CREATE TABLE IF NOT EXISTS `employee` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `manager_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `authority_id` smallint(6) unsigned NOT NULL DEFAULT '0',
+  `position_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `department_id` smallint(6) unsigned NOT NULL DEFAULT '0',
+  `bank_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `religion_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `marriage_status_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `nation_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `province_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `country_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `status_id` smallint(6) unsigned NOT NULL DEFAULT '0',
+  `language_id` smallint(6) unsigned NOT NULL DEFAULT '0',
+  `city_code` varchar(99) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `firstname` varchar(99) COLLATE utf8_unicode_ci NOT NULL,
+  `lastname` varchar(99) COLLATE utf8_unicode_ci NOT NULL,
+  `password` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `email` varchar(99) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Unique column',
+  `is_admin` bit(1) NOT NULL DEFAULT b'0',
+  `code` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `card_number` varchar(30) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `birthdate` int(11) unsigned NOT NULL DEFAULT '0',
+  `gender` bit(1) NOT NULL DEFAULT b'0',
+  `street_address_1` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `street_address_2` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `telephone` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `mobile_phone` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `work_phone` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `card_place_id` varchar(50) COLLATE utf8_unicode_ci DEFAULT '0',
+  `work_email` varchar(99) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `card_number_id` varchar(20) COLLATE utf8_unicode_ci DEFAULT '0',
+  `card_issue_id` bigint(20) unsigned DEFAULT '0',
+  `bank_number` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `passport_number` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `passport_place` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `passport_expire` int(11) unsigned DEFAULT '0',
+  `zip_code` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `passport_issue` int(11) unsigned DEFAULT '0',
+  `tax_date_issue` int(11) unsigned DEFAULT '0',
+  `tax_code` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `tax_department` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `start_working_date` int(11) unsigned NOT NULL DEFAULT '0',
+  `stop_working_date` int(11) unsigned NOT NULL DEFAULT '0',
+  `is_visible` bit(1) NOT NULL DEFAULT b'1',
+  `profile_image_path` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `language_code` varchar(10) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `password_reset_token` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `auth_key` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `last_activity_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `last_ip_address` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `last_login_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `manager_employee_id` (`manager_employee_id`),
+  KEY `authority_id` (`authority_id`),
+  KEY `position_id` (`position_id`),
+  KEY `department_id` (`department_id`),
+  KEY `email` (`email`),
+  KEY `company_id` (`company_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Dumping data for table centeroffice.employee: ~13 rows (approximately)
 /*!40000 ALTER TABLE `employee` DISABLE KEYS */;
@@ -199,6 +657,33 @@ INSERT INTO `employee` (`id`, `company_id`, `manager_employee_id`, `authority_id
 	(23, 2, 0, 1, 0, 4, 0, 0, 0, 0, 0, 0, 10, 0, NULL, 'Nguyễn Văn Nhật', '', '$2y$13$DfeLFr4DJp9o5i2WKlSUxe/SGRV174jgj6fednbiMy4b/JggsP.vi', 'millionairetai@gmail.com1', b'1', NULL, NULL, 0, b'0', NULL, NULL, NULL, NULL, NULL, NULL, 'millionairetai@gmail.com', NULL, 0, NULL, NULL, NULL, 0, NULL, 0, 0, NULL, NULL, 0, 0, b'1', NULL, NULL, NULL, 'tTMI_AgZHv686il31upWy-And3fg1b2B', 0, NULL, 0, 1450334587, 1450334587, 0, 0, b'0');
 /*!40000 ALTER TABLE `employee` ENABLE KEYS */;
 
+
+-- Dumping structure for table centeroffice.employee_activity
+CREATE TABLE IF NOT EXISTS `employee_activity` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) NOT NULL DEFAULT '0',
+  `employee_id` int(11) NOT NULL,
+  `activity_project` bigint(20) NOT NULL DEFAULT '0',
+  `activity_task` bigint(20) NOT NULL DEFAULT '0',
+  `activity_calendar` bigint(20) NOT NULL DEFAULT '0',
+  `activity_annoucement` bigint(20) NOT NULL DEFAULT '0',
+  `activity_statergy_map` bigint(20) NOT NULL DEFAULT '0',
+  `activity_kpi` bigint(20) NOT NULL DEFAULT '0',
+  `activity_employee` bigint(20) NOT NULL DEFAULT '0',
+  `activity_contract` bigint(20) NOT NULL DEFAULT '0',
+  `activity_subject` bigint(20) NOT NULL DEFAULT '0',
+  `activity_post` bigint(20) NOT NULL DEFAULT '0',
+  `activity_total` bigint(20) NOT NULL DEFAULT '0',
+  `datetime_created` int(11) NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `employee_id` (`employee_id`),
+  KEY `company_id` (`company_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 -- Dumping data for table centeroffice.employee_activity: ~8 rows (approximately)
 /*!40000 ALTER TABLE `employee_activity` DISABLE KEYS */;
 INSERT INTO `employee_activity` (`id`, `company_id`, `employee_id`, `activity_project`, `activity_task`, `activity_calendar`, `activity_annoucement`, `activity_statergy_map`, `activity_kpi`, `activity_employee`, `activity_contract`, `activity_subject`, `activity_post`, `activity_total`, `datetime_created`, `lastup_datetime`, `created_employee_id`, `lastup_employee_id`, `disabled`) VALUES
@@ -212,9 +697,56 @@ INSERT INTO `employee_activity` (`id`, `company_id`, `employee_id`, `activity_pr
 	(8, 1, 13, 13, 0, 0, 0, 0, 0, 0, 0, 0, 0, 13, 1460963353, 1461053327, 13, 13, b'0');
 /*!40000 ALTER TABLE `employee_activity` ENABLE KEYS */;
 
+
+-- Dumping structure for table centeroffice.employee_ip
+CREATE TABLE IF NOT EXISTS `employee_ip` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `employee_id` int(11) unsigned NOT NULL,
+  `type` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `ip_address` varchar(15) COLLATE utf8_unicode_ci NOT NULL DEFAULT '0',
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `employee_id` (`employee_id`),
+  KEY `type` (`type`),
+  KEY `ip_address` (`ip_address`),
+  KEY `company_id` (`company_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 -- Dumping data for table centeroffice.employee_ip: ~0 rows (approximately)
 /*!40000 ALTER TABLE `employee_ip` DISABLE KEYS */;
 /*!40000 ALTER TABLE `employee_ip` ENABLE KEYS */;
+
+
+-- Dumping structure for table centeroffice.employee_space
+CREATE TABLE IF NOT EXISTS `employee_space` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) NOT NULL DEFAULT '0',
+  `employee_id` int(11) NOT NULL,
+  `space_project` bigint(20) NOT NULL DEFAULT '0',
+  `space_task` bigint(20) NOT NULL DEFAULT '0',
+  `space_calendar` bigint(20) NOT NULL DEFAULT '0',
+  `space_annoucement` bigint(20) NOT NULL DEFAULT '0',
+  `space_statergy_map` bigint(20) NOT NULL DEFAULT '0',
+  `space_kpi` bigint(20) NOT NULL DEFAULT '0',
+  `space_employee` bigint(20) NOT NULL DEFAULT '0',
+  `space_contract` bigint(20) NOT NULL DEFAULT '0',
+  `space_subject` bigint(20) NOT NULL DEFAULT '0',
+  `space_activity_post` bigint(20) NOT NULL DEFAULT '0',
+  `space_total` bigint(20) NOT NULL DEFAULT '0',
+  `datetime_created` int(11) NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `employee_id` (`employee_id`),
+  KEY `company_id` (`company_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Dumping data for table centeroffice.employee_space: ~7 rows (approximately)
 /*!40000 ALTER TABLE `employee_space` DISABLE KEYS */;
@@ -228,15 +760,86 @@ INSERT INTO `employee_space` (`id`, `company_id`, `employee_id`, `space_project`
 	(7, 1, 13, 755589, 0, 0, 0, 0, 0, 0, 0, 0, 0, 755589, 1460963353, 1460963676, 13, 13, b'0');
 /*!40000 ALTER TABLE `employee_space` ENABLE KEYS */;
 
+
+-- Dumping structure for table centeroffice.event
+CREATE TABLE IF NOT EXISTS `event` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `calendar_id` smallint(6) unsigned NOT NULL DEFAULT '0',
+  `employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `description` text COLLATE utf8_unicode_ci NOT NULL,
+  `description_parse` text COLLATE utf8_unicode_ci NOT NULL,
+  `address` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `start_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `end_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `is_public` bit(1) NOT NULL DEFAULT b'1',
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `calendar_id` (`calendar_id`),
+  KEY `employee_id` (`employee_id`),
+  KEY `company_id` (`company_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 -- Dumping data for table centeroffice.event: ~0 rows (approximately)
 /*!40000 ALTER TABLE `event` DISABLE KEYS */;
 /*!40000 ALTER TABLE `event` ENABLE KEYS */;
+
+
+-- Dumping structure for table centeroffice.event_confirmation
+CREATE TABLE IF NOT EXISTS `event_confirmation` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `event_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `confirm_eventt_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `company_id` (`company_id`),
+  KEY `employee_id` (`employee_id`),
+  KEY `event_id` (`event_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Dumping data for table centeroffice.event_confirmation: ~0 rows (approximately)
 /*!40000 ALTER TABLE `event_confirmation` DISABLE KEYS */;
 /*!40000 ALTER TABLE `event_confirmation` ENABLE KEYS */;
 
--- Dumping data for table centeroffice.file: ~131 rows (approximately)
+
+-- Dumping structure for table centeroffice.file
+CREATE TABLE IF NOT EXISTS `file` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `owner_id` bigint(20) unsigned NOT NULL,
+  `employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `owner_object` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `encoded_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Unique column',
+  `path` text COLLATE utf8_unicode_ci NOT NULL,
+  `is_image` bit(1) NOT NULL DEFAULT b'0',
+  `file_type` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `file_size` int(11) unsigned DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `owner_id` (`owner_id`),
+  KEY `employee_id` (`employee_id`),
+  KEY `owner_object` (`owner_object`),
+  KEY `encoded_name` (`encoded_name`),
+  KEY `company_id` (`company_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=108 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- Dumping data for table centeroffice.file: ~107 rows (approximately)
 /*!40000 ALTER TABLE `file` DISABLE KEYS */;
 INSERT INTO `file` (`id`, `company_id`, `owner_id`, `employee_id`, `owner_object`, `name`, `encoded_name`, `path`, `is_image`, `file_type`, `file_size`, `lastup_datetime`, `datetime_created`, `created_employee_id`, `lastup_employee_id`, `disabled`) VALUES
 	(1, 32, 9, 24, 'project', 'Copy (3) of New Stories (Highway Blues).wma', '', '9/9_Copy (3) of New Stories (Highway Blues).wma', b'0', 'wma', 760748, 1460192720, 1460192720, 24, 24, b'0'),
@@ -348,25 +951,145 @@ INSERT INTO `file` (`id`, `company_id`, `owner_id`, `employee_id`, `owner_object
 	(107, 1, 38, 20, 'project', 'check box.doc', '19df75c30d954c1d90e276b28e354fd4.doc', '1\\2016\\04\\19df75c30d954c1d90e276b28e354fd4.doc', b'0', 'doc', 54272, 1460967045, 1460967045, 20, 20, b'0');
 /*!40000 ALTER TABLE `file` ENABLE KEYS */;
 
+
+-- Dumping structure for table centeroffice.follower
+CREATE TABLE IF NOT EXISTS `follower` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `employee_id` int(11) unsigned NOT NULL,
+  `task_id` bigint(20) unsigned NOT NULL,
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `employee_id` (`employee_id`),
+  KEY `task_id` (`task_id`),
+  KEY `company_id` (`company_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 -- Dumping data for table centeroffice.follower: ~0 rows (approximately)
 /*!40000 ALTER TABLE `follower` DISABLE KEYS */;
 /*!40000 ALTER TABLE `follower` ENABLE KEYS */;
+
+
+-- Dumping structure for table centeroffice.forum
+CREATE TABLE IF NOT EXISTS `forum` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `forum_group_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Unique column',
+  `description` text COLLATE utf8_unicode_ci,
+  `order_value` smallint(6) unsigned NOT NULL DEFAULT '0',
+  `is_new_top` bit(1) NOT NULL DEFAULT b'1',
+  `is_closed` bit(1) NOT NULL DEFAULT b'0',
+  `is_reviewed_post` bit(1) NOT NULL DEFAULT b'0',
+  `is_authority_post` bit(1) NOT NULL DEFAULT b'0',
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `forum_group_id` (`forum_group_id`),
+  KEY `employee_id` (`employee_id`),
+  KEY `name` (`name`),
+  KEY `company_id` (`company_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Dumping data for table centeroffice.forum: ~0 rows (approximately)
 /*!40000 ALTER TABLE `forum` DISABLE KEYS */;
 /*!40000 ALTER TABLE `forum` ENABLE KEYS */;
 
+
+-- Dumping structure for table centeroffice.forum_group
+CREATE TABLE IF NOT EXISTS `forum_group` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Unique column',
+  `description` text COLLATE utf8_unicode_ci,
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `name` (`name`),
+  KEY `company_id` (`company_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 -- Dumping data for table centeroffice.forum_group: ~0 rows (approximately)
 /*!40000 ALTER TABLE `forum_group` DISABLE KEYS */;
 /*!40000 ALTER TABLE `forum_group` ENABLE KEYS */;
+
+
+-- Dumping structure for table centeroffice.invitation
+CREATE TABLE IF NOT EXISTS `invitation` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `event_id` bigint(20) unsigned NOT NULL,
+  `owner_id` int(11) unsigned NOT NULL COMMENT 'id of department and employee',
+  `owner_table` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'department' COMMENT '[department, employee]',
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `event_id` (`event_id`),
+  KEY `employee_id` (`owner_id`),
+  KEY `object` (`owner_table`),
+  KEY `company_id` (`company_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Dumping data for table centeroffice.invitation: ~0 rows (approximately)
 /*!40000 ALTER TABLE `invitation` DISABLE KEYS */;
 /*!40000 ALTER TABLE `invitation` ENABLE KEYS */;
 
+
+-- Dumping structure for table centeroffice.invoice
+CREATE TABLE IF NOT EXISTS `invoice` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) unsigned DEFAULT NULL,
+  `employee_id` int(11) unsigned NOT NULL,
+  `staff_id` mediumint(9) unsigned DEFAULT '0',
+  `plan_type_detail_id` int(11) unsigned DEFAULT NULL,
+  `campaign_id` int(11) unsigned DEFAULT NULL,
+  `period_time_id` int(11) unsigned NOT NULL,
+  `payment_method_id` int(11) unsigned DEFAULT NULL,
+  `invoice_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `total_money` int(11) unsigned NOT NULL,
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `company_id` (`company_id`),
+  KEY `plan_type_detail_id` (`plan_type_detail_id`),
+  KEY `period_time_id` (`period_time_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 -- Dumping data for table centeroffice.invoice: ~0 rows (approximately)
 /*!40000 ALTER TABLE `invoice` DISABLE KEYS */;
 /*!40000 ALTER TABLE `invoice` ENABLE KEYS */;
+
+
+-- Dumping structure for table centeroffice.languague
+CREATE TABLE IF NOT EXISTS `languague` (
+  `id` smallint(6) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `language_code` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `language_code` (`language_code`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Dumping data for table centeroffice.languague: ~2 rows (approximately)
 /*!40000 ALTER TABLE `languague` DISABLE KEYS */;
@@ -375,17 +1098,75 @@ INSERT INTO `languague` (`id`, `name`, `language_code`, `datetime_created`, `las
 	(2, 'English', 'en', 0, 0, 0, 0, b'0');
 /*!40000 ALTER TABLE `languague` ENABLE KEYS */;
 
+
+-- Dumping structure for table centeroffice.like
+CREATE TABLE IF NOT EXISTS `like` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `owner_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `owner_table` varchar(50) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'activity',
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `company_id` (`company_id`),
+  KEY `employee_id` (`employee_id`),
+  KEY `owner_id` (`owner_id`),
+  KEY `owner_table` (`owner_table`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 -- Dumping data for table centeroffice.like: ~0 rows (approximately)
 /*!40000 ALTER TABLE `like` DISABLE KEYS */;
 /*!40000 ALTER TABLE `like` ENABLE KEYS */;
+
+
+-- Dumping structure for table centeroffice.marriage_status
+CREATE TABLE IF NOT EXISTS `marriage_status` (
+  `id` tinyint(1) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Unique column',
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Dumping data for table centeroffice.marriage_status: ~0 rows (approximately)
 /*!40000 ALTER TABLE `marriage_status` DISABLE KEYS */;
 /*!40000 ALTER TABLE `marriage_status` ENABLE KEYS */;
 
+
+-- Dumping structure for table centeroffice.message
+CREATE TABLE IF NOT EXISTS `message` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `subject` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `content` text COLLATE utf8_unicode_ci NOT NULL,
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `employee_id` (`employee_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 -- Dumping data for table centeroffice.message: ~0 rows (approximately)
 /*!40000 ALTER TABLE `message` DISABLE KEYS */;
 /*!40000 ALTER TABLE `message` ENABLE KEYS */;
+
+
+-- Dumping structure for table centeroffice.migration
+CREATE TABLE IF NOT EXISTS `migration` (
+  `version` varchar(180) COLLATE utf8_unicode_ci NOT NULL,
+  `apply_time` int(11) DEFAULT NULL,
+  PRIMARY KEY (`version`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Dumping data for table centeroffice.migration: ~2 rows (approximately)
 /*!40000 ALTER TABLE `migration` DISABLE KEYS */;
@@ -394,23 +1175,113 @@ INSERT INTO `migration` (`version`, `apply_time`) VALUES
 	('m130524_201442_init', 1450325367);
 /*!40000 ALTER TABLE `migration` ENABLE KEYS */;
 
+
+-- Dumping structure for table centeroffice.nation
+CREATE TABLE IF NOT EXISTS `nation` (
+  `id` smallint(6) unsigned NOT NULL AUTO_INCREMENT,
+  `country_id` int(11) unsigned NOT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `country_id` (`country_id`),
+  KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 -- Dumping data for table centeroffice.nation: ~0 rows (approximately)
 /*!40000 ALTER TABLE `nation` DISABLE KEYS */;
 /*!40000 ALTER TABLE `nation` ENABLE KEYS */;
+
+
+-- Dumping structure for table centeroffice.news
+CREATE TABLE IF NOT EXISTS `news` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `staff_id` mediumint(9) unsigned NOT NULL DEFAULT '0',
+  `title` mediumtext COLLATE utf8_unicode_ci NOT NULL,
+  `content` text COLLATE utf8_unicode_ci NOT NULL,
+  `content_parse` text COLLATE utf8_unicode_ci NOT NULL,
+  `image_path` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `staff_id` (`staff_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Dumping data for table centeroffice.news: ~0 rows (approximately)
 /*!40000 ALTER TABLE `news` DISABLE KEYS */;
 /*!40000 ALTER TABLE `news` ENABLE KEYS */;
 
+
+-- Dumping structure for table centeroffice.news_allocation
+CREATE TABLE IF NOT EXISTS `news_allocation` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `news_id` int(11) unsigned NOT NULL,
+  `news_category_id` int(11) unsigned NOT NULL,
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `news_id` (`news_id`),
+  KEY `news_category_id` (`news_category_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 -- Dumping data for table centeroffice.news_allocation: ~0 rows (approximately)
 /*!40000 ALTER TABLE `news_allocation` DISABLE KEYS */;
 /*!40000 ALTER TABLE `news_allocation` ENABLE KEYS */;
+
+
+-- Dumping structure for table centeroffice.news_category
+CREATE TABLE IF NOT EXISTS `news_category` (
+  `id` smallint(6) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `description` mediumtext COLLATE utf8_unicode_ci,
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Dumping data for table centeroffice.news_category: ~0 rows (approximately)
 /*!40000 ALTER TABLE `news_category` DISABLE KEYS */;
 /*!40000 ALTER TABLE `news_category` ENABLE KEYS */;
 
--- Dumping data for table centeroffice.notification: ~219 rows (approximately)
+
+-- Dumping structure for table centeroffice.notification
+CREATE TABLE IF NOT EXISTS `notification` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `owner_id` bigint(20) unsigned NOT NULL,
+  `owner_table` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `employee_id` int(11) unsigned NOT NULL,
+  `owner_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `type` varchar(99) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Unique column',
+  `content` mediumtext COLLATE utf8_unicode_ci,
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `owner_id` (`owner_id`),
+  KEY `owner_table` (`owner_table`),
+  KEY `employee_id` (`employee_id`),
+  KEY `owner_employee_id` (`owner_employee_id`),
+  KEY `type` (`type`),
+  KEY `company_id` (`company_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=202 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- Dumping data for table centeroffice.notification: ~201 rows (approximately)
 /*!40000 ALTER TABLE `notification` DISABLE KEYS */;
 INSERT INTO `notification` (`id`, `company_id`, `owner_id`, `owner_table`, `employee_id`, `owner_employee_id`, `type`, `content`, `datetime_created`, `lastup_datetime`, `created_employee_id`, `lastup_employee_id`, `disabled`) VALUES
 	(1, 0, 1, 'project', 1, 1, 'create_project', 'kk  Ngày tạo  Test new databaseTest new databaseTest new databaseTest new database', 1460106767, 1460106767, 1, 1, b'0'),
@@ -616,6 +1487,21 @@ INSERT INTO `notification` (`id`, `company_id`, `owner_id`, `owner_table`, `empl
 	(201, 2, 63, 'project', 23, 21, 'create_project', 'ta hong gam  đã tạo  Vu thuy trinh company 1 no see', 1461053399, 1461053399, 21, 21, b'0');
 /*!40000 ALTER TABLE `notification` ENABLE KEYS */;
 
+
+-- Dumping structure for table centeroffice.package
+CREATE TABLE IF NOT EXISTS `package` (
+  `id` smallint(6) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(50) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Unique column',
+  `description` mediumtext COLLATE utf8_unicode_ci,
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `name` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 -- Dumping data for table centeroffice.package: ~3 rows (approximately)
 /*!40000 ALTER TABLE `package` DISABLE KEYS */;
 INSERT INTO `package` (`id`, `name`, `description`, `datetime_created`, `lastup_datetime`, `created_employee_id`, `lastup_employee_id`, `disabled`) VALUES
@@ -624,29 +1510,147 @@ INSERT INTO `package` (`id`, `name`, `description`, `datetime_created`, `lastup_
 	(3, 'backend', NULL, 0, 0, 0, 0, b'0');
 /*!40000 ALTER TABLE `package` ENABLE KEYS */;
 
+
+-- Dumping structure for table centeroffice.payment_method
+CREATE TABLE IF NOT EXISTS `payment_method` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(99) COLLATE utf8_unicode_ci NOT NULL,
+  `description` mediumtext COLLATE utf8_unicode_ci,
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 -- Dumping data for table centeroffice.payment_method: ~0 rows (approximately)
 /*!40000 ALTER TABLE `payment_method` DISABLE KEYS */;
 /*!40000 ALTER TABLE `payment_method` ENABLE KEYS */;
+
+
+-- Dumping structure for table centeroffice.period_time
+CREATE TABLE IF NOT EXISTS `period_time` (
+  `id` smallint(6) unsigned NOT NULL AUTO_INCREMENT,
+  `length` smallint(6) unsigned NOT NULL DEFAULT '0',
+  `description` mediumtext COLLATE utf8_unicode_ci,
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `length` (`length`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Dumping data for table centeroffice.period_time: ~0 rows (approximately)
 /*!40000 ALTER TABLE `period_time` DISABLE KEYS */;
 /*!40000 ALTER TABLE `period_time` ENABLE KEYS */;
 
+
+-- Dumping structure for table centeroffice.plan_type
+CREATE TABLE IF NOT EXISTS `plan_type` (
+  `id` smallint(6) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `description` mediumtext COLLATE utf8_unicode_ci,
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 -- Dumping data for table centeroffice.plan_type: ~0 rows (approximately)
 /*!40000 ALTER TABLE `plan_type` DISABLE KEYS */;
 /*!40000 ALTER TABLE `plan_type` ENABLE KEYS */;
+
+
+-- Dumping structure for table centeroffice.plan_type_detail
+CREATE TABLE IF NOT EXISTS `plan_type_detail` (
+  `id` smallint(6) unsigned NOT NULL AUTO_INCREMENT,
+  `plan_type_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `max_user` smallint(6) unsigned NOT NULL,
+  `max_storage_capacity` int(11) unsigned NOT NULL,
+  `fee` int(10) unsigned NOT NULL,
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `plan_type_id` (`plan_type_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Dumping data for table centeroffice.plan_type_detail: ~0 rows (approximately)
 /*!40000 ALTER TABLE `plan_type_detail` DISABLE KEYS */;
 /*!40000 ALTER TABLE `plan_type_detail` ENABLE KEYS */;
 
+
+-- Dumping structure for table centeroffice.position
+CREATE TABLE IF NOT EXISTS `position` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Unique column',
+  `description` text COLLATE utf8_unicode_ci,
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `name` (`name`),
+  KEY `company_id` (`company_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 -- Dumping data for table centeroffice.position: ~0 rows (approximately)
 /*!40000 ALTER TABLE `position` DISABLE KEYS */;
 /*!40000 ALTER TABLE `position` ENABLE KEYS */;
 
+
+-- Dumping structure for table centeroffice.post
+CREATE TABLE IF NOT EXISTS `post` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `subject_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `parent_post_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `content` text COLLATE utf8_unicode_ci NOT NULL,
+  `is_reviewed` bit(1) NOT NULL DEFAULT b'1',
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `subject_id` (`subject_id`),
+  KEY `parent_post_id` (`parent_post_id`),
+  KEY `employee_id` (`employee_id`),
+  KEY `is_reviewed` (`is_reviewed`),
+  KEY `company_id` (`company_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 -- Dumping data for table centeroffice.post: ~0 rows (approximately)
 /*!40000 ALTER TABLE `post` DISABLE KEYS */;
 /*!40000 ALTER TABLE `post` ENABLE KEYS */;
+
+
+-- Dumping structure for table centeroffice.priority
+CREATE TABLE IF NOT EXISTS `priority` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `description` text COLLATE utf8_unicode_ci,
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `company_id` (`company_id`),
+  KEY `name` (`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Dumping data for table centeroffice.priority: ~8 rows (approximately)
 /*!40000 ALTER TABLE `priority` DISABLE KEYS */;
@@ -661,7 +1665,38 @@ INSERT INTO `priority` (`id`, `company_id`, `name`, `description`, `datetime_cre
 	(8, 2, 'Nộp ngày mai', NULL, 0, 0, 0, 0, b'0');
 /*!40000 ALTER TABLE `priority` ENABLE KEYS */;
 
--- Dumping data for table centeroffice.project: ~48 rows (approximately)
+
+-- Dumping structure for table centeroffice.project
+CREATE TABLE IF NOT EXISTS `project` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `manager_project_id` int(11) unsigned DEFAULT '0',
+  `priority_id` int(11) unsigned NOT NULL,
+  `status_id` int(11) unsigned NOT NULL,
+  `parent_id` int(11) unsigned NOT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `description` mediumtext COLLATE utf8_unicode_ci NOT NULL,
+  `description_parse` mediumtext COLLATE utf8_unicode_ci NOT NULL,
+  `start_datetime` int(11) unsigned DEFAULT '0',
+  `duedatetime` int(11) unsigned DEFAULT '0',
+  `completed_percent` tinyint(3) unsigned NOT NULL DEFAULT '0',
+  `estimate_hour` int(11) unsigned DEFAULT '0',
+  `worked_hour` int(11) unsigned DEFAULT '0',
+  `is_public` bit(1) NOT NULL DEFAULT b'1',
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `manager_project_id` (`manager_project_id`),
+  KEY `priority_id` (`priority_id`),
+  KEY `status_id` (`status_id`),
+  KEY `parent_id` (`parent_id`),
+  KEY `company_id` (`company_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=64 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- Dumping data for table centeroffice.project: ~51 rows (approximately)
 /*!40000 ALTER TABLE `project` DISABLE KEYS */;
 INSERT INTO `project` (`id`, `company_id`, `manager_project_id`, `priority_id`, `status_id`, `parent_id`, `name`, `description`, `description_parse`, `start_datetime`, `duedatetime`, `completed_percent`, `estimate_hour`, `worked_hour`, `is_public`, `datetime_created`, `lastup_datetime`, `created_employee_id`, `lastup_employee_id`, `disabled`) VALUES
 	(1, 0, 2, 2, 2, 0, 'Test new databaseTest new databaseTest new databaseTest new database', 'Test new databaseTest new databaseTest new databaseTest new databaseTest new databaseTest new databaseTest new databaseTest new databaseTest new databaseTest new databaseTest new databaseTest new databaseTest new database', 'Test new databaseTest new databaseTest new databaseTest new databaseTest new databaseTest new databaseTest new databaseTest new databaseTest new databaseTest new databaseTest new databaseTest new databaseTest new database', NULL, NULL, 39, 443, 97, b'1', 1460106767, 1460106767, 1, 1, b'0'),
@@ -717,7 +1752,27 @@ INSERT INTO `project` (`id`, `company_id`, `manager_project_id`, `priority_id`, 
 	(63, 2, 23, 7, 6, 0, 'Vu thuy trinh company 1 no see', 'Ta hong gam company 2 no seeTa hong gam company 2 no seeTa hong gam company 2 no see', 'Ta hong gam company 2 no seeTa hong gam company 2 no seeTa hong gam company 2 no see', NULL, NULL, 87, 0, 0, b'1', 1461053399, 1461053399, 21, 21, b'0');
 /*!40000 ALTER TABLE `project` ENABLE KEYS */;
 
--- Dumping data for table centeroffice.project_participant: ~74 rows (approximately)
+
+-- Dumping structure for table centeroffice.project_participant
+CREATE TABLE IF NOT EXISTS `project_participant` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `project_id` int(11) unsigned NOT NULL,
+  `owner_id` int(11) unsigned NOT NULL,
+  `owner_table` varchar(50) COLLATE utf8_unicode_ci NOT NULL COMMENT '[department and employee]',
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `project_id` (`project_id`),
+  KEY `employee_id` (`owner_id`),
+  KEY `owner_table` (`owner_table`),
+  KEY `company_id` (`company_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=86 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- Dumping data for table centeroffice.project_participant: ~81 rows (approximately)
 /*!40000 ALTER TABLE `project_participant` DISABLE KEYS */;
 INSERT INTO `project_participant` (`id`, `company_id`, `project_id`, `owner_id`, `owner_table`, `datetime_created`, `lastup_datetime`, `created_employee_id`, `lastup_employee_id`, `disabled`) VALUES
 	(1, 0, 1, 1, 'employee', 1460106767, 1460106767, 1, 1, b'0'),
@@ -803,33 +1858,187 @@ INSERT INTO `project_participant` (`id`, `company_id`, `project_id`, `owner_id`,
 	(85, 2, 63, 21, 'employee', 1461053399, 1461053399, 21, 21, b'0');
 /*!40000 ALTER TABLE `project_participant` ENABLE KEYS */;
 
+
+-- Dumping structure for table centeroffice.province
+CREATE TABLE IF NOT EXISTS `province` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `country_id` int(11) unsigned NOT NULL,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Unique column',
+  `code` varchar(50) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Unique column',
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `country_id` (`country_id`),
+  KEY `name` (`name`),
+  KEY `code` (`code`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 -- Dumping data for table centeroffice.province: ~0 rows (approximately)
 /*!40000 ALTER TABLE `province` DISABLE KEYS */;
 /*!40000 ALTER TABLE `province` ENABLE KEYS */;
+
+
+-- Dumping structure for table centeroffice.religion
+CREATE TABLE IF NOT EXISTS `religion` (
+  `id` smallint(6) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Unique column',
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Dumping data for table centeroffice.religion: ~0 rows (approximately)
 /*!40000 ALTER TABLE `religion` DISABLE KEYS */;
 /*!40000 ALTER TABLE `religion` ENABLE KEYS */;
 
+
+-- Dumping structure for table centeroffice.remind
+CREATE TABLE IF NOT EXISTS `remind` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `owner_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `owner_table` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `content` mediumtext COLLATE utf8_unicode_ci,
+  `remind_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `minute_before` int(11) unsigned NOT NULL DEFAULT '0',
+  `repeated_time` int(11) unsigned NOT NULL DEFAULT '0',
+  `is_snoozing` bit(1) NOT NULL DEFAULT b'0',
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `employee_id` (`employee_id`),
+  KEY `owner_id` (`owner_id`),
+  KEY `owner_table` (`owner_table`),
+  KEY `company_id` (`company_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 -- Dumping data for table centeroffice.remind: ~0 rows (approximately)
 /*!40000 ALTER TABLE `remind` DISABLE KEYS */;
 /*!40000 ALTER TABLE `remind` ENABLE KEYS */;
+
+
+-- Dumping structure for table centeroffice.reply
+CREATE TABLE IF NOT EXISTS `reply` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `staff_id` mediumint(9) unsigned NOT NULL DEFAULT '0',
+  `employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `message_id` int(11) unsigned DEFAULT '0',
+  `content` mediumtext COLLATE utf8_unicode_ci NOT NULL,
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `staff_id` (`staff_id`),
+  KEY `employee_id` (`employee_id`),
+  KEY `message_id` (`message_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Dumping data for table centeroffice.reply: ~0 rows (approximately)
 /*!40000 ALTER TABLE `reply` DISABLE KEYS */;
 /*!40000 ALTER TABLE `reply` ENABLE KEYS */;
 
+
+-- Dumping structure for table centeroffice.requestment
+CREATE TABLE IF NOT EXISTS `requestment` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `requestment_category_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `review_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `description` mediumtext COLLATE utf8_unicode_ci NOT NULL,
+  `description_parse` mediumtext COLLATE utf8_unicode_ci NOT NULL,
+  `datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `period_time` smallint(6) unsigned NOT NULL,
+  `reason` mediumtext COLLATE utf8_unicode_ci,
+  `is_accept` bit(1) NOT NULL DEFAULT b'0',
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `employee_id` (`employee_id`),
+  KEY `requestment_group_id` (`requestment_category_id`),
+  KEY `reviewing_employee_id` (`review_employee_id`),
+  KEY `is_accept` (`is_accept`),
+  KEY `company_id` (`company_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 -- Dumping data for table centeroffice.requestment: ~0 rows (approximately)
 /*!40000 ALTER TABLE `requestment` DISABLE KEYS */;
 /*!40000 ALTER TABLE `requestment` ENABLE KEYS */;
+
+
+-- Dumping structure for table centeroffice.requestment_allocation
+CREATE TABLE IF NOT EXISTS `requestment_allocation` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `requestment_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `task_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `requestment_id` (`requestment_id`),
+  KEY `task_id` (`task_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Dumping data for table centeroffice.requestment_allocation: ~0 rows (approximately)
 /*!40000 ALTER TABLE `requestment_allocation` DISABLE KEYS */;
 /*!40000 ALTER TABLE `requestment_allocation` ENABLE KEYS */;
 
+
+-- Dumping structure for table centeroffice.requestment_category
+CREATE TABLE IF NOT EXISTS `requestment_category` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Unique column',
+  `description` mediumtext COLLATE utf8_unicode_ci,
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `name` (`name`),
+  KEY `company_id` (`company_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 -- Dumping data for table centeroffice.requestment_category: ~0 rows (approximately)
 /*!40000 ALTER TABLE `requestment_category` DISABLE KEYS */;
 /*!40000 ALTER TABLE `requestment_category` ENABLE KEYS */;
+
+
+-- Dumping structure for table centeroffice.sending_template_group
+CREATE TABLE IF NOT EXISTS `sending_template_group` (
+  `id` smallint(6) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(99) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Unique column',
+  `column_name` varchar(99) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Unique column',
+  `description` text COLLATE utf8_unicode_ci,
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `name` (`name`),
+  KEY `column_name` (`column_name`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Dumping data for table centeroffice.sending_template_group: ~1 rows (approximately)
 /*!40000 ALTER TABLE `sending_template_group` DISABLE KEYS */;
@@ -837,7 +2046,31 @@ INSERT INTO `sending_template_group` (`id`, `name`, `column_name`, `description`
 	(1, 'event', 'event', NULL, 0, 0, 0, 0, b'0');
 /*!40000 ALTER TABLE `sending_template_group` ENABLE KEYS */;
 
--- Dumping data for table centeroffice.sms: ~95 rows (approximately)
+
+-- Dumping structure for table centeroffice.sms
+CREATE TABLE IF NOT EXISTS `sms` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `owner_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `owner_table` varchar(50) COLLATE utf8_unicode_ci NOT NULL COMMENT 'table join to',
+  `content` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `is_success` bit(1) NOT NULL DEFAULT b'1',
+  `fee` int(11) unsigned DEFAULT '0',
+  `agency_gateway` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `owner_id` (`owner_id`),
+  KEY `employee_id` (`employee_id`),
+  KEY `owner_table` (`owner_table`),
+  KEY `company_id` (`company_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=109 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- Dumping data for table centeroffice.sms: ~108 rows (approximately)
 /*!40000 ALTER TABLE `sms` DISABLE KEYS */;
 INSERT INTO `sms` (`id`, `company_id`, `owner_id`, `employee_id`, `owner_table`, `content`, `is_success`, `fee`, `agency_gateway`, `datetime_created`, `lastup_datetime`, `created_employee_id`, `lastup_employee_id`, `disabled`) VALUES
 	(1, 0, 2, 1, 'project', 'kk  Ngày tạo  Test new database with company_id', b'1', 0, NULL, 1460106964, 1460106964, 1, 1, b'0'),
@@ -950,6 +2183,27 @@ INSERT INTO `sms` (`id`, `company_id`, `owner_id`, `employee_id`, `owner_table`,
 	(108, 1, 62, 23, 'project', 'vu thuy trinh  đã tạo  Ta hong gam company 2 no see', b'1', 0, NULL, 1461053328, 1461053328, 13, 13, b'0');
 /*!40000 ALTER TABLE `sms` ENABLE KEYS */;
 
+
+-- Dumping structure for table centeroffice.sms_template
+CREATE TABLE IF NOT EXISTS `sms_template` (
+  `id` smallint(6) unsigned NOT NULL AUTO_INCREMENT,
+  `sending_template_group_id` smallint(6) unsigned NOT NULL DEFAULT '0',
+  `language_id` smallint(6) unsigned NOT NULL DEFAULT '0',
+  `body` mediumtext COLLATE utf8_unicode_ci NOT NULL,
+  `column_name` varchar(99) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Unique column',
+  `default_from_phone_no` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `language_code` varchar(10) COLLATE utf8_unicode_ci NOT NULL DEFAULT '',
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `sending_template_group_id` (`sending_template_group_id`),
+  KEY `column_name` (`column_name`),
+  KEY `language_code` (`language_code`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 -- Dumping data for table centeroffice.sms_template: ~4 rows (approximately)
 /*!40000 ALTER TABLE `sms_template` DISABLE KEYS */;
 INSERT INTO `sms_template` (`id`, `sending_template_group_id`, `language_id`, `body`, `column_name`, `default_from_phone_no`, `language_code`, `datetime_created`, `lastup_datetime`, `created_employee_id`, `lastup_employee_id`, `disabled`) VALUES
@@ -959,9 +2213,52 @@ INSERT INTO `sms_template` (`id`, `sending_template_group_id`, `language_id`, `b
 	(4, 1, 0, '{creator name} đã chỉnh sửa sự kiện {event name}', 'edit_event', '0919644092', 'vi', 0, 0, 0, 0, b'0');
 /*!40000 ALTER TABLE `sms_template` ENABLE KEYS */;
 
+
+-- Dumping structure for table centeroffice.staff
+CREATE TABLE IF NOT EXISTS `staff` (
+  `id` mediumint(9) unsigned NOT NULL AUTO_INCREMENT,
+  `authority_id` smallint(6) unsigned NOT NULL DEFAULT '0',
+  `job_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `email` varchar(99) COLLATE utf8_unicode_ci NOT NULL,
+  `phone_no` varchar(20) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `address` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `username` varchar(128) COLLATE utf8_unicode_ci NOT NULL,
+  `password` varchar(64) COLLATE utf8_unicode_ci NOT NULL,
+  `leaving_date` int(11) unsigned DEFAULT '0',
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `job_id` (`job_id`),
+  KEY `name` (`name`),
+  KEY `email` (`email`),
+  KEY `username` (`username`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 -- Dumping data for table centeroffice.staff: ~0 rows (approximately)
 /*!40000 ALTER TABLE `staff` DISABLE KEYS */;
 /*!40000 ALTER TABLE `staff` ENABLE KEYS */;
+
+
+-- Dumping structure for table centeroffice.status
+CREATE TABLE IF NOT EXISTS `status` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `description` mediumtext COLLATE utf8_unicode_ci,
+  `column_name` varchar(99) COLLATE utf8_unicode_ci NOT NULL,
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `company_id` (`company_id`),
+  KEY `column_name` (`column_name`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Dumping data for table centeroffice.status: ~7 rows (approximately)
 /*!40000 ALTER TABLE `status` DISABLE KEYS */;
@@ -975,33 +2272,193 @@ INSERT INTO `status` (`id`, `company_id`, `name`, `description`, `column_name`, 
 	(7, 2, 'Hoàn thanh 2', NULL, 'project', 0, 0, 0, 0, b'0');
 /*!40000 ALTER TABLE `status` ENABLE KEYS */;
 
+
+-- Dumping structure for table centeroffice.subject
+CREATE TABLE IF NOT EXISTS `subject` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `content` mediumtext COLLATE utf8_unicode_ci NOT NULL,
+  `is_reviewed` bit(1) NOT NULL DEFAULT b'1',
+  `total_view` int(11) unsigned NOT NULL DEFAULT '0',
+  `total_reply` int(11) unsigned DEFAULT '0',
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `employee_id` (`employee_id`),
+  KEY `is_reviewed` (`is_reviewed`),
+  KEY `company_id` (`company_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 -- Dumping data for table centeroffice.subject: ~0 rows (approximately)
 /*!40000 ALTER TABLE `subject` DISABLE KEYS */;
 /*!40000 ALTER TABLE `subject` ENABLE KEYS */;
+
+
+-- Dumping structure for table centeroffice.subscriber
+CREATE TABLE IF NOT EXISTS `subscriber` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `email` varchar(99) COLLATE utf8_unicode_ci NOT NULL,
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `email` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Dumping data for table centeroffice.subscriber: ~0 rows (approximately)
 /*!40000 ALTER TABLE `subscriber` DISABLE KEYS */;
 /*!40000 ALTER TABLE `subscriber` ENABLE KEYS */;
 
+
+-- Dumping structure for table centeroffice.system_setting
+CREATE TABLE IF NOT EXISTS `system_setting` (
+  `id` smallint(6) unsigned NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Unique column',
+  `column_name` varchar(99) COLLATE utf8_unicode_ci NOT NULL COMMENT 'Unique column',
+  `value` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `description` text COLLATE utf8_unicode_ci,
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `name` (`name`),
+  KEY `column_name` (`column_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 -- Dumping data for table centeroffice.system_setting: ~0 rows (approximately)
 /*!40000 ALTER TABLE `system_setting` DISABLE KEYS */;
 /*!40000 ALTER TABLE `system_setting` ENABLE KEYS */;
+
+
+-- Dumping structure for table centeroffice.task
+CREATE TABLE IF NOT EXISTS `task` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `project_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `priority_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `status_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `kpi_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `parent_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `description` mediumtext COLLATE utf8_unicode_ci NOT NULL,
+  `description_parse` mediumtext COLLATE utf8_unicode_ci,
+  `start_datetime` int(11) unsigned DEFAULT '0',
+  `duedatetime` int(11) unsigned DEFAULT '0',
+  `estimate_hour` int(11) unsigned DEFAULT '0',
+  `worked_hour` int(11) unsigned DEFAULT '0',
+  `completed_percent` tinyint(3) unsigned DEFAULT '0',
+  `is_public` bit(1) NOT NULL DEFAULT b'1',
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `project_id` (`project_id`),
+  KEY `priority_id` (`priority_id`),
+  KEY `status_id` (`status_id`),
+  KEY `kpi_id` (`kpi_id`),
+  KEY `parent_id` (`parent_id`),
+  KEY `employee_id` (`employee_id`),
+  KEY `company_id` (`company_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Dumping data for table centeroffice.task: ~0 rows (approximately)
 /*!40000 ALTER TABLE `task` DISABLE KEYS */;
 /*!40000 ALTER TABLE `task` ENABLE KEYS */;
 
+
+-- Dumping structure for table centeroffice.task_assignment
+CREATE TABLE IF NOT EXISTS `task_assignment` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `task_id` bigint(20) unsigned NOT NULL,
+  `employee_id` int(11) unsigned NOT NULL,
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `task_id` (`task_id`),
+  KEY `employee_id` (`employee_id`),
+  KEY `company_id` (`company_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 -- Dumping data for table centeroffice.task_assignment: ~0 rows (approximately)
 /*!40000 ALTER TABLE `task_assignment` DISABLE KEYS */;
 /*!40000 ALTER TABLE `task_assignment` ENABLE KEYS */;
+
+
+-- Dumping structure for table centeroffice.task_group
+CREATE TABLE IF NOT EXISTS `task_group` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `project_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `description` mediumtext COLLATE utf8_unicode_ci,
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `company_id` (`company_id`),
+  KEY `project_id` (`project_id`),
+  KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Dumping data for table centeroffice.task_group: ~0 rows (approximately)
 /*!40000 ALTER TABLE `task_group` DISABLE KEYS */;
 /*!40000 ALTER TABLE `task_group` ENABLE KEYS */;
 
+
+-- Dumping structure for table centeroffice.task_group_allocation
+CREATE TABLE IF NOT EXISTS `task_group_allocation` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `task_group_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `task_id` bigint(20) unsigned NOT NULL DEFAULT '0',
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` int(11) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `company_id` (`company_id`),
+  KEY `task_group_id` (`task_group_id`),
+  KEY `task_id` (`task_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 -- Dumping data for table centeroffice.task_group_allocation: ~0 rows (approximately)
 /*!40000 ALTER TABLE `task_group_allocation` DISABLE KEYS */;
 /*!40000 ALTER TABLE `task_group_allocation` ENABLE KEYS */;
+
+
+-- Dumping structure for table centeroffice.zipcode
+CREATE TABLE IF NOT EXISTS `zipcode` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `city` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `state` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `zipcode` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
+  `datetime_created` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_datetime` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `lastup_employee_id` int(11) unsigned NOT NULL DEFAULT '0',
+  `disabled` bit(1) NOT NULL DEFAULT b'0',
+  PRIMARY KEY (`id`),
+  KEY `zipcode` (`zipcode`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Dumping data for table centeroffice.zipcode: ~0 rows (approximately)
 /*!40000 ALTER TABLE `zipcode` DISABLE KEYS */;
