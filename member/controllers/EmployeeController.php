@@ -30,10 +30,12 @@ class EmployeeController extends ApiController {
         if(count($departments)){
            $query->andWhere(['not in','department_id',$departments]) ;
         }
+        
         //check manager
         if(isset($manager['id'])){
            $query->andWhere(['!=','id',$manager['id']]) ;
         }
+        
         //check member
         if(count($members)){
             $ids = [];
@@ -42,7 +44,9 @@ class EmployeeController extends ApiController {
             }
            $query->andWhere(['not in','id',$ids]) ;
         }
+        
         $employees = $query->all();
+        
         foreach($employees as $employee){
             $objects[] = [
                 'id' => $employee->id,
@@ -51,6 +55,7 @@ class EmployeeController extends ApiController {
                 'image' => $employee->getImage()
             ];
         }
+        
         return $this->sendResponse($error, $message, $objects);
     }
 }

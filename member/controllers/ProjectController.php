@@ -20,13 +20,11 @@ class ProjectController extends ApiController {
      * @return type
      */
     public function actionIndex() {
-        $error = false;
-        $message = "";
         $collection = [];
         $itemPerPage = \Yii::$app->request->post('itemPerPage', 10);
         $currentPage = \Yii::$app->request->post('currentPage', 1);
+        
         //fetch data
-
         $params = [':empolyee_id' => \Yii::$app->user->getId()];
         $result = Project::getProject($params, $currentPage, $itemPerPage);
         $totalItems = $this->getPagination($result['sql'], $currentPage, $itemPerPage, $params);
@@ -43,9 +41,11 @@ class ProjectController extends ApiController {
                 'theory' => $item['estimate_hour'] > 0 ? ((int) (($item['worked_hour'] / $item['estimate_hour'] ) * 100)) : 0,
             ];
         }
+        
         $objects['collection'] = $collection;
         $objects['totalItems'] = (int) $totalItems;
-        return $this->sendResponse($error, $message, $objects);
+        
+        return $this->sendResponse(false, "", $objects);
     }
 
     /**
@@ -211,8 +211,6 @@ class ProjectController extends ApiController {
      */
 
     public function actionStatus() {
-        $error = false;
-        $message = "";
         $objects = [];
 
         $array = Status::find()->andCompanyId()->andWhere(['column_name' => 'project'])->all();
@@ -222,7 +220,7 @@ class ProjectController extends ApiController {
                 'name' => $item->name
             ];
         }
-        return $this->sendResponse($error, $message, $objects);
+        return $this->sendResponse(false, "", $objects);
     }
 
     /*
@@ -230,8 +228,6 @@ class ProjectController extends ApiController {
      */
 
     public function actionPriority() {
-        $error = false;
-        $message = "";
         $objects = [];
 
         $array = Priority::find()->andCompanyId()->all();
@@ -241,6 +237,6 @@ class ProjectController extends ApiController {
                 'name' => $item->name
             ];
         }
-        return $this->sendResponse($error, $message, $objects);
+        return $this->sendResponse(false, "", $objects);
     }
 }

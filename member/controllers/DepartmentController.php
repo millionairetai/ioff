@@ -11,14 +11,11 @@ class DepartmentController extends ApiController {
     public function actionShow() {
         
     }
-    
-    
+
     /**
      * 
      */
     public function actionAll(){
-        $error = false;
-        $message = "";
         $objects = [];
         $array = Department::find()->andCompanyId()->all();
         foreach($array as $item){
@@ -27,6 +24,6 @@ class DepartmentController extends ApiController {
                 'name' => $item->name,
             ];
         }
-        return $this->sendResponse($error, $message, $objects);
+        return $this->sendResponse(false, "", $objects);
     }
 }
