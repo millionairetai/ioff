@@ -264,4 +264,5 @@ search-product .dropdown-menu{
 }
 #manager-match > .btn{
     min-height: 40px;
+    outline: none;
 }
