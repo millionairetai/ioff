@@ -13,7 +13,7 @@ class StatusController extends ApiController{
         $message = "";
         $objects = [];
 
-        $array = Status::find()->andWhere(['column_name' => 'project'])->all();
+        $array = Status::find()->andCompanyId()->andWhere(['column_name' => 'project'])->all();
         foreach ($array as $item) {
             $objects[] = [
                 'id' => $item->id,

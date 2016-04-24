@@ -205,38 +205,4 @@ class ProjectController extends ApiController {
 
         return $this->sendResponse($error, $message, $objects);
     }
-
-    /*
-     * 
-     */
-
-    public function actionStatus() {
-        $objects = [];
-
-        $array = Status::find()->andCompanyId()->andWhere(['column_name' => 'project'])->all();
-        foreach ($array as $item) {
-            $objects[] = [
-                'id' => $item->id,
-                'name' => $item->name
-            ];
-        }
-        return $this->sendResponse(false, "", $objects);
-    }
-
-    /*
-     * 
-     */
-
-    public function actionPriority() {
-        $objects = [];
-
-        $array = Priority::find()->andCompanyId()->all();
-        foreach ($array as $item) {
-            $objects[] = [
-                'id' => $item->id,
-                'name' => $item->name
-            ];
-        }
-        return $this->sendResponse(false, "", $objects);
-    }
 }

@@ -13,7 +13,7 @@ class PriorityController extends ApiController{
         $message = "";
         $objects = [];
 
-        $array = Priority::find()->all();
+        $array = Priority::find()->andCompanyId()->all();
         foreach ($array as $item) {
             $objects[] = [
                 'id' => $item->id,
