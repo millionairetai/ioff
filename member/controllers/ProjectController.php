@@ -135,7 +135,7 @@ class ProjectController extends ApiController {
                 //notifycation
                 $arrayEmployees = [];
                 $is_query = false;
-                $query = Employee::find()->andCompanyId();
+                $query = Employee::find();
                 
                 if (isset($dataPost['departments']) && count($dataPost['departments'])) {
                     $is_query = true;
@@ -153,11 +153,14 @@ class ProjectController extends ApiController {
                 
                 if ($is_query) {
                     $content = \Yii::$app->user->getIdentity()->firstname . " " . \Yii::t('common', 'created') . " " . $ob->name;
-                    $arrayEmployees = $query->all();
+                    $arrayEmployees = $query->andCompanyId()->all();
                     $dataSend = [
                         '{creator name}' => \Yii::$app->user->getIdentity()->firstname,
                         '{project name}' => $ob->name
                     ];
+                    
+                    $themeEmail = \common\models\EmailTemplate::getThemeCreateProject();
+                    $themeSms = \common\models\SmsTemplate::getThemeCreateProject();
                     
                     foreach ($arrayEmployees as $item) {
                         $no = new Notification();
@@ -173,7 +176,6 @@ class ProjectController extends ApiController {
                         }
                         
                         //send email 
-                        $themeEmail = \common\models\EmailTemplate::getThemeCreateProject();
                         $item->sendMail($dataSend, $themeEmail);
 
                         //send sms

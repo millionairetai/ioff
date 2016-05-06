@@ -3,3 +3,5 @@
 3. Think about popup is same together of project and task.
 4. Think about title of popup.
 5. notification & sms -> firstname . lastname
+6. Company_id add at the first condition, raise bugs about where condition.
+7. Merge code must be carefully, if not will raise bugs, no merge automatically.
