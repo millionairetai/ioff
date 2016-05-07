@@ -112,4 +112,72 @@ class QueryBuilder extends \yii\db\mysql\QueryBuilder
         }
         return $tables;
     }
+    
+    /**
+     * Generates a batch INSERT SQL statement with common fields
+     * For example,
+     *
+     * ```php
+     * $sql = $queryBuilder->batchInsert('user', ['name', 'age'], [
+     *     ['Tom', 30],
+     *     ['Jane', 20],
+     *     ['Linda', 25],
+     * ]);
+     * ```
+     *
+     * Note that the values in each row must match the corresponding column names.
+     *
+     * The method will properly escape the column names, and quote the values to be inserted.
+     *
+     * @param string $table the table that new rows will be inserted into.
+     * @param array $columns the column names
+     * @param array $rows the rows to be batch inserted into the table
+     * @return string the batch INSERT SQL statement
+     */
+    public function batchInsert($table, $columns, $rows)
+    {
+        $unixtime = time();
+        $employeeId = \Yii::$app->user->getId();
+        $columns = array_merge($columns, ['datetime_created', 'lastup_datetime', 'created_employee_id', 'lastup_employee_id', 'disabled']);
+        $schema = $this->db->getSchema();
+        
+        if (($tableSchema = $schema->getTableSchema($table)) !== null) {
+            $columnSchemas = $tableSchema->columns;
+        } else {
+            $columnSchemas = [];
+        }
+
+        $values = [];
+        foreach ($rows as $row) {
+            $vs = [];
+            foreach ($row as $i => $value) {
+                if (isset($columns[$i], $columnSchemas[$columns[$i]]) && !is_array($value)) {
+                    $value = $columnSchemas[$columns[$i]]->dbTypecast($value);
+                }
+                if (is_string($value)) {
+                    $value = $schema->quoteValue($value);
+                } elseif ($value === false) {
+                    $value = 0;
+                } elseif ($value === null) {
+                    $value = 'NULL';
+                }
+                $vs[] = $value;
+            }
+            
+            $vs[]=$unixtime;
+            $vs[]=$unixtime;
+            $vs[]=$employeeId;
+            $vs[]=$employeeId;
+            $vs[]=  ActiveRecord::STATUS_ENABLE;
+            
+            $values[] = '(' . implode(', ', $vs) . ')';
+        }
+        
+        foreach ($columns as $i => $name) {
+            $columns[$i] = $schema->quoteColumnName($name);
+        }
+
+        return 'INSERT INTO ' . $schema->quoteTableName($table)
+        . ' (' . implode(', ', $columns) . ') VALUES ' . implode(', ', $values);
+    }
 }
