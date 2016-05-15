@@ -46,13 +46,6 @@ class SiteController extends Controller
      */
     public function actions()
     {
-        if(Yii::$app->errorHandler->exception->statusCode == 404){
-            return [
-                'error' => [
-                        'class' => 'member\controllers\NotAction',
-                    ],
-                ];
-        }
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',

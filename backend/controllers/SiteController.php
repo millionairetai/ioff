@@ -4,19 +4,18 @@ namespace backend\controllers;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
-use common\models\LoginForm;
+use backend\models\LoginForm;
 use yii\filters\VerbFilter;
 
 /**
  * Site controller
  */
-class SiteController extends Controller
-{
+class SiteController extends Controller {
+
     /**
      * @inheritdoc
      */
-    public function behaviors()
-    {
+    public function behaviors() {
         return [
             'access' => [
                 'class' => AccessControl::className(),
@@ -44,8 +43,17 @@ class SiteController extends Controller
     /**
      * @inheritdoc
      */
-    public function actions()
-    {
+    public function actions() {
+        $exception = Yii::$app->errorHandler->exception;
+        if ($exception !== null) {
+            if (Yii::$app->errorHandler->exception->statusCode == 404) {
+                return [
+                    'error' => [
+                        'class' => 'backend\controllers\NotAction',
+                    ],
+                ];
+            }
+        }
         return [
             'error' => [
                 'class' => 'yii\web\ErrorAction',
@@ -53,13 +61,11 @@ class SiteController extends Controller
         ];
     }
 
-    public function actionIndex()
-    {
+    public function actionIndex() {
         return $this->render('index');
     }
 
-    public function actionLogin()
-    {
+    public function actionLogin() {
         if (!\Yii::$app->user->isGuest) {
             return $this->goHome();
         }
@@ -69,13 +75,12 @@ class SiteController extends Controller
             return $this->goBack();
         } else {
             return $this->render('login', [
-                'model' => $model,
+                        'model' => $model,
             ]);
         }
     }
 
-    public function actionLogout()
-    {
+    public function actionLogout() {
         Yii::$app->user->logout();
 
         return $this->goHome();

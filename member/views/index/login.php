@@ -3,7 +3,9 @@
 use yii\widgets\ActiveForm;
 ?>
 <div class="login-box">
-
+    <div class="login-logo">
+        <a href="../../index2.html"><b>Admin</b>LTE</a>
+    </div><!-- /.login-logo -->
     <div class="login-box-body">
         <div class="login-logo">
             <b>CENTER</b>OFFICE
