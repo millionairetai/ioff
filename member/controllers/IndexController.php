@@ -13,6 +13,9 @@ class IndexController extends Controller
 {
     public function actionLogin()
     {
+        if (!\Yii::$app->user->isGuest) {
+            return $this->redirect('/');
+        }
         $this->layout = "login";
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
@@ -28,7 +31,7 @@ class IndexController extends Controller
     {
         Yii::$app->user->logout();
 
-        return $this->goHome();
+        return $this->redirect('/');
     }
     
     /* ------------------ minify js ------------------------------- */

@@ -14,4 +14,6 @@ return [
     'Meanwhile, you may'=>'Meanwhile, you may',
     'return to dashboard'=>'return to dashboard',
     'or try using the search form'=>'or try using the search form',
+    'Email' => 'Email',
+    'created' => ' Created date ',
 ];

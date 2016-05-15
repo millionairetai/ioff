@@ -14,4 +14,6 @@ return [
     'Meanwhile, you may'=>'Click vào đây',
     'return to dashboard'=>'quay về trang chủ',
     'or try using the search form'=>'hoặc sử dụng trình tìm kiếm',
+    'Email' => 'Email',
+    'created' => ' đã tạo ',
 ];

@@ -11,3 +11,4 @@ class NotAction extends Action
         return $this->controller->render('errors');
     }
 }
+
