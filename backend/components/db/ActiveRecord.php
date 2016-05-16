@@ -1,6 +1,6 @@
 <?php
 
-namespace common\components\db;
+namespace backend\components\db;
 
 use Yii;
 use yii\behaviors\TimestampBehavior;
@@ -8,7 +8,6 @@ use yii\behaviors\BlameableBehavior;
 use yii\behaviors\AttributeBehavior;
 use yii\web\User;
 use common\models\Employee;
-use common\components\db\ActiveQuery;
 
 class ActiveRecord extends \yii\db\ActiveRecord
 {   
@@ -47,6 +46,8 @@ class ActiveRecord extends \yii\db\ActiveRecord
             self::DAY_OF_WEEK_SUN
     );
     
+    const PAGE_SIZE = 20;
+    
     public function behaviors()
     {
         return [
@@ -72,13 +73,6 @@ class ActiveRecord extends \yii\db\ActiveRecord
                 ],
                 'value' => self::STATUS_ENABLE,
             ],
-            [
-                'class' => AttributeBehavior::className(),
-                'attributes' => [
-                    ActiveRecord::EVENT_BEFORE_INSERT => 'company_id',
-                ],
-                'value' => \Yii::$app->user->getCompanyId(),
-            ],
         ];
     }
 
@@ -88,14 +82,6 @@ class ActiveRecord extends \yii\db\ActiveRecord
         return $this->save();
     }
     
-    /**
-     * @inheritdoc
-     * @return ActiveQuery the newly created [[ActiveQuery]] instance.
-     */
-    public static function find()
-    {
-        return new ActiveQuery(get_called_class());
-    }
     
     public function getBirthdateText()
     {
