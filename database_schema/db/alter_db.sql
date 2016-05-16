@@ -13,3 +13,9 @@ CREATE TABLE `job` (
 )
 COLLATE='utf8_unicode_ci'
 ENGINE=InnoDB
+
+--Add total_storage and total_employee to company table.
+ALTER TABLE `company`
+	ADD COLUMN `total_storage` BIGINT(20) UNSIGNED NULL DEFAULT '0' AFTER `language_code`;
+ALTER TABLE `company`
+	ADD COLUMN `total_employee` SMALLINT(6) UNSIGNED NULL DEFAULT '0' AFTER `total_storage`;
