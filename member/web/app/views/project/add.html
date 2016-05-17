@@ -30,22 +30,20 @@
                     <label for="inputPassword3" class="col-sm-3 control-label">{{$root.$lang.project_time}}</label>
 
                     <div class="col-sm-9">
-                        <table class="table-input-time">
-                            <tr>
-                                <td class="padding-input">
-                                    {{$root.$lang.project_start_date}}
-                                </td>
-                                <td class="padding-input">
-                                    <input type="text"  class="form-control"  ng-model="project.start_datetime" datepicker-popup="dd-MM-yyyy"  datepicker-popup="mediumDate"  is-open="openFrom" ng-click="openFrom = true" show-button-bar="false" />
-                                </td>
-                                <td class="padding-input">
-                                    {{$root.$lang.project_end_date}}
-                                </td>
-                                <td class="padding-input">
-                                    <input type="text"  class="form-control"  ng-model="project.duedatetime" datepicker-popup="dd-MM-yyyy"  datepicker-popup="mediumDate"  is-open="openTo" ng-click="openTo = true"  show-button-bar="false"/>
-                                </td>
-                            </tr>
-                        </table>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="input-group"> 
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span> 
+                                    <input placeholder="{{$root.$lang.project_start_date}}" type="text"  class="form-control"  ng-model="project.start_datetime" datepicker-popup="dd-MM-yyyy"  datepicker-popup="mediumDate"  is-open="openFrom" ng-click="openFrom = true" show-button-bar="false" />
+                    </div>
+                </div>
+                            <div class="col-sm-6">
+                                <div class="input-group"> 
+                                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span> 
+                                    <input placeholder="{{$root.$lang.project_end_date}}" type="text"  class="form-control"  ng-model="project.duedatetime" datepicker-popup="dd-MM-yyyy"  datepicker-popup="mediumDate"  is-open="openTo" ng-click="openTo = true"  show-button-bar="false"/>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -91,8 +89,13 @@
                         <label for="inputEmail3" class="col-sm-3 control-label">{{$root.$lang.project_estimate_time}} </label>
 
                         <div class="col-sm-9">
-                            <input type="text" class="form-control" auto-numeric="{vMin: 0, vMax:4294967295}" ng-model="project.estimate_hour" style="width: 90%;display: inline;" > {{$root.$lang.project_hour}}
+                            <div class="input-group"> 
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span> 
+                                <input type="text" class="form-control" auto-numeric="{vMin: 0, vMax:4294967295}" ng-model="project.estimate_hour">
+                                <span class="input-group-addon">{{$root.$lang.project_hour}}</span> 
                         </div>
+                             
+                    </div>
                     </div>
                     <div class="form-group">
                         <label for="inputPassword3" class="col-sm-3 control-label">{{$root.$lang.project_status}}</label>
