@@ -48,7 +48,7 @@ common/models/<package name> - ex: common/models/work/Task.php with task only us
 6. Upload folder will contain all of files is uploaded from users.
 7. All section of code should be caught exception error by try {} catch {} with php and javascript language.
 
-CODING STANDARD
+CODING STYLE
 -------
 Read detail from https://bitbucket.org/millionairetai/centeroffice/wiki/Home
 
