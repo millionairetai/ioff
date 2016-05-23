@@ -50,15 +50,7 @@ common/models/<package name> - ex: common/models/work/Task.php with task only us
 
 CODING STANDARD
 -------
-To ensure consistency throughout the source code, keep these rules in mind as you are working.
-
-1. Coding style should write as Yii standard.
-2. Each function not to much code line. It should divide in callable function to call from.
-3. Use try catch in each section of code for catching error.
-4. No write php code logic in view template.
-5. When having any change for database, ex: add columns, add key, add default, you should
-write code in yii2 MIGRATION to deploy app afterward.
-6. JAVASCRIPT CODE must write in camel coding style
+Read detail from https://bitbucket.org/millionairetai/centeroffice/wiki/Home
 
 RULES FOR CALLING AJAX - RESTFULAPI
 -------
@@ -113,4 +105,4 @@ DATABASE DIAGRAM
 -------
 They're in scheme database_schema folder.
 1. You can use visual paradigm community to read vpp file and change something from scheme.
-2. You can view from image file directly in 
+2. You can view from image file directly in
