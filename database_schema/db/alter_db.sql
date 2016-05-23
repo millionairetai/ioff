@@ -102,3 +102,8 @@ ENGINE=InnoDB
 DROP TABLE `activity_post`;
 
 ---END#################################### 21/5/2016#################################### 
+
+--Add is_all_day column into event table # 23/5/2016
+ALTER TABLE `event`
+	ADD COLUMN `is_all_day` BIT NOT NULL DEFAULT b'0' AFTER `color`;
+--------------------------------------------------------------------
