@@ -101,7 +101,7 @@ class Project extends \common\components\db\ActiveRecord {
        ."             AND status.company_id={$companyId}"           
        ."             AND status.disabled=" . self::STATUS_ENABLE           
        ." WHERE (" 
-       ."           project.is_public=1" 
+       ."           project.is_public=" . self::VAL_TRUE 
        ."           OR project.manager_project_id=:empolyee_id"
        ."           OR project.created_employee_id=:empolyee_id"
        ."           OR EXISTS("
