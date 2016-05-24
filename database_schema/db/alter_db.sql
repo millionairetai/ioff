@@ -1,4 +1,4 @@
---Create job table
+-- Create job table
 CREATE TABLE `job` (
 	`id` SMALLINT(6) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`name` VARCHAR(255) NOT NULL COLLATE 'utf8_unicode_ci',
@@ -12,15 +12,15 @@ CREATE TABLE `job` (
 	INDEX `name` (`name`)
 )
 COLLATE='utf8_unicode_ci'
-ENGINE=InnoDB
+ENGINE=InnoDB;
 
---Add total_storage and total_employee to company table.
+-- Add total_storage and total_employee to company table.
 ALTER TABLE `company`
 	ADD COLUMN `total_storage` BIGINT(20) UNSIGNED NULL DEFAULT '0' AFTER `language_code`;
 ALTER TABLE `company`
 	ADD COLUMN `total_employee` SMALLINT(6) UNSIGNED NULL DEFAULT '0' AFTER `total_storage`;
 
----START#################################### 21/5/2016#################################### 
+-- START#################################### 21/5/2016#################################### 
 -- Create task_post table.
 CREATE TABLE `task_post` (
 	`id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -46,7 +46,7 @@ CREATE TABLE `task_post` (
 COLLATE='utf8_unicode_ci'
 ENGINE=InnoDB;
 
---Create project_post
+-- Create project_post
 CREATE TABLE `project_post` (
 	`id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`company_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
@@ -72,7 +72,7 @@ COLLATE='utf8_unicode_ci'
 ENGINE=InnoDB
 ;
 
---Create event_post
+-- Create event_post
 CREATE TABLE `event_post` (
 	`id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
 	`company_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
@@ -98,12 +98,12 @@ COLLATE='utf8_unicode_ci'
 ENGINE=InnoDB
 ;
 
---Drop activity_post
+-- Drop activity_post
 DROP TABLE `activity_post`;
 
----END#################################### 21/5/2016#################################### 
+-- END#################################### 21/5/2016#################################### 
 
---Add is_all_day column into event table # 23/5/2016
+-- Add is_all_day column into event table # 23/5sms_template/2016
 ALTER TABLE `event`
 	ADD COLUMN `is_all_day` BIT NOT NULL DEFAULT b'0' AFTER `color`;
---------------------------------------------------------------------
+-- ------------------------------------------------------------------
