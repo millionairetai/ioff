@@ -4,6 +4,7 @@ namespace common\models;
 
 use Yii;
 use yii\data\ActiveDataProvider;
+use common\models\Controller;
 
 /**
  * This is the model class for table "action".
@@ -67,19 +68,28 @@ class Action extends \backend\components\db\ActiveRecord {
      */
     public function search($params) {
         $query = static::find();
+        $query->joinWith(['controller']);
+
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => array('pageSize' => self::PAGE_SIZE)
         ]);
-        
+
         if (!($this->load($params))) {
             return $dataProvider;
         }
 
-        $query->andFilterWhere(['like', 'name', $this->name]);
-        $query->andFilterWhere(['like', 'description', $this->description]);
+        $query->andFilterWhere(['like', 'action.name', $this->name]);
+        $query->andFilterWhere(['like', 'action.description', $this->description]);
 
         return $dataProvider;
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getController() {
+        return $this->hasOne(Controller::className(), ['id' => 'controller_id']);
     }
 
 }

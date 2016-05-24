@@ -1,6 +1,7 @@
 <?php
 
 use yii\grid\GridView;
+use yii\grid\SerialColumn;
 ?>
 <style type="text/css">
     .tool-right {
@@ -22,10 +23,14 @@ use yii\grid\GridView;
             'dataProvider' => $dataProvider,
             'filterModel' => $model,
             'columns' => [
+                ['class' => 'yii\grid\SerialColumn'],
+                [
+                    'label' => 'Controller name',
+                    'value' => 'controller.name',
+                ],
                 'name',
                 'description',
                 [
-//                    'header' => 'Action',
                     'options' => ['style' => 'width:50px'],
                     'class' => 'yii\grid\ActionColumn',
                     'template' => '{update} {delete}',
