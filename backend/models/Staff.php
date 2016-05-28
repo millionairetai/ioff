@@ -208,4 +208,11 @@ class Staff extends \yii\db\ActiveRecord implements IdentityInterface
     {
         $this->password_reset_token = null;
     }
+    /**
+     * get name profile
+     * @return type
+     */
+    public function getFullname() {
+        return Yii::$app->user->identity->name;
+    }
 }

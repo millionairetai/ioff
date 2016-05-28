@@ -16,4 +16,5 @@ return [
     'or try using the search form'=>'or try using the search form',
     'Email' => 'Email',
     'created' => ' Created date ',
+    'Search'=>'Search',
 ];

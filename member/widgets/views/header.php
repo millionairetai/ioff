@@ -15,6 +15,19 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </a>
+        <!-- search form -->
+        <div class="containbox-search">
+            <a class="show-form-search" ng-click="displaysearch=!displaysearch" href="javascript:void(0)"><i class="fa fa-search"></i></a>
+            <div class="search-form" ng-show="displaysearch">
+                <form action="#" method="get">
+                    <div class="input-group">
+                        <input type="text" name="q" class="form-control" placeholder="<?php echo \Yii::t('common', 'Search'); ?>...">
+                        <button type="submit" name="search" id="search-btn" class="btn search-button"><i class="fa fa-search"></i></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- /.search form -->
         <div class="navbar-custom-menu">
             <ul class="nav navbar-nav">
                 <!-- Messages: style can be found in dropdown.less-->
@@ -100,16 +113,15 @@
                 <!-- User Account: style can be found in dropdown.less -->
                 <li class="dropdown user user-menu">
                     <a class="dropdown-toggle cursor-pointer" data-toggle="dropdown">
-                        <img src="img/avatar5.png" class="user-image" alt="User Image">
-                        <span class="hidden-xs">Alexander Pierce</span>
+                        <img src="<?php echo Yii::$app->user->getIdentity()->getImage(); ?>" class="user-image" alt="User Image">
+                        <span class="hidden-xs"><?php echo Yii::$app->user->getIdentity()->getFullname(); ?></span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->
                         <li class="user-header">
-                            <img src="img/avatar5.png" class="img-circle" alt="User Image">
+                            <img src="<?php echo Yii::$app->user->getIdentity()->getImage(); ?>" class="img-circle" alt="User Image">
                             <p>
-                                Alexander Pierce - Web Developer
-                                <small>Member since Nov. 2012</small>
+                                <?php echo Yii::$app->user->getIdentity()->getFullname(); ?>
                             </p>
                         </li>
                         <!-- Menu Body -->
