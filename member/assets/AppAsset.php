@@ -23,12 +23,12 @@ class AppAsset extends AssetBundle
     public $js = [
         'js/bootstrap.min.js',
         'js/jquery.slimscroll.min.js',
-        'js/fastclick.min.js',
-        
+        'js/fastclick.min.js',      
         'app/js/common/angular.1.3.18.min.js',
         'app/js/common/angular-animate.1.3.18.min.js',
+        'app/js/common/angular-ui-router.min.js',
         'app/js/plugins/bootstrap/ui-bootstrap-tpls-0.13.3.min.js',
-        'app/js/plugins/angularRoute/angular-route.min.js',
+//        'app/js/plugins/angularRoute/angular-route.min.js',
         'app/js/plugins/alertify/ngAlertify.js',
         'app/js/plugins/uiSlider/jquery-ui.min.js',
         'app/js/plugins/uiSlider/slider.js',

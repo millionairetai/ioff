@@ -1,30 +1,31 @@
-appRoot.config(function ($routeProvider, $httpProvider) {
+appRoot.config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
     // enable http caching
     $httpProvider.defaults.cache = true;
-    
-    //Router
-    $routeProvider
-            //main page
-            .when('/home', {
+
+    $urlRouterProvider
+            .otherwise('/home');
+
+    $stateProvider
+            .state('home', {
+                url: '/home',
                 templateUrl: 'app/views/home/index.html',
-                controller: 'homeCtrl'
+                controller: 'homeCtrl',
             })
-            //project
-            .when('/project', {
+            .state('project', {
+                url: '/project',
                 templateUrl: 'app/views/project/index.html',
                 controller: 'projectCtrl'
             })
-            .when('/addProject', {
+            .state('addProject', {
+                url: '/addProject',
                 templateUrl: 'app/views/project/add.html',
                 controller: 'addProjectCtrl'
             })
-            //calendar
-            .when('/calendar', {
+            .state('calendar', {
+                url: '/calendar',
                 templateUrl: 'app/views/calendar/index.html',
                 controller: 'calendarCtrl'
             })
-            .otherwise({redirectTo: '/home'});
-
 });
 
 
