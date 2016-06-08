@@ -16,9 +16,11 @@ class IndexController extends Controller
         if (!\Yii::$app->user->isGuest) {
             return $this->redirect('/');
         }
+        
         $this->layout = "login";
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
+            Yii::$app->user->identity->updateEmployeeLoginInfo();
             return $this->redirect('/');
         } else {
             return $this->render('login', [

@@ -90,8 +90,8 @@ class Employee extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
-            [['company_id', 'manager_employee_id', 'authority_id', 'position_id', 'department_id', 'bank_id', 'religion_id', 'marriage_status_id', 'nation_id', 'province_id', 'country_id', 'status_id', 'language_id', 'is_admin', 'birthdate', 'gender', 'card_issue_id', 'passport_expire', 'passport_issue', 'tax_date_issue', 'start_working_date', 'stop_working_date', 'is_visible', 'last_activity_datetime', 'last_login_datetime', 'datetime_created', 'lastup_datetime', 'lastup_employee_id', 'disabled'], 'integer'],
-            [['authority_id', 'position_id', 'department_id', 'bank_id', 'religion_id', 'marriage_status_id', 'nation_id', 'province_id', 'country_id', 'status_id', 'firstname', 'lastname', 'password', 'email', 'birthdate'], 'required'],
+            [['company_id', 'manager_employee_id', 'authority_id', 'position_id', 'department_id', 'bank_id', 'religion_id', 'marriage_status_id', 'nation_id', 'province_id', 'country_id', 'status_id', 'language_id', 'is_admin', 'birthdate', 'card_issue_id', 'passport_expire', 'passport_issue', 'tax_date_issue', 'start_working_date', 'stop_working_date', 'is_visible', 'last_activity_datetime', 'last_login_datetime', 'datetime_created', 'lastup_datetime', 'lastup_employee_id'], 'integer'],
+            [['authority_id', 'position_id', 'department_id', 'bank_id', 'religion_id', 'marriage_status_id', 'nation_id', 'province_id', 'country_id', 'status_id', 'firstname', 'password','lastname', 'email', 'birthdate'], 'required'],
             [['city_code', 'firstname', 'lastname', 'email', 'work_email'], 'string', 'max' => 99],
             [['password'], 'string', 'max' => 64],
             [['code', 'telephone', 'mobile_phone', 'work_phone', 'card_place_id'], 'string', 'max' => 50],
@@ -101,8 +101,9 @@ class Employee extends ActiveRecord implements IdentityInterface
             [['card_number_id', 'bank_number', 'passport_number', 'zip_code', 'tax_code'], 'string', 'max' => 20],
             [['auth_key'], 'string', 'max' => 32],
             [['email'], 'unique'],
-            [['status'], 'default', 'value' => self::STATUS_ACTIVE],
-            [['status'], 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
+            [['disabled', 'gender'], 'boolean'],
+            [['status_id'], 'default', 'value' => self::STATUS_ACTIVE],
+            [['status_id'], 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
         ];
     }
 
@@ -357,6 +358,12 @@ class Employee extends ActiveRecord implements IdentityInterface
             $body = str_replace($key, $value, $body);
         }
     }
-    
-    
+    /**
+     * Update last_ip_address,last_login_datetime after login
+     */
+    public function updateEmployeeLoginInfo() {
+        Yii::$app->user->identity->last_ip_address = Yii::$app->request->getUserIP();
+        Yii::$app->user->identity->last_login_datetime = time();
+        return Yii::$app->user->identity->update();
+    }   
 }
