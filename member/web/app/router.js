@@ -28,6 +28,7 @@ appRoot.config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
             })          
             //authority
             .state('authority', {
+                url: '/authority',
                 templateUrl: 'app/views/authority/index.html',
                 controller: 'AuthorityCtrl'
             });
