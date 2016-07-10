@@ -1,3 +1,11 @@
+appRoot.factory('actionService', ['apiService', function (apiService) {
+
+        return {
+            findAll: function (success, error) {
+                return apiService.get('action/index', {}, success, error);
+            }
+        };
+    }]);
 appRoot.factory('apiService', ['$rootScope', '$http', '$location', 'alertify', function ($rootScope, $http, $location, alertify) {
 
         return {
@@ -23,12 +31,13 @@ appRoot.factory('apiService', ['$rootScope', '$http', '$location', 'alertify', f
                 }).error(function (data, status, headers, config) {
                     $rootScope.progressing = false;
                     console.log('error', status);
+                    errorHandler(data);
                 });
             },
             //get
             get: function (url, data, successHandler, errorHandler) {
-                $rootScope.progressing = true;
-                return $http.get(url, {params: data}).success(function (response, status, headers, config) {
+                $rootScope.progressing = true;                
+                return $http.get(url, {params: data}).success(function (response, status, headers, config) {                  
                     //chi xu ly khi status bằng 200
                     if (status == 200) {
                         if (response.error) {
@@ -46,6 +55,7 @@ appRoot.factory('apiService', ['$rootScope', '$http', '$location', 'alertify', f
                 }).error(function (response, status, headers, config) {
                     $rootScope.progressing = false;
                     console.log(response);
+                    errorHandler(data);
                 });
             },
             //put
@@ -122,7 +132,35 @@ appRoot.factory('apiService', ['$rootScope', '$http', '$location', 'alertify', f
                 });
             },
         };
-    }]);appRoot.factory('departmentService', ['apiService', function (apiService) {
+    }]);appRoot.factory('authorityService', ['apiService', '$http', function (apiService, $http) {
+
+        return {
+            add: function (data, success, error) {
+                apiService.post('authority/add', data, success, error);
+            },
+            edit: function (data, success, error) {
+                apiService.post('authority/edit', data, success, error);
+            },
+            findAll: function (params, success, error) {
+                apiService.get('authority', params, success, error);
+            },
+            findAllAssignments: function (params, success, error) {
+                apiService.get('authority/get-assignments', params, success, error);
+            },
+            delete: function (data, success, error) {
+                apiService.post('authority/delete', data, success, error);
+            }
+        };
+    }]);
+appRoot.factory('controllerService', ['apiService', function (apiService) {
+
+        return {
+            findAll: function (success, error) {
+                return apiService.get('controller/index', {}, success, error);
+            }
+        };
+    }]);
+appRoot.factory('departmentService', ['apiService', function (apiService) {
 
         return {
             allDepartment : function (data,success,error){

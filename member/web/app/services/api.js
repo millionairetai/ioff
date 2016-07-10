@@ -23,12 +23,13 @@ appRoot.factory('apiService', ['$rootScope', '$http', '$location', 'alertify', f
                 }).error(function (data, status, headers, config) {
                     $rootScope.progressing = false;
                     console.log('error', status);
+                    errorHandler(data);
                 });
             },
             //get
             get: function (url, data, successHandler, errorHandler) {
-                $rootScope.progressing = true;
-                return $http.get(url, {params: data}).success(function (response, status, headers, config) {
+                $rootScope.progressing = true;                
+                return $http.get(url, {params: data}).success(function (response, status, headers, config) {                  
                     //chi xu ly khi status bằng 200
                     if (status == 200) {
                         if (response.error) {
@@ -46,6 +47,7 @@ appRoot.factory('apiService', ['$rootScope', '$http', '$location', 'alertify', f
                 }).error(function (response, status, headers, config) {
                     $rootScope.progressing = false;
                     console.log(response);
+                    errorHandler(data);
                 });
             },
             //put

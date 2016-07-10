@@ -1,6 +1,6 @@
 appRoot.config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
     // enable http caching
-    $httpProvider.defaults.cache = true;
+//    $httpProvider.defaults.cache = true;
 
     $urlRouterProvider
             .otherwise('/home');
@@ -25,7 +25,12 @@ appRoot.config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
                 url: '/calendar',
                 templateUrl: 'app/views/calendar/index.html',
                 controller: 'calendarCtrl'
-            })
+            })          
+            //authority
+            .state('authority', {
+                templateUrl: 'app/views/authority/index.html',
+                controller: 'AuthorityCtrl'
+            });
 });
 
 

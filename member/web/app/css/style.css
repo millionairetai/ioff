@@ -339,3 +339,62 @@ search-product .dropdown-menu{
         display: block !important;
     }
 }
+.add-authority-box .list-controller li{
+  list-style-type: none;
+}
+.add-authority-box .list-controller >  li > .list-action > li{
+  float: left;
+  width: 125px;
+  margin: 8px 0 0 9px;  
+  overflow: hidden;
+  height: 46px;
+}
+.clear{
+  clear:both;
+}
+.errors{
+  color: red;
+}
+
+.alertify{
+  z-index: 9999;
+}
+#yii-debug-toolbar{
+  display: none;
+}
+.form-group.sidebar-form1{
+  border-radius: 3px;
+  border: 1px solid #d2d6de;
+  margin: 10px 10px;
+}
+.form-group.sidebar-form1 input[type="text"]{
+  color: #666;
+  border:none;
+  border-top-left-radius: 2px;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 2px; 
+}
+.form-group.sidebar-form1 .btn{
+  color: #999;
+  border-top-left-radius: 0;
+  border-top-right-radius: 2px;
+  border-bottom-right-radius: 2px;
+  border-bottom-left-radius: 0;
+  box-shadow: none;
+  background-color: #fff;
+  border: 1px solid transparent;
+  height: 35px;
+  -webkit-transition: all .3s ease-in-out;
+  -o-transition: all .3s ease-in-out;
+  transition: all .3s ease-in-out;
+}
+.authority-list-page .col-name-authority{
+  width: 500px;
+}
+.authority-list-page .col-name-create-by{
+  width: 200px;
+}
+.authority-list-page .col-name-date{
+  width: 121px;
+}

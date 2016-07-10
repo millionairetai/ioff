@@ -9,6 +9,7 @@
             cancel : 'Hủy',
             add_project : 'Thêm dự án',
             save : 'Lưu',
+            remove: 'Xóa',
             employee_empty : 'Không nhân viên nào được tìm thấy',
             button_back : 'Quay lại',
             button_next : 'Tiếp',
@@ -62,7 +63,7 @@
             project_notify_success:'Dự án đã được tạo thành công.',
             //end project
             
-            success_add_project : 'bạn đã tạo dự án thành công',
+            success_add_project : 'Bạn đã tạo dự án thành công',
             please_enter_username: 'Xin nhập vào tài khoản',
             please_enter_password: 'Xin nhập vào password',
             remember: 'Ghi nhớ',
@@ -71,7 +72,28 @@
             username: 'Tài khoản',
             password: 'Mật khẩu',
             you_dont_have_permission_to_access_this_page: 'Bạn không có quyền truy cập trang này',
-            page_not_found:'Không tìm thấy trang này'
+            page_not_found:'Không tìm thấy trang này',
+            authority_manage: 'Quản lý quyền',
+            authority_list: 'Danh sách quyền',
+            authority_name: 'Tên',
+            last_modify: 'Ngày sửa',
+            modify_by: 'Người tạo',
+            authority_add: 'Thêm quyền',
+            authority_edit: 'Sửa quyền',
+            functionality_group: 'Nhóm chức năng',
+            functionalities: 'Các chức năng',
+            please_enter_this_field: 'Xin nhập mục này',
+            please_enter_authority_name: 'Tên quyền không được bỏ trống',
+            authority_name_max_length: 'Tên quyền phải nhỏ hơn 255 ký tự',
+            please_select_action: 'Bạn phải chọn tối thiểu một chức năng',
+            search: 'Tìm kiếm',
+            is_delete: 'Bạn có muốn xóa quyền này không?',
+            authority_is_used: 'Quyền không thể xóa vì đang được sử dụng',
+            warning: 'Cảnh báo',
+            no_data: 'Không có dữ liệu',
+            authority_added_success: 'Đã thêm quyền thành công',
+            authority_edited_success:'Đã cập nhật quyền thành công',
+            authority_deleted_success: 'Xóa quyền thành công'
         };
     });
 })(window.angular);

@@ -221,14 +221,14 @@ use yii\helpers\Html;
                 <li class="dropdown user user-menu">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                         <img src="../../img/user3.jpg" class="user-image" alt="User Image">
-                        <span class="hidden-xs"><?php echo Yii::$app->user->getIdentity()->getFullname(); ?></span>
+                        <span class="hidden-xs"><?php echo Yii::$app->user->identity->getFullname(); ?></span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->
                         <li class="user-header">
                             <img src="../../img/user3.jpg" class="img-circle" alt="User Image">
                             <p>
-                                <?php echo Yii::$app->user->getIdentity()->getFullname(); ?>
+                                <?php echo Yii::$app->user->identity->getFullname(); ?>
                             </p>
                         </li>
                         <!-- Menu Body -->

@@ -27,6 +27,9 @@ class ActiveRecord extends \yii\db\ActiveRecord
     const GENDER_MALE   = 1;
     const GENDER_FEMALE = 2;
     
+    //pagination
+    const PER_PAGE = 20;
+    
     protected $_genders = array(
         self::GENDER_MALE,
         self::GENDER_FEMALE
@@ -90,6 +93,29 @@ class ActiveRecord extends \yii\db\ActiveRecord
     {
         $this->disabled = self::STATUS_DISABLE;
         return $this->save();
+    }
+    
+    /**
+     * Deletes rows by update disabled column = 1
+     * WARNING: If you do not specify any condition, this method will delete ALL rows in the table.
+     *
+     * For example, to delete all customers whose status is 3:
+     *
+     * ```php
+     * Customer::deleteAll('status = 3');
+     * ```
+     *
+     * @param string|array $condition the conditions that will be put in the WHERE part of the DELETE SQL.
+     * Please refer to [[Query::where()]] on how to specify this parameter.
+     * @param array $params the parameters (name => value) to be bound to the query.
+     * @return integer the number of rows deleted
+     */
+    public static function deleteAll($condition = '', $params = [])
+    {
+        $command = static::getDb()->createCommand();
+        $command->update(static::tableName(), ['disabled' => self::STATUS_DISABLE], $condition, $params);
+
+        return $command->execute();
     }
     
     /**

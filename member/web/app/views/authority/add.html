@@ -1,0 +1,55 @@
+<div class="modal-header dialog-header-wait">
+    <button type="button" class="close" ng-click="cancel()">×</button>
+    <h4 class="modal-title text-danger"> 
+        <strong><i class="fa fa-cubes"></i>
+            <span ng-show="!authority">{{$root.$lang.authority_add}}</span>
+            <span ng-show="authority">{{$root.$lang.authority_edit}}</span>
+        </strong>
+    </h4>
+</div>
+<div class="modal-body text-dangers add-authority-box" >    
+    <div class="box-body form-horizontal">
+        <div class="row form-group">
+            <label for="inputEmail3" class="col-sm-3 control-label ng-binding">{{$root.$lang.authority_name}}</label>    
+            <div class="col-sm-9">
+                <input type="text" class="form-control" ng-model="authorityName"/>
+
+            </div>
+        </div>
+        <div class="row form-group">
+            <label for="inputEmail3" class="col-sm-3 control-label ng-binding">{{$root.$lang.functionality_group}}</label>          
+            <div class="col-sm-9">
+                <select class="form-control" ng-model="currController">
+                    <option value=''>{{$root.$lang.project_choose_all}}</option>
+                    <option ng-repeat="(key, value) in controllers" value="{{key}}">{{value}}</option>
+                </select>
+            </div>
+        </div> 
+        <div class="row form-group">
+            <label for="inputEmail3" class="col-sm-3 control-label ng-binding">{{$root.$lang.functionalities}}</label>              
+            <div class="col-sm-9">
+                <ul class="list-controller">
+                    <li ng-repeat="(controllerId, controller) in actions" ng-show="!currController || currController === controllerId">
+                        <div class="checkbox">
+                            <input type="checkbox" ng-model="controller.isChecked" icheck  ng-change="selectController(controllerId)"/>  <strong>{{controllers[controllerId]}}</strong>
+                        </div>
+                        <ul class="list-action show-on-mobile">
+                            <li ng-repeat="item in controller.actions">
+                                <div class="checkbox">
+                                    <input type="checkbox" ng-model="item.isChecked" icheck ng-change="selectAction(controllerId, $index)"/> {{item.name}}
+                                </div>
+                            </li>
+                        </ul>
+                        <div class="clear"></div>
+                    </li>
+                </ul>        
+            </div>
+        </div>
+    </div>
+
+</div>  
+<div class="modal-footer">    
+    <button type="button" class="btn btn-primary btn-flat" ng-click="saveAuthority()"> <i class="fa fa-save"></i> {{$root.$lang.ok}}</button>
+    <button type="button" class="btn btn-danger btn-flat" ng-click="deleteAuthority()" ng-show="authority"><i class="fa fa-trash"></i> {{$root.$lang.remove}}</button>
+    <button type="button" class="btn btn-default btn-flat" ng-click="cancel()"> <i class="fa fa-remove"></i> {{$root.$lang.button_close}}</button>
+</div>

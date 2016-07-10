@@ -8,6 +8,7 @@ class AppAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
+        
         'css/AdminLTE.css',
         'css/all-skins.min.css',
         'css/font-awesome/css/font-awesome.css',
@@ -19,6 +20,7 @@ class AppAsset extends AssetBundle
         'app/js/plugins/tags/tags.css',
         'app/js/plugins/tags/tags-bootstrap.css',
         'app/css/style.css',
+        'app/css/reponsive.css'
     ];
     public $js = [
         'js/bootstrap.min.js',

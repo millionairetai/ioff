@@ -174,10 +174,6 @@ appRoot.controller('addProjectCtrl', ['$scope', 'projectService', '$location', '
             }
         };
 
-        
-
-
-
         //next
         $scope.next = function () {
             if ($scope.step < 3) {

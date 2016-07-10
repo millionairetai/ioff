@@ -113,15 +113,15 @@
                 <!-- User Account: style can be found in dropdown.less -->
                 <li class="dropdown user user-menu">
                     <a class="dropdown-toggle cursor-pointer" data-toggle="dropdown">
-                        <img src="<?php echo Yii::$app->user->getIdentity()->getImage(); ?>" class="user-image" alt="User Image">
-                        <span class="hidden-xs"><?php echo Yii::$app->user->getIdentity()->getFullname(); ?></span>
+                        <img src="<?php echo Yii::$app->user->identity->getImage(); ?>" class="user-image" alt="User Image">
+                        <span class="hidden-xs"><?php echo Yii::$app->user->identity->getFullname(); ?></span>
                     </a>
                     <ul class="dropdown-menu">
                         <!-- User image -->
                         <li class="user-header">
-                            <img src="<?php echo Yii::$app->user->getIdentity()->getImage(); ?>" class="img-circle" alt="User Image">
+                            <img src="<?php echo Yii::$app->user->identity->getImage(); ?>" class="img-circle" alt="User Image">
                             <p>
-                                <?php echo Yii::$app->user->getIdentity()->getFullname(); ?>
+                                <?php echo Yii::$app->user->identity->getFullname(); ?>
                             </p>
                         </li>
                         <!-- Menu Body -->

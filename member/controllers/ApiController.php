@@ -8,11 +8,13 @@ use Yii;
 
 class ApiController extends CommonController 
 {
-    /**
-    * Company id 
-    */
+    //Company id.
     protected $_companyId;
     
+    //Error message and error for calling restful.
+    protected $_error = false;
+    protected $_message = '';
+
     public function behaviors() 
     {
         $this->_companyId = \Yii::$app->user->getCompanyId();

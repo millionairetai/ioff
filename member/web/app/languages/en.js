@@ -9,6 +9,7 @@
             cancel : 'Cancel',
             add_project : 'Add project',
             save : 'Save',
+            remove: 'Delete',
             employee_empty : "Employee does't match",
             button_back : 'Back',
             button_next : 'Next',
@@ -44,7 +45,7 @@
             project_theory: 'Theory',
             project_manager:'Project Manger',
             project_department : 'Department',
-            project_choose_all: 'Tất cả',
+            project_choose_all: 'All',
             project_members: 'Members',
             
             project_estimate_error : 'Estimate time is must numberic',
@@ -70,7 +71,29 @@
             username: 'Username',
             password: 'Password',
             you_dont_have_permission_to_access_this_page: 'You don\'t have permission to access this page',
-            page_not_found:'Page not found'
+            page_not_found:'Page not found',
+            
+            authority_manage: 'Authority management',
+            authority_list: 'Authority list',
+            authority_name: 'Name',
+            last_modify: 'Last modified',
+            modify_by: 'Modify by',
+            authority_add: 'Add authority',
+            authority_edit: 'Edit authority',
+            functionality_group: 'Functionality group',
+            functionalities: 'Functionalities',
+            please_enter_authority_name: 'Authority name is required',
+            please_enter_this_field: 'Please enter this field',
+            authority_name_max_length: 'Authority name must be smaller than 255 charactors',
+            please_select_action: 'Please select at least one functionality',
+            search: 'Search',
+            is_delete: 'Do you want to delete this authority?',
+            authority_is_used: 'This authority can not be deleted because in use',
+            warning: 'Warning',
+            no_data: 'No data',
+            authority_added_success:'Authority has been added successfully',
+            authority_edited_success:'Authority has been updated successfully',
+            authority_deleted_success: 'Deleted authority successfully'
         };
     });
 })(window.angular);

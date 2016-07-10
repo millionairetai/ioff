@@ -1,0 +1,105 @@
+<div class="authority-list-page">
+    <section class="content-header">
+        <h1>
+            {{$root.$lang.authority_manage}}
+        </h1>
+        <div class="tool-right">
+            <a class="btn btn-info" ng-click="add()"><i class="fa fa-plus-square"></i> {{$root.$lang.authority_add}}</a>
+        </div>
+    </section>
+    <section class="content">
+
+        <!-- Default box -->
+        <div class="box">
+            <div class="box-header with-border">
+                <h3 class="box-title">{{$root.$lang.authority_list}}</h3>            
+                <div class="box-tools pull-right">
+                    <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
+                    <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
+                </div>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-sm-9"></div>
+                    <div class="col-sm-3">
+                        <form class="form-group sidebar-form1" ng-submit="search()">
+                            <div class="input-group">
+                                <input type="text" ng-model="params.authorityName" class="form-control" placeholder="{{$root.$lang.authority_name}}"/>
+                                <span class="input-group-btn">
+                                    <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
+                                </span>                     
+                            </div>
+                        </form>
+                    </div>              
+                </div>
+                <div class="clear"></div>  
+
+                <div ng-show="authorities.length">
+                    <table class="table table-vertical table-striped">
+                        <tr>                    
+                            <th class="col-name-authority">
+                                <a class="cursor-pointer" ng-click="sortBy('name', 'DESC')" ng-show="params.orderBy == '' || params.orderBy != 'name'">{{$root.$lang.authority_name}}</a>
+                                <a class="cursor-pointer" ng-click="sortBy('name', 'DESC')" ng-show="params.orderBy == 'name' && params.orderType == 'ASC'">
+                                    {{$root.$lang.authority_name}} 
+                                    <i class="fa fa-caret-up"></i>
+                                </a>                      
+                                <a class="cursor-pointer" ng-click="sortBy('name', 'ASC')" ng-show="params.orderBy == 'name' && params.orderType == 'DESC'">
+                                    {{$root.$lang.authority_name}} 
+                                    <i class="fa fa-caret-down"></i>
+                                </a>                      
+                            </th>
+                            <th class="col-name-date">                        
+                                <a class="cursor-pointer" ng-click="sortBy('lastup_datetime', 'DESC')" ng-show="params.orderBy == '' || params.orderBy != 'lastup_datetime'">
+                                    {{$root.$lang.last_modify}}
+                                </a>
+                                <a class="cursor-pointer" ng-click="sortBy('lastup_datetime', 'DESC')" ng-show="params.orderBy == 'lastup_datetime' && params.orderType == 'ASC'">
+                                    {{$root.$lang.last_modify}} 
+                                    <i class="fa fa-caret-up"></i>
+                                </a>                      
+                                <a class="cursor-pointer" ng-click="sortBy('lastup_datetime', 'ASC')" ng-show="params.orderBy == 'lastup_datetime' && params.orderType == 'DESC'">
+                                    {{$root.$lang.last_modify}} 
+                                    <i class="fa fa-caret-down"></i>
+                                </a>                      
+
+                            </th>
+                            <th class="col-name-create-by">
+                                <a class="cursor-pointer" ng-click="sortBy('employeeName', 'DESC')" ng-show="params.orderBy == '' || params.orderBy != 'employeeName'">
+                                    {{$root.$lang.modify_by}}
+                                </a>
+                                <a class="cursor-pointer" ng-click="sortBy('employeeName', 'DESC')" ng-show="params.orderBy == 'employeeName' && params.orderType == 'ASC'">
+                                    {{$root.$lang.modify_by}}
+                                    <i class="fa fa-caret-up"></i>
+                                </a>                      
+                                <a class="cursor-pointer" ng-click="sortBy('employeeName', 'ASC')" ng-show="params.orderBy == 'employeeName' && params.orderType == 'DESC'">
+                                    {{$root.$lang.modify_by}}
+                                    <i class="fa fa-caret-down"></i>
+                                </a>                          
+                            </th>
+                            <th></th>
+                        </tr>
+                        <tr ng-repeat="item in authorities">
+                            <td>{{item.name}}</td>
+                            <td>{{item.lastup_datetime * 1000| date:'dd-MM-yyyy'}}</td>
+                            <td>{{item.firstname}} {{item.lastname}}</td>
+                            <td><i class="fa fa-edit cursor-pointer" ng-click="add(item, $index)"></i></td>
+                        </tr>
+                    </table>
+
+                    <div class="text-right"  ng-show="totalItems > params.limit">
+                      <pagination total-items="totalItems" ng-model="params.page" max-size="maxPageSize" class="pagination-sm"
+                          boundary-links="true" first-text="&lsaquo;&lsaquo;" previous-text="&lsaquo;" next-text="&rsaquo;" last-text="&rsaquo;&rsaquo;" items-per-page="params.limit"
+                                 ng-change="findAll()" num-pages="numPages" rotate="false"></pagination>                                  
+                    </div>
+                </div>
+
+                <div ng-show="!authorities.length">
+                    {{$root.$lang.no_data}}
+                </div>
+
+            </div>
+            <div class="box-footer text-center" ></div><!-- /.box-footer-->
+
+        </div><!-- /.box -->
+
+    </section>
+</div>
