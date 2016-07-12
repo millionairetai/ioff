@@ -6,8 +6,8 @@ use yii\helpers\Html;
     <!-- Logo -->
     
     <a href="index2.html" class="logo">
-        <span class="logo-mini"><b>C</b>CE</span>
-        <span class="logo-lg"><b>CENTER</b>OFFICE</span>
+        <!--<span class="logo-mini"><b>CENTER</b>OFFICE</span>-->
+        <span><b>CENTER</b>OFFICE</span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top" role="navigation">
@@ -17,11 +17,26 @@ use yii\helpers\Html;
         </a>
         <!-- search form -->
         <div class="containbox-search">
-            <a class="show-form-search" href="javascript:void(0)"><i class="fa fa-search"></i></a>
-            <div class="search-form">
+            <a class="show-form-search" ng-click="displaysearch = !displaysearch" href="javascript:void(0)"><i class="fa fa-search"></i></a>
+            <div class="search-form" ng-show="displaysearch">
                 <form action="#" method="get">
+                    <!-- Single button -->
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Tất cả <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">Tất cả</a></li>
+                            <li><a href="#">Project</a></li>
+                            <li><a href="#">Task</a></li>
+                            <li><a href="#">Event</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#">Separated link</a></li>
+                        </ul>
+                    </div>
+                    <!---->
                     <div class="input-group">
-                        <input type="text" name="q" class="form-control" placeholder="<?php echo \Yii::t('common', 'Search'); ?>...">
+                        <input type="text" name="q" class="input-search form-control" placeholder="<?php echo \Yii::t('common', 'Search'); ?>...">
                         <button type="submit" name="search" id="search-btn" class="btn search-button"><i class="fa fa-search"></i></button>
                     </div>
                 </form>

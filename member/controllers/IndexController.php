@@ -1,18 +1,19 @@
 <?php
+
 namespace member\controllers;
 
 use Yii;
 use yii\web\Controller;
 use common\models\LoginForm;
 use yii\helpers\Url;
+use common\models\Employee;
 
 /**
  * index controller
  */
-class IndexController extends Controller
-{
-    public function actionLogin()
-    {
+class IndexController extends Controller {
+
+    public function actionLogin() {
         if (!\Yii::$app->user->isGuest) {
             return $this->redirect('/');
         }
@@ -24,27 +25,27 @@ class IndexController extends Controller
             return $this->redirect('/');
         } else {
             return $this->render('login', [
-                'model' => $model,
+                        'model' => $model,
             ]);
         }
     }
-    
-    public function actionLogout()
-    {
+
+    public function actionLogout() {
         Yii::$app->user->logout();
 
         return $this->redirect('/');
     }
-    
+
     /* ------------------ minify js ------------------------------- */
-    public function actionMinify(){
+
+    public function actionMinify() {
         $this->actionMinifyControllers();
         $this->actionMinifyDirectives();
         $this->actionMinifyServices();
         $this->actionMinifyFilters();
         die;
     }
-    
+
     /**
      * 
      */
@@ -56,9 +57,8 @@ class IndexController extends Controller
             $js = file_get_contents($dir . "/" . $file);
             file_put_contents($dir . "/../minify/minify_controller.js", $js, FILE_APPEND);
         }
-        
     }
-    
+
     /*
      * 
      */
@@ -70,7 +70,6 @@ class IndexController extends Controller
             $js = file_get_contents($dir . "/" . $file);
             file_put_contents($dir . "/../minify/minify_service.js", $js, FILE_APPEND);
         }
-        
     }
 
     /*
@@ -84,8 +83,8 @@ class IndexController extends Controller
             $js = file_get_contents($dir . "/" . $file);
             file_put_contents($dir . "/../minify/minify_directive.js", $js, FILE_APPEND);
         }
-        
     }
+
     /*
      * 
      */
@@ -97,9 +96,8 @@ class IndexController extends Controller
             $js = file_get_contents($dir . "/" . $file);
             file_put_contents($dir . "/../minify/minify_filter.js", $js, FILE_APPEND);
         }
-        
     }
-    
+
     /*
      * 
      */
@@ -126,5 +124,4 @@ class IndexController extends Controller
         return $file_js;
     }
 
-    
 }

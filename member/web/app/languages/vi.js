@@ -17,6 +17,7 @@
             max_size : 'Tổng dung lượng file upload vượt quá 10MB',
             max_length:'Chỉ cho phép tổng số lượng tập tin upload tối đa là 20',
             no_data: 'Không có dữ liệu',
+            view_more_upper_case: 'XEM THÊM',
             //project
             project_list_view_more : 'Xem thêm',
             project_add : 'Tạo dự án',

@@ -8,7 +8,6 @@ class AppAsset extends AssetBundle
     public $basePath = '@webroot';
     public $baseUrl = '@web';
     public $css = [
-        
         'css/AdminLTE.css',
         'css/all-skins.min.css',
         'css/font-awesome/css/font-awesome.css',

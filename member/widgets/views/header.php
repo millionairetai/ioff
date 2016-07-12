@@ -2,9 +2,9 @@
     <!-- Logo -->
     <a href="/#/home" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
-        <span class="logo-mini"><b>C</b>CE</span>
+        <!--<span class="logo-mini"><b>C</b>CE</span>-->
         <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg"><b>CENTER</b>OFFICE</span>
+        <span><b>CENTER</b>OFFICE</span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top" role="navigation">
@@ -17,11 +17,26 @@
         </a>
         <!-- search form -->
         <div class="containbox-search">
-            <a class="show-form-search" ng-click="displaysearch=!displaysearch" href="javascript:void(0)"><i class="fa fa-search"></i></a>
+            <a class="show-form-search" ng-click="displaysearch = !displaysearch" href="javascript:void(0)"><i class="fa fa-search"></i></a>
             <div class="search-form" ng-show="displaysearch">
                 <form action="#" method="get">
+                    <!-- Single button -->
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            All <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li><a href="#">All</a></li>
+                            <li><a href="#">Project</a></li>
+                            <li><a href="#">Calendar</a></li>
+                            <li><a href="#">Task</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="#">Event</a></li>
+                        </ul>
+                    </div>
+                    <!---->
                     <div class="input-group">
-                        <input type="text" name="q" class="form-control" placeholder="<?php echo \Yii::t('common', 'Search'); ?>...">
+                        <input type="text" name="q" class="input-search form-control" placeholder="<?php echo \Yii::t('common', 'Search'); ?>...">
                         <button type="submit" name="search" id="search-btn" class="btn search-button"><i class="fa fa-search"></i></button>
                     </div>
                 </form>

@@ -17,6 +17,7 @@
             max_size : 'Total file size upload is excess 10MB',
             max_length:'Only allow maximum number of file upload is 20',
             no_data: 'No data',
+            view_more_upper_case: 'VIEW MORE',
             //project
             project_list_view_more : 'View More',
             project_add : 'Create project',
