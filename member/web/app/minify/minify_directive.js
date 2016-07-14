@@ -230,25 +230,55 @@ appRoot.directive('icheck', function($timeout, $parse) {
 
                 $scope.$watch($attrs['ngModel'], function(newValue){
                     $(element).iCheck('update');
-                })
+                });
 
-                return $(element).iCheck({
+                 $(element).iCheck({
                     checkboxClass: 'icheckbox_flat-green',
                     radioClass: 'iradio_flat-green'
 
                 }).on('ifChanged', function(event) {
                     if ($(element).attr('type') === 'checkbox' && $attrs['ngModel']) {
                         $scope.$apply(function() {
-                            return ngModel.$setViewValue(event.target.checked);
+                             ngModel.$setViewValue(event.target.checked);
                         });
                     }
                     if ($(element).attr('type') === 'radio' && $attrs['ngModel']) {
-                        return $scope.$apply(function() {
-                            return ngModel.$setViewValue(value);
+                         $scope.$apply(function() {
+                             ngModel.$setViewValue(value);
                         });
                     }
                 });
             });
+        }
+    };
+});
+appRoot.directive('radioColor', function($timeout, $parse) {
+    return {
+        require: 'ngModel',
+        restrict: 'AE',
+        link: function($scope, element, $attrs, ngModel) {
+            var background = "#"+$attrs['color'];
+            element.css({'background-color':background});
+            //check default
+            $scope.$watch(function(){
+                    return ngModel.$modelValue;
+                }, function(modelValue){
+                    if($attrs['color'] == modelValue){
+                        $('.radio-color').removeClass('fa-check');
+                        element.addClass('fa-check');
+                    }
+                });
+            /*if($attrs['color'] == ngModel.$modelValue){
+                $('.radio-color').removeClass('fa-check');
+                element.addClass('fa-check');
+            }*/
+            //handle event click
+            element.bind('click',function(){
+                $scope.$apply(function() {
+                    ngModel.$setViewValue($attrs['color']);
+                });
+            });
+            
         }
     };
 });

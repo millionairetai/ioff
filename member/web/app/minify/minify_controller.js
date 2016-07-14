@@ -241,7 +241,6 @@ appRoot.controller('AddAuthorityCtrl', ['$scope', '$uibModalInstance', 'controll
             });
         };
     }]);//show calendar
-
 appRoot.controller('calendarCtrl', ['$scope', '$uibModal', 'calendarService', '$timeout', 'settingSystem', 'uiCalendarConfig', 'listCalendar', '$rootScope', function ($scope, $uibModal, calendarService, $timeout, settingSystem, uiCalendarConfig, listCalendar, $rootScope) {
         var date = new Date();
         var d = date.getDate();
@@ -286,25 +285,10 @@ appRoot.controller('calendarCtrl', ['$scope', '$uibModal', 'calendarService', '$
                         }
                     });
                     modalInstance.result.then(function (data) {
-                        
-                        /*var newEvent = {
-                            title: data.name,
-                            start: data.start_datetime,
-                            end: data.end_datetime,
-                            color: "#" + data.color
-                        };
-
-                        $scope.events.push(newEvent);
-                        for (i = 0; i < $scope.calendars.length; i++) {
-                            if ($scope.calendars[i].id == data.calendar_id) {
-                                $scope.calendars[i].count += 1;
-                            }
-                        }*/
                         $timeout(function () {
                             $scope.resetEvents($scope.start, $scope.end);
                         });
-                    }, function () {
-                    });
+                    }, function () {});
                 },
                 events: function (start, end, callback) {
                     $scope.start = start;
@@ -312,7 +296,7 @@ appRoot.controller('calendarCtrl', ['$scope', '$uibModal', 'calendarService', '$
                     $scope.resetEvents(start, end);
                 },
                 header: {
-                    left: 'month  agendaWeek agendaDay',
+                    left: 'month agendaWeek agendaDay',
                     center: 'title prev,next',
                     right: 'today'
                 },
