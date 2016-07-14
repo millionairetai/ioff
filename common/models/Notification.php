@@ -23,6 +23,7 @@ use Yii;
 class Notification extends \common\components\db\ActiveRecord
 {
     const TABLE_PROJECT = "project";
+    const TABLE_EVENT = "event";
     /**
      * @inheritdoc
      */

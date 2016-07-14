@@ -1,0 +1,196 @@
+<div class="modal-header dialog-header-wait">
+    <button type="button" class="close" ng-click="cancel()">×</button>
+    <h4 class="modal-title text-danger"> <strong><i class="fa fa-cubes"></i>{{$root.$lang.calendar_add_event}}</strong></h4>
+</div>
+<div class="modal-body text-dangers" >
+
+    <div ng-show="step == 1">
+        <form class="form-horizontals">
+            <div class="box-body">
+                <div class="form-group">
+
+                    <div>
+                        <table class="table-input-time">
+                            <tr>
+                                <td  colspan="2">
+                                    <strong>{{$root.$lang.project_start_date}}</strong>
+                                </td>
+                                <td class="padding-input" colspan="2">
+                                    <strong>{{$root.$lang.project_end_date}}</strong>
+                                </td>
+                            </tr>
+                            <tr>
+
+                                <td >
+                                    <p class="input-group">
+                                        <input type="text" class="form-control" uib-datepicker-popup="dd-MM-yyyy" ng-model="event.var_start_datetime" is-open="open_start_datetime" datepicker-options="dateOptions" ng-required="true" close-text="{{$root.$lang.datepicker_close}}"  clear-text="{{$root.$lang.datepicker_clear}}" current-text="{{$root.$lang.datepicker_today}}" ng-focus="open_start_datetime = true" />
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default" ng-click="open_start_datetime = true"><i class="glyphicon glyphicon-calendar"></i></button>
+                                        </span>
+                                    </p>
+
+                                </td>
+                                <td>
+                                    <p class="input-group">
+                                        <input type="text" class="form-control" datetime-picker="HH:mm" ng-model="event.var_start_datetime"  is-open="open_start_time" enable-date="false"  enable-time="true" button-bar="buttonBar" ng-focus="open_start_time = true" timepicker-options="timepickerOptions"/>
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default" ng-click="open_start_time = true"><i class="fa fa-clock-o"></i></button>
+                                        </span>
+                                    </p>
+                                </td>
+
+                                <td class="padding-input">
+                                    <p class="input-group">
+                                        <input type="text" class="form-control" uib-datepicker-popup="dd-MM-yyyy" ng-model="event.var_end_datetime" is-open="open_end_datetime" datepicker-options="dateOptions" ng-required="true" close-text="{{$root.$lang.datepicker_close}}"  clear-text="{{$root.$lang.datepicker_clear}}" current-text="{{$root.$lang.datepicker_today}}" ng-focus="open_end_datetime = true"/>
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default" ng-click="open_end_datetime = true"><i class="glyphicon glyphicon-calendar"></i></button>
+                                        </span>
+                                    </p>
+                                </td>
+                                <td>
+                                    <p class="input-group">
+                                        <input type="text" class="form-control" datetime-picker="HH:mm" ng-model="event.var_end_datetime"  is-open="open_end_time" enable-date="false"  enable-time="true" button-bar="buttonBar" ng-focus="open_end_time = true" timepicker-options="timepickerOptions"/>
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default" ng-click="open_end_time = true"><i class="fa fa-clock-o"></i></button>
+                                        </span>
+                                    </p>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail3" class=" control-label">{{$root.$lang.calendar_event_name}}</label>
+                    <input type="text" class="form-control" ng-model="event.name" >
+
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail3" class=" control-label">{{$root.$lang.calendar_calendar_id}}</label>
+                    <select class="form-control" ng-model="event.calendar_id" ng-options="calendar.id as calendar.name  for calendar in calendars" ></select>
+                </div>
+
+                <div class="container-more" ng-show="more">
+                    <div class="form-group">
+                        <label for="inputPassword3" class="col-sm-3 control-label" style="padding-left: 0px;width: 100px">{{$root.$lang.calendar_event_share}}</label>
+                        <div class='col-sm-9s'>
+                            <div class="checkbox">
+                                <input type="checkbox" ng-model="event.is_public" icheck>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEmail3" class=" control-label">{{$root.$lang.calendar_event_address}}</label>
+                        <input type="text" class="form-control" ng-model="event.address" >
+                    </div>
+                    <div class="form-group">
+                        <label  class=" control-label">{{$root.$lang.calendar_event_description}}</label>
+                        <textarea class="form-control" rows="5" ng-model="event.description" ui-tinymce="tinymceOptions"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label  class=" control-label">{{$root.$lang.calendar_event_color}}</label>
+                        <div>
+                            <div ng-repeat="color in colors" radio-color color="{{color}}" ng-model="event.color" class="radio-color fa"></div>
+                            <div class="clearBoth"></div>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group" >
+                        <label for="inputEmail3" class="control-label">{{$root.$lang.calendar_event_redmind}} </label>
+                        <select class="form-control" ng-model="event.redmind" ng-options="redmind.id as redmind.name  for redmind in redminds" ></select>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPassword3" class=" control-label">{{$root.$lang.project_files}}</label>
+                        <div class="container-imgs">
+                            <input id="fileImage" type="file" class="form-control input-file-upload" name="file" onchange="angular.element(this).scope().addFile(this.files);
+                                    $('#fileImage').replaceWith($('#fileImage').clone());" />
+                            <br/>
+                            <div class="show-file-name" ng-repeat="file in files">
+                                <strong>{{file.name}}</strong> <i class="fa fa-remove" ng-click="removeFile($index)"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <div class='container-more'>
+                        <a ng-click="showMore(1)" ng-show="!more" class="pointer">{{$root.$lang.project_view_more}}</a>
+                        <a ng-click="showMore(0)" ng-show="more" class="pointer">{{$root.$lang.project_view_short}}</a>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+    </div>
+    <div ng-show="step == 2">
+        <form class="form-horizontal">
+            <div class="box-body">
+
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-3 control-label">{{$root.$lang.project_department}}</label>
+
+                    <div class="col-sm-9" >
+                        <label >
+                            <input type="checkbox" ng-change="checkAll()" ng-model="allDepartment" icheck> {{$root.$lang.project_choose_all}}
+                        </label>
+                        <div id="container-department">
+                            <label ng-repeat="department in departments">
+                                <input type="checkbox" checklist-model="event.departments" checklist-value="department.id" icheck ng-change="clickCheckAll()"> {{department.name}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail3" class="col-sm-3 control-label">{{$root.$lang.project_members}}</label>
+
+                    <div class="col-sm-9">
+                        <ui-select multiple  ng-model="event.members" theme="bootstrap" ng-disabled="disabled"  on-select="selectMember($item, $model)">
+                            <ui-select-match placeholder="">
+                                <img ng-src="{{$item.image}}" height="30" width="30" /><br/>
+                                {{$item.firstname}}
+                            </ui-select-match>
+                            <ui-select-choices refresh="findEmployeeForCalendar($select.search)" refresh-delay="1000" repeat="person in employees">
+                                <div class="item-result ">
+                                    <div class="item-result-name">
+                                        <img ng-src="{{person.image}}" height="50" width="50">
+                                        <div class="container-employee-search-info">
+                                            <strong >{{person.firstname}}</strong><br>
+                                            <i >{{person.email}}</i>
+                                        </div>
+                                        <div class="clearBoth"></div>
+                                    </div>
+                                </div>
+
+                            </ui-select-choices>
+                        </ui-select>
+
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="inputPassword3" class="col-sm-3 control-label">Sms</label>
+                    <div class='col-sm-9'>
+                        <div class="checkbox">
+                            <input type="checkbox" ng-model="event.sms" icheck> 
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        </form>
+
+    </div>
+    <div ng-show="step == 3">
+        <h3 class="text-center">{{$root.$lang.project_final}}</h3>
+        <h4 class="text-center">{{$root.$lang.project_created_success}}</h4>
+    </div>
+
+</div>
+<div class="modal-footer">
+
+    <button type="button" class="btn btn-default btn-flat" ng-click="back()" ng-hide="step == 1"><i class="fa fa-arrow-circle-left"></i> {{$root.$lang.button_back}}</button>
+    <button type="button" class="btn btn-primary btn-flat" ng-click="next()" ng-hide="step == 3"><i class="fa fa-arrow-circle-right"></i> {{$root.$lang.button_next}}</button>
+    <button type="button" class="btn btn-danger btn-flat" ng-click="cancel()"><i class="fa fa-remove"></i> {{$root.$lang.button_close}}</button>
+
+</div>

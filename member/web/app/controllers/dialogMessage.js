@@ -1,5 +1,5 @@
 // show dialog
-appRoot.controller('dialogMessage', [ '$rootScope','$scope', '$modalInstance','data','$sce', function ( $rootScope,$scope, $modalInstance,data,$sce) {
+appRoot.controller('dialogMessage', [ '$rootScope','$scope', '$uibModalInstance','data','$sce', function ( $rootScope,$scope, $uibModalInstance,data,$sce) {
         $scope.class_header = "dialog-header-error";
         $scope.show_save = false;
         $scope.title = $rootScope.$lang.title_error_dialog;
@@ -13,11 +13,11 @@ appRoot.controller('dialogMessage', [ '$rootScope','$scope', '$modalInstance','d
         $scope.message = $sce.trustAsHtml(data.message);
         //
         $scope.cancel = function () {
-            $modalInstance.dismiss('cancel');
+            $uibModalInstance.dismiss('cancel');
         };
         //
         $scope.save = function () {
-            $modalInstance.close('save');
+            $uibModalInstance.close('save');
         };
         
     }]);

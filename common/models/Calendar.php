@@ -1,9 +1,8 @@
 <?php
 
-namespace common\models\work;
+namespace common\models;
 
 use common\components\db\ActiveRecord;
-
 use Yii;
 
 /**
@@ -18,25 +17,23 @@ use Yii;
  * @property string $lastup_employee_id
  * @property boolean $disabled
  */
-class Calendar extends ActiveRecord
-{
+class Calendar extends ActiveRecord {
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'calendar';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['name', 'description'], 'required'],
             [['description'], 'string'],
-            [['company_id','datetime_created', 'lastup_datetime', 'lastup_employee_id'], 'integer'],
+            [['company_id', 'datetime_created', 'lastup_datetime', 'lastup_employee_id'], 'integer'],
             [['disabled'], 'boolean'],
             [['name'], 'string', 'max' => 255]
         ];
@@ -45,17 +42,79 @@ class Calendar extends ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
-            'id' 				 => Yii::t('common', 'ID'),
-            'company_id' 		 => Yii::t('common', 'Company id'),
-            'name' 				 => Yii::t('common', 'Event Calendar'),
-            'description' 		 => Yii::t('common', 'Description'),
-            'datetime_created' 	 => Yii::t('common', 'Datetime Created'),
-            'lastup_datetime' 	 => Yii::t('common', 'Lastup Datetime'),
+            'id' => Yii::t('common', 'ID'),
+            'company_id' => Yii::t('common', 'Company id'),
+            'name' => Yii::t('common', 'Event Calendar'),
+            'description' => Yii::t('common', 'Description'),
+            'datetime_created' => Yii::t('common', 'Datetime Created'),
+            'lastup_datetime' => Yii::t('common', 'Lastup Datetime'),
             'lastup_employee_id' => Yii::t('common', 'Lastup Employee ID'),
-            'disabled' 			 => Yii::t('common', 'Disabled'),
+            'disabled' => Yii::t('common', 'Disabled'),
         ];
     }
+
+    /**
+     * Get all calendar in company
+     * 
+     * @param integer $companyId
+     * @param integer $employeeId
+     * @return array
+     */
+    public static function getAllCalendar($companyId, $employeeId) {
+        $sql = "SELECT event.calendar_id, calendar.name, count(event.id) AS `number_event`																
+                FROM EVENT																
+                    INNER JOIN calendar ON event.calendar_id= calendar.id AND calendar.company_id={$companyId} AND calendar.disabled=0															
+                    WHERE (event.is_public=1 OR event.created_employee_id={$employeeId} OR (EXISTS(															
+                    SELECT *															
+                    FROM invitation															
+                    WHERE invitation.event_id= event.id AND invitation.owner_id={$employeeId} AND invitation.owner_table='employee' AND invitation.company_id={$companyId} AND invitation.disabled=0)) OR(EXISTS(															
+                    SELECT *															
+                    FROM invitation															
+                    INNER JOIN department ON invitation.owner_id=department.id AND invitation.owner_table='department' AND department.company_id={$companyId} AND department.disabled=0															
+                    INNER JOIN employee ON department.id=employee.department_id AND employee.company_id={$companyId} AND employee.id={$employeeId} AND employee.disabled=0															
+                        WHERE invitation.event_id=event.id 																
+                    AND invitation.company_id={$companyId} 															
+                    AND invitation.disabled=0)))															
+                    AND event.company_id={$companyId} 															
+                    AND event.disabled=0																								
+                GROUP BY event.calendar_id";
+
+        $command = \Yii::$app->db->createCommand($sql);
+        $data = $command->queryAll();
+        $ids = self::getAllId($data);
+
+        if ($calendars = self::find()->andCompanyId()->all()) {
+            foreach ($calendars as $calendar) {
+                if (!in_array($calendar->id, $ids)) {
+                    $data[] = [
+                        'calendar_id' => $calendar->id,
+                        'name' => $calendar->name,
+                        'number_event' => 0,
+                    ];
+
+                    $ids[] = $calendar->id;
+                }
+            }
+        }
+
+        return $data;
+    }
+
+    /**
+     * Get all calendar id from array
+     * 
+     * @param resource $data
+     * @return array
+     */
+    public static function getAllId($data) {
+        $return = [];
+        foreach ($data as $item) {
+            $return[] = $item['calendar_id'];
+        }
+
+        return $return;
+    }
+
 }

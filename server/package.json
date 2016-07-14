@@ -1,0 +1,18 @@
+{
+  "name": "notifycation",
+  "version": "1.0.0",
+  "description": "notify message to  everybody",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "notify"
+  ],
+  "author": "hungvu2803@gmail.com",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.13.4",
+    "socket.io": "^1.4.6"
+  }
+}

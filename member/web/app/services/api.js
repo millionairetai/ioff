@@ -2,8 +2,12 @@ appRoot.factory('apiService', ['$rootScope', '$http', '$location', 'alertify', f
 
         return {
             //post
-            post: function (url, data, successHandler, errorHandler) {
-                $rootScope.progressing = true;
+            post: function (url, data, successHandler, errorHandler,over) {
+                over = typeof over !== 'undefined' ? over : 1;
+                if(over){
+                    $rootScope.progressing = true;
+                }
+                
                 return $http.post(url, data).success(function (response, status, headers, config) {
                     //chi xu ly khi status bằng 200
                     if (status == 200) {

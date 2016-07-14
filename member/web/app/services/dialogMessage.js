@@ -1,8 +1,8 @@
-appRoot.factory('dialogMessage', ['$rootScope', "$modal", function ($rootScope, $modal) {
+appRoot.factory('dialogMessage', ['$rootScope', "$uibModal", function ($rootScope, $uibModal) {
 
         return {
             open: function (type, message, handle) {
-                var modalInstance = $modal.open({
+                var modalInstance = $uibModal.open({
                     templateUrl: 'app/views/widgets/dialogMessage.html',
                     controller: 'dialogMessage',
                     size: 'sm',

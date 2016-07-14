@@ -7,23 +7,22 @@ use common\components\web\StatusMessage;
 use common\models\Department;
 
 class DepartmentController extends ApiController {
-    
-    public function actionShow() {
-        
-    }
 
     /**
-     * 
+     * Get all department
      */
-    public function actionAll(){
+    public function actionAll() {
         $objects = [];
-        $array = Department::find()->andCompanyId()->all();
-        foreach($array as $item){
-            $objects[] = [
-                'id' => $item->id,
-                'name' => $item->name,
-            ];
+        if ($array = Department::find()->andCompanyId()->all()) {
+            foreach ($array as $item) {
+                $objects[] = [
+                    'id' => $item->id,
+                    'name' => $item->name,
+                ];
+            }
         }
+
         return $this->sendResponse(false, "", $objects);
     }
+
 }

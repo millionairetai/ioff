@@ -77,7 +77,7 @@
                 <li class="dropdown notifications-menu">
                     <a class="dropdown-toggle cursor-pointer" data-toggle="dropdown">
                         <i class="fa fa-bell-o"></i>
-                        <span class="label label-warning">10</span>
+                        <span class="label label-warning">{{$root.sum_notify}}</span>
                     </a>
                     <ul class="dropdown-menu">
                         <li class="header">You have 10 notifications</li>

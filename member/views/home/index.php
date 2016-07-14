@@ -1,1 +1,1 @@
-<div class="content-wrapper" ui-view></div>
+<div class="content-wrapper" ng-view></div>

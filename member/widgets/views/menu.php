@@ -7,22 +7,22 @@ use yii\helpers\Url;
           <!-- sidebar menu: : style can be found in sidebar.less -->
           <ul class="sidebar-menu">
             <li class="treeview">
-                <a ui-sref="home">
+                <a href="#home">
                 <i class="fa fa-dashboard"></i> <span>Dashboard</span> <i class="fa fa-angle-left pull-right"></i>
               </a>
             </li>
             <li>
-              <a ui-sref="project">
+              <a href="#project">
                 <i class="fa fa-th"></i> <span>Project</span> 
               </a>
             </li>
             <li>
-              <a ui-sref="calendar">
+              <a href="#calendar">
                 <i class="fa fa-calendar"></i> <span>Calendar</span> 
               </a>
             </li>
             <li>
-              <a ui-sref="authority">
+              <a href="#authority">
                 <i class="fa fa-group"></i> <span>Authorities</span> 
               </a>
             </li>

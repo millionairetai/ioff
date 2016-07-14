@@ -184,6 +184,7 @@ body > .ui-select-bootstrap.open {
   outline: none;
   height: 1.666666em;
   margin-bottom: 3px;
+  width: 100% !important;
 }
 
 .ui-select-multiple.ui-select-bootstrap .ui-select-match .close {

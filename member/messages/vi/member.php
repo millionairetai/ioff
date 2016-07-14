@@ -32,5 +32,6 @@ return [
     'validate_string' => '{attribute} phải là chuỗi ký tự',
     'validate_boolean' => '{attribute} phải là kiểu boolean',
     'validate_max_length' => '{attribute} phải nhỏ hơn 255 ký tự',
+    'validate_time' => 'Ngày kết thúc phải lớn hơn ngày bắt đầu',
     
 ];

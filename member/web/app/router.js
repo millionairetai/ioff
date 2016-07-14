@@ -1,37 +1,53 @@
-appRoot.config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
+appRoot.config(function ($routeProvider, $httpProvider) {
     // enable http caching
 //    $httpProvider.defaults.cache = true;
-
-    $urlRouterProvider
-            .otherwise('/home');
-
-    $stateProvider
-            .state('home', {
-                url: '/home',
+    
+    //Router
+    $routeProvider
+            //main page
+            .when('/home', {
                 templateUrl: 'app/views/home/index.html',
-                controller: 'homeCtrl',
+                controller: 'homeCtrl'
             })
-            .state('project', {
-                url: '/project',
+            //project
+            .when('/project', {
                 templateUrl: 'app/views/project/index.html',
                 controller: 'projectCtrl'
             })
-            .state('addProject', {
-                url: '/addProject',
+            .when('/addProject', {
                 templateUrl: 'app/views/project/add.html',
                 controller: 'addProjectCtrl'
             })
-            .state('calendar', {
-                url: '/calendar',
+            //calendar
+            .when('/calendar', {
                 templateUrl: 'app/views/calendar/index.html',
-                controller: 'calendarCtrl'
-            })          
+                controller: 'calendarCtrl',
+                resolve : {
+                    settingSystem : function($q, calendarService){
+                        var deferred = $q.defer();
+                        calendarService.getLanguage({},function(respone){
+                            deferred.resolve(respone.objects);
+                        });
+                        
+                        return deferred.promise;
+                    },
+                    listCalendar : function($q, calendarService){
+                        var deferred = $q.defer();
+                        calendarService.listCalendars({},function(respone){
+                            deferred.resolve(respone.objects);
+                        });
+                        
+                        return deferred.promise;
+                    }
+                }
+            })
             //authority
-            .state('authority', {
-                url: '/authority',
+            .when('/authority', {
                 templateUrl: 'app/views/authority/index.html',
                 controller: 'AuthorityCtrl'
-            });
+            })
+            .otherwise({redirectTo: '/home'});
+
 });
 
 

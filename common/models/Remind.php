@@ -1,6 +1,6 @@
 <?php
 
-namespace common\models\work;
+namespace common\models;
 
 use common\components\db\ActivieRecord;
 
@@ -24,9 +24,11 @@ use Yii;
  * @property string $lastup_employee_id
  * @property boolean $is_remind
  */
-class Remind extends ActivieRecord
+class Remind extends \common\components\db\ActiveRecord
 {
-	public $is_remind;
+    const TABLE_EVENT = "event";
+    
+    public $is_remind;
     /**
      * @inheritdoc
      */

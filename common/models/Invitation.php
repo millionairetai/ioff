@@ -1,6 +1,6 @@
 <?php
 
-namespace common\models\work;
+namespace common\models;
 
 use common\components\db\ActiveRecord;
 
@@ -21,6 +21,8 @@ use Yii;
  */
 class Invitation extends ActiveRecord
 {
+    const TABLE_EMPLOYEE = "employee";
+    const TABLE_DEPARTMENT = "department";
     /**
      * @inheritdoc
      */

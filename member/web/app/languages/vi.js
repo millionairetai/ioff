@@ -64,16 +64,7 @@
             project_notify_success:'Dự án đã được tạo thành công.',
             //end project
             
-            success_add_project : 'Bạn đã tạo dự án thành công',
-            please_enter_username: 'Xin nhập vào tài khoản',
-            please_enter_password: 'Xin nhập vào password',
-            remember: 'Ghi nhớ',
-            sign_in: 'Đăng nhập',
-            forgot_password: 'Quên mật khẩu',
-            username: 'Tài khoản',
-            password: 'Mật khẩu',
-            you_dont_have_permission_to_access_this_page: 'Bạn không có quyền truy cập trang này',
-            page_not_found:'Không tìm thấy trang này',
+            //authority
             authority_manage: 'Quản lý quyền',
             authority_list: 'Danh sách quyền',
             authority_name: 'Tên',
@@ -94,7 +85,49 @@
             no_data: 'Không có dữ liệu',
             authority_added_success: 'Đã thêm quyền thành công',
             authority_edited_success:'Đã cập nhật quyền thành công',
-            authority_deleted_success: 'Xóa quyền thành công'
+            authority_deleted_success: 'Xóa quyền thành công',
+            
+            //calendar
+            calendar_title : "Lịch",
+            calendar_add_event : "Thêm sự kiện",
+            calendar_event_name : "Tên sự kiện",
+            calendar_calendar_id : "Lịch",
+            calendar_event_address : "Địa chỉ",
+            calendar_event_share : "Công khai",
+            calendar_event_description : "Mô tả",
+            calendar_event_color : "Màu sắc của sự kiện",
+            calendar_event_redmind : "Nhắc nhở tôi",
+            calendar_view_more : 'Thông tin mở rộng',
+            calendar_view_short : 'Thu nhỏ',
+            calendar_event_redmine_0 : 'Không nhắc nhở',
+            calendar_event_redmine_30 : '30 phút',
+            calendar_event_redmine_60 : '1 giờ',
+            calendar_event_redmine_120 : '2 giờ',
+            calendar_event_redmine_240 : '4 giờ',
+            calendar_event_redmine_1440 : '1 ngày',
+            calendar_event_redmine_2880 : '2 ngày',
+            calendar_event_name_error_empty : 'Tên sự kiện không được bỏ trống',
+            calendar_event_start_date_error_empty : 'Ngày bắt đầu phải có định dạng DD-MM-YYYY  HH:mm',
+            calendar_event_end_date_error_empty : 'Ngày kết thúc phải có định dạng DD-MM-YYYY  HH:mm',
+            calendar_event_time_error : "Ngày kết thúc phải lớn hơn ngày bắt đầu",
+            calendar_event_calendar_id_error_empty : "Lịch không được bỏ trống",
+            calendar_notify_event_created_success : "Sự kiện của bạn đã được tạo thành công",
+            calendar_event_check_redmind : "Thời gian bắt đầu sự kiện so với thời gian hiện tại phải lớn hơn thời gian nhắc nhở",
+            
+            success_add_project : 'Bạn đã tạo dự án thành công',
+            please_enter_username: 'Xin nhập vào tài khoản',
+            please_enter_password: 'Xin nhập vào password',
+            remember: 'Ghi nhớ',
+            sign_in: 'Đăng nhập',
+            forgot_password: 'Quên mật khẩu',
+            username: 'Tài khoản',
+            password: 'Mật khẩu',
+            you_dont_have_permission_to_access_this_page: 'Bạn không có quyền truy cập trang này',
+            page_not_found:'Không tìm thấy trang này',
+            //date picker
+            datepicker_close : "Đóng",
+            datepicker_clear : "Xóa",
+            datepicker_today : "Hôm nay",
         };
     });
 })(window.angular);

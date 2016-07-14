@@ -24,6 +24,7 @@ use Yii;
 class Sms extends \common\components\db\ActiveRecord
 {
     const TABLE_PROJECT = "project";
+    const TABLE_EVENT = "event";
     /**
      * @inheritdoc
      */

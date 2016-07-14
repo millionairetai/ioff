@@ -1,6 +1,6 @@
 //list auhthorities
-appRoot.controller('AuthorityCtrl', ['$scope', '$modal', 'authorityService', '$rootScope', 'alertify',
-    function ($scope, $modal, authorityService, $rootScope, alertify) {
+appRoot.controller('AuthorityCtrl', ['$scope', '$uibModal', 'authorityService', '$rootScope', 'alertify',
+    function ($scope, $uibModal, authorityService, $rootScope, alertify) {
         $scope.params = {
             page : 1,
             limit: 20,
@@ -13,7 +13,7 @@ appRoot.controller('AuthorityCtrl', ['$scope', '$modal', 'authorityService', '$r
         $scope.authorities = [];
         $scope.maxPageSize = 15;
         $scope.add = function (authority, $index) {
-            var modalInstance = $modal.open({
+            var modalInstance = $uibModal.open({
                 templateUrl: 'app/views/authority/add.html',
                 controller: 'AddAuthorityCtrl',
                 size: 'lg',
@@ -71,10 +71,10 @@ appRoot.controller('AuthorityCtrl', ['$scope', '$modal', 'authorityService', '$r
     }]);
 
 /*************************************** ADD AUTHORITY CONTROLLER ********************************************/
-appRoot.controller('AddAuthorityCtrl', ['$scope', '$modalInstance', 'controllerService', 'actionService', 'authorityService', '$rootScope', 'authority', 'alertify', 'dialogMessage',
-    function ($scope, $modalInstance, controllerService, actionService, authorityService, $rootScope, authority, alertify, dialogMessage) {
+appRoot.controller('AddAuthorityCtrl', ['$scope', '$uibModalInstance', 'controllerService', 'actionService', 'authorityService', '$rootScope', 'authority', 'alertify', 'dialogMessage',
+    function ($scope, $uibModalInstance, controllerService, actionService, authorityService, $rootScope, authority, alertify, dialogMessage) {
         $scope.cancel = function () {
-            $modalInstance.dismiss();
+            $uibModalInstance.dismiss();
         };
         
         $scope.controllers = [];
@@ -207,14 +207,14 @@ appRoot.controller('AddAuthorityCtrl', ['$scope', '$modalInstance', 'controllerS
                     authorityService.edit(params, function (data) {
                         $scope.errors = {};
                         alertify.success($rootScope.$lang.authority_edited_success);
-                        $modalInstance.close(data.objects);
+                        $uibModalInstance.close(data.objects);
                     }, function (data) {
                     });
                 } else {
                     authorityService.add(params, function (data) {
                         $scope.errors = {};
                         alertify.success($rootScope.$lang.authority_added_success);
-                        $modalInstance.close(data.objects);
+                        $uibModalInstance.close(data.objects);
                     }, function (data) {
                         alertify.error(data.objects);
                     });
@@ -232,7 +232,7 @@ appRoot.controller('AddAuthorityCtrl', ['$scope', '$modalInstance', 'controllerS
             dialogMessage.open('confirm', $rootScope.$lang.is_delete, function (data) {
                 authorityService.delete({id: authority.id}, function () {
                     alertify.success($rootScope.$lang.authority_deleted_success);
-                    $modalInstance.close('delete');
+                    $uibModalInstance.close('delete');
                 }, function (data) {
                     if (data.message == 'is used') {
                         alertify.error($rootScope.$lang.authority_is_used);
@@ -241,18 +241,328 @@ appRoot.controller('AddAuthorityCtrl', ['$scope', '$modalInstance', 'controllerS
             });
         };
     }]);//show calendar
-appRoot.controller('calendarCtrl', ['$scope',function($scope) {
-    
-}]);
+
+appRoot.controller('calendarCtrl', ['$scope', '$uibModal', 'calendarService', '$timeout', 'settingSystem', 'uiCalendarConfig', 'listCalendar', '$rootScope', function ($scope, $uibModal, calendarService, $timeout, settingSystem, uiCalendarConfig, listCalendar, $rootScope) {
+        var date = new Date();
+        var d = date.getDate();
+        var m = date.getMonth();
+        var y = date.getFullYear();
+
+        $scope.start = false;
+        $scope.end = false;
+        $scope.events = [];
+        $scope.eventSources = [$scope.events];
+        $scope.calendars = [];
+        $scope.chooseCalendar = [];
+        $scope.calendars = listCalendar;
+
+        for (i = 0; i < $scope.calendars.length; i++) {
+            $scope.chooseCalendar.push($scope.calendars[i].id);
+        }
+
+        /* config object */
+        $scope.uiConfig = {
+            calendar: {
+                editable: false,
+                selectable: true,
+                eventLimit: 4,
+                timezone: "local",
+                lang: settingSystem.language,
+                select: function (start, end, allDay) {
+                    var modalInstance = $uibModal.open({
+                        templateUrl: 'app/views/calendar/add.html',
+                        controller: 'addEventCtrl',
+                        size: 'md',
+                        keyboard: true,
+                        backdrop: 'static',
+                        resolve: {
+                            data: function () {
+                                return {
+                                    start: start,
+                                    end: end,
+                                    calendars: $scope.calendars,
+                                };
+                            }
+                        }
+                    });
+                    modalInstance.result.then(function (data) {
+                        
+                        /*var newEvent = {
+                            title: data.name,
+                            start: data.start_datetime,
+                            end: data.end_datetime,
+                            color: "#" + data.color
+                        };
+
+                        $scope.events.push(newEvent);
+                        for (i = 0; i < $scope.calendars.length; i++) {
+                            if ($scope.calendars[i].id == data.calendar_id) {
+                                $scope.calendars[i].count += 1;
+                            }
+                        }*/
+                        $timeout(function () {
+                            $scope.resetEvents($scope.start, $scope.end);
+                        });
+                    }, function () {
+                    });
+                },
+                events: function (start, end, callback) {
+                    $scope.start = start;
+                    $scope.end = end;
+                    $scope.resetEvents(start, end);
+                },
+                header: {
+                    left: 'month  agendaWeek agendaDay',
+                    center: 'title prev,next',
+                    right: 'today'
+                },
+            }
+        };
+
+        $scope.checkCalendar = function () {
+            $timeout(function () {
+                $scope.resetEvents($scope.start, $scope.end);
+            });
+        }
+
+        $scope.resetEvents = function (start, end) {
+            calendarService.listEvents({start: start.format('YYYY-MM-DD'), end: end.format('YYYY-MM-DD'), calendars: $scope.chooseCalendar}, function (respone) {
+                $scope.events.length = 0;
+                for ($i = 0; $i < respone.objects.length; $i++) {
+                    var newEvent = {
+                        title: respone.objects[$i].title,
+                        start: moment(respone.objects[$i].start).toDate(),
+                        end: moment(respone.objects[$i].end).toDate(),
+                        color: respone.objects[$i].color
+                    };
+                    $scope.events.push(newEvent);
+                }
+
+            });
+        }
+    }]);
 
 //add event to calendar
-appRoot.controller('addEventCtrl', ['$scope',function($scope) {
-    
-}]);
+
+appRoot.controller('addEventCtrl', ['$rootScope', 'data', '$scope', 'calendarService', 'alertify', '$uibModalInstance', 'departmentService', 'employeeService', '$timeout', 'socketService',function ($rootScope, data, $scope, calendarService, alertify, $uibModalInstance, departmentService, employeeService, $timeout, socketService) {
+        //step
+        $scope.step = 1;
+        $scope.more = 0;
+        $scope.open_start_datetime = false;
+        $scope.open_end_datetime = false;
+        $scope.files = [];
+        $scope.colors = calendarService.colors();
+        $scope.redminds = calendarService.redmind();
+        $scope.people = [];
+        $scope.departments = [];
+        $scope.allDepartment = 0;
+        
+        if (data.end.toDate().getHours() == data.start.toDate().getHours() && data.start.toDate().getHours() == 7 && data.start.toDate().getMinutes() == data.end.toDate().getMinutes()) {
+            data.start.add(-7, 'hours');
+            data.end.add(-7, 'hours');
+        }
+        
+        $start_datetime = data.start.toDate();
+        $end_datetime = data.end.toDate();
+        
+        $scope.event = {
+            var_start_datetime: $start_datetime,
+            var_start_time: $start_datetime,
+            var_end_datetime: $end_datetime,
+            var_end_time: $end_datetime,
+            start_datetime: '',
+            end_datetime: '',
+            name: '',
+            address: '',
+            calendar_id: 0,
+            is_public: 0,
+            description: '',
+            color: "",
+            redmind: 0,
+            sms: 0,
+            departments: [],
+            members: [],
+        }
+
+        //add calendar
+        $scope.calendars = [];
+        $scope.calendars.push({id: 0, name: '--', count: 0});
+        for (i = 0; i < data.calendars.length; i++) {
+            $scope.calendars.push(data.calendars[i]);
+        }
+
+        //init
+        if ($scope.colors.length > 0) {
+            $scope.event.color = $scope.colors[0];
+        }
+
+        //refresh member
+        $scope.selectMember = function ($item, $model) {
+
+        };
+
+        //add employee
+        $scope.findEmployeeForCalendar = function (keyword) {
+            employeeService.searchEmployee({keyword: keyword, departments: $scope.event.departments, members: $scope.event.members}, function (response) {
+                $scope.employees = response.objects;
+            });
+        };
+
+        //get all department
+        departmentService.allDepartment({}, function (data) {
+            $scope.departments = data.objects;
+        });
+
+        //check all
+        $scope.checkAll = function () {
+            if ($scope.allDepartment) {
+                $scope.event.departments = $scope.departments.map(function (item) {
+                    return item.id;
+                });
+            } else {
+                $scope.event.departments = [];
+            }
+            $scope.findEmployeeForCalendar('');
+        };
+
+        //clickCheckAll
+        $scope.clickCheckAll = function () {
+            $timeout(function () {
+                if ($scope.event.departments.length != $scope.departments.length) {
+                    $scope.allDepartment = false;
+                } else {
+                    $scope.allDepartment = true;
+                }
+                $scope.findEmployeeForCalendar('');
+            });
+
+        };
+
+        //add file
+        $scope.addFile = function (files) {
+            $scope.$apply(function () {
+                for (var i = 0; i < files.length; i++) {
+                    if (files[i].size > 10485760) {
+                        alertify.error($rootScope.$lang.max_size);
+                    } else {
+                        if ($scope.files.length >= 20) {
+                            alertify.error($rootScope.$lang.max_length);
+                            return true;
+                        } else {
+                            $scope.files.push(files[i]);
+                        }
+
+                    }
+                }
+            });
+        };
+
+        //remove file
+        $scope.removeFile = function ($index) {
+            if (typeof $scope.files[$index] !== 'undefined') {
+                $scope.files.splice($index, 1);
+            }
+        };
+
+        //next
+        $scope.next = function () {
+            if ($scope.step < 3) {
+                //check validate when go to step 2
+                if ($scope.step == 1) {
+                    if (calendarService.validate_step1($scope.event)) {
+                        $scope.step++;
+                    }
+                } else {
+                    if ($scope.step == 2) {
+                        //check validate when go to step 3
+                        if (calendarService.validate_step2($scope.event)) {
+                            $scope.event.start_datetime = moment($scope.event.var_start_datetime).format('YYYY-MM-DD HH:mm:ss');
+                            $scope.event.end_datetime = moment($scope.event.var_end_datetime).format('YYYY-MM-DD HH:mm:ss');
+                            var fd = new FormData();
+                            
+                            for (var i in $scope.files) {
+                                fd.append("file_" + i, $scope.files[i]);
+                            }
+                            
+                            fd.append("event", angular.toJson($scope.event));
+                            calendarService.addEvent(fd, function (response) {
+                                alertify.success($rootScope.$lang.calendar_notify_event_created_success);
+                                $uibModalInstance.close($scope.event);
+                                socketService.emit('notify', 'ok');
+                                $scope.step++;
+                            });
+
+                        }
+                    } else {
+                        $scope.step++;
+                    }
+                }
+            }
+        };
+        //back
+        $scope.back = function () {
+            if ($scope.step == 2) {
+                $scope.step--;
+            }
+        };
+
+        //cancel
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
+
+        //show more
+        $scope.showMore = function (value) {
+            $scope.more = value;
+        }
+
+        $scope.tinymceOptions = {
+            inline: false,
+            toolbar: 'formatselect | bold italic underline | bullist numlist | alignleft aligncenter alignright alignjustify | undo redo ',
+            menubar: false,
+            skin: 'lightgray',
+            theme: 'modern'
+        };
+
+        $scope.buttonBar = {
+            show: true,
+            now: {
+                show: false,
+                text: 'Now!'
+            },
+            today: {
+                show: true,
+                text: $rootScope.$lang.datepicker_today
+            },
+            clear: {
+                show: true,
+                text: $rootScope.$lang.datepicker_clear
+            },
+            date: {
+                show: true,
+                text: 'Date'
+            },
+            time: {
+                show: true,
+                text: 'Time'
+            },
+            close: {
+                show: true,
+                text: $rootScope.$lang.datepicker_close
+            }
+
+        };
+        // time picker
+        $scope.timepickerOptions =  {
+                readonlyInput: false,
+                showMeridian: false
+            }
+
+    }]);
 
 
 // show dialog
-appRoot.controller('dialogMessage', [ '$rootScope','$scope', '$modalInstance','data','$sce', function ( $rootScope,$scope, $modalInstance,data,$sce) {
+appRoot.controller('dialogMessage', [ '$rootScope','$scope', '$uibModalInstance','data','$sce', function ( $rootScope,$scope, $uibModalInstance,data,$sce) {
         $scope.class_header = "dialog-header-error";
         $scope.show_save = false;
         $scope.title = $rootScope.$lang.title_error_dialog;
@@ -266,11 +576,11 @@ appRoot.controller('dialogMessage', [ '$rootScope','$scope', '$modalInstance','d
         $scope.message = $sce.trustAsHtml(data.message);
         //
         $scope.cancel = function () {
-            $modalInstance.dismiss('cancel');
+            $uibModalInstance.dismiss('cancel');
         };
         //
         $scope.save = function () {
-            $modalInstance.close('save');
+            $uibModalInstance.close('save');
         };
         
     }]);
@@ -293,7 +603,8 @@ appRoot.controller('homeCtrl', ['$scope','dialogMessage','alertify',function($sc
 
 
 //list project
-appRoot.controller('projectCtrl', ['$scope', 'projectService', '$modal','$rootScope', function ($scope, projectService, $modal,$rootScope) {
+appRoot.controller('projectCtrl', ['$scope', 'projectService', '$uibModal','$rootScope','socketService', function ($scope, projectService, $uibModal,$rootScope,socketService) {
+         
         //get all project
         $scope.filter = {
             itemPerPage : 10,
@@ -311,7 +622,7 @@ appRoot.controller('projectCtrl', ['$scope', 'projectService', '$modal','$rootSc
         
         //add project
         $scope.add = function () {
-            var modalInstance = $modal.open({
+            var modalInstance = $uibModal.open({
                 templateUrl: 'app/views/project/add.html',
                 controller: 'addProjectCtrl',
                 size: 'lg',
@@ -335,7 +646,8 @@ appRoot.controller('projectCtrl', ['$scope', 'projectService', '$modal','$rootSc
     }]);
 
 //add project
-appRoot.controller('addProjectCtrl', ['$scope', 'projectService', '$location', '$modalInstance', '$rootScope', 'departmentService','alertify','$timeout','employeeService', function ($scope, projectService, $location, $modalInstance, $rootScope, departmentService,alertify,$timeout,employeeService) {
+appRoot.controller('addProjectCtrl', ['socketService','$scope', 'projectService', '$location', '$uibModalInstance', '$rootScope', 'departmentService','alertify','$timeout','employeeService', function (socketService,$scope, projectService, $location, $uibModalInstance, $rootScope, departmentService,alertify,$timeout,employeeService) {
+        
         //step
         $scope.step = 1;
         $scope.more = 0;
@@ -488,6 +800,8 @@ appRoot.controller('addProjectCtrl', ['$scope', 'projectService', '$location', '
                             projectService.addProject(fd,function(response){
                                 alertify.success($rootScope.$lang.project_notify_success);
                                 $rootScope.$emit('create_project_success', {message: 'hung'});
+                                socketService.emit('notify', 'ok');
+        
                                 $scope.step++;
                             });
                             
@@ -507,7 +821,7 @@ appRoot.controller('addProjectCtrl', ['$scope', 'projectService', '$location', '
 
         //cancel
         $scope.cancel = function () {
-            $modalInstance.dismiss('cancel');
+            $uibModalInstance.dismiss('cancel');
         };
 
         //show more

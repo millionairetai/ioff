@@ -1,5 +1,6 @@
 //list project
-appRoot.controller('projectCtrl', ['$scope', 'projectService', '$modal','$rootScope', function ($scope, projectService, $modal,$rootScope) {
+appRoot.controller('projectCtrl', ['$scope', 'projectService', '$uibModal','$rootScope','socketService', function ($scope, projectService, $uibModal,$rootScope,socketService) {
+         
         //get all project
         $scope.filter = {
             itemPerPage : 10,
@@ -17,7 +18,7 @@ appRoot.controller('projectCtrl', ['$scope', 'projectService', '$modal','$rootSc
         
         //add project
         $scope.add = function () {
-            var modalInstance = $modal.open({
+            var modalInstance = $uibModal.open({
                 templateUrl: 'app/views/project/add.html',
                 controller: 'addProjectCtrl',
                 size: 'lg',
@@ -41,7 +42,8 @@ appRoot.controller('projectCtrl', ['$scope', 'projectService', '$modal','$rootSc
     }]);
 
 //add project
-appRoot.controller('addProjectCtrl', ['$scope', 'projectService', '$location', '$modalInstance', '$rootScope', 'departmentService','alertify','$timeout','employeeService', function ($scope, projectService, $location, $modalInstance, $rootScope, departmentService,alertify,$timeout,employeeService) {
+appRoot.controller('addProjectCtrl', ['socketService','$scope', 'projectService', '$location', '$uibModalInstance', '$rootScope', 'departmentService','alertify','$timeout','employeeService', function (socketService,$scope, projectService, $location, $uibModalInstance, $rootScope, departmentService,alertify,$timeout,employeeService) {
+        
         //step
         $scope.step = 1;
         $scope.more = 0;
@@ -194,6 +196,8 @@ appRoot.controller('addProjectCtrl', ['$scope', 'projectService', '$location', '
                             projectService.addProject(fd,function(response){
                                 alertify.success($rootScope.$lang.project_notify_success);
                                 $rootScope.$emit('create_project_success', {message: 'hung'});
+                                socketService.emit('notify', 'ok');
+        
                                 $scope.step++;
                             });
                             
@@ -213,7 +217,7 @@ appRoot.controller('addProjectCtrl', ['$scope', 'projectService', '$location', '
 
         //cancel
         $scope.cancel = function () {
-            $modalInstance.dismiss('cancel');
+            $uibModalInstance.dismiss('cancel');
         };
 
         //show more

@@ -137,18 +137,23 @@ class ProjectController extends ApiController {
                 $is_query = false;
                 $query = Employee::find();
                 
-                if (isset($dataPost['departments']) && count($dataPost['departments'])) {
-                    $is_query = true;
-                    $query->orWhere(['department_id' => $dataPost['departments']]);
-                }
-                
-                if (isset($dataPost['members']) && count($dataPost['members'])) {
+                if (isset($dataPost['members']) && count($dataPost['members']) && isset($dataPost['departments']) && count($dataPost['departments'])) {
                     $is_query = true;
                     $idEmployees = [];
                     foreach ($dataPost['members'] as $item) {
                         $idEmployees[] = $item['id'];
                     }
-                    $query->orWhere(['id' => $idEmployees]);
+                    $query->andWhere('id in ('. implode(',', $idEmployees).') or department_id in ('.implode(',', $dataPost['departments']).')');
+                } elseif (isset($dataPost['members']) && count($dataPost['members'])) {
+                    $is_query = true;
+                    $idEmployees = [];
+                    foreach ($dataPost['members'] as $item) {
+                        $idEmployees[] = $item['id'];
+                    }
+                    $query->andWhere(['id' => $idEmployees]);
+                } elseif (isset($dataPost['departments']) && count($dataPost['departments'])) {
+                    $is_query = true;
+                    $query->andWhere(['department_id' => $dataPost['departments']]);
                 }
                 
                 if ($is_query) {
@@ -180,8 +185,7 @@ class ProjectController extends ApiController {
 
                         //send sms
                         if ($ob->sms) {
-                            $themeSms = ""; //\common\models\SmsTemplate::getThemeCreateProject();
-                            $item->sendSms($dataSend, $themeEmail);
+                            $item->sendSms($dataSend, $themeSms);
                             $sms = new \common\models\Sms();
                             $sms->owner_id = $ob->id;
                             $sms->employee_id = $item->id;

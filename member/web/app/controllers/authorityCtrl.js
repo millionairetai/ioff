@@ -1,6 +1,6 @@
 //list auhthorities
-appRoot.controller('AuthorityCtrl', ['$scope', '$modal', 'authorityService', '$rootScope', 'alertify',
-    function ($scope, $modal, authorityService, $rootScope, alertify) {
+appRoot.controller('AuthorityCtrl', ['$scope', '$uibModal', 'authorityService', '$rootScope', 'alertify',
+    function ($scope, $uibModal, authorityService, $rootScope, alertify) {
         $scope.params = {
             page : 1,
             limit: 20,
@@ -13,7 +13,7 @@ appRoot.controller('AuthorityCtrl', ['$scope', '$modal', 'authorityService', '$r
         $scope.authorities = [];
         $scope.maxPageSize = 15;
         $scope.add = function (authority, $index) {
-            var modalInstance = $modal.open({
+            var modalInstance = $uibModal.open({
                 templateUrl: 'app/views/authority/add.html',
                 controller: 'AddAuthorityCtrl',
                 size: 'lg',
@@ -71,10 +71,10 @@ appRoot.controller('AuthorityCtrl', ['$scope', '$modal', 'authorityService', '$r
     }]);
 
 /*************************************** ADD AUTHORITY CONTROLLER ********************************************/
-appRoot.controller('AddAuthorityCtrl', ['$scope', '$modalInstance', 'controllerService', 'actionService', 'authorityService', '$rootScope', 'authority', 'alertify', 'dialogMessage',
-    function ($scope, $modalInstance, controllerService, actionService, authorityService, $rootScope, authority, alertify, dialogMessage) {
+appRoot.controller('AddAuthorityCtrl', ['$scope', '$uibModalInstance', 'controllerService', 'actionService', 'authorityService', '$rootScope', 'authority', 'alertify', 'dialogMessage',
+    function ($scope, $uibModalInstance, controllerService, actionService, authorityService, $rootScope, authority, alertify, dialogMessage) {
         $scope.cancel = function () {
-            $modalInstance.dismiss();
+            $uibModalInstance.dismiss();
         };
         
         $scope.controllers = [];
@@ -207,14 +207,14 @@ appRoot.controller('AddAuthorityCtrl', ['$scope', '$modalInstance', 'controllerS
                     authorityService.edit(params, function (data) {
                         $scope.errors = {};
                         alertify.success($rootScope.$lang.authority_edited_success);
-                        $modalInstance.close(data.objects);
+                        $uibModalInstance.close(data.objects);
                     }, function (data) {
                     });
                 } else {
                     authorityService.add(params, function (data) {
                         $scope.errors = {};
                         alertify.success($rootScope.$lang.authority_added_success);
-                        $modalInstance.close(data.objects);
+                        $uibModalInstance.close(data.objects);
                     }, function (data) {
                         alertify.error(data.objects);
                     });
@@ -232,7 +232,7 @@ appRoot.controller('AddAuthorityCtrl', ['$scope', '$modalInstance', 'controllerS
             dialogMessage.open('confirm', $rootScope.$lang.is_delete, function (data) {
                 authorityService.delete({id: authority.id}, function () {
                     alertify.success($rootScope.$lang.authority_deleted_success);
-                    $modalInstance.close('delete');
+                    $uibModalInstance.close('delete');
                 }, function (data) {
                     if (data.message == 'is used') {
                         alertify.error($rootScope.$lang.authority_is_used);

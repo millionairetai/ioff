@@ -32,4 +32,5 @@ return [
     'validate_string' => '{attribute} is must string',
     'validate_boolean' => '{attribute} is must boolean',
     'validate_max_length' => '{attribute} is must less than 255 character ',
+    'validate_time' => 'End time is must greater than Start time',
 ];
