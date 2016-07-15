@@ -107,23 +107,6 @@ class CalendarController extends ApiController {
                 }
             }
 
-            //remind
-            if (!empty($dataPost['redmind'])) {
-                $remind = new Remind();
-                $remind->employee_id = \Yii::$app->user->getId();
-                $remind->owner_id = $ob->id;
-                $remind->owner_table = Remind::TABLE_EVENT;
-                $remind->content = $ob->name;
-                $remind->remind_datetime = $ob->start_datetime - ($dataPost['redmind'] * 60);
-                $remind->minute_before = $dataPost['redmind'];
-                $remind->repeated_time = 0;
-                $remind->is_snoozing = 0;
-
-                if (!$remind->save()) {
-                    throw new \Exception('Save record to table Remind fail');
-                }
-            }
-
             //move file
             File::addFiles($_FILES, \Yii::$app->params['PathUpload'], $ob->id, File::TABLE_EVENT);
 
@@ -197,6 +180,7 @@ class CalendarController extends ApiController {
                 $notifications = [];
                 $eventConfirmations = [];
                 $sms = [];
+                $remind = [];
 
                 foreach ($arrayEmployees as $item) {
                     //save notification
@@ -208,6 +192,11 @@ class CalendarController extends ApiController {
                     //save sms
                     if ($ob->sms) {
                         $sms[] = [$ob->id, $item->id, \common\models\Sms::TABLE_EVENT, $content, 1, 0];
+                    }
+                    
+                    //remind
+                    if (!empty($dataPost['redmind'])) {
+                        $remind[] = [$item->id, $ob->id, Remind::TABLE_EVENT, $ob->name, $ob->start_datetime - ($dataPost['redmind'] * 60), $dataPost['redmind'], 0, 0];
                     }
                 }
 
@@ -222,6 +211,13 @@ class CalendarController extends ApiController {
                     if (!Yii::$app->db->createCommand()->batchInsert(
                                     EventConfirmation::tableName(), ['event_id', 'employee_id', 'confirm_event_id'], $eventConfirmations)->execute()) {
                         throw new \Exception('BatchInsert to event_confirmation table fail');
+                    }
+                }
+                
+                if (!empty($remind)) {
+                    if (!Yii::$app->db->createCommand()->batchInsert(
+                                    Remind::tableName(), ['employee_id', 'owner_id', 'owner_table', 'content', 'remind_datetime', 'minute_before', 'repeated_time', 'is_snoozing'], $remind)->execute()) {
+                        throw new \Exception('BatchInsert to remind table fail');
                     }
                 }
 
