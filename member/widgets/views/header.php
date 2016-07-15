@@ -23,13 +23,13 @@
                     <!-- Single button -->
                     <div class="btn-group">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            All <span class="caret"></span>
+                            Tất cả <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu">
-                            <li><a href="#">All</a></li>
-                            <li><a href="#">Project</a></li>
-                            <li><a href="#">Calendar</a></li>
-                            <li><a href="#">Task</a></li>
+                            <li><a href="#">Tất cả</a></li>
+                            <li><a href="#">Dự án</a></li>
+                            <li><a href="#">Sự kiện</a></li>
+                            <li><a href="#">Công việc</a></li>
                             <li role="separator" class="divider"></li>
                             <li><a href="#">Event</a></li>
                         </ul>
