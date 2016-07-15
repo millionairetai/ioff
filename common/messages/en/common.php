@@ -17,4 +17,21 @@ return [
     'Email' => 'Email',
     'created' => ' Created date ',
     'Search'=>'Search',
+    
+    //calendar
+    'event_id' => 'Event id',
+    'event_company_id' => 'Company id',
+    'event_calendar_id' => 'Calendar id',
+    'event_employee_id'=> 'Employee id',
+    'event_name' => 'Event name',
+    'event_description' => 'Description',
+    'event_description_parse' => 'Description',
+    'event_address' => 'Address',
+    'event_start_datetime' => 'Start datetime',
+    'event_end_datetime' => 'End datetime',
+    'event_is_public' => 'Public',
+    'event_datetime_created' => 'Created',
+    'event_lastup_datetime' => 'Updated',
+    'event_lastup_employee_id' => 'Employee',
+    'event_disabled' => 'Disabled',
 ];

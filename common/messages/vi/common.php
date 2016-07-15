@@ -17,4 +17,21 @@ return [
     'Email' => 'Email',
     'created' => ' đã tạo ',
     'Search'=>'Tìm kiếm',
+    
+    //Calendar
+    'event_id' => 'Mã sự kiện',
+    'event_company_id' => 'Công ty',
+    'event_calendar_id' => 'Mã lịch',
+    'event_employee_id'=> 'Người tạo',
+    'event_name' => 'Tên sự kiện',
+    'event_description' => 'Mô tả',
+    'event_description_parse' => 'Mô tả',
+    'event_address' => 'Địa chỉ',
+    'event_start_datetime' => 'Ngày bắt đầu',
+    'event_end_datetime' => 'Ngày kết thúc',
+    'event_is_public' => 'Công khai',
+    'event_datetime_created' => 'Ngày tạo',
+    'event_lastup_datetime' => 'Ngày sử đổi',
+    'event_lastup_employee_id' => 'Người sửa',
+    'event_disabled' => 'Vô hiệu hóa',
 ];

@@ -137,13 +137,13 @@ class File extends \common\components\db\ActiveRecord {
                 }
 
                 $employeeSpace->space_total += $size;
-                if (!$employeeSpace->save(false)) {
-                    throw new \Exception('Save record to table File fail');
-                }
             }
         }
-    }
-    
+        
+        if (!$employeeSpace->save(false)) {
+            throw new \Exception('Save record to table File fail');
+        }
+    } 
 
     /**
      * Create folder if it don't exists
