@@ -419,7 +419,7 @@ search-product .dropdown-menu{
   display: none;
 }
 .form-group.sidebar-form1{
-  border-radius: 3px;
+  /*border-radius: 3px;*/
   border: 1px solid #d2d6de;
   margin: 10px 10px;
 }
@@ -453,6 +453,11 @@ search-product .dropdown-menu{
 }
 .authority-list-page .col-name-date{
   width: 121px;
+}
+/* none border radius pagination */
+.pagination-sm > li:first-child > a, .pagination-sm > li:first-child > span,
+.pagination-sm > li:last-child > a, .pagination-sm > li:last-child > span{
+    border-radius: 0;
 }
 
 /*------------ calendar  ------------*/
@@ -606,3 +611,4 @@ search-product .dropdown-menu{
     bottom: -45px;
     right: 10px;
 }
+
