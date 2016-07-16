@@ -56,4 +56,8 @@ class Priority extends \common\components\db\ActiveRecord
             'disabled' => 'Disabled',
         ];
     }
+    
+    public static function getPriorityName($id){
+    	return Priority::findOne($id);
+    }
 }

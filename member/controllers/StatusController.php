@@ -1,16 +1,18 @@
 <?php
+
 namespace member\controllers;
+
 use common\models\Status;
 
-class StatusController extends ApiController{
+class StatusController extends ApiController {
     
-    /*
+     /**
+     * Get status list by company id and column nam
      * 
+     * @param integer $projectId 
+     * @return boolean|array
      */
-
-    public function actionProject() {
-        $error = false;
-        $message = "";
+    public function actionGetProjectStatus() {
         $objects = [];
 
         $array = Status::find()->andCompanyId()->andWhere(['column_name' => 'project'])->all();
@@ -20,6 +22,7 @@ class StatusController extends ApiController{
                 'name' => $item->name
             ];
         }
-        return $this->sendResponse($error, $message, $objects);
+        return $this->sendResponse(false, "", $objects);
     }
+
 }

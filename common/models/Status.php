@@ -59,4 +59,8 @@ class Status extends \common\components\db\ActiveRecord
             'disabled' => 'Disabled',
         ];
     }
+    
+    public static function getStatusName($id){
+    	return Status::findOne($id);
+    }
 }

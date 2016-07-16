@@ -60,4 +60,11 @@ class ProjectParticipant extends \common\components\db\ActiveRecord
             'disabled' => 'Disabled',
         ];
     }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getDepartment() {
+    	return $this->hasOne(Department::className(), ['id' => 'owner_id']);
+    }
 }

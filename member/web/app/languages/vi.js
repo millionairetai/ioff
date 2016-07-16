@@ -6,18 +6,28 @@
             title_error_dialog : 'Thông báo lỗi',
             title_confirm_dialog : 'Xác nhận thông tin',
             ok : 'Chấp nhận',
+            more : 'Xem Thêm',
+            less : 'Đóng',
             cancel : 'Hủy',
             add_project : 'Thêm dự án',
+            edit_project : 'Cập Nhật',
+            delete_project : 'Xóa dự án',
             save : 'Lưu',
             remove: 'Xóa',
+            post : 'Đăng',
             employee_empty : 'Không nhân viên nào được tìm thấy',
             button_back : 'Quay lại',
             button_next : 'Tiếp',
+            button_update : 'Cập nhật',
             button_close : 'Đóng',
             max_size : 'Tổng dung lượng file upload vượt quá 10MB',
             max_length:'Chỉ cho phép tổng số lượng tập tin upload tối đa là 20',
             no_data: 'Không có dữ liệu',
             view_more_upper_case: 'XEM THÊM',
+            //Lang for expand and remove contaner in each page.
+            expand: 'Đóng',
+            remove: 'Xóa',
+            
             //project
             project_list_view_more : 'Xem thêm',
             project_add : 'Tạo dự án',
@@ -48,6 +58,11 @@
             project_department : 'Phòng ban',
             project_choose_all: 'Tất cả',
             project_members: 'Thành viên',
+            project_parent: 'Dự án cha',
+            project_progress: 'Tiến độ dự án',
+            work_time: 'Thời gian làm việc',
+            file_name :'Tên',
+            time_update :'Ngày thêm vào',
             
             project_estimate_error : 'Thời gian ước lượng phải là con số',
             project_estimate_error_0 : 'Thời gian ước lượng phải lớn hơn -1',
@@ -62,6 +77,10 @@
             project_members_error_empty: 'Dự án phải có người phụ trách',
             project_created_success:'Dự án đã được tạo thành công.',
             project_notify_success:'Dự án đã được tạo thành công.',
+            project_update_success:'Dự án đã được cập nhật thành công.',
+            remove_file_success:'File đã được xóa thành công.',
+            remove_file_error:'File bạn cần xóa không thành công.',
+            confirm_delete_file:'Bạn có chắc chắn xóa?.',
             //end project
             
             //authority

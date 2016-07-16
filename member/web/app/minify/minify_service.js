@@ -304,6 +304,13 @@ appRoot.factory('employeeService', ['apiService', function (apiService) {
             }
         };
     }]);
+appRoot.factory('fileService', ['apiService', function (apiService) {
+    return {
+    	removeFile : function (data,success,error){
+            apiService.get('file/remove-file', data, success, error);
+        }
+    };
+}]);
 appRoot.factory('notifyService', ['apiService', '$rootScope', 'alertify', function (apiService, $rootScope, alertify) {
 
         return {
@@ -312,6 +319,13 @@ appRoot.factory('notifyService', ['apiService', '$rootScope', 'alertify', functi
             },
         };
     }]);
+appRoot.factory('priorityService', ['apiService', function (apiService) {
+    return {
+    	getProjectPriority : function (data,success,error){
+            apiService.get('priority/get-project-priority', data, success, error);
+        }
+    };
+}]);
 appRoot.factory('projectService', ['apiService','$rootScope','alertify', function (apiService,$rootScope,alertify) {
 
         return {
@@ -321,11 +335,11 @@ appRoot.factory('projectService', ['apiService','$rootScope','alertify', functio
             addProject : function (data,success,error){
                 apiService.upload('project/add',data,success,error);
             },
-            listStatus : function (data,success,error){
-                apiService.get('status/project',data,success,error);
+        viewProject : function (data,success,error){
+            apiService.post('project/view',data, success, error);
             },
-            listPriority : function (data,success,error){
-                apiService.get('priority/index',data,success,error);
+        editProject : function (data,success,error){
+            apiService.upload('project/edit', data, success,error);
             },
             validate_step1 : function(object){
                 var message = "";
@@ -386,10 +400,31 @@ appRoot.factory('projectService', ['apiService','$rootScope','alertify', functio
                 }
                 return true;
                 
-            }
-            
+            },
         };
     }]);
+appRoot.factory('projectPostService', ['apiService', '$rootScope', 'alertify', function (apiService, $rootScope, alertify) {
+    return {
+    	addProjectPost : function (data,success,error){
+        	apiService.upload('project-post/add-project-post',data,success,error);
+        },
+        getProjectPosts : function (data, success, error){
+            apiService.post('project-post/get-project-post',data, success, error);
+        },
+        validateProjectPost : function(object){
+        	var message = "";
+        	if(object.description.length == 0){
+                message += $rootScope.$lang.project_description_error_empty + "<br/>";
+            }
+        	if(message.length > 0){
+        		alertify.error(message);
+        		return false;
+        	}
+        	return true;
+        	
+        }
+    };
+}]);
 appRoot.factory('socketService', ['socketFactory', function (socketFactory) {
 
         var myIoSocket = io.connect('http://localhost:3000');
@@ -399,3 +434,89 @@ appRoot.factory('socketService', ['socketFactory', function (socketFactory) {
         return mySocket;
     }]);
 
+appRoot.factory('statusService', ['apiService', function (apiService) {
+    return {
+    	getProjectStatus : function (data,success,error){
+            apiService.get('status/get-project-status', data, success, error);
+        }
+    };
+}]);
+appRoot.factory( "ValidationServices", function() {
+    return {
+        failIfWrongThreshouldConfig: function( firstThreshould, secondThreshould ) {
+            if( (! firstThreshould && ! secondThreshould) || (firstThreshould && secondThreshould) ) {
+                throw "You must specify one, and only one, type of threshould (chars or words)";
+            }
+        }
+    };
+});
+
+appRoot.factory( "CharBasedTruncation", [ "$compile", '$rootScope' , function( $compile, $rootScope) {
+    return {
+        truncationApplies: function( $scope, threshould ) {
+            return $scope.text.length > threshould;
+        },
+
+        applyTruncation: function( threshould, $scope, $element) {
+            if( $scope.useToggling ) {
+                var el = angular.element(    "<span>" + 
+                                                $scope.text.substr( 0, threshould ) + 
+                                                "<span ng-show='!open'>...</span>" +
+                                                "<span class='btn-link ngTruncateToggleText' " +
+                                                    "ng-click='toggleShow()'" +
+                                                    "ng-show='!open'>" +
+                                                    "  <div class='text-right'>" +  ($scope.customMoreLabel ? $scope.customMoreLabel : $rootScope.$lang.more) + "</div>" +
+                                                "</span>" +
+                                                "<span ng-show='open'>" + 
+                                                    $scope.text.substring( threshould ) + 
+                                                    "<span class='btn-link ngTruncateToggleText'" +
+                                                          "ng-click='toggleShow()'>" +
+                                                          "  <div class='text-right'>" +  ($scope.customLessLabel ? $scope.customLessLabel : $rootScope.$lang.less) + "</div>" +
+                                                    "</span>" +
+                                                "</span>" +
+                                            "</span>" );
+                $compile( el )( $scope );
+                $element.append( el );
+
+            } else {
+                $element.append( $scope.text.substr( 0, threshould ) + "..." );
+
+            }
+        }
+    };
+}]);
+
+appRoot.factory( "WordBasedTruncation", [ "$compile", function( $compile ) {
+    return {
+        truncationApplies: function( $scope, threshould ) {
+            return $scope.text.split( " " ).length > threshould;
+        },
+
+        applyTruncation: function( threshould, $scope, $element ) {
+            var splitText = $scope.text.split( " " );
+            if( $scope.useToggling ) {
+                var el = angular.element(    "<span>" + 
+                                                splitText.slice( 0, threshould ).join( " " ) + " " + 
+                                                "<span ng-show='!open'>...</span>" +
+                                                "<span class='btn-link ngTruncateToggleText' " +
+                                                    "ng-click='toggleShow()'" +
+                                                    "ng-show='!open'>" +
+                                                    "  <div class='text-right'>" + ($scope.customMoreLabel ? $scope.customMoreLabel : $rootScope.$lang.more) + "</div>" +
+                                                "</span>" +
+                                                "<span ng-show='open'>" + 
+                                                    splitText.slice( threshould, splitText.length ).join( " " ) + 
+                                                    "<span class='btn-link ngTruncateToggleText'" +
+                                                          "ng-click='toggleShow()'>" +
+                                                          "  <div class='text-right'>" +  ($scope.customLessLabel ? $scope.customLessLabel : $rootScope.$lang.less) + "</div>" +
+                                                    "</span>" +
+                                                "</span>" +
+                                            "</span>" );
+                $compile( el )( $scope );
+                $element.append( el );
+
+            } else {
+                $element.append( splitText.slice( 0, threshould ).join( " " ) + "..." );
+            }
+        }
+    };
+}]);

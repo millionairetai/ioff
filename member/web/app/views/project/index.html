@@ -37,7 +37,7 @@
                 <tr ng-repeat="ob in collection">
                     <td>{{$index+1}}</td>
                     <td>
-                        <a href="#calendar"><strong>{{ob.name}}</strong></a><br/>
+                        <a href="#/viewProject/{{ob.id}}"><strong>{{ob.name}}</strong></a><br/>
                         <i>{{ob.description}}</i>
                     </td>
                     <td>
@@ -54,8 +54,8 @@
                         <span class="label label-success">{{ob.completed_percent}}%</span>
                     </td>
                     <td>
-                        <div class="progress progress-sm active">
-                            <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: {{ob.theory}}%">
+                        <div class="progress progress-xs active">
+                            <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: {{ob.theory}}%">
                                 <span class="sr-only">{{ob.theory}}% </span>
                             </div>
                         </div>

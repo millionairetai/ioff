@@ -12,12 +12,15 @@ use common\models\EmployeeActivity;
 use common\models\Notification;
 use common\models\Employee;
 use common\models\File;
+use common\models\Sms;
+use common\models\ProjectPost;
+use common\models\Department;
+use common\components\db\ActiveRecord;
 
 class ProjectController extends ApiController {
 
     /**
-     * get list project
-     * @return type
+     * Get list project
      */
     public function actionIndex() {
         $collection = [];
@@ -57,11 +60,13 @@ class ProjectController extends ApiController {
         $objects = [];
         $dataPost = [];
 
-        $project_json = \Yii::$app->request->post('project', '');
-        if (strlen($project_json)) {
-            $dataPost = json_decode($project_json, true);
+        $projectJson = \Yii::$app->request->post('project', '');
+        if (strlen($projectJson)) {
+            $dataPost = json_decode($projectJson, true);
         }
+        
         $transaction = \Yii::$app->db->beginTransaction();
+        
         //create object and validate data
         try {
             $ob = new Project();
@@ -211,4 +216,406 @@ class ProjectController extends ApiController {
 
         return $this->sendResponse($error, $message, $objects);
     }
+
+    /*
+     * Function view project
+     */
+    public function actionView() {
+        try {
+            if ($projectId = \Yii::$app->request->post('projectId')) {
+                if ($data_project = Project::getInfoProject($projectId)) {
+                    $objects['collection'] = $data_project;
+                    return $this->sendResponse(false, $projectId, $objects);
+                }
+            }
+
+            throw new \Exception(\Yii::t('member', 'Can not get project info'));
+        } catch (\Exception $e) {
+            return $this->sendResponse(true, $e->getMessage(), []);
+        }
+    }
+
+    /**
+     * Edit project
+     */
+    public function actionEdit() {
+        $objects = [];
+        $dataPost = [];
+
+        $projectJson = \Yii::$app->request->post('project', '');
+        if (strlen($projectJson)) {
+            $dataPost = json_decode($projectJson, true);
+        }
+
+        $transaction = \Yii::$app->db->beginTransaction();
+
+        //create object and validate data
+        try {
+            //Check if get project is null value.
+            if (!$ob = Project::findOne($dataPost['project_id'])) {
+                throw new \Exception('Can not get project');
+            }
+
+            $ob->attributes         = $dataPost;
+            $ob->description_parse  = $ob->description;
+            $ob->start_datetime     = $ob->start_datetime ? strtotime($ob->start_datetime) : null;
+            $ob->duedatetime        = $ob->duedatetime ? strtotime($ob->duedatetime) : null;
+            $ob->manager_project_id = $dataPost['manager']['id'];
+
+            if (!$ob->save()) {
+                $this->_message = $this->parserMessage($ob->getErrors());
+                $this->_error = true;
+                throw new \Exception($this->_message);
+            }
+            
+            //add department
+            $dataUpdate        = ['notification', 'sms', 'projectParticipant'];
+            $updateParticipant = $this->_updataProjectParticipant($dataPost);
+            $dataReplace       = $dataPost;
+            $dataReplace['department_employess'] = $updateParticipant;
+
+            //move file
+            $listFile = File::addFiles($_FILES, \Yii::$app->params['PathUpload'], $ob->id, File::TABLE_PROJECT);
+
+            //notifycation
+            $arrayEmployees = [];
+            $is_query = false;
+            $query = Employee::find();
+
+            if (isset($dataPost['default_department']) && count($dataPost['default_department'])) {
+                $is_query = true;
+                $query->orWhere(['department_id' => $dataPost['default_department']]);
+            }
+
+            if (isset($dataPost['members']) && count($dataPost['members'])) {
+                $is_query = true;
+                $employeeIds = [];
+
+                foreach ($dataPost['members'] as $item) {
+                    $employeeIds[] = $item['id'];
+                }
+
+                $query->orWhere(['id' => $employeeIds]);
+            }
+
+            if ($is_query) {
+                $content = \Yii::$app->user->identity->firstname . " " . \Yii::t('common', 'created') . " " . $ob->name;
+                $arrayEmployees = $query->andCompanyId()->all();
+                $dataSend = [
+                    '{creator name}' => \Yii::$app->user->getIdentity()->firstname,
+                    '{project name}' => $ob->name
+                ];
+            }
+
+            $themeEmail = \common\models\EmailTemplate::getThemeEditProject();
+            $themeSms = \common\models\SmsTemplate::getThemeEditProject();
+
+            if (!empty($arrayEmployees)) {
+                foreach ($arrayEmployees as $item) {
+                    $dataUpdate['notification'][] = [
+                        'owner_id'      => $ob->id,
+                        'owner_table'   => Notification::TABLE_PROJECT,
+                        'employee_id'   => $item->id,
+                        'type'          => 'create_project',
+                        'content'       => $content,
+                        'owner_employee_id' => \Yii::$app->user->getId(),
+                    ];
+
+                    //send email
+                    $item->sendMail($dataSend, $themeEmail);
+
+                    //send sms
+                    if ($ob->sms) {
+                        $dataUpdate['sms'][] = [
+                            'fee'         => 0,
+                            'content'     => $content,
+                            'owner_id'    => $ob->id,
+                            'employee_id' => $item->id,
+                            'owner_table' => \common\models\Sms::TABLE_PROJECT,
+                            'is_success'  => ActiveRecord::VAL_TRUE,
+                        ];
+                    }
+                }
+            }
+
+            //loop file
+            if (!empty($listFile)) {
+                $fileName = '';
+                foreach ($listFile as $key => $file) {
+                    $fileName .= '<div class="padding-left-20"><i><a href="' . \Yii::$app->params['PathUpload'] . DIRECTORY_SEPARATOR . $file->path . '">' . $file->name . '</a></i></div>';
+                }
+                $dataReplace['fileList'] = $fileName;
+            }
+
+            if (($projectHistory = $this->_makeProjectHistory($dataReplace)) && !empty($projectHistory)) {
+                //insert project_post table:
+                $projectPost = new ProjectPost();
+                $projectPost->project_id    = $ob->id;
+                $projectPost->employee_id   = \Yii::$app->user->getId();
+                $projectPost->parent_id     = 0;
+                $projectPost->content       = $projectHistory;
+                $projectPost->content_parse = $projectPost->content;
+                $projectPost->parent_employee_id = 0;
+
+                if (!$projectPost->save()) {
+                    throw new \Exception('Save record to table project_post fail');
+                }
+            }
+
+            if (!empty($dataUpdate['notification'])) {
+                //insert batch table Notification
+                if (!\Yii::$app->db->createCommand()->batchInsert(Notification::tableName(), array_keys($dataUpdate['notification'][0]), $dataUpdate['notification'])->execute()) {
+                    throw new \Exception('Save record to table Notification fail');
+                }
+            }
+
+            if (!empty($dataUpdate['sms'])) {
+                //insert batch table sms
+                if (!\Yii::$app->db->createCommand()->batchInsert(Sms::tableName(), array_keys($dataUpdate['sms'][0]), $dataUpdate['sms'])->execute()) {
+                    throw new \Exception('Save record to table Sms fail');
+                }
+            }
+
+            $transaction->commit();
+        } catch (\Exception $e) {
+            $this->_message = $e->getMessage();
+
+            if (!$this->_error) {
+                $this->_error = true;
+                $this->_message = \Yii::t('member', 'error_system');
+            }
+
+            $transaction->rollBack();
+            return $this->sendResponse($this->_error, $this->_message, $objects);
+        }
+
+        return $this->sendResponse($this->_error, $this->_message, "");
+    }
+
+    /**
+     * Make project history
+     * 
+     * @param array $dataPost 
+     * @return string
+     */
+    private function _makeProjectHistory($dataPost) {
+        $content = '';
+        if (empty($dataPost)) {
+            return $content;
+        }
+
+        $noSetting = \Yii::t('member', 'no setting');
+
+        $dataReplace = array(
+            \Yii::t('member', 'project name op')        => array($dataPost['projectInfo_old']['project_name'] => $dataPost['name']),
+            \Yii::t('member', 'project start op')       => array(!empty($dataPost['projectInfo_old']['start_datetime']) ? date('d-m-Y', strtotime($dataPost['projectInfo_old']['start_datetime'])) : $noSetting => !empty($dataPost['start_datetime']) ? date('d-m-Y', strtotime($dataPost['start_datetime'])) : $noSetting),
+            \Yii::t('member', 'project end op')         => array(!empty($dataPost['projectInfo_old']['duedatetime']) ? date('d-m-Y', strtotime($dataPost['projectInfo_old']['duedatetime'])) : $noSetting => !empty($dataPost['duedatetime']) ? date('d-m-Y', strtotime($dataPost['duedatetime'])) : $noSetting),
+            \Yii::t('member', 'project priority op')    => array($dataPost['projectInfo_old']['priority_name'] => Priority::getPriorityName($dataPost['priority_id'])->name),
+            \Yii::t('member', 'project status op')      => array($dataPost['projectInfo_old']['status_name'] => Status::getStatusName($dataPost['status_id'])->name),
+            \Yii::t('member', 'project description op') => array($dataPost['projectInfo_old']['description'] => $dataPost['description']),
+            \Yii::t('member', 'project completed percent') => array($dataPost['projectInfo_old']['completed_percent']."%" => $dataPost['completed_percent']."%"),
+            \Yii::t('member', 'project estimate op')    => array($dataPost['projectInfo_old']['estimate_hour'] => $dataPost['estimate_hour']),
+            \Yii::t('member', 'project manager op')     => array('<a href="#/member/' . $dataPost['projectInfo_old']['manager_project_id'] . '">' . $dataPost['projectInfo_old']['project_manager'] . '</a>' => !empty($dataPost['manager']['id']) ?  '<a href="#/member/' . $dataPost['manager']['id'] . '">' . $dataPost['manager']['firstname'] . '</a>' : $noSetting),
+        );
+
+        //Create log project history text.
+        foreach ($dataReplace as $key => $value) {
+            if (!empty($value)) {
+                $content .= "";
+                foreach ($value as $after => $befor) {
+                    if ($after != $befor) {
+                        if ($key == \Yii::t('member', 'project description op')) {
+                            $description = !empty($befor) ? \Yii::t('member', 'project description op'). ' '. \Yii::t('member', 'comment update after'). ' ' .$befor : $noSetting;
+                            $content .= '<li>'. $description .'</li>';
+                        }else{
+                            $content .= '<li>'.str_replace(array('{{title}}', '{{after}}', '{{befor}}'), array($key, $after, $befor), \Yii::t('member', 'message info content')) .'</li>';
+                        }
+                    }
+                }
+                $listFile = '';
+                if (!empty($dataPost['fileList']) && $dataPost['fileList']) {
+                    $listFile = '<li>'.\Yii::t('member', 'add file') . '<br/>' . $dataPost['fileList'] .'</li>';
+                }
+
+                $tplEmployess = $tmpDepartment = '';
+                if (!empty($dataPost['department_employess'])) {
+                    $employes = $dataPost['department_employess']['employee'];
+                    if (!empty($employes)) {
+                        if (!empty($employes['old']) || !empty($employes['new'])) {
+
+                            $tplEmployess = '<li><div>' . \Yii::t('member', 'change employee') . '</div></li>';
+                            $divOld = "";
+                            if (!empty($employesOld)) {
+                                foreach ($employesOld as $old) {
+                                    $divOld .='<div class="padding-left-20"><a href="#/member/' . $old['id'] . '"><i>' . $old['firstname'] . '</i></a></div>';
+                                }
+
+                                $tplEmployess .= '<div class="padding-left-20">' . \Yii::t('member', 'delete') . $divOld . '</div>';
+                            }
+
+                            $employesNew = $employes['new'];
+                            $divNew = "";
+                            if (!empty($employesNew)) {
+                                foreach ($employesNew as $new) {
+                                    $divNew .='<div class="padding-left-20"><a href="#/member/' . $new['id'] . '"><i>' . $new['firstname'] . '</i></a></div>';
+                                }
+
+                                $tplEmployess .= '<div class="padding-left-20"> ' . \Yii::t('member', 'add new') . $divNew . '</div>';
+                            }
+
+                            $employesOld = $employes['old'];
+                            $tplEmployess .='</div>';
+                        }
+                    }
+
+                    $department = $dataPost['department_employess']['department'];
+                    if (!empty($department)) {
+                        if (!empty($department['old']) || !empty($department['new'])) {
+                            $tmpDepartment = '<li><div>' . \Yii::t('member', 'change department') . '</div></li>';
+                            $departmentOld = $department['old'];
+                            if (!empty($departmentOld)) {
+                                $divOld = "";
+                                foreach ($departmentOld as $oldD) {
+                                    $divOld .='<div class="padding-left-20"><i>' . $oldD . '</i></div>';
+                                }
+                                $tmpDepartment .= '<div class="padding-left-20"> ' . \Yii::t('member', 'delete') . $divOld . '</div>';
+                            }
+
+                            $departmentNew = $department['new'];
+                            if (!empty($departmentNew)) {
+                                $departments = Department::findAll(["id" => $departmentNew]);
+                                $divNew = "";
+                                foreach ($departments as $newD) {
+                                    $divNew .='<div class="padding-left-20"><i>' . $newD->name . '</i></div>';
+                                }
+                                $tmpDepartment .= '<div class="padding-left-20"> ' . \Yii::t('member', 'add new') . $divNew . '</div>';
+                            }
+                            $tmpDepartment .='</div>';
+                        }
+                    }
+                }
+            }
+        }
+
+        return $content . $tplEmployess . $tmpDepartment . $listFile == '' ? false : "<ul>". $content . $tmpDepartment . $tplEmployess . $listFile."</ul>";
+    }
+
+    /**
+     * Function update or add info in table project_participant of screen edit project
+     * 
+     * @param array $dataPost data get from employee.
+     * @return array
+     * @throws \Exception
+     */
+    private function _updataProjectParticipant($dataPost = []) {
+        $result = '';
+        try {
+            if (empty($dataPost)) {
+                return false;
+            }
+
+            if (!empty($dataPost['departments_old'])) {
+                if (!empty($dataPost['default_department'])) {
+                    foreach ($dataPost['departments_old'] as $key_departments_old => $val_departments_old) {
+                        foreach ($dataPost['default_department'] as $key_departments_new => $val_departments_new) {
+                            if ($key_departments_old == $val_departments_new) {
+                                unset($dataPost['departments_old'][$key_departments_old]);
+                                unset($dataPost['default_department'][$key_departments_new]);
+                            }
+                        }
+                    }
+                }
+            }
+
+            //delete department
+            if (!empty($dataPost['departments_old'])) {
+                ProjectParticipant::updateAll([
+                    'disabled' => ActiveRecord::STATUS_DISABLE
+                    ], [
+                    'owner_id' => array_keys($dataPost['departments_old']), //array_keys($dataPost['departments_old']),
+                    'project_id' => $dataPost['project_id'], //$dataPost['project_id'],
+                    'company_id' => \Yii::$app->user->getCompanyId(),
+                    'owner_table' => ProjectParticipant::TABLE_DEPARTMENT,
+                ]);
+            }
+
+            //add new department project_participant
+            if (!empty($dataPost['default_department'])) {
+                $ProjectParticipantDepartmentAdd = [];
+                foreach ($dataPost['default_department'] as $owner_id) {
+                    $ProjectParticipantDepartmentAdd[] = [
+                        'project_id' => $dataPost['project_id'],
+                        'owner_id' => $owner_id,
+                        'owner_table' => ProjectParticipant::TABLE_DEPARTMENT,
+                    ];
+                }
+            }
+
+            if (!empty($ProjectParticipantDepartmentAdd)) {
+                if (!\Yii::$app->db->createCommand()->batchInsert(ProjectParticipant::tableName(), array_keys($ProjectParticipantDepartmentAdd[0]), $ProjectParticipantDepartmentAdd)->execute()) {
+                    throw new \Exception('Save record to table Project Participant fail');
+                }
+            }
+
+            $result['department']['old'] = $dataPost['departments_old'];
+            $result['department']['new'] = $dataPost['default_department'];
+
+            //add employee intable project_participant
+            if (!empty($dataPost['employess_old'])) {
+                if (!empty($dataPost['members'])) {
+                    foreach ($dataPost['employess_old'] as $key_employess_old => $val_employess_old) {
+                        foreach ($dataPost['members'] as $key_member_new => $val_member_new) {
+                            if ($val_employess_old['id'] == $val_member_new['id']) {
+                                unset($dataPost['employess_old'][$key_employess_old]);
+                                unset($dataPost['members'][$key_member_new]);
+                            }
+                        }
+                    }
+                }
+            }
+
+            //delete department
+            if (!empty($dataPost['employess_old'])) {
+                $employessOldDel = [];
+                foreach ($dataPost['employess_old'] as $varEmployessOld) {
+                    $employessOldDel[] = $varEmployessOld['id'];
+                }
+                ProjectParticipant::updateAll(
+                        [
+                    'disabled' => ActiveRecord::STATUS_DISABLE
+                        ], [
+                    'owner_id' => $employessOldDel,
+                    'project_id' => $dataPost['project_id'],
+                    'company_id' => \Yii::$app->user->getCompanyId(),
+                    'owner_table' => ProjectParticipant::TABLE_EMPLOYEE,
+                ]);
+            }
+
+            //add new department
+            if (!empty($dataPost['members'])) {
+                $ProjectParticipantEmloyessAdd = [];
+                foreach ($dataPost['members'] as $varEmployess) {
+                    $ProjectParticipantEmloyessAdd[] = [
+                        'project_id' => $dataPost['project_id'],
+                        'owner_id' => $varEmployess['id'],
+                        'owner_table' => ProjectParticipant::TABLE_EMPLOYEE,
+                    ];
+                }
+            }
+
+            if (!empty($ProjectParticipantEmloyessAdd)) {
+                if (!\Yii::$app->db->createCommand()->batchInsert(ProjectParticipant::tableName(), array_keys($ProjectParticipantEmloyessAdd[0]), $ProjectParticipantEmloyessAdd)->execute()) {
+                    throw new \Exception('Save record to table Project Participant fail');
+                }
+            }
+
+            $result['employee']['old'] = $dataPost['employess_old'];
+            $result['employee']['new'] = $dataPost['members'];
+        } catch (Exception $e) {
+            return $this->sendResponse(true, \Yii::t('member', 'error_system'), $objects);
+        }
+
+        return $result;
+    }
+
 }

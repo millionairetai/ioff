@@ -70,27 +70,58 @@ class EmailTemplate extends \common\components\db\ActiveRecord
     }
     
     /**
-     * get theme email of creating project 
+     * Get theme email of creating project 
      */
     public static function getThemeCreateProject(){
         
-        $theme = self::find()->andWhere(['column_name' => 'create_project','language_code' => \Yii::$app->language])->one();
-        if($theme) {
+        $theme = self::find([
+            'column_name' => 'create_project',
+            'language_code' => \Yii::$app->language,
+            'disabled' => self::STATUS_ENABLE
+        ])->one();
+        
+        if($theme){
             return $theme;
         }
+        
         return null;
     }
     
     /**
      * Get theme email of creating event 
+     * 
      * @return string|null
      */
     public static function getThemeCreateEvent(){
         
-        $theme = self::find()->andWhere(['column_name' => 'create_event','language_code' => \Yii::$app->language])->one();
-        if($theme) {
+        $theme = self::find([
+            'column_name' => 'create_event',
+            'language_code' => \Yii::$app->language,
+            'disabled' => self::STATUS_ENABLE
+        ])->one();
+        
+        if($theme){
             return $theme;
         }
+        
+        return null;
+    }
+    
+    /**
+     * Get theme email of Edit project 
+     */
+    public static function getThemeEditProject() {
+        
+        $theme = self::find([
+            'column_name' => 'edit_project',
+            'language_code' => \Yii::$app->language,
+            'disabled' => self::STATUS_ENABLE
+        ])->one();
+        
+        if($theme){
+            return $theme;
+        }
+        
         return null;
     }
 }

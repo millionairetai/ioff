@@ -24,8 +24,7 @@ use Yii;
  * @property string $lastup_employee_id
  * @property boolean $is_remind
  */
-class Remind extends \common\components\db\ActiveRecord
-{
+class Remind extends \common\components\db\ActiveRecord {
     const TABLE_EVENT = "event";
     
     public $is_remind;

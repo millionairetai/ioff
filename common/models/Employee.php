@@ -308,11 +308,16 @@ class Employee extends ActiveRecord implements IdentityInterface
     }
     
     /**
-     * get image profile
-     * @return type
+     * Get image profile
+     * 
+     * @return string
      */
-    public function getImage(){
-        return Yii::$app->urlManager->baseUrl.'/flies/employee/'.$this->profile_image_path;
+    public function getImage() {
+        if ($this->profile_image_path) {
+            return Yii::$app->urlManager->baseUrl . "/flies/employee/" . $this->profile_image_path;
+        }
+        
+        return Yii::$app->urlManager->baseUrl . "/flies/employee/" . 'profileImageDefault.jpg';
     }
     
     /**
@@ -322,7 +327,6 @@ class Employee extends ActiveRecord implements IdentityInterface
     public function getFullname(){
         return Yii::$app->user->identity->firstname .' '. Yii::$app->user->identity->lastname;
     }
-    
     
     /**
      * send email to employee

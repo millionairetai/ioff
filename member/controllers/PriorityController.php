@@ -3,14 +3,11 @@ namespace member\controllers;
 
 use common\models\Priority;
 
-class PriorityController extends ApiController{
-    
+class PriorityController extends ApiController {
     /*
-     * get priority
+     * Get priority
      */
-    public function actionIndex() {
-        $error = false;
-        $message = "";
+    public function actionGetProjectPriority() {
         $objects = [];
 
         $array = Priority::find()->andCompanyId()->all();
@@ -20,6 +17,7 @@ class PriorityController extends ApiController{
                 'name' => $item->name
             ];
         }
-        return $this->sendResponse($error, $message, $objects);
+        
+        return $this->sendResponse(false, "", $objects);
     }
 }

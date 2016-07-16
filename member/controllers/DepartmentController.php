@@ -13,13 +13,13 @@ class DepartmentController extends ApiController {
      */
     public function actionAll() {
         $objects = [];
-        if ($array = Department::find()->andCompanyId()->all()) {
-            foreach ($array as $item) {
-                $objects[] = [
-                    'id' => $item->id,
-                    'name' => $item->name,
-                ];
-            }
+        $array = Department::find()->andCompanyId()->all();
+        foreach($array as $item) {
+            $objects[] = [
+                'id' => $item->id,
+                'name' => $item->name,
+            ];
+            
         }
 
         return $this->sendResponse(false, "", $objects);

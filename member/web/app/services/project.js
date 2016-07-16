@@ -7,11 +7,11 @@ appRoot.factory('projectService', ['apiService','$rootScope','alertify', functio
             addProject : function (data,success,error){
                 apiService.upload('project/add',data,success,error);
             },
-            listStatus : function (data,success,error){
-                apiService.get('status/project',data,success,error);
+            viewProject: function (data,success,error){
+            apiService.post('project/view',data, success, error);
             },
-            listPriority : function (data,success,error){
-                apiService.get('priority/index',data,success,error);
+            editProject : function (data,success,error){
+            apiService.upload('project/edit', data, success,error);
             },
             validate_step1 : function(object){
                 var message = "";
@@ -72,7 +72,6 @@ appRoot.factory('projectService', ['apiService','$rootScope','alertify', functio
                 }
                 return true;
                 
-            }
-            
+            },
         };
     }]);

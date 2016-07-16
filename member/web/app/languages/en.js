@@ -6,18 +6,28 @@
             title_error_dialog : 'Error',
             title_confirm_dialog : 'Confirm',
             ok : 'Ok',
+            more : 'More',
+            less : 'less',
             cancel : 'Cancel',
             add_project : 'Add project',
+            edit_project : 'Edit project',
+            delete_project : 'Delete project',
             save : 'Save',
             remove: 'Delete',
+            post : 'Post',
             employee_empty : "Employee does't match",
             button_back : 'Back',
             button_next : 'Next',
+            button_update : 'Update',
             button_close : 'Close',
             max_size : 'Total file size upload is excess 10MB',
             max_length:'Only allow maximum number of file upload is 20',
             no_data: 'No data',
             view_more_upper_case: 'VIEW MORE',
+            //Lang for expand and remove contaner in each page.
+            expand: 'Expand',
+            remove: 'Remove',
+            
             //project
             project_list_view_more : 'View More',
             project_add : 'Create project',
@@ -48,6 +58,11 @@
             project_department : 'Department',
             project_choose_all: 'All',
             project_members: 'Members',
+            project_parent: 'Project parent',
+            project_progress: 'Project progress',
+            work_time: 'Work time',
+            file_name :'Name',
+            time_update :'Time Add',
             
             project_estimate_error : 'Estimate time is must numberic',
             project_estimate_error_0 : 'Estimate time is greater than -1',
@@ -62,6 +77,11 @@
             project_members_error_empty: 'Department and Employee is not empty',
             project_created_success:'Create project is successful',
             project_notify_success:'Project has created successfully.',
+            project_update_success:'Project has update successfully.',
+            remove_file_success:'Delete File success.',
+            remove_file_error:'Delete File Error.',
+            confirm_delete_file:'Are you sure delete?.',
+            
             //end project
             
             //authority    

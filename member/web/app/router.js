@@ -18,6 +18,14 @@ appRoot.config(function ($routeProvider, $httpProvider) {
                 templateUrl: 'app/views/project/add.html',
                 controller: 'addProjectCtrl'
             })
+            .when('/viewProject/:projectId', {
+            	templateUrl: 'app/views/project/view.html',
+            	controller: 'viewProjectCtrl'
+            })
+            .when('/editProject', {
+            	templateUrl: 'app/views/project/edit.html',
+            	controller: 'editProjectCtrl'
+            })
             //calendar
             .when('/calendar', {
                 templateUrl: 'app/views/calendar/index.html',

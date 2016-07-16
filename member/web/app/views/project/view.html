@@ -1,0 +1,191 @@
+<section class="content-header">
+    <h1>
+        {{$root.$lang.project_manage}}
+    </h1>
+</section>
+
+<section class="content">
+    <!-- Default box -->
+    <div class="box">
+        <div class="box-header with-border">
+            <h3 class="box-title">{{$root.$lang.project_infomation}}</h3>
+            <div class="box-tools pull-right">
+                <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="{{$root.$lang.expand}}"><i class="fa fa-minus"></i></button>
+                <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="{{$root.$lang.remove}}"><i class="fa fa-times"></i></button>
+            </div>
+        </div>
+        <div class="box-body" >
+            <div class="col-md-6">
+                <table class="table">
+                    <tr>
+                        <th width="20%" class="border-top-none">{{$root.$lang.project_name}}</th>
+                        <td width="70%" class="border-top-none">{{collection.project_info.project_name}}</td>
+                        <td width="10%" class="border-top-none"></td>
+                    </tr>
+
+                    <tr>
+                        <th>{{$root.$lang.project_parent}}</th>
+                        <td>{{collection.project_info.project_main}}</td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <th>{{$root.$lang.project_status}}</th>
+                        <td><span class="label label-status label-{{collection.project_info.status_id}}">{{collection.project_info.status_name}}</span></td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <th>{{$root.$lang.project_priority}}</th>
+                        <td><span class="label label-status label-{{collection.project_info.priority_id}}">{{collection.project_info.priority_name}}</span></td>
+                        <td></td>
+                    </tr>
+
+                    <tr>
+                        <th>{{$root.$lang.project_theory}}</th>
+                        <td>
+                            <div style="position: relative;">
+                                <div class="progress progress-xs active">
+                                    <span class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width:  {{collection.project_info.completed_percent}}%"></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td><span class="label label-success ng-binding">{{collection.project_info.completed_percent}}%</span></td>
+                    </tr>
+
+                    <tr>
+                        <th>{{$root.$lang.project_real}}</th>
+                        <td>
+                            <div style="position: relative;">
+                                <div class="progress progress-xs active">
+                                    <span class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width:  {{collection.project_info.theory}}%"></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td><span class="label label-warning ng-binding" >{{collection.project_info.theory}}%</span></td>
+                    </tr>
+
+                    <tr>
+                        <th>{{$root.$lang.project_progress}}</th>
+                        <td>
+                            <strong>{{$root.$lang.project_start_date}}</strong> {{collection.project_info.start_datetime| date : "fullDate" }}
+                            <br/>
+                            <strong>{{$root.$lang.project_end_date}}</strong> {{collection.project_info.duedatetime| date : "fullDate" }}
+                        </td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <th>{{$root.$lang.project_infomation}}</th>
+                        <td colspan="2">
+                            <p ng-text-truncate="collection.project_info.description" ng-tt-chars-threshold="250"></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <td colspan="2">
+                            	<div  ng-if="collection.file_info != ''" ng-repeat="files in collection.file_info| limitTo:limitFile">
+								  	<div>
+								  		<a href="{{files.path}}"><span class="glyphicon glyphicon-file" aria-hidden="true"></span>{{files.name}}</a>
+                            			<i ng-click="removeFileProject($index, files.id)" class="fa fa-remove cursor-point"></i>
+                            		</div>
+								</div>
+                            <div class=" text-center" >
+                                <a ng-click="loadMoreFile()" class="pointer ng-binding" ng-if="limitFile < collection.file_info.length && collection.file_info.length > 5">{{$root.$lang.project_list_view_more}} </a>
+                                <a ng-click="closeMoreFile()" class="pointer ng-binding" ng-if="limitFile > 5">{{$root.$lang.button_close}} </a>
+                            </div>
+
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-6">
+                <table class="table">
+                    <tr>
+                        <th width="20%" class="border-top-none">{{$root.$lang.project_manage}}</th>
+                        <td width="80%" class="border-top-none" ng-if="collection.project_info.image != null">
+                            <div class="user-block-text-center-right" ><img src="{{collection.project_info.image}}" class="img-circle" width="58px" height="58px"> <a href="#/member/{{collection.project_info.manager_project_id}}">{{collection.project_info.project_manager}}</a></div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>{{$root.$lang.project_department}}</th>
+                        <td>
+                            <div ng-repeat="departments in collection.department_info">
+                                {{$index + 1}}. {{departments}}
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>{{$root.$lang.project_members}}</th>
+                        <td>
+                            <div ng-repeat="employees in collection.employee_info| limitTo:limit">
+                                <div class="user-block-text-center-right"><img src="{{employees.image}}" class="img-circle" alt="User Image" width="58px" height="58px"> <a href="#/member/{{employees.id}}">{{employees.firstname}}</a></div><br/>
+                            </div>
+
+                            <div class=" text-center" >
+                                <a ng-click="loadMore()" class="pointer ng-binding" ng-if="limit < collection.employee_info.length && collection.employee_info.length > 5">{{$root.$lang.project_list_view_more}} </a>
+                                <a ng-click="closeMore()" class="pointer ng-binding" ng-if="limit > 5">{{$root.$lang.button_close}} </a>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="col-md-12">
+                <div class="modal-footer">
+                    <a href="#project"><button type="button" class="btn btn-default btn-flat" ><i class="fa fa-arrow-circle-left"></i> {{$root.$lang.button_back}}</button></a>
+                    <button type="button" class="btn btn-primary btn-flat" ng-click="edit()" ng-hide="step == 3"><i class="fa fa-edit"></i> {{$root.$lang.edit_project}}</button>
+                    <button type="button" class="btn btn-danger btn-flat" ng-click="cancel()"><i class="fa fa-remove"></i> {{$root.$lang.delete_project}}</button>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <form class="form-horizontal">
+                    <table    class="table">
+                        <tr>
+                            <th width="10%">{{$root.$lang.project_description}}</th>
+                            <td width="80%"> <textarea class="form-control" rows="5" ng-model="project.description"></textarea>
+                            <br/>
+                            <input id="fileImage" type="file" class="form-control input-file-upload" name="file" onchange="angular.element(this).scope().addFile(this.files);
+                                                $('#fileImage').replaceWith($('#fileImage').clone());" />
+                                <br/>
+                                <div class="show-file-name" ng-repeat="file in files">
+                                    <strong>{{file.name}}</strong> <i class="fa fa-remove" ng-click="removeFile($index)"></i>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary btn-flat" ng-click="addProjectPost()" ><i class="fa fa-save"></i> {{$root.$lang.post}}</button>
+                                </div>
+                            </td>
+                            <td width="10%"></td>
+                        </tr>
+                    </table>
+                </form>
+                <div>
+                    <div ng-repeat="v in projectPost">
+                            <div class="box box-widget">
+                                <div class="box-header with-border">
+                                    <div class="user-block">
+                                        <img src="{{v.profile_image_path}}" class="img-circle" alt="User Image" width="58px" height="58px">
+                                        <span class="username"><a href="#/member/{{v.id}}"><b>{{v.employee_name}}</b></a></span>
+                                        <span class="description">{{v.time| date : "fullDate" }}</span>
+                                    </div>
+                                    <!-- /.user-block -->
+                                    <div class="box-tools">
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                    </div>
+                                    <!-- /.box-tools -->
+                                </div>
+                                <!-- /.box-header -->
+                                <div class="box-body" style="display: block;">
+                                    <!-- post text -->
+                                    <p ng-bind-html="getHtml(v.content)" ng-tt-chars-threshold="200"></p>
+                                    <div class="padding-left-20" ng-repeat="file in projectPostFile[v.id]"><a href="{{file.path}}"><span class="glyphicon glyphicon-file" aria-hidden="true"></span> {{file.name}}</a></div>
+                                </div>
+                            </div>
+                        <!-- END timeline item -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="box-footer text-center" >
+            <button class="btn btn-info cursor-pointer" ng-click="viewMore()" ng-show="filter.totalItems > (filter.currentPage * filter.itemPerPage)">{{$root.$lang.project_list_view_more}} <i class="fa fa-arrow-down"></i></button>
+        </div>
+    </div>
+</section>
