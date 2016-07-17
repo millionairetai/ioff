@@ -27,7 +27,7 @@
                                 </td>
                                 <td class="padding-input">
                                     <p class="input-group">
-                                        <input type="text" class="form-control" uib-datepicker-popup="dd-MM-yyyy" ng-model="event.var_start_datetime" is-open="open_start_datetime" datepicker-options="dateOptions" ng-required="true" close-text="{{$root.$lang.datepicker_close}}"  clear-text="{{$root.$lang.datepicker_clear}}" current-text="{{$root.$lang.datepicker_today}}" ng-focus="open_start_datetime = true" />
+                                        <input type="text" class="form-control" uib-datepicker-popup="dd-MM-yyyy" ng-model="project.start_datetime" is-open="open_start_datetime" datepicker-options="dateOptions" ng-required="true" close-text="{{$root.$lang.datepicker_close}}"  clear-text="{{$root.$lang.datepicker_clear}}" current-text="{{$root.$lang.datepicker_today}}" ng-focus="open_start_datetime = true" />
                                         <span class="input-group-btn">
                                             <button type="button" class="btn btn-default" ng-click="open_start_datetime = true"><i class="glyphicon glyphicon-calendar"></i></button>
                                         </span>
@@ -37,7 +37,7 @@
                                 </td>
                                 <td class="padding-input">
                                     <p class="input-group">
-                                        <input type="text" class="form-control" uib-datepicker-popup="dd-MM-yyyy" ng-model="event.var_end_datetime" is-open="open_end_datetime" datepicker-options="dateOptions" ng-required="true" close-text="{{$root.$lang.datepicker_close}}"  clear-text="{{$root.$lang.datepicker_clear}}" current-text="{{$root.$lang.datepicker_today}}" ng-focus="open_end_datetime = true"/>
+                                        <input type="text" class="form-control" uib-datepicker-popup="dd-MM-yyyy" ng-model="project.duedatetime" is-open="open_end_datetime" datepicker-options="dateOptions" ng-required="true" close-text="{{$root.$lang.datepicker_close}}"  clear-text="{{$root.$lang.datepicker_clear}}" current-text="{{$root.$lang.datepicker_today}}" ng-focus="open_end_datetime = true"/>
                                         <span class="input-group-btn">
                                             <button type="button" class="btn btn-default" ng-click="open_end_datetime = true"><i class="glyphicon glyphicon-calendar"></i></button>
                                         </span>

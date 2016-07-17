@@ -991,6 +991,9 @@ appRoot.controller('editProjectCtrl', ['$scope', 'projectService', '$location', 
         $scope.files = [];
         $scope.people = [];
         $scope.employees = [];
+        $scope.open_start_datetime = false;
+        $scope.open_end_datetime = false;
+        
         $scope.project = {
             project_id: $dataEditProject.project_info.project_id,
             parent_id: 0,
