@@ -195,8 +195,8 @@ class File extends \common\components\db\ActiveRecord {
                     $projectPost->project_id    = $data->owner_id;
                     $projectPost->employee_id   = \Yii::$app->user->getId();
                     $projectPost->parent_id     = 0;
-                    $projectPost->content       =  \Yii::t('member', 'delete file') . '<br/>'. $data->name;
-                    $projectPost->content_parse =  \Yii::t('member', 'delete file') . '<br/>'. $data->name;
+                    $projectPost->content       =  '<ul><li>'.\Yii::t('member', 'delete file') . '<div class="padding-left-20">'. $data->name.'</div></li></ul>';
+                    $projectPost->content_parse =  '<ul><li>'.\Yii::t('member', 'delete file') . '<div class="padding-left-20">'. $data->name.'</div></li></ul>';
                     $projectPost->parent_employee_id = 0;
                     $projectPost->save(false);
                     return false;

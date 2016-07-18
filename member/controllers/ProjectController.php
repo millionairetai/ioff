@@ -424,11 +424,18 @@ class ProjectController extends ApiController {
                 $content .= "";
                 foreach ($value as $after => $befor) {
                     if ($after != $befor) {
-                        if ($key == \Yii::t('member', 'project description op')) {
+                        switch ($key) {
+                            case \Yii::t('member', 'project description op'):
                             $description = !empty($befor) ? \Yii::t('member', 'project description op'). ' '. \Yii::t('member', 'comment update after'). ' ' .$befor : $noSetting;
                             $content .= '<li>'. $description .'</li>';
-                        }else{
-                            $content .= '<li>'.str_replace(array('{{title}}', '{{after}}', '{{befor}}'), array($key, $after, $befor), \Yii::t('member', 'message info content')) .'</li>';
+                            break;
+                            case \Yii::t('member', 'project status op'):
+                            case \Yii::t('member', 'project priority op'):
+                                $content .= '<li class="lowercase">'.str_replace(array('{{title}}', '{{after}}', '{{befor}}'), array($key, $after, $befor), \Yii::t('member', 'message info content')) .'</li>';
+                            break;
+                            default:
+                                $content .= '<li>'.str_replace(array('{{title}}', '{{after}}', '{{befor}}'), array($key, $after, $befor), \Yii::t('member', 'message info content')) .'</li>';
+                            break;
                         }
                     }
                 }

@@ -654,3 +654,6 @@ search-product .dropdown-menu{
     width: 40px;
     height: 40px;
 }
+.lowercase{
+    text-transform: lowercase;	
+}
