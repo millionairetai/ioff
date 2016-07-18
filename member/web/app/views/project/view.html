@@ -83,12 +83,12 @@
                     <tr>
                         <th></th>
                         <td colspan="2">
-                            	<div  ng-if="collection.file_info != ''" ng-repeat="files in collection.file_info| limitTo:limitFile">
-								  	<div>
-								  		<a href="{{files.path}}"><span class="glyphicon glyphicon-file" aria-hidden="true"></span>{{files.name}}</a>
-                            			<i ng-click="removeFileProject($index, files.id)" class="fa fa-remove cursor-point"></i>
-                            		</div>
-								</div>
+                            <div  ng-if="collection.file_info != ''" ng-repeat="files in collection.file_info| limitTo:limitFile">
+                                <div>
+                                    <a href="{{files.path}}"><span class="glyphicon glyphicon-file" aria-hidden="true"></span>{{files.name}}</a>
+                                    <i ng-click="removeFileProject($index, files.id)" class="fa fa-remove cursor-point"></i>
+                                </div>
+                            </div>
                             <div class=" text-center" >
                                 <a ng-click="loadMoreFile()" class="pointer ng-binding" ng-if="limitFile < collection.file_info.length && collection.file_info.length > 5">{{$root.$lang.project_list_view_more}} </a>
                                 <a ng-click="closeMoreFile()" class="pointer ng-binding" ng-if="limitFile > 5">{{$root.$lang.button_close}} </a>
@@ -142,8 +142,8 @@
                         <tr>
                             <th width="10%">{{$root.$lang.project_description}}</th>
                             <td width="80%"> <textarea class="form-control" rows="5" ng-model="project.description"></textarea>
-                            <br/>
-                            <input id="fileImage" type="file" class="form-control input-file-upload" name="file" onchange="angular.element(this).scope().addFile(this.files);
+                                <br/>
+                                <input id="fileImage" type="file" class="form-control input-file-upload" name="file" onchange="angular.element(this).scope().addFile(this.files);
                                                 $('#fileImage').replaceWith($('#fileImage').clone());" />
                                 <br/>
                                 <div class="show-file-name" ng-repeat="file in files">
@@ -159,33 +159,33 @@
                 </form>
                 <div>
                     <div ng-repeat="v in projectPost">
-                            <div class="box box-widget">
-                                <div class="box-header with-border">
-                                    <div class="user-block">
-                                        <img src="{{v.profile_image_path}}" class="img-circle" alt="User Image" width="58px" height="58px">
-                                        <span class="username"><a href="#/member/{{v.id}}"><b>{{v.employee_name}}</b></a></span>
-                                        <span class="description">{{v.time| date : "fullDate" }}</span>
-                                    </div>
-                                    <!-- /.user-block -->
-                                    <div class="box-tools">
-                                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                                    </div>
-                                    <!-- /.box-tools -->
+                        <div class="box box-widget">
+                            <div class="box-header with-border">
+                                <div class="user-block">
+                                    <img src="{{v.profile_image_path}}" class="img-circle" alt="User Image" width="58px" height="58px">
+                                    <span class="username"><a href="#/member/{{v.id}}"><b>{{v.employee_name}}</b></a></span>
+                                    <span class="description">{{v.time| date : "fullDate" }}</span>
                                 </div>
-                                <!-- /.box-header -->
-                                <div class="box-body" style="display: block;">
-                                    <!-- post text -->
-                                    <p ng-bind-html="getHtml(v.content)" ng-tt-chars-threshold="200"></p>
-                                    <div class="padding-left-20" ng-repeat="file in projectPostFile[v.id]"><a href="{{file.path}}"><span class="glyphicon glyphicon-file" aria-hidden="true"></span> {{file.name}}</a></div>
+                                <!-- /.user-block -->
+                                <div class="box-tools">
+                                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                                 </div>
+                                <!-- /.box-tools -->
                             </div>
+                            <!-- /.box-header -->
+                            <div class="box-body" style="display: block;">
+                                <!-- post text -->
+                                <p ng-bind-html="getHtml(v.content)" ng-tt-chars-threshold="200"></p>
+                                <div class="padding-left-20" ng-repeat="file in projectPostFile[v.id]"><a href="{{file.path}}"><span class="glyphicon glyphicon-file" aria-hidden="true"></span> {{file.name}}</a></div>
+                            </div>
+                        </div>
                         <!-- END timeline item -->
                     </div>
                 </div>
             </div>
         </div>
         <div class="box-footer text-center" >
-            <button class="btn btn-info cursor-pointer" ng-click="viewMore()" ng-show="filter.totalItems > (filter.currentPage * filter.itemPerPage)">{{$root.$lang.project_list_view_more}} <i class="fa fa-arrow-down"></i></button>
+            <button class="btn form-control cursor-pointer viewmorecl" ng-click="viewMore()" ng-show="filter.totalItems > (filter.currentPage * filter.itemPerPage)"><a>{{$root.$lang.view_more_upper_case}}</a></button>
         </div>
     </div>
 </section>
