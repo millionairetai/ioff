@@ -527,10 +527,11 @@ search-product .dropdown-menu{
     padding-bottom: 0;
     margin-bottom: 0;
     position: relative;
+    padding-bottom: 50px;
 }
 .fc .fc-toolbar .fc-left{
     position: absolute;
-    bottom: -45px;
+    bottom: 10px;
 }
 .fc .fc-toolbar .fc-left button{
     background: none;
@@ -548,7 +549,7 @@ search-product .dropdown-menu{
 }
 .fc th.fc-day-header{
     padding: 15px;
-    background: #fff;
+    background: #efefef;
 }
 .fc-ltr{
     border: none;
@@ -562,7 +563,6 @@ search-product .dropdown-menu{
 .fc-center{
     position: relative;
     display: block !important;
-    margin-bottom: 50px;
 }
 .fc-toolbar .fc-center h2{
     font-size: 24px;
@@ -584,6 +584,7 @@ search-product .dropdown-menu{
     position: absolute;
     top: 50%;
     left: 25%;
+    right: auto;
 }
 @media (max-width: 480px){
     .fc .fc-button-group > * {
@@ -608,7 +609,7 @@ search-product .dropdown-menu{
 .fc-toolbar .fc-right{
     float: none !important;
     position: absolute;
-    bottom: -45px;
+    bottom: 10px;
     right: 10px;
 }
 
