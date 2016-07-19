@@ -321,12 +321,12 @@ class Employee extends ActiveRecord implements IdentityInterface
     }
     
     /**
-     * get name profile
-     * @return type
+     * Get full name
+     * @return string
      */
-    public function getFullname(){
-        return Yii::$app->user->identity->firstname .' '. Yii::$app->user->identity->lastname;
-    }
+//    public function getFullName(){
+//        return Yii::$app->user->identity->firstname .' '. Yii::$app->user->identity->lastname;
+//    }
     
     /**
      * send email to employee
@@ -370,4 +370,13 @@ class Employee extends ActiveRecord implements IdentityInterface
         Yii::$app->user->identity->last_login_datetime = time();
         return Yii::$app->user->identity->update();
     }   
+    
+    /**
+     * Get employee fullName
+     * 
+     * @return string
+     */
+    public function getFullName() {
+    	return $this->firstname . ' ' . $this->lastname;
+    }
 }

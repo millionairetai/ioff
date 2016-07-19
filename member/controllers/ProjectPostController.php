@@ -137,7 +137,7 @@ class ProjectPostController extends ApiController {
                     ->orWhere(['department_id' => $departmentIds])
                     ->all();
             
-            foreach ($employees AS $employee) {
+            foreach ($employees as $employee) {
                 $employeeList[] = [
                         'id'        => $employee->id,
                         'firstname' => $employee->getFullName(),

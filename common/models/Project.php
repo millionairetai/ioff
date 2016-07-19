@@ -158,7 +158,7 @@ class Project extends \common\components\db\ActiveRecord {
     /**
      * Get project info by project id
      * 
-     * @param integer $projectId 
+     * @param int $projectId 
      * @return boolean|array
      */
     public static function getInfoProject($projectId) {
@@ -213,7 +213,6 @@ class Project extends \common\components\db\ActiveRecord {
                 ];
             }
             
-
             $employeesEdit = Employee::find()
                                 ->select(['id', 'firstname', 'lastname', 'profile_image_path'])
                                 ->andCompanyId()
