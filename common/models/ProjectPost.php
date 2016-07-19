@@ -77,10 +77,11 @@ class ProjectPost extends \common\components\db\ActiveRecord
     
     /**
      * Get list project post by project id
+     * 
      * @param integer $projectId
      * @param integer $currentPage
      * @param integer $itemPerPage
-     * @return \yii\db\ActiveRecord[]|boolean
+     * @return array|boolean
      */
     public static function getProjectPosts($projectId, $currentPage = 1, $itemPerPage = 10) {
         $offset = $currentPage * $itemPerPage;
@@ -96,6 +97,6 @@ class ProjectPost extends \common\components\db\ActiveRecord
             return $data;
         }
         
-        return false;
+        return [];
     }
 }

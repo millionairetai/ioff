@@ -8,10 +8,10 @@ appRoot.factory('projectService', ['apiService','$rootScope','alertify', functio
                 apiService.upload('project/add',data,success,error);
             },
             viewProject: function (data,success,error){
-            apiService.post('project/view',data, success, error);
+                apiService.post('project/view',data, success, error);
             },
             editProject : function (data,success,error){
-            apiService.upload('project/edit', data, success,error);
+                apiService.upload('project/edit', data, success,error);
             },
             validate_step1 : function(object){
                 var message = "";

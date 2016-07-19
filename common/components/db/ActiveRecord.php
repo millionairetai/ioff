@@ -89,6 +89,34 @@ class ActiveRecord extends \yii\db\ActiveRecord
         ];
     }
 
+    /**
+     * @inheritdoc
+     * @return static[] an array of ActiveRecord instances, or an empty array if nothing matches.
+     */
+//    public static function findAll($condition)
+//    {
+//        if (ArrayHelper::isAssociative($condition)) {
+//            $condition['company_id'] = \Yii::$app->user->getCompanyId();
+//            return static::findByCondition($condition)->all();
+//        }
+//        
+//        return static::findByCondition($condition)->all();
+//    }
+    
+    /**
+     * @inheritdoc
+     * @return static|null ActiveRecord instance matching the condition, or `null` if nothing matches.
+     */
+//    public static function findOne($condition)
+//    {
+//        if (ArrayHelper::isAssociative($condition)) {
+//            $condition['company_id'] = \Yii::$app->user->getCompanyId();
+//            return static::findByCondition($condition)->one();
+//        }
+//        
+//        return static::findByCondition($condition)->one();
+//    }
+    
     public function delete()
     {
         $this->disabled = self::STATUS_DISABLE;

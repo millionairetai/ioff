@@ -587,7 +587,8 @@ appRoot.controller('homeCtrl', ['$scope','dialogMessage','alertify',function($sc
 
 
 //list project
-appRoot.controller('projectCtrl', ['$scope', 'projectService', '$uibModal','$rootScope','socketService', function ($scope, projectService, $uibModal,$rootScope,socketService) {
+appRoot.controller('projectCtrl', ['$scope', 'projectService', '$uibModal','$rootScope','socketService', 
+    function ($scope, projectService, $uibModal,$rootScope,socketService) {
          
         //get all project
         $scope.filter = {
@@ -817,7 +818,8 @@ appRoot.controller('addProjectCtrl', ['socketService','$scope', 'projectService'
 
 //Display info project
 var $dataEditProject = [];
-appRoot.controller('viewProjectCtrl', ['$scope', 'projectService', 'fileService', 'projectPostService', '$uibModal', '$rootScope', 'dialogMessage', '$routeParams', 'alertify', '$sce', 'PER_PAGE_POST', function ($scope, projectService, fileService, projectPostService, $uibModal, $rootScope, dialogMessage, $routeParams, alertify, $sce, PER_PAGE_POST) {
+appRoot.controller('viewProjectCtrl', ['$scope', 'projectService', 'fileService', 'projectPostService', '$uibModal', '$rootScope', 'dialogMessage', '$routeParams', 'alertify', '$sce', 'PER_PAGE_POST', 
+    function ($scope, projectService, fileService, projectPostService, $uibModal, $rootScope, dialogMessage, $routeParams, alertify, $sce, PER_PAGE_POST) {
         //get info project
         var projectId = $routeParams.projectId;
         $scope.collection = [];
@@ -980,7 +982,8 @@ appRoot.controller('viewProjectCtrl', ['$scope', 'projectService', 'fileService'
     }]);
 
 //edit project
-appRoot.controller('editProjectCtrl', ['$scope', 'projectService', '$location', '$uibModalInstance', '$rootScope', 'departmentService', 'alertify', '$timeout', 'employeeService', '$filter', 'statusService', 'priorityService', function ($scope, projectService, $location, $uibModalInstance, $rootScope, departmentService, alertify, $timeout, employeeService, $filter, statusService, priorityService) {
+appRoot.controller('editProjectCtrl', ['$scope', 'projectService', '$location', '$uibModalInstance', '$rootScope', 'departmentService', 'alertify', '$timeout', 'employeeService', '$filter', 'statusService', 'priorityService', 
+    function ($scope, projectService, $location, $uibModalInstance, $rootScope, departmentService, alertify, $timeout, employeeService, $filter, statusService, priorityService) {
         //step
         $scope.step = 1;
         $scope.more = 0;
@@ -1020,7 +1023,7 @@ appRoot.controller('editProjectCtrl', ['$scope', 'projectService', '$location', 
         $scope.removeChoice = function (index) {
         	$scope.project.members.splice(index, 1);
       	  	$scope.findEmployeeForProject('');
-            $scope.findEmployee('');
+                $scope.findEmployee('');
         }
         
         //project manager

@@ -124,4 +124,24 @@ class EmailTemplate extends \common\components\db\ActiveRecord
         
         return null;
     }
+    
+    /**
+     * Get theme email of project post
+     */
+    public static function getThemeProjectPost() {
+        
+        $theme = self::find()
+                    ->select(['subject', 'body', 'default_from_email'])
+                    ->where([
+                        'column_name' => 'create_project_post',
+                        'language_code' => \Yii::$app->language,
+                        'disabled' => self::STATUS_ENABLE
+                    ])->one();
+        
+        if($theme){
+            return $theme;
+        }
+        
+        return null;
+    }
 }

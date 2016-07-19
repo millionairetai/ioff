@@ -99,5 +99,25 @@ class SmsTemplate extends \common\components\db\ActiveRecord
             return $theme;
         }
         return null;
-    }    
+    }
+    
+    /**
+     * Get theme email of project post
+     */
+    public static function getThemeProjectPost() {
+        
+        $theme = self::find()
+                    ->select(['body', 'default_from_phone_no'])
+                    ->where([
+                        'column_name' => 'create_project_post',
+                        'language_code' => \Yii::$app->language,
+                        'disabled' => self::STATUS_ENABLE
+                    ])->one();
+        
+        if($theme){
+            return $theme;
+        }
+        
+        return null;
+    }
 }

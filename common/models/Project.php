@@ -166,7 +166,7 @@ class Project extends \common\components\db\ActiveRecord {
         $participants = $departmentNames = $employeeList = $fileList = $projectManager = [];
 
         $project = Project::findOne(['id' => $projectId, 'company_id' => $companyId]);
-         if (!empty($project)) {
+        if (!empty($project)) {
             //Get file with where: project_id, company_id, owner_table=project
             $files = File::find()->select(['id', 'name', 'path', 'datetime_created'])->where([
                     'company_id' => $companyId,
@@ -174,21 +174,19 @@ class Project extends \common\components\db\ActiveRecord {
                     'owner_object' => 'project',
             ])->all();
             
-            if (!empty($files)) {
-                foreach ($files AS $file) {
-                    $fileList[] = [
-                            'id' => $file->id,
-                            'name' => $file->name,
-                            'path' => \Yii::$app->params['PathUpload'] . DIRECTORY_SEPARATOR . $file->path,
-                            'datetime_created' => date('Y-m-d', $file->datetime_created),
-                    ];
-                }
+            foreach ($files as $file) {
+                $fileList[] = [
+                    'id' => $file->id,
+                    'name' => $file->name,
+                    'path' => \Yii::$app->params['PathUpload'] . DIRECTORY_SEPARATOR . $file->path,
+                    'datetime_created' => date('Y-m-d', $file->datetime_created),
+                ];
             }
             
             //Department: inner join project_participant with department where project_id, company_id, owner_table=department.
             $projectParticipants = ProjectParticipant::findAll(['company_id' => $companyId, 'project_id' => $projectId]);
             if (!empty($projectParticipants)) {
-                foreach ($projectParticipants AS $projectParticipant) {
+                foreach ($projectParticipants as $projectParticipant) {
                     $participants[$projectParticipant->owner_table][] = $projectParticipant->owner_id;
                     if ($projectParticipant->owner_table == 'department') {
                         $departmentNames[$projectParticipant->department->id] = $projectParticipant->department->name;
@@ -206,14 +204,13 @@ class Project extends \common\components\db\ActiveRecord {
                             ->andWhere(['id' => $employeeIds])
                             ->orWhere(['department_id' => $departmentIds])
                             ->all();
-            if (!empty($employees)) {
-                foreach ($employees AS $employee) {
-                    $employeeList[] = [
-                            'id'        => $employee->id,
-                            'firstname' => $employee->getFullName(),
-                            'image'     => $employee->getImage()
-                    ];
-                }
+            
+            foreach ($employees AS $employee) {
+                $employeeList[] = [
+                    'id'        => $employee->id,
+                    'firstname' => $employee->getFullName(),
+                    'image'     => $employee->getImage()
+                ];
             }
             
 
@@ -223,14 +220,12 @@ class Project extends \common\components\db\ActiveRecord {
                                 ->andWhere(['id' => $employeeIds])
                                 ->all();
             $employeeEditList = [];
-            if (!empty($employeesEdit)) {
-                foreach ($employeesEdit AS $employee) {
-                    $employeeEditList[] = [
-                            'id'        => $employee->id,
-                            'firstname' => $employee->getFullName(),
-                            'image'     => $employee->getImage()
-                    ];
-                }
+            foreach ($employeesEdit AS $employee) {
+                $employeeEditList[] = [
+                    'id'        => $employee->id,
+                    'firstname' => $employee->getFullName(),
+                    'image'     => $employee->getImage()
+                ];
             }
             
             $projectParent = Project::findOne($project->parent_id);

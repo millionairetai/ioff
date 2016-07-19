@@ -189,7 +189,7 @@ class File extends \common\components\db\ActiveRecord {
             $data = File::findOne($fileId);
             if (!empty($data)) {
                 if ($data->delete()) {
-                    file_exists($unlink = \Yii::$app->params['PathUpload'].DIRECTORY_SEPARATOR.$data->path) ? unlink($unlink) : false;
+                    file_exists($unlink = \Yii::$app->params['PathUpload'] . DIRECTORY_SEPARATOR . $data->path) ? unlink($unlink) : false;
                     //write logs project post
                     $projectPost = new ProjectPost();
                     $projectPost->project_id    = $data->owner_id;
@@ -207,9 +207,10 @@ class File extends \common\components\db\ActiveRecord {
     }
     
     /**
-     * get info file name by id
+     * Get info file name by id
+     * 
      * @param array $ids
-     * @param unknown $table
+     * @param string $table
      * @return boolean|array
      */
     public static function getFiles($ids = array(), $table = null){
@@ -221,6 +222,6 @@ class File extends \common\components\db\ActiveRecord {
             ]);
     	}
         
-    	return false;
+    	return [];
     }
 }
