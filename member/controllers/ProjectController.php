@@ -349,6 +349,7 @@ class ProjectController extends ApiController {
                 $dataReplace['fileList'] = $fileName;
             }
 
+            //Write log history for editing this project.
             if (($projectHistory = $this->_makeProjectHistory($dataReplace)) && !empty($projectHistory)) {
                 //insert project_post table:
                 $projectPost = new ProjectPost();
@@ -517,7 +518,6 @@ class ProjectController extends ApiController {
      * 
      * @param array $dataPost data get from employee.
      * @return array
-     * @throws \Exception
      */
     private function _updataProjectParticipant($dataPost = []) {
         $result = '';

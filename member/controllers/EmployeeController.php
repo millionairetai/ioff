@@ -11,13 +11,14 @@ class EmployeeController extends ApiController {
     // Get all calendar id from array
     public function actionSearch() {
         $objects = [];
-
         $keyword = Yii::$app->request->post('keyword');
         $departments = Yii::$app->request->post('departments', []);
         $members = Yii::$app->request->post('members', []);
         $manager = Yii::$app->request->post('manager', []);
 
-        $query = Employee::find()->andCompanyId()->andWhere(['like', 'firstname', $keyword]);
+        $query = Employee::find()
+                    ->select(['id', 'email', 'firstname', 'lastname', 'profile_image_path'])
+                    ->andCompanyId()->andWhere(['like', 'firstname', $keyword]);
 
         //check department
         if (!empty($departments)) {
@@ -42,7 +43,7 @@ class EmployeeController extends ApiController {
             foreach ($employees as $employee) {
                 $objects[] = [
                     'id' => $employee->id,
-                    'firstname' => $employee->firstname,
+                    'firstname' => $employee->getFullName(),
                     'email' => $employee->email,
                     'image' => $employee->getImage()
                 ];

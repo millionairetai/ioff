@@ -10,7 +10,7 @@ class PriorityController extends ApiController {
     public function actionGetProjectPriority() {
         $objects = [];
 
-        $array = Priority::find()->andCompanyId()->all();
+        $array = Priority::find()->select(['id', 'name'])->andCompanyId()->all();
         foreach ($array as $item) {
             $objects[] = [
                 'id' => $item->id,

@@ -8,14 +8,11 @@ class StatusController extends ApiController {
     
      /**
      * Get status list by company id and column nam
-     * 
-     * @param integer $projectId 
-     * @return boolean|array
      */
     public function actionGetProjectStatus() {
         $objects = [];
 
-        $array = Status::find()->andCompanyId()->andWhere(['column_name' => 'project'])->all();
+        $array = Status::find()->select(['id', 'name'])->andWhere(['column_name' => 'project'])->andCompanyId()->all();
         foreach ($array as $item) {
             $objects[] = [
                 'id' => $item->id,

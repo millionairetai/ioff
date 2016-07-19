@@ -104,8 +104,8 @@ class Project extends \common\components\db\ActiveRecord {
      * get project based on employee
      */
     public static function getProject($params, $currentPage = 1, $itemPerPage = 10) {
-       $companyId = \Yii::$app->user->getCompanyId();
-       
+        $companyId = \Yii::$app->user->getCompanyId();
+
         $sql = " SELECT project.id, project.name, project.description, project.status_id,"
                 . "     project.completed_percent, project.worked_hour, project.estimate_hour, status.name as status_name"
                 . " FROM project"
@@ -166,100 +166,101 @@ class Project extends \common\components\db\ActiveRecord {
         $participants = $departmentNames = $employeeList = $fileList = $projectManager = [];
 
         $project = Project::findOne(['id' => $projectId, 'company_id' => $companyId]);
-        if (!empty($project)) {
-            //Get file with where: project_id, company_id, owner_table=project
-            $files = File::find()->select(['id', 'name', 'path', 'datetime_created'])->where([
-                    'company_id' => $companyId,
-                    'owner_id' => $projectId,
-                    'owner_object' => 'project',
-            ])->all();
-            
-            foreach ($files as $file) {
-                $fileList[] = [
-                    'id' => $file->id,
-                    'name' => $file->name,
-                    'path' => \Yii::$app->params['PathUpload'] . DIRECTORY_SEPARATOR . $file->path,
-                    'datetime_created' => date('Y-m-d', $file->datetime_created),
-                ];
-            }
-            
-            //Department: inner join project_participant with department where project_id, company_id, owner_table=department.
-            $projectParticipants = ProjectParticipant::findAll(['company_id' => $companyId, 'project_id' => $projectId]);
-            if (!empty($projectParticipants)) {
-                foreach ($projectParticipants as $projectParticipant) {
-                    $participants[$projectParticipant->owner_table][] = $projectParticipant->owner_id;
-                    if ($projectParticipant->owner_table == 'department') {
-                        $departmentNames[$projectParticipant->department->id] = $projectParticipant->department->name;
-                    }
+        if (empty($project)) {
+            return false;
+        }
+
+        //Get file with where: project_id, company_id, owner_table=project
+        $files = File::find()
+                    ->select(['id', 'name', 'path', 'datetime_created'])
+                    ->where([
+                        'company_id' => $companyId,
+                        'owner_id' => $projectId,
+                        'owner_object' => 'project',
+                    ])->all();
+
+        foreach ($files as $file) {
+            $fileList[] = [
+                'id' => $file->id,
+                'name' => $file->name,
+                'path' => \Yii::$app->params['PathUpload'] . DIRECTORY_SEPARATOR . $file->path,
+                'datetime_created' => date('Y-m-d', $file->datetime_created),
+            ];
+        }
+
+        //Department: inner join project_participant with department where project_id, company_id, owner_table=department.
+        $projectParticipants = ProjectParticipant::findAll(['company_id' => $companyId, 'project_id' => $projectId]);
+        if (!empty($projectParticipants)) {
+            foreach ($projectParticipants as $projectParticipant) {
+                $participants[$projectParticipant->owner_table][] = $projectParticipant->owner_id;
+                if ($projectParticipant->owner_table == 'department') {
+                    $departmentNames[$projectParticipant->department->id] = $projectParticipant->department->name;
                 }
             }
-            
-            // * Get employee information in employee table with where = employee_id or department_id
-            $employeeIds = isset($participants['employee']) ? $participants['employee'] : null;
-            $departmentIds = isset($participants['department']) ? $participants['department'] : null;
-            $participants = !empty($participants) ? $participants : null;
-            $employees = Employee::find()
+        }
+
+        // * Get employee information in employee table with where = employee_id or department_id
+        $employeeIds = isset($participants['employee']) ? $participants['employee'] : null;
+        $departmentIds = isset($participants['department']) ? $participants['department'] : null;
+        $participants = !empty($participants) ? $participants : null;
+        $employees = Employee::find()
+                        ->select(['id', 'firstname', 'lastname', 'profile_image_path'])
+                        ->andCompanyId()
+                        ->andWhere(['id' => $employeeIds])
+                        ->orWhere(['department_id' => $departmentIds])
+                        ->all();
+
+        foreach ($employees AS $employee) {
+            $employeeList[] = [
+                'id' => $employee->id,
+                'firstname' => $employee->getFullName(),
+                'image' => $employee->getImage()
+            ];
+        }
+
+        $employeesEdit = Employee::find()
                             ->select(['id', 'firstname', 'lastname', 'profile_image_path'])
                             ->andCompanyId()
                             ->andWhere(['id' => $employeeIds])
-                            ->orWhere(['department_id' => $departmentIds])
                             ->all();
-            
-            foreach ($employees AS $employee) {
-                $employeeList[] = [
-                    'id'        => $employee->id,
-                    'firstname' => $employee->getFullName(),
-                    'image'     => $employee->getImage()
-                ];
-            }
-            
-            $employeesEdit = Employee::find()
-                                ->select(['id', 'firstname', 'lastname', 'profile_image_path'])
-                                ->andCompanyId()
-                                ->andWhere(['id' => $employeeIds])
-                                ->all();
-            $employeeEditList = [];
-            foreach ($employeesEdit AS $employee) {
-                $employeeEditList[] = [
-                    'id'        => $employee->id,
-                    'firstname' => $employee->getFullName(),
-                    'image'     => $employee->getImage()
-                ];
-            }
-            
-            $projectParent = Project::findOne($project->parent_id);
-            
-            return [
-                    'project_info' => [
-                            'project_id'         => $project->id,
-                            'project_name'       => $project->name,
-                            'project_main'       => empty($projectParent) ? '' : $projectParent->name,
-                            'project_manager'    => isset($project->employee) ? $project->employee->getFullName() : '' ,
-                            'manager_project_id' => $project->manager_project_id,
-                            'image'              => isset($project->employee) ? $project->employee->getImage() : null,
-                            'priority_id'        => $project->priority_id,
-                            'priority_name'      => $project->priority->name,
-                            'status_id'          => $project->status_id,
-                            'status_name'        => $project->status->name,
-                            'completed_percent'  => $project->completed_percent,
-                            'estimate_hour'      => $project->estimate_hour,
-                            'is_public'          => $project->is_public,
-                            'profile_image_path' => isset($project->employee->profile_image_path) ? $project->employee->profile_image_path : 'profileImageDefault.jpg',
-                            'start_datetime'     => isset($project->start_datetime) ? date('Y-m-d', $project->start_datetime) : null,
-                            'duedatetime'        => isset($project->duedatetime) ? date('Y-m-d', $project->duedatetime) : null,
-                            'theory'             => $project->estimate_hour > 0 ? ((int) (($project->worked_hour / $project->estimate_hour) * 100)) : 0,
-                            'description'        => $project->description,
-                    ],
-                    'file_info'       => $fileList,
-                    'department_info' => empty($departmentNames) ? [] : $departmentNames,
-                    'employee_info'   => $employeeList,
-                    'project_manager' => $projectManager,
-                    'participant_employee' => $employeeEditList,
+        $employeeEditList = [];
+        foreach ($employeesEdit as $employee) {
+            $employeeEditList[] = [
+                'id' => $employee->id,
+                'firstname' => $employee->getFullName(),
+                'image' => $employee->getImage()
             ];
-            
-         }
-         
-         return false;
+        }
+
+        $projectParent = Project::findOne($project->parent_id);
+
+        return [
+            'project_info' => [
+                'project_id' => $project->id,
+                'project_name' => $project->name,
+                'project_main' => empty($projectParent) ? '' : $projectParent->name,
+                'project_manager' => isset($project->employee) ? $project->employee->getFullName() : '',
+                'manager_project_id' => $project->manager_project_id,
+                'image' => isset($project->employee) ? $project->employee->getImage() : null,
+                'priority_id' => $project->priority_id,
+                'priority_name' => $project->priority->name,
+                'status_id' => $project->status_id,
+                'status_name' => $project->status->name,
+                'completed_percent' => $project->completed_percent,
+                'estimate_hour' => $project->estimate_hour,
+                'is_public' => $project->is_public,
+                'profile_image_path' => isset($project->employee->profile_image_path) ? $project->employee->profile_image_path : 'profileImageDefault.jpg',
+                'start_datetime' => isset($project->start_datetime) ? date('Y-m-d', $project->start_datetime) : null,
+                'duedatetime' => isset($project->duedatetime) ? date('Y-m-d', $project->duedatetime) : null,
+                'theory' => $project->estimate_hour > 0 ? ((int) (($project->worked_hour / $project->estimate_hour) * 100)) : 0,
+                'description' => $project->description,
+            ],
+            'file_info' => $fileList,
+            'department_info' => empty($departmentNames) ? [] : $departmentNames,
+            'employee_info' => $employeeList,
+            'project_manager' => $projectManager,
+            'participant_employee' => $employeeEditList,
+        ];
     }
 
 }
