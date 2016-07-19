@@ -146,7 +146,7 @@ class File extends \common\components\db\ActiveRecord {
         }
         
         if (!$employeeSpace->save(false)) {
-            throw new \Exception('Save record to table File fail');
+            throw new \Exception('Save record to table Employee Space fail');
         }
         
         return $listFiles;

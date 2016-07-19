@@ -1,6 +1,6 @@
 //list project
 appRoot.controller('projectCtrl', ['$scope', 'projectService', '$uibModal','$rootScope','socketService', 
-    function ($scope, projectService, $uibModal,$rootScope,socketService) {
+    function ($scope, projectService, $uibModal, $rootScope, socketService) {
          
         //get all project
         $scope.filter = {
