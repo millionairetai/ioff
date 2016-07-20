@@ -3,6 +3,7 @@ appRoot = angular.module('centeroffice', ['ui.tinymce', 'ngRoute', 'ui.bootstrap
 //constant for paging
 appRoot.constant('PER_PAGE_POST', 10);
 appRoot.constant('PER_PAGE', 20);
+appRoot.constant('MAX_PAGE_SIZE', 10);
 
 //constant for maximun file storage.
 appRoot.constant('MAX_SIZE_UPLOAD', 10485760);

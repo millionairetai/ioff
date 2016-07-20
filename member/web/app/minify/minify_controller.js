@@ -1,9 +1,9 @@
 //list auhthorities
-appRoot.controller('AuthorityCtrl', ['$scope', '$uibModal', 'authorityService', '$rootScope', 'alertify',
-    function ($scope, $uibModal, authorityService, $rootScope, alertify) {
+appRoot.controller('AuthorityCtrl', ['$scope', '$uibModal', 'authorityService', '$rootScope', 'alertify', 'PER_PAGE', 'MAX_PAGE_SIZE', 
+    function ($scope, $uibModal, authorityService, $rootScope, alertify, PER_PAGE, MAX_PAGE_SIZE) {
         $scope.params = {
             page : 1,
-            limit: 20,
+            limit: PER_PAGE,
             authorityName: '',
             orderBy: '',
             orderType: ''
@@ -11,7 +11,7 @@ appRoot.controller('AuthorityCtrl', ['$scope', '$uibModal', 'authorityService', 
 
         $scope.totalItems = 0;
         $scope.authorities = [];
-        $scope.maxPageSize = 15;
+        $scope.maxPageSize = MAX_PAGE_SIZE;
         $scope.add = function (authority, $index) {
             var modalInstance = $uibModal.open({
                 templateUrl: 'app/views/authority/add.html',
@@ -32,7 +32,7 @@ appRoot.controller('AuthorityCtrl', ['$scope', '$uibModal', 'authorityService', 
                 } else {//if creating or deleting
                     $scope.params = {
                         page :  1,
-                        limit: 20,
+                        limit: PER_PAGE,
                         authorityName: '',
                         orderBy: 'lastup_datetime',
                         orderType: 'DESC'
@@ -588,7 +588,7 @@ appRoot.controller('homeCtrl', ['$scope','dialogMessage','alertify',function($sc
 
 //list project
 appRoot.controller('projectCtrl', ['$scope', 'projectService', '$uibModal','$rootScope','socketService', 
-    function ($scope, projectService, $uibModal,$rootScope,socketService) {
+    function ($scope, projectService, $uibModal, $rootScope, socketService) {
          
         //get all project
         $scope.filter = {
