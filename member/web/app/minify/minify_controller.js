@@ -587,12 +587,12 @@ appRoot.controller('homeCtrl', ['$scope','dialogMessage','alertify',function($sc
 
 
 //list project
-appRoot.controller('projectCtrl', ['$scope', 'projectService', '$uibModal','$rootScope','socketService', 
-    function ($scope, projectService, $uibModal, $rootScope, socketService) {
+appRoot.controller('projectCtrl', ['$scope', 'projectService', '$uibModal','$rootScope','socketService', 'PER_PAGE_VIEW_MORE',
+    function ($scope, projectService, $uibModal, $rootScope, socketService, PER_PAGE_VIEW_MORE) {
          
         //get all project
         $scope.filter = {
-            itemPerPage : 10,
+            itemPerPage : PER_PAGE_VIEW_MORE,
             totalItems : 0,
             currentPage : 1
         };
@@ -818,8 +818,8 @@ appRoot.controller('addProjectCtrl', ['socketService','$scope', 'projectService'
 
 //Display info project
 var $dataEditProject = [];
-appRoot.controller('viewProjectCtrl', ['$scope', 'projectService', 'fileService', 'projectPostService', '$uibModal', '$rootScope', 'dialogMessage', '$routeParams', 'alertify', '$sce', 'PER_PAGE_POST', 
-    function ($scope, projectService, fileService, projectPostService, $uibModal, $rootScope, dialogMessage, $routeParams, alertify, $sce, PER_PAGE_POST) {
+appRoot.controller('viewProjectCtrl', ['$scope', 'projectService', 'fileService', 'projectPostService', '$uibModal', '$rootScope', 'dialogMessage', '$routeParams', 'alertify', '$sce', 'PER_PAGE_VIEW_MORE', 
+    function ($scope, projectService, fileService, projectPostService, $uibModal, $rootScope, dialogMessage, $routeParams, alertify, $sce, PER_PAGE_VIEW_MORE) {
         //get info project
         var projectId = $routeParams.projectId;
         $scope.collection = [];
@@ -836,7 +836,7 @@ appRoot.controller('viewProjectCtrl', ['$scope', 'projectService', 'fileService'
 
         //get all activity recode
         $scope.filter = {
-            itemPerPage: PER_PAGE_POST,
+            itemPerPage: PER_PAGE_VIEW_MORE,
             totalItems: 0,
             currentPage: 1,
             projectId: projectId

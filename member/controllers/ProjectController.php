@@ -31,8 +31,6 @@ class ProjectController extends ApiController {
         $params = [':empolyee_id' => \Yii::$app->user->getId()];
         $result = Project::getProject($params, $currentPage, $itemPerPage);
         $totalItems = $this->getPagination($result['sql'], $currentPage, $itemPerPage, $params);
-
-
         foreach ($result['data'] as $item) {
             $collection[] = [
                 'id' => $item['id'],
@@ -139,29 +137,29 @@ class ProjectController extends ApiController {
                 }
                 //notifycation
                 $arrayEmployees = [];
-                $is_query = false;
+                $isQuery = false;
                 $query = Employee::find();
                 
                 if (isset($dataPost['members']) && count($dataPost['members']) && isset($dataPost['departments']) && count($dataPost['departments'])) {
-                    $is_query = true;
+                    $isQuery = true;
                     $idEmployees = [];
                     foreach ($dataPost['members'] as $item) {
                         $idEmployees[] = $item['id'];
                     }
                     $query->andWhere('id in ('. implode(',', $idEmployees).') or department_id in ('.implode(',', $dataPost['departments']).')');
                 } elseif (isset($dataPost['members']) && count($dataPost['members'])) {
-                    $is_query = true;
+                    $isQuery = true;
                     $idEmployees = [];
                     foreach ($dataPost['members'] as $item) {
                         $idEmployees[] = $item['id'];
                     }
                     $query->andWhere(['id' => $idEmployees]);
                 } elseif (isset($dataPost['departments']) && count($dataPost['departments'])) {
-                    $is_query = true;
+                    $isQuery = true;
                     $query->andWhere(['department_id' => $dataPost['departments']]);
                 }
                 
-                if ($is_query) {
+                if ($isQuery) {
                     $content = \Yii::$app->user->getIdentity()->firstname . " " . \Yii::t('common', 'created') . " " . $ob->name;
                     $arrayEmployees = $query->andCompanyId()->all();
                     $dataSend = [
@@ -302,7 +300,7 @@ class ProjectController extends ApiController {
                 $content = \Yii::$app->user->identity->firstname . " " . \Yii::t('common', 'created') . " " . $ob->name;
                 $arrayEmployees = $query->andCompanyId()->all();
                 $dataSend = [
-                    '{creator name}' => \Yii::$app->user->getIdentity()->firstname,
+                    '{creator name}' => \Yii::$app->user->identity->firstname,
                     '{project name}' => $ob->name
                 ];
             }

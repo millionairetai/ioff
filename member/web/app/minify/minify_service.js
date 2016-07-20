@@ -12,7 +12,7 @@ appRoot.factory('apiService', ['$rootScope', '$http', '$location', 'alertify', f
             //post
             post: function (url, data, successHandler, errorHandler,over) {
                 over = typeof over !== 'undefined' ? over : 1;
-                if(over){
+                if(over) {
                     $rootScope.progressing = true;
                 }
                 
