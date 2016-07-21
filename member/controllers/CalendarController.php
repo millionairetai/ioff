@@ -116,7 +116,7 @@ class CalendarController extends ApiController {
             $activity->owner_table = Activity::TABLE_EVENT;
             $activity->parent_employee_id = 0;
             $activity->employee_id = \Yii::$app->user->getId();
-            $activity->type = "create_event";
+            $activity->type = Activity::TYPE_CREATE_EVENT;
             $activity->content = \Yii::$app->user->identity->firstname . " " . \Yii::t('common', 'created') . " " . $ob->name;
 
             if (!$activity->save()) {

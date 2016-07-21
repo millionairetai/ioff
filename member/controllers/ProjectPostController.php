@@ -99,7 +99,7 @@ class ProjectPostController extends ApiController {
             $activity->owner_table = ProjectPost::TABLE_PROJECTPOST;
             $activity->parent_employee_id = 0;
             $activity->employee_id = \Yii::$app->user->getId();
-            $activity->type = "create_project_post";
+            $activity->type = Activity::TYPE_CREATE_PROJECT_POST;
             $activity->content = $content;
     
             if (!$activity->save()) {

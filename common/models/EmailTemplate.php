@@ -139,7 +139,7 @@ class EmailTemplate extends \common\components\db\ActiveRecord
         $theme = self::find()
                     ->select(['subject', 'body', 'default_from_email'])
                     ->where([
-                        'column_name' => 'create_project_post',
+                        'column_name' => self::CREATE_PROJECT_POST,
                         'language_code' => \Yii::$app->language,
                         'disabled' => self::STATUS_ENABLE
                     ])->one();

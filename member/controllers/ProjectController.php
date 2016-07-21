@@ -115,7 +115,7 @@ class ProjectController extends ApiController {
                 $activity->owner_table = Activity::TABLE_PROJECT;
                 $activity->parent_employee_id = 0;
                 $activity->employee_id = \Yii::$app->user->getId();
-                $activity->type = "create_project";
+                $activity->type = Activity::TYPE_CREATE_PROJECT;
                 $activity->content = \Yii::$app->user->getIdentity()->firstname . " " . \Yii::t('common', 'created') . " " . $ob->name;
 
                 if (!$activity->save()) {
