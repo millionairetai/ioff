@@ -21,6 +21,12 @@ use Yii;
  */
 class SmsTemplate extends \common\components\db\ActiveRecord
 {
+    //const for column name.
+    const CREATE_EVENT = 'create_event';
+    const EDIT_EVENT = 'edit_event';
+    const CREATE_PROJECT = 'create_project';
+    const CREATE_PROJECT_POST = 'create_project_post';
+    
     /**
      * @inheritdoc
      */

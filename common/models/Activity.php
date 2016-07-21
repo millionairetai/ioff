@@ -24,8 +24,17 @@ use Yii;
  */
 class Activity extends \common\components\db\ActiveRecord
 {
+    //const for owner table.
     const TABLE_PROJECT = "project";  
     const TABLE_EVENT = "event"; 
+    
+    //const for type of activity
+    const TYPE_CREATE_TASK = 'create_task';
+    const TYPE_CREATE_EVENT = 'create_event';
+    const TYPE_CREATE_PROJECT = 'create_project';
+    const TYPE_CREATE_EDIT_PROJECT = 'edit_project';
+    const TYPE_CREATE_PROJECT_POST = 'create_project_post';
+    
     /**
      * @inheritdoc
      */
