@@ -224,6 +224,14 @@ appRoot.controller('addProjectCtrl', ['socketService','$scope', 'projectService'
         $scope.showMore = function (value) {
             $scope.more = value;
         }
+        
+        $scope.tinymceOptions = {
+            inline: false,
+            toolbar: 'formatselect | bold italic underline | bullist numlist | alignleft aligncenter alignright alignjustify | undo redo ',
+            menubar: false,
+            skin: 'lightgray',
+            theme: 'modern'
+        };
 
     }]);
 

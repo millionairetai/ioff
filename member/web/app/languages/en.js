@@ -3,6 +3,7 @@
 
     angular.module('centeroffice').controller('centerofficeCtrl', function ($rootScope) {
         $rootScope.$lang = {
+            //-----------------------------------------Common languages here----------------------------------
             title_error_dialog : 'Error',
             title_confirm_dialog : 'Confirm',
             ok : 'Ok',
@@ -22,17 +23,58 @@
             button_close : 'Close',
             max_size : 'Total file size upload is excess 10MB',
             max_length:'Only allow maximum number of file upload is 20',
-            no_data: 'No data',
             view_more_upper_case: 'VIEW MORE',
             //Lang for expand and remove contaner in each page.
             expand: 'Expand',
             remove: 'Remove',
+            //date picker
+            datepicker_close : "Close",
+            datepicker_clear : "Clear",
+            datepicker_today : "Today",
+            //System
+            please_enter_username: 'Please enter username',
+            please_enter_password: 'Please enter password',
+            remember: 'Remember',
+            sign_in: 'Sign in',
+            forgot_password: 'Forgot password',
+            username: 'Username',
+            password: 'Password',
+            you_dont_have_permission_to_access_this_page: 'You don\'t have permission to access this page',
+            page_not_found:'Page not found',
+            no_data: 'No data',
+            warning: 'Warning',
+            confirm_delete_file:'Are you sure delete?',
+            remove_file_success:'Delete File success.',
+            remove_file_error:'Delete File Error.',
+            last_modify: 'Last modified',
+            modify_by: 'Modify by',
+            search: 'Search',
+            functionality_group: 'Functionality group',
+            functionalities: 'Functionalities',
+            
+            /////Re
+            time : "Time",
+            status : 'Status',
+            priority : 'Priority',
+            completed_percent : 'Completed Percent',
+            share : 'Share',
+            description : "Description",
+            file : 'File',
+            view_more : 'View more',
+            view_less : 'View less',
+            hour : 'Hour(s)',
+            department : 'Department',
+            choose_all: 'All',
+            members: 'Members',
+            name : "Name",
+            redmind : "Redmind me",
+            //-----------------------------------------End of common language.----------------------------------
             
             //project
-            project_list_view_more : 'View More',
+            project_list_view_more : 'View More',//
             project_add : 'Create project',
             project_empty : 'There is not project',
-            project_manage : 'Managing project',
+            project_manage : 'Manage project',
             project_list : 'List project',
             project_infomation : 'Project information',
             project_choose_member: 'Choose Members',
@@ -78,31 +120,21 @@
             project_created_success:'Create project is successful',
             project_notify_success:'Project has created successfully.',
             project_update_success:'Project has update successfully.',
-            remove_file_success:'Delete File success.',
-            remove_file_error:'Delete File Error.',
-            confirm_delete_file:'Are you sure delete?.',
-            
+            success_add_project : 'You add project successfully',
             //end project
             
             //authority    
             authority_manage: 'Authority management',
             authority_list: 'Authority list',
             authority_name: 'Name',
-            last_modify: 'Last modified',
-            modify_by: 'Modify by',
             authority_add: 'Add authority',
             authority_edit: 'Edit authority',
-            functionality_group: 'Functionality group',
-            functionalities: 'Functionalities',
             please_enter_authority_name: 'Authority name is required',
             please_enter_this_field: 'Please enter this field',
             authority_name_max_length: 'Authority name must be smaller than 255 charactors',
             please_select_action: 'Please select at least one functionality',
-            search: 'Search',
             is_delete: 'Do you want to delete this authority?',
             authority_is_used: 'This authority can not be deleted because in use',
-            warning: 'Warning',
-            no_data: 'No data',
             authority_added_success:'Authority has been added successfully',
             authority_edited_success:'Authority has been updated successfully',
             authority_deleted_success: 'Deleted authority successfully',
@@ -132,22 +164,7 @@
             calendar_event_time_error : "Enddate is must greater than startdate",
             calendar_event_calendar_id_error_empty : "Calendar is required",
             calendar_notify_event_created_success : "Event has created successfully",
-            calendar_event_check_redmind : "Startdate time with current time must be greater than remind time",
-            
-            success_add_project : 'You add project successfully',
-            please_enter_username: 'Please enter username',
-            please_enter_password: 'Please enter password',
-            remember: 'Remember',
-            sign_in: 'Sign in',
-            forgot_password: 'Forgot password',
-            username: 'Username',
-            password: 'Password',
-            you_dont_have_permission_to_access_this_page: 'You don\'t have permission to access this page',
-            page_not_found:'Page not found',
-            //date picker
-            datepicker_close : "Close",
-            datepicker_clear : "Clear",
-            datepicker_today : "Today",
+            calendar_event_check_redmind : "Startdate time with current time must be greater than remind time"
         };
     });
 })(window.angular);

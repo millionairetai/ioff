@@ -85,7 +85,7 @@ class Calendar extends ActiveRecord {
         $data = $command->queryAll();
         $ids = self::getAllId($data);
 
-        if ($calendars = self::find()->andCompanyId()->all()) {
+        if ($calendars = self::find()->select(['id', 'name'])->andCompanyId()->all()) {
             foreach ($calendars as $calendar) {
                 if (!in_array($calendar->id, $ids)) {
                     $data[] = [

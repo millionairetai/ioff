@@ -3,8 +3,9 @@
 
     angular.module('centeroffice').controller('centerofficeCtrl', function ($rootScope) {
         $rootScope.$lang = {
+            //-----------------------------------------Common languages here----------------------------------
             title_error_dialog : 'Thông báo lỗi',
-            title_confirm_dialog : 'Xác nhận thông tin',
+            title_confirm_dialog : 'Xác nhận',
             ok : 'Chấp nhận',
             more : 'Xem Thêm',
             less : 'Đóng',
@@ -22,11 +23,52 @@
             button_close : 'Đóng',
             max_size : 'Tổng dung lượng file upload vượt quá 10MB',
             max_length:'Chỉ cho phép tổng số lượng tập tin upload tối đa là 20',
-            no_data: 'Không có dữ liệu',
             view_more_upper_case: 'XEM THÊM',
             //Lang for expand and remove contaner in each page.
             expand: 'Đóng',
             remove: 'Xóa',
+            
+            //date picker
+            datepicker_close : "Đóng",
+            datepicker_clear : "Xóa",
+            datepicker_today : "Hôm nay",
+            //system
+            please_enter_username: 'Xin nhập vào tài khoản',
+            please_enter_password: 'Xin nhập vào password',
+            remember: 'Ghi nhớ',
+            sign_in: 'Đăng nhập',
+            forgot_password: 'Quên mật khẩu',
+            username: 'Tài khoản',
+            password: 'Mật khẩu',
+            you_dont_have_permission_to_access_this_page: 'Bạn không có quyền truy cập trang này',
+            page_not_found:'Không tìm thấy trang này',
+            no_data: 'Không có dữ liệu',
+            warning: 'Cảnh báo',
+            confirm_delete_file:'Bạn có chắc chắn xóa?.',
+            remove_file_success:'File đã được xóa thành công.',
+            remove_file_error:'File bạn cần xóa không thành công.',
+            last_modify: 'Ngày sửa',
+            modify_by: 'Người tạo',
+            search: 'Tìm kiếm',
+            functionality_group: 'Nhóm chức năng',
+            functionalities: 'Các chức năng',
+            
+            time : "Thời gian",
+            status : 'Tình trạng',
+            priority : 'Độ ưu tiên',
+            completed_percent : 'Hoàn thành',
+            share : 'Chia sẻ',
+            description : "Mô tả",
+            file : 'Tập tin',
+            view_more : 'Thông tin mở rộng',
+            view_less : 'Thu nhỏ',
+            hour : 'giờ',
+            department : 'Phòng ban',
+            choose_all: 'Tất cả',
+            members: 'Thành viên',
+            name : "Tên",
+            redmind : "Nhắc nhở",
+            //-----------------------------------------End of common language.----------------------------------
             
             //project
             project_list_view_more : 'Xem thêm',
@@ -78,30 +120,21 @@
             project_created_success:'Dự án đã được tạo thành công.',
             project_notify_success:'Dự án đã được tạo thành công.',
             project_update_success:'Dự án đã được cập nhật thành công.',
-            remove_file_success:'File đã được xóa thành công.',
-            remove_file_error:'File bạn cần xóa không thành công.',
-            confirm_delete_file:'Bạn có chắc chắn xóa?.',
+            success_add_project : 'Bạn đã tạo dự án thành công',
             //end project
             
             //authority
             authority_manage: 'Quản lý quyền',
             authority_list: 'Danh sách quyền',
             authority_name: 'Tên',
-            last_modify: 'Ngày sửa',
-            modify_by: 'Người tạo',
             authority_add: 'Thêm quyền',
             authority_edit: 'Sửa quyền',
-            functionality_group: 'Nhóm chức năng',
-            functionalities: 'Các chức năng',
             please_enter_this_field: 'Xin nhập mục này',
             please_enter_authority_name: 'Tên quyền không được bỏ trống',
             authority_name_max_length: 'Tên quyền phải nhỏ hơn 255 ký tự',
             please_select_action: 'Bạn phải chọn tối thiểu một chức năng',
-            search: 'Tìm kiếm',
             is_delete: 'Bạn có muốn xóa quyền này không?',
             authority_is_used: 'Quyền không thể xóa vì đang được sử dụng',
-            warning: 'Cảnh báo',
-            no_data: 'Không có dữ liệu',
             authority_added_success: 'Đã thêm quyền thành công',
             authority_edited_success:'Đã cập nhật quyền thành công',
             authority_deleted_success: 'Xóa quyền thành công',
@@ -131,22 +164,7 @@
             calendar_event_time_error : "Ngày kết thúc phải lớn hơn ngày bắt đầu",
             calendar_event_calendar_id_error_empty : "Lịch không được bỏ trống",
             calendar_notify_event_created_success : "Sự kiện của bạn đã được tạo thành công",
-            calendar_event_check_redmind : "Thời gian bắt đầu sự kiện so với thời gian hiện tại phải lớn hơn thời gian nhắc nhở",
-            
-            success_add_project : 'Bạn đã tạo dự án thành công',
-            please_enter_username: 'Xin nhập vào tài khoản',
-            please_enter_password: 'Xin nhập vào password',
-            remember: 'Ghi nhớ',
-            sign_in: 'Đăng nhập',
-            forgot_password: 'Quên mật khẩu',
-            username: 'Tài khoản',
-            password: 'Mật khẩu',
-            you_dont_have_permission_to_access_this_page: 'Bạn không có quyền truy cập trang này',
-            page_not_found:'Không tìm thấy trang này',
-            //date picker
-            datepicker_close : "Đóng",
-            datepicker_clear : "Xóa",
-            datepicker_today : "Hôm nay",
+            calendar_event_check_redmind : "Thời gian bắt đầu sự kiện so với thời gian hiện tại phải lớn hơn thời gian nhắc nhở"
         };
     });
 })(window.angular);
