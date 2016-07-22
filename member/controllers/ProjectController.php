@@ -341,7 +341,7 @@ class ProjectController extends ApiController {
             if (!empty($listFile)) {
                 $fileName = '';
                 foreach ($listFile as $key => $file) {
-                    $fileName .= '<div class="padding-left-20"><i><a href="' . \Yii::$app->params['PathUpload'] . DIRECTORY_SEPARATOR . $file->path . '">' . $file->name . '</a></i></div>';
+                    $fileName .= '<div class="padding-left-20"><i><a href="' . \Yii::$app->params['PathUpload'] . DIRECTORY_SEPARATOR . $file['path'] . '">' . $file['name'] . '</a></i></div>';
                 }
                 
                 $dataReplace['fileList'] = $fileName;

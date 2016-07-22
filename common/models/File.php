@@ -99,7 +99,7 @@ class File extends \common\components\db\ActiveRecord {
         }
         
         //loop file and upload
-        $listFiles = [];
+        $fileInsert = [];
         foreach ($files as $key => $file) {
             $fileName = $file["name"];
             $type = $file["type"];
@@ -116,22 +116,18 @@ class File extends \common\components\db\ActiveRecord {
                     throw new \Exception('Can not upload file:' . $fileEncodeName);
                 }
                 
-                $file = new File();
-                $file->owner_id = $owner_id;
-                $file->employee_id = $employeeId;
-                $file->owner_object = $table;
-                $file->name = $fileName;
-                $file->path = $group . DIRECTORY_SEPARATOR . $fileEncodeName;
-                $file->is_image = in_array($type, $allow) ? 1 : 0;
-                $file->file_type = $extension;
-                $file->file_size = $size;
-                $file->encoded_name = $fileEncodeName;
+                $fileInsert[] = [
+                    'owner_id'         => $owner_id,
+                    'employee_id'     => $employeeId,
+                    'owner_object'    => $table,
+                    'name' => $fileName,
+                    'path' => $group . DIRECTORY_SEPARATOR . $fileEncodeName,
+                    'is_image'  => in_array($type, $allow) ? 1 : 0,
+                    'file_type' => $extension,
+                    'file_size' => $size,
+                    'encoded_name'  => $fileEncodeName,
+                ];
 
-                if (!$file->save(false)) {
-                    throw new \Exception('Save record to table File fail');
-                }
-
-                $listFiles[] = $file;
                 //add size to module
                 if ($table == self::TABLE_PROJECT) {
                     $employeeSpace->space_project += $size;
@@ -145,11 +141,15 @@ class File extends \common\components\db\ActiveRecord {
             }
         }
         
+        if (!\Yii::$app->db->createCommand()->batchInsert(File::tableName(), array_keys($fileInsert[0]), $fileInsert)->execute()) {
+            throw new \Exception('Save record to table file fail');
+        }
+        
         if (!$employeeSpace->save(false)) {
             throw new \Exception('Save record to table Employee Space fail');
         }
         
-        return $listFiles;
+        return $fileInsert;
     } 
 
     /**
