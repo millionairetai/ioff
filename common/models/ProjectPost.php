@@ -15,6 +15,7 @@ use Yii;
  * @property integer $parent_id
  * @property string $content
  * @property string $content_parse
+ * @property boolean $is_log_history
  * @property integer $datetime_created
  * @property integer $lastup_datetime
  * @property integer $created_employee_id
@@ -42,7 +43,7 @@ class ProjectPost extends \common\components\db\ActiveRecord
             [['company_id', 'employee_id', 'parent_employee_id', 'parent_id', 'datetime_created', 'lastup_datetime', 'created_employee_id', 'lastup_employee_id'], 'integer'],
             [['content', 'content_parse'], 'required'],
             [['content', 'content_parse'], 'string'],
-            [['disabled'], 'boolean'],
+            [['disabled', 'is_log_history'], 'boolean'],
         ];
     }
     
@@ -67,6 +68,7 @@ class ProjectPost extends \common\components\db\ActiveRecord
             'parent_id' => 'Parent ID',
             'content' => 'Content',
             'content_parse' => 'Content Parse',
+            'is_log_history' => 'Is Log History',
             'datetime_created' => 'Datetime Created',
             'lastup_datetime' => 'Lastup Datetime',
             'created_employee_id' => 'Created Employee ID',

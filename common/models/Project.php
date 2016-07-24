@@ -176,7 +176,7 @@ class Project extends \common\components\db\ActiveRecord {
                     ->where([
                         'company_id' => $companyId,
                         'owner_id' => $projectId,
-                        'owner_object' => 'project',
+                        'owner_object' => File::TABLE_PROJECT,
                     ])->all();
 
         foreach ($files as $file) {

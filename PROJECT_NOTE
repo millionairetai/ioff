@@ -5,3 +5,11 @@
 5. notification & sms -> firstname . lastname
 6. Company_id add at the first condition, raise bugs about where condition.
 7. Merge code must be carefully, if not will raise bugs, no merge automatically.
+
+
+Reference link
+--Extract content from page.
+1. https://www.sanwebe.com/assets/extract-url-content-demo/
+2. http://jsfiddle.net/srikpreethy/xj4m8ptn/
+3. https://www.sanwebe.com/2013/06/extract-url-content-like-facebook-with-php-and-jquery
+

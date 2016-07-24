@@ -107,3 +107,57 @@ DROP TABLE `activity_post`;
 ALTER TABLE `event`
 	ADD COLUMN `is_all_day` BIT NOT NULL DEFAULT b'0' AFTER `color`;
 -- ------------------------------------------------------------------
+
+-- START#################################### 24/7/2016#################################### 
+-- Create project_employee table.
+CREATE TABLE `project_employee` (
+	`id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`company_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`project_id` INT(11) UNSIGNED NOT NULL,
+	`employee_id` INT(11) UNSIGNED NOT NULL,
+	`datetime_created` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`lastup_datetime` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`created_employee_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`lastup_employee_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`disabled` BIT(1) NOT NULL DEFAULT b'0',
+	PRIMARY KEY (`id`),
+	INDEX `project_id` (`project_id`),
+	INDEX `employee_id` (`employee_id`),
+	INDEX `company_id` (`company_id`)
+)
+COLLATE='utf8_unicode_ci'
+ENGINE=InnoDB;
+
+-- Add is_log_history column to project post.
+ALTER TABLE `project_post`
+	ADD COLUMN `is_log_history` BIT NOT NULL DEFAULT b'0' AFTER `content_parse`;
+
+-- Create invitee table.
+CREATE TABLE `invitee` (
+	`id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+	`company_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`event_id` BIGINT(20) UNSIGNED NOT NULL,
+	`employee_id` INT(11) UNSIGNED NOT NULL COMMENT 'id of department and employee',
+	`datetime_created` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`lastup_datetime` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`created_employee_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`lastup_employee_id` INT(11) UNSIGNED NOT NULL DEFAULT '0',
+	`disabled` BIT(1) NOT NULL DEFAULT b'0',
+	PRIMARY KEY (`id`),
+	INDEX `event_id` (`event_id`),
+	INDEX `employee_id` (`employee_id`),
+	INDEX `company_id` (`company_id`)
+)
+COLLATE='utf8_unicode_ci'
+ENGINE=InnoDB;
+
+-- Add is_log_history column to event post.
+ALTER TABLE `event_post`
+	ADD COLUMN `is_log_history` BIT NOT NULL DEFAULT b'0' AFTER `content_parse`;
+
+-- Add is_log_history column to task post.
+ALTER TABLE `task_post`
+	ADD COLUMN `is_log_history` BIT NOT NULL DEFAULT b'0' AFTER `content_parse`;
+-- END#################################### 21/5/2016#################################### 
+
+
