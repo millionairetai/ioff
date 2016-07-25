@@ -98,6 +98,7 @@ class File extends \common\components\db\ActiveRecord {
             $employeeSpace->space_project = $employeeSpace->space_total = 0;
         }
         
+        $company = Company::find(['total_storage'])->where(Yii::$app->user->identity->company_id)->one();
         //loop file and upload
         $fileInsert = [];
         foreach ($files as $key => $file) {
@@ -138,6 +139,7 @@ class File extends \common\components\db\ActiveRecord {
                 }
 
                 $employeeSpace->space_total += $size;
+                $company->total_storage += $size;
             }
         }
         
@@ -147,6 +149,10 @@ class File extends \common\components\db\ActiveRecord {
         
         if (!$employeeSpace->save(false)) {
             throw new \Exception('Save record to table Employee Space fail');
+        }
+        
+        if (!$company->save(false)) {
+            throw new \Exception('Save record to table company fail');
         }
         
         return $fileInsert;
