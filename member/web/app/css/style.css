@@ -657,3 +657,21 @@ search-product .dropdown-menu{
 .lowercase{
     text-transform: lowercase;	
 }
+
+/* Header when scroll */
+.wrapper{
+    padding-top: 50px;
+}
+header.main-header{
+    position: fixed;
+    top: 0;
+    width: 100%;
+}
+@media (max-width: 767px){
+    .wrapper{
+        padding-top: 100px;
+    }
+    header.main-header{
+        position: fixed;
+    }
+}
