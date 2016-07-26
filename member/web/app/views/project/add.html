@@ -52,7 +52,7 @@
 
                     <div class="col-sm-9">
                         <div class="btn-group">
-                            <label ng-repeat="row in priorities" class="btn btn-primary" ng-model="project.priority_id" btn-radio="{{row.id}}">{{row.name}}</label>
+                            <label ng-repeat="row in priorities" class="btn btn-primary" ng-model="project.priority_id" uib-btn-radio="{{row.id}}">{{row.name}}</label>
                         </div>
                     </div>
                 </div>
@@ -101,7 +101,7 @@
                         <label for="inputPassword3" class="col-sm-3 control-label">{{$root.$lang.project_status}}</label>
                         <div class="col-sm-9">
                             <div class="btn-group">
-                                <label ng-repeat="row in status" class="btn btn-primary" ng-model="project.status_id" btn-radio="{{row.id}}">{{row.name}} </label>
+                                <label ng-repeat="row in status" class="btn btn-primary" ng-model="project.status_id" uib-btn-radio="{{row.id}}">{{row.name}} </label>
                             </div>
                         </div>
                     </div>
