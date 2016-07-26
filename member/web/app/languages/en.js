@@ -7,8 +7,8 @@
             title_error_dialog : 'Error',
             title_confirm_dialog : 'Confirm',
             ok : 'Ok',
-            more : 'More',
-            less : 'less',
+            more : 'View more',
+            less : 'View less',
             cancel : 'Cancel',
             add_project : 'Add project',
             edit_project : 'Edit project',
@@ -71,7 +71,7 @@
             //-----------------------------------------End of common language.----------------------------------
             
             //project
-            project_list_view_more : 'View More',//
+            project_list_view_more : 'View more',//
             project_add : 'Create project',
             project_empty : 'There is not project',
             project_manage : 'Manage project',

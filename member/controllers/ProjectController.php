@@ -425,6 +425,7 @@ class ProjectController extends ApiController {
             \Yii::t('member', 'project start op')       => array(!empty($dataPost['projectInfo_old']['start_datetime']) ? date('d-m-Y', strtotime($dataPost['projectInfo_old']['start_datetime'])) : $noSetting => !empty($dataPost['start_datetime']) ? date('d-m-Y', strtotime($dataPost['start_datetime'])) : $noSetting),
             \Yii::t('member', 'project end op')         => array(!empty($dataPost['projectInfo_old']['duedatetime']) ? date('d-m-Y', strtotime($dataPost['projectInfo_old']['duedatetime'])) : $noSetting => !empty($dataPost['duedatetime']) ? date('d-m-Y', strtotime($dataPost['duedatetime'])) : $noSetting),
             \Yii::t('member', 'project priority op')    => array($dataPost['projectInfo_old']['priority_name'] => Priority::getPriorityName($dataPost['priority_id'])->name),
+            \Yii::t('member', 'project share')          => array(empty($dataPost['projectInfo_old']['is_public']) ? $noSetting : \Yii::t('member', 'project share') => empty($dataPost['is_public']) ? $noSetting : \Yii::t('member', 'project share')),
             \Yii::t('member', 'project status op')      => array($dataPost['projectInfo_old']['status_name'] => Status::getStatusName($dataPost['status_id'])->name),
             \Yii::t('member', 'project description op') => array($dataPost['projectInfo_old']['description'] => $dataPost['description']),
             \Yii::t('member', 'project completed percent') => array($dataPost['projectInfo_old']['completed_percent']."%" => $dataPost['completed_percent']."%"),
@@ -445,7 +446,7 @@ class ProjectController extends ApiController {
                             break;
                             case \Yii::t('member', 'project status op'):
                             case \Yii::t('member', 'project priority op'):
-                                $content .= '<li class="lowercase">'.str_replace(array('{{title}}', '{{after}}', '{{befor}}'), array($key, $after, $befor), \Yii::t('member', 'message info content')) .'</li>';
+                                $content .= '<li>'.str_replace(array('{{title}}', '{{after}}', '{{befor}}'), array($key, $after, $befor), \Yii::t('member', 'message info content')) .'</li>';
                             break;
                             default:
                                 $content .= '<li>'.str_replace(array('{{title}}', '{{after}}', '{{befor}}'), array($key, $after, $befor), \Yii::t('member', 'message info content')) .'</li>';
