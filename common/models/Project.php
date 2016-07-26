@@ -113,7 +113,7 @@ class Project extends \common\components\db\ActiveRecord {
                 . "         ON project.status_id=status.id"
                 . "             AND status.company_id={$companyId}"
                 . " WHERE ("
-                . "           project.is_public=1"
+                . "           project.is_public=" . self::VAL_TRUE
                 . "           OR project.manager_project_id=:empolyee_id"
                 . "           OR project.created_employee_id=:empolyee_id"
                 . "           OR EXISTS("

@@ -15,6 +15,7 @@ use common\models\File;
 use common\models\Sms;
 use common\models\ProjectPost;
 use common\models\Department;
+use common\models\ProjectEmployee;
 use common\components\db\ActiveRecord;
 
 class ProjectController extends ApiController {
@@ -185,7 +186,12 @@ class ProjectController extends ApiController {
                         
                         //send email 
                         $item->sendMail($dataSend, $themeEmail);
-
+                        
+                        $projEmployee[] = [
+                            'project_id'  => $ob->id,
+                            'employee_id' => $item->id,
+                        ];
+                        
                         //send sms
                         if ($ob->sms) {
                             $item->sendSms($dataSend, $themeSms);
@@ -202,8 +208,15 @@ class ProjectController extends ApiController {
                             }
                         }
                     }
+                    
+                    if (!empty($projEmployee)) {
+                        if (!\Yii::$app->db->createCommand()->batchInsert(ProjectEmployee::tableName(), array_keys($projEmployee[0]), $projEmployee)->execute()) {
+                            throw new \Exception('Save record to table project employee fail');
+                        }
+                    }
                 }
             }
+            
             $transaction->commit();
         } catch (\Exception $e) {
             $transaction->rollBack();
