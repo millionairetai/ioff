@@ -20,24 +20,27 @@
             <a class="show-form-search" ng-click="displaysearch = !displaysearch" href="javascript:void(0)"><i class="fa fa-search"></i></a>
             <div class="search-form" ng-show="displaysearch">
                 <form action="#" method="get">
-                    <!-- Single button -->
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Tất cả <span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li><a href="#">Tất cả</a></li>
-                            <li><a href="#">Dự án</a></li>
-                            <li><a href="#">Sự kiện</a></li>
-                            <li><a href="#">Công việc</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="#">Event</a></li>
-                        </ul>
-                    </div>
-                    <!---->
                     <div class="input-group">
+                        <!-- Single button -->
+                        <div class="input-group-addon">
+                            <div class="btn-group">
+                                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Tất cả <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#">Tất cả</a></li>
+                                    <li><a href="#">Dự án</a></li>
+                                    <li><a href="#">Sự kiện</a></li>
+                                    <li><a href="#">Công việc</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="#">Event</a></li>
+                                </ul>
+                            </div>
+                        </div>
                         <input type="text" name="q" class="input-search form-control" placeholder="<?php echo \Yii::t('common', 'Search'); ?>...">
-                        <button type="submit" name="search" id="search-btn" class="btn search-button"><i class="fa fa-search"></i></button>
+                        <div class="input-group-addon">
+                            <button type="submit" name="search" id="search-btn" class="btn search-button"><i class="fa fa-search"></i></button>                     
+                        </div>
                     </div>
                 </form>
             </div>

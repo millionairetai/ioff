@@ -301,27 +301,37 @@ search-product .dropdown-menu{
     background: #3c8dbc; 
     /*display: none;*/
 }
+.search-form .input-group-addon{
+    padding: 0 10px;
+}
+.search-form .input-group-addon:last-child{
+    padding-right: 0;
+}
 .containbox-search .search-form .btn-group{
-    position: absolute;
-    z-index: 9;
+
 }
 .containbox-search .search-form .btn-group button{
     background: #fff !important;
     box-shadow: none !important;
-    padding: 3px 8px;
-    margin: 4px;
     border-radius: 0;
     border: none;
-    border-right: 1px solid #ccc;
 }
 .containbox-search .dropdown-menu{
     border-radius: 0;
+    left: -11px;
 }
 .containbox-search .dropdown-menu li a{
     color: #333 !important;
 }
 .containbox-search .search-form .input-search{
-    padding-left: 100px;
+    outline: none;
+    box-shadow: none;
+    border-right: none;
+}
+.containbox-search .search-form .input-search:visited,.containbox-search .search-form .input-search:focus{
+    outline: none;
+    border: 1px solid #ccc;
+    border-right: none;
 }
 .search-form .input-group{
     width: 100%;
@@ -335,10 +345,6 @@ search-product .dropdown-menu{
     border-color: transparent;
     border-left: none;
     border-radius: 0;
-    position: absolute;
-    right: 0;
-    top: 0;
-    z-index: 9;
     padding: 4px 10px;
     margin: 1px;
 }
