@@ -782,11 +782,11 @@ appRoot.controller('addProjectCtrl', ['socketService','$scope', 'projectService'
                             }
                             fd.append("project", angular.toJson($scope.project));
                             projectService.addProject(fd,function(response){
-                                alertify.success($rootScope.$lang.project_notify_success);
-                                $rootScope.$emit('create_project_success', {message: 'hung'});
-                                socketService.emit('notify', 'ok');
-        
-                                $scope.step++;
+//                                alertify.success($rootScope.$lang.project_notify_success);
+//                                $rootScope.$emit('create_project_success', {message: 'hung'});
+//                                socketService.emit('notify', 'ok');
+//        
+//                                $scope.step++;
                             });
                             
                         }
@@ -1147,9 +1147,9 @@ appRoot.controller('editProjectCtrl', ['$scope', 'projectService', '$location', 
                             }
                             fd.append("project", angular.toJson($scope.project));
                             projectService.editProject(fd, function (response) {
-                                alertify.success($rootScope.$lang.project_update_success);
-                                $rootScope.$emit('edit_project_success', {message: 'hung'});
-                                $scope.step++;
+//                                alertify.success($rootScope.$lang.project_update_success);
+//                                $rootScope.$emit('edit_project_success', {message: 'hung'});
+//                                $scope.step++;
                             });
                         }
                     } else {
