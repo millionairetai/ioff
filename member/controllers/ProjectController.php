@@ -347,9 +347,14 @@ class ProjectController extends ApiController {
                             'is_success'  => ActiveRecord::VAL_TRUE,
                         ];
                     }
+                    
+                    $dataUpdate['project_employess'][] = [
+                    	'project_id'  => $ob->id,
+                    	'employee_id' => $item->id,
+                    ];
                 }
             }
-
+            
             //loop file
             if (!empty($listFile)) {
                 $fileName = '';
@@ -374,6 +379,12 @@ class ProjectController extends ApiController {
                 if (!$projectPost->save()) {
                     throw new \Exception('Save record to table project_post fail');
                 }
+            }
+            
+            if (!empty($dataUpdate['project_employess'])) {
+	            if (!$this->_updateProjectEmployees($dataUpdate['project_employess'])) {
+	                    throw new \Exception('Save record to table Notification fail');
+	            }
             }
 
             if (!empty($dataUpdate['notification'])) {
@@ -628,6 +639,44 @@ class ProjectController extends ApiController {
         $result['employee']['new'] = $dataPost['members'];
 
         return $result;
+    }
+    
+    /**
+     * Update data inside table project employess
+     * @param unknown_type $data content list data employess of employee and lisf employee to department
+     * return boolean
+     */
+    private function _updateProjectEmployees($data = []) {
+    	$result = true;
+    	if (!empty($data)) {
+    		$projectEmployeeOld = ProjectEmployee::findAll(["project_id" => $data[0]['project_id'], "company_id" => $this->_companyId]);
+    		if (!empty($projectEmployeeOld)) {
+    			$dataDelete = [];
+    			foreach ($projectEmployeeOld AS $projectEmployeeOldKey => $projectEmployeeOldVal) {
+    				$dataDelete[$projectEmployeeOldKey] = $projectEmployeeOldVal->id;
+    				foreach ($data AS $datakey => $dataVal) {
+    					if ($projectEmployeeOldVal->employee_id == $dataVal['employee_id']) {
+    						unset($projectEmployeeOld[$datakey]);
+    						unset($data[$datakey]);
+    						unset($dataDelete[$projectEmployeeOldKey]);
+    					}
+    				}
+    			}
+    			
+    			if (!empty($dataDelete)) {
+    				if (!ProjectEmployee::deleteAll(['id' => $dataDelete])) {
+    					$result = false;
+    				}
+    			}
+    		}
+    		
+    		if (!empty($data)) {
+    			if (!\Yii::$app->db->createCommand()->batchInsert(ProjectEmployee::tableName(), array_keys($data[0]), $data)->execute()) {
+    				$result = false;
+    			}
+    		}
+    	}
+    	return $result;
     }
 
 }
