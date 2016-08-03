@@ -587,8 +587,8 @@ appRoot.controller('homeCtrl', ['$scope','dialogMessage','alertify',function($sc
 
 
 //list project
-appRoot.controller('projectCtrl', ['$scope', 'projectService', '$uibModal','$rootScope','socketService', 'PER_PAGE_VIEW_MORE',
-    function ($scope, projectService, $uibModal, $rootScope, socketService, PER_PAGE_VIEW_MORE) {
+appRoot.controller('projectCtrl', ['$scope', 'projectService', '$uibModal','$rootScope','socketService', 'PER_PAGE_VIEW_MORE', 'alertify', 
+    function ($scope, projectService, $uibModal, $rootScope, socketService, PER_PAGE_VIEW_MORE, alertify) {
          
         //get all project
         $scope.filter = {
@@ -601,10 +601,12 @@ appRoot.controller('projectCtrl', ['$scope', 'projectService', '$uibModal','$roo
             projectService.listProject($scope.filter, function (response) {
                 $scope.collection = response.objects.collection;
                 $scope.filter.totalItems = response.objects.totalItems;
+                if (response.objects.error) {
+                	alertify.error(response.objects.error);
+                }
             });
         };
         $scope.getList();
-        
         //add project
         $scope.add = function () {
             var modalInstance = $uibModal.open({
@@ -825,8 +827,8 @@ appRoot.controller('addProjectCtrl', ['socketService','$scope', 'projectService'
 
 //Display info project
 var $dataEditProject = [];
-appRoot.controller('viewProjectCtrl', ['$scope', 'projectService', 'fileService', 'projectPostService', '$uibModal', '$rootScope', 'dialogMessage', '$routeParams', 'alertify', '$sce', 'PER_PAGE_VIEW_MORE', 
-    function ($scope, projectService, fileService, projectPostService, $uibModal, $rootScope, dialogMessage, $routeParams, alertify, $sce, PER_PAGE_VIEW_MORE) {
+appRoot.controller('viewProjectCtrl', ['$scope', 'projectService', 'fileService', 'projectPostService', '$uibModal', '$rootScope', 'dialogMessage', '$routeParams', 'alertify', '$sce', 'PER_PAGE_VIEW_MORE', '$location', 
+    function ($scope, projectService, fileService, projectPostService, $uibModal, $rootScope, dialogMessage, $routeParams, alertify, $sce, PER_PAGE_VIEW_MORE, $location) {
         //get info project
         var projectId = $routeParams.projectId;
         $scope.collection = [];
@@ -834,6 +836,9 @@ appRoot.controller('viewProjectCtrl', ['$scope', 'projectService', 'fileService'
 
         $scope.getInfoProject = function () {
             projectService.viewProject({projectId: projectId}, function (response) {
+				if (response.objects.collection.error) {
+            		$location.path('/project');
+            	}
                 $scope.collection = response.objects.collection;
                 $dataEditProject = response.objects.collection;
             });

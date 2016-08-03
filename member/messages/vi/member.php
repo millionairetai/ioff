@@ -59,4 +59,5 @@ return [
     'project completed percent' => 'Thực tế',
     'comment update after'      => 'đã được thay đổi thành',
     'project share'             => 'chia sẻ',
+    'you do not have authoirity'=> 'Bạn không có quyền để xem dự án này'
 ];

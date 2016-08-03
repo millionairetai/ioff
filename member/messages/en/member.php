@@ -57,4 +57,5 @@ return [
     'project completed percent' => 'Project completed percent',
     'comment update after'      => 'has been changed',
     'project share'             => 'share',
+    'you do not have authoirity'=> 'you do not have authoirity to view this project'
 ];

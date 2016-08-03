@@ -46,7 +46,7 @@ class ProjectController extends ApiController {
         
         $objects['collection'] = $collection;
         $objects['totalItems'] = (int) $totalItems;
-        
+        $objects['error'] = Yii::$app->session->getFlash('errorViewProject');
         return $this->sendResponse(false, "", $objects);
     }
 
@@ -236,10 +236,30 @@ class ProjectController extends ApiController {
             if ($projectId = \Yii::$app->request->post('projectId')) {
                 if ($data_project = Project::getInfoProject($projectId)) {
                     $objects['collection'] = $data_project;
-                    return $this->sendResponse(false, $projectId, $objects);
+                    
+                    //check authentication
+                    //**check case is public
+                    if (($data_project['project_info']['is_public'] == true) 
+                         || (\Yii::$app->user->identity->is_admin == true)
+                         || ($data_project['project_info']['manager_project_id'] == Yii::$app->user->identity->id)
+                            ) {
+                        return $this->sendResponse(false, $projectId, $objects);
+                    } else {
+                        $EmployeesInProject = ProjectEmployee::findOne([
+                                'project_id'  => $projectId,
+                                'company_id'  => $this->_companyId,
+                                'employee_id' => Yii::$app->user->identity->id
+                            ]);
+                        if (!empty($EmployeesInProject)) {
+                            return $this->sendResponse(false, $projectId, $objects);
+                        }else {
+                             Yii::$app->session->setFlash('errorViewProject', \Yii::t('member', "you do not have authoirity"));
+                             $objects['collection']['error'] = true;
+                             return $this->sendResponse(false, $projectId, $objects);
+                        }
+                    }
                 }
             }
-
             throw new \Exception(\Yii::t('member', 'Can not get project info'));
         } catch (\Exception $e) {
             return $this->sendResponse(true, $e->getMessage(), []);
