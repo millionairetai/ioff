@@ -1,0 +1,17 @@
+<div class="modal-header dialog-header-wait">
+    <button type="button" class="close" ng-click="cancel()">×</button>
+    <h4 class="modal-title text-danger">
+        <strong><i class="fa fa-cubes"></i>{{$root.$lang.edit_project_post}}</strong>
+    </h4>
+</div>
+<div class="modal-body text-dangers">
+	<textarea class="form-control" rows="5" ng-model="project.description" ui-tinymce="tinymceOptions"></textarea>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary btn-flat" ng-click="update()">
+        <i class="fa fa-arrow-circle-right"></i><span>{{$root.$lang.button_update}}</span>
+    </button>
+    <button type="button" class="btn btn-default btn-flat" ng-click="cancel()">
+        <i class="fa fa-remove"></i> {{$root.$lang.button_close}}
+    </button>
+</div>

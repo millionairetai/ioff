@@ -391,7 +391,33 @@ appRoot.controller('viewProjectCtrl', ['$scope', 'projectService', 'fileService'
                 })
             });
         };
-
+       
+        //Delete project post
+        $scope.deleteProjectPost = function (index, id) {
+             dialogMessage.open('confirm', $rootScope.$lang.confirm_delete_file, function () {
+                projectPostService.removeProjectPost({ProjectPostId: id}, function (data) {
+                    $scope.projectPost.splice(index, 1);
+                    alertify.success($rootScope.$lang.remove_project_post_success);
+                });
+            });
+        };
+        
+        //edit project
+        $scope.editProjectPost = function (projectPost, $index) {
+            var modalInstance = $uibModal.open({
+                templateUrl: 'app/views/projectPost/edit.html',
+                controller: 'editProjectPostCtrl',
+                size: 'lg',
+                keyboard: true,
+                backdrop: 'static',
+                resolve: {
+                	projectPost: function () {
+                        return projectPost;
+                    }
+                }
+            });
+        };
+        
         //handle create project post successful
         $rootScope.$on('add_project_post_success', function (event, data) {
             $scope.getProjectPosts();
@@ -405,6 +431,35 @@ appRoot.controller('viewProjectCtrl', ['$scope', 'projectService', 'fileService'
         	$scope.limitFile = 5;
         });
     }]);
+
+//edit project post
+appRoot.controller('editProjectPostCtrl', ['$scope', 'projectPostService', '$uibModalInstance', 'controllerService', 'actionService', '$rootScope', 'projectPost', 'alertify', 'dialogMessage',
+    function ($scope, projectPostService, $uibModalInstance, controllerService, actionService, $rootScope, projectPost, alertify, dialogMessage) {
+            $scope.project = {
+                id: projectPost.id,
+            	description: projectPost.content,
+            };
+                                       		
+            $scope.update = function () {
+                if (projectPostService.validateProjectPost($scope.project)) {
+                    var params = {'id': projectPost.id, 'content': $scope.project.description};
+                    projectPostService.updateProjectPost(params, function (data) {
+                    projectPost.content = $scope.project.description;
+                    alertify.success($rootScope.$lang.project_post_update_success);
+                	$uibModalInstance.dismiss('save');
+            	});
+        	}
+        };
+        //cancel
+        $scope.cancel = function () {
+        	$uibModalInstance.dismiss('cancel');
+        };
+                                       				
+        //show more
+        $scope.showMore = function (value) {
+    	$scope.more = value;
+	}
+}]);
 
 //edit project
 appRoot.controller('editProjectCtrl', ['$scope', 'projectService', '$location', '$uibModalInstance', '$rootScope', 'departmentService', 'alertify', '$timeout', 'employeeService', '$filter', 'statusService', 'priorityService', 

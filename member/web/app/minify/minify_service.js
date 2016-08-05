@@ -403,7 +403,6 @@ appRoot.factory('projectService', ['apiService','$rootScope','alertify', functio
             },
         };
     }]);
-
 appRoot.factory('projectPostService', ['apiService', '$rootScope', 'alertify', 
     function (apiService, $rootScope, alertify) {
         return {
@@ -417,7 +416,7 @@ appRoot.factory('projectPostService', ['apiService', '$rootScope', 'alertify',
                 apiService.get('project-post/remove-project-post', data, success, error);
             },
             updateProjectPost : function (data,success,error){
-            	apiService.upload('project-post/update-project-post', data, success, error);
+            	apiService.post('project-post/update-project-post', data, success, error);
             },
             validateProjectPost: function (object) {
                 var message = "";

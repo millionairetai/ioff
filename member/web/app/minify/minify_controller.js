@@ -989,7 +989,7 @@ appRoot.controller('viewProjectCtrl', ['$scope', 'projectService', 'fileService'
             });
         };
         
-      //edit project
+        //edit project
         $scope.editProjectPost = function (projectPost, $index) {
             var modalInstance = $uibModal.open({
                 templateUrl: 'app/views/projectPost/edit.html',
@@ -1002,10 +1002,6 @@ appRoot.controller('viewProjectCtrl', ['$scope', 'projectService', 'fileService'
                         return projectPost;
                     }
                 }
-            });
-            
-            modalInstance.result.then(function (data) {
-                    $scope.projectPost[$index] = data;
             });
         };
         
@@ -1026,40 +1022,32 @@ appRoot.controller('viewProjectCtrl', ['$scope', 'projectService', 'fileService'
 
 appRoot.controller('editProjectPostCtrl', ['$scope', 'projectPostService', '$uibModalInstance', 'controllerService', 'actionService', '$rootScope', 'projectPost', 'alertify', 'dialogMessage',
 	function ($scope, projectPostService, $uibModalInstance, controllerService, actionService, $rootScope, projectPost, alertify, dialogMessage) {
-//		var params = {'projectPostID': projectPost.id};
-		var params = {};
-//		projectPostService.updateProjectPost(params, function (data) {
-//			console.log(data);
-//				$uibModalInstance.close(data.objects);
-//			});
-		}]);
-//edit project Post
-//appRoot.controller('editProjectPostCtrl', ['$scope', 'projectPostService', '$uibModalInstance', 'param', '$filter', '$rootScope', 'alertify', function ($scope, projectPostService, $uibModalInstance, param, $filter, $rootScope, alertify) {
-//	 single_object = $filter('filter')(param.data, function (d) {return d.id === param.projectPortId;})[0];
-//	 $scope.project = {
-//	            id: single_object.id,
-//	            description: single_object.content,
-//	        };
-//     //update
-//     $scope.update = function () {
-//    	 var fd = new FormData();
-//         fd.append("projectPost", angular.toJson($scope.project));
-//         projectPostService.updateProjectPost(fd, function (response) {
-//             alertify.success($rootScope.$lang.project_post_update_success);
-//             $uibModalInstance.close(response.objects);
-//         });
-//     };
-//     
-//    //cancel
-//    $scope.cancel = function () {
-//        $uibModalInstance.dismiss('cancel');
-//    };
-//
-//    //show more
-//    $scope.showMore = function (value) {
-//        $scope.more = value;
-//    }
-//}]);
+		$scope.project = {
+				id: projectPost.id,
+				description: projectPost.content,
+		};
+		
+		$scope.update = function () {
+			if (projectPostService.validateProjectPost($scope.project)) {
+				var params = {'id': projectPost.id, 'content': $scope.project.description};
+				projectPostService.updateProjectPost(params, function (data) {
+					console.log(data);
+					projectPost.content = $scope.project.description;
+			        alertify.success($rootScope.$lang.project_post_update_success);
+					$uibModalInstance.dismiss('save');
+				});
+			}
+		};
+		//cancel
+		$scope.cancel = function () {
+			$uibModalInstance.dismiss('cancel');
+		};
+				
+		//show more
+		$scope.showMore = function (value) {
+			$scope.more = value;
+		}
+}]);
 
 
 //edit project

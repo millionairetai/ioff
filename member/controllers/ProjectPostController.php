@@ -224,45 +224,28 @@ class ProjectPostController extends ApiController {
      * Action update project post
      */
     public function actionUpdateProjectPost() {
-        
-        if (!(isset($request['projectPostID']) && $request['projectPostID'])) {
+    	$request = \Yii::$app->request->post();
+        if (!(isset($request['id']) && $request['id'])) {
             throw new \Exception('Request fail');
         }
+        $this->_message = "Updata Project Post Success";
+        $transaction = \Yii::$app->db->beginTransaction();
+        try {
+        	if (!$projectPost = ProjectPost::findOne($request['id'])) {
+        		throw new \Exception('Get project post info fail');
+        	}
+        	$projectPost->content       = $request['content'];
+        	$projectPost->content_parse = $request['content'];
+        	if (!$projectPost->update()) {
+        		throw new \Exception('Save record to table project post fail');
+        	}
+        	$transaction->commit();
+        } catch (\Exception $e) {
+            $this->_message = "Error";
+            $transaction->rollBack();
+            return $this->sendResponse($this->_error, $this->_message, []);
+        }
         
-        return $this->sendResponse(false, "", [
-                'description' => $request['projectPostID'],
-        ]);
-        
-//         $this->_message = "OK";
-//         $dataPost = [];
-//         $projectJson = \Yii::$app->request->post('projectPost', '');
-//         if (strlen($projectJson)) {
-//             $dataPost = json_decode($projectJson, true);
-//         }
-//         $transaction = \Yii::$app->db->beginTransaction();
-//         try {
-//             if (isset($dataPost['id'])) {
-//                 if (!$projectPost = ProjectPost::findOne($dataPost['id'])) {
-//                     throw new \Exception('Get project post info fail');
-//                 }
-//                 $projectPost->content       = $dataPost['description'];
-//                 $projectPost->content_parse = $dataPost['description'];
-//                 if (!$projectPost->update()) {
-//                     throw new \Exception('Save record to table project post fail');
-//                 }
-//                 $transaction->commit();
-//             }
-//             return $this->sendResponse(false, "", [
-//                     'id' => 403,
-//                     'description' => "SSSSSSSSSSSSSSS",
-//             ]
-//             );
-//         } catch (\Exception $e) {
-//             $this->_message = "Error";
-//             $transaction->rollBack();
-//             return $this->sendResponse($this->_error, $this->_message, []);
-//         }
-        
-//         return $this->sendResponse($this->_error, $this->_message, $projectPost->content_parse);
+        return $this->sendResponse($this->_error, $this->_message, ['content' => $request['content']]);
     }
 }
