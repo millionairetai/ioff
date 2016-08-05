@@ -13,6 +13,7 @@
             add_project : 'Add project',
             edit_project : 'Edit project',
             delete_project : 'Delete project',
+            edit_project_post : 'Edit project Post',
             save : 'Save',
             remove: 'Delete',
             post : 'Post',
@@ -45,6 +46,7 @@
             warning: 'Warning',
             confirm_delete_file:'Are you sure delete?',
             remove_file_success:'Delete File success.',
+            remove_project_post_success:'Delete Project Post success.',
             remove_file_error:'Delete File Error.',
             last_modify: 'Last modified',
             modify_by: 'Modify by',
@@ -120,6 +122,7 @@
             project_created_success:'Create project is successful',
             project_notify_success:'Project has created successfully.',
             project_update_success:'Project has update successfully.',
+            project_post_update_success:'Project Post has update successfully.',
             success_add_project : 'You add project successfully',
             //end project
             

@@ -21,16 +21,20 @@ class ProjectPostController extends ApiController {
         $collection = [];
         $projectPostIds = [];
         $projectId = \Yii::$app->request->post('projectId');
-
         //fetch project post list
         $result = ProjectPost::getProjectPosts($projectId, \Yii::$app->request->post('currentPage'), \Yii::$app->request->post('itemPerPage'));
         foreach ($result as $item) {
+            $actionDelete = false;
+            if (((\Yii::$app->user->getId() == $item->created_employee_id) || (\Yii::$app->user->identity->is_admin)) && ($item->is_log_history == false)) {
+                $actionDelete = true;
+            }
             $collection[] = [
                 'id'                 => $item->id,
                 'time'               => date('H:i d-m-Y ', $item->datetime_created),
                 'content'            => $item->content,
                 'employee_name'      => empty($item->employee) ? '' : $item->employee->getFullName(),
                 'profile_image_path' => empty($item->employee) ? '' : $item->employee->getImage(),
+                'actionDelete'       => $actionDelete,
             ];
 
             $projectPostIds[$item['id']] = $item->id;
@@ -195,5 +199,70 @@ class ProjectPostController extends ApiController {
             $transaction->rollBack();
             return $this->sendResponse(true, \Yii::t('member', 'error_system'), []);
         }
+    }
+    
+    /**
+     * Action delete project post
+     */
+    public function actionRemoveProjectPost() {
+        $this->_message = \Yii::t('member', 'remove project post success');
+        $transaction = \Yii::$app->db->beginTransaction();
+        try {
+            if (!ProjectPost::deleteAll(['id' => \Yii::$app->request->get('ProjectPostId')])) {
+                 throw new \Exception('remove project post error');
+            }
+            $transaction->commit();
+        } catch (\Exception $e) {
+            $this->_error = true;
+            $this->_message = \Yii::t('member', 'remove project post error');
+            $transaction->rollBack();
+            return $this->sendResponse($this->_error, $this->_message, []);
+        }
+        return $this->sendResponse($this->_error, $this->_message, []);
+    }
+    /**
+     * Action update project post
+     */
+    public function actionUpdateProjectPost() {
+        
+        if (!(isset($request['projectPostID']) && $request['projectPostID'])) {
+            throw new \Exception('Request fail');
+        }
+        
+        return $this->sendResponse(false, "", [
+                'description' => $request['projectPostID'],
+        ]);
+        
+//         $this->_message = "OK";
+//         $dataPost = [];
+//         $projectJson = \Yii::$app->request->post('projectPost', '');
+//         if (strlen($projectJson)) {
+//             $dataPost = json_decode($projectJson, true);
+//         }
+//         $transaction = \Yii::$app->db->beginTransaction();
+//         try {
+//             if (isset($dataPost['id'])) {
+//                 if (!$projectPost = ProjectPost::findOne($dataPost['id'])) {
+//                     throw new \Exception('Get project post info fail');
+//                 }
+//                 $projectPost->content       = $dataPost['description'];
+//                 $projectPost->content_parse = $dataPost['description'];
+//                 if (!$projectPost->update()) {
+//                     throw new \Exception('Save record to table project post fail');
+//                 }
+//                 $transaction->commit();
+//             }
+//             return $this->sendResponse(false, "", [
+//                     'id' => 403,
+//                     'description' => "SSSSSSSSSSSSSSS",
+//             ]
+//             );
+//         } catch (\Exception $e) {
+//             $this->_message = "Error";
+//             $transaction->rollBack();
+//             return $this->sendResponse($this->_error, $this->_message, []);
+//         }
+        
+//         return $this->sendResponse($this->_error, $this->_message, $projectPost->content_parse);
     }
 }

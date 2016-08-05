@@ -978,7 +978,37 @@ appRoot.controller('viewProjectCtrl', ['$scope', 'projectService', 'fileService'
                 })
             });
         };
-
+        
+        //Delete project post
+        $scope.deleteProjectPost = function (index, id) {
+             dialogMessage.open('confirm', $rootScope.$lang.confirm_delete_file, function () {
+                projectPostService.removeProjectPost({ProjectPostId: id}, function (data) {
+                    $scope.projectPost.splice(index, 1);
+                    alertify.success($rootScope.$lang.remove_project_post_success);
+                });
+            });
+        };
+        
+      //edit project
+        $scope.editProjectPost = function (projectPost, $index) {
+            var modalInstance = $uibModal.open({
+                templateUrl: 'app/views/projectPost/edit.html',
+                controller: 'editProjectPostCtrl',
+                size: 'lg',
+                keyboard: true,
+                backdrop: 'static',
+                resolve: {
+                	projectPost: function () {
+                        return projectPost;
+                    }
+                }
+            });
+            
+            modalInstance.result.then(function (data) {
+                    $scope.projectPost[$index] = data;
+            });
+        };
+        
         //handle create project post successful
         $rootScope.$on('add_project_post_success', function (event, data) {
             $scope.getProjectPosts();
@@ -992,6 +1022,45 @@ appRoot.controller('viewProjectCtrl', ['$scope', 'projectService', 'fileService'
         	$scope.limitFile = 5;
         });
     }]);
+
+
+appRoot.controller('editProjectPostCtrl', ['$scope', 'projectPostService', '$uibModalInstance', 'controllerService', 'actionService', '$rootScope', 'projectPost', 'alertify', 'dialogMessage',
+	function ($scope, projectPostService, $uibModalInstance, controllerService, actionService, $rootScope, projectPost, alertify, dialogMessage) {
+//		var params = {'projectPostID': projectPost.id};
+		var params = {};
+//		projectPostService.updateProjectPost(params, function (data) {
+//			console.log(data);
+//				$uibModalInstance.close(data.objects);
+//			});
+		}]);
+//edit project Post
+//appRoot.controller('editProjectPostCtrl', ['$scope', 'projectPostService', '$uibModalInstance', 'param', '$filter', '$rootScope', 'alertify', function ($scope, projectPostService, $uibModalInstance, param, $filter, $rootScope, alertify) {
+//	 single_object = $filter('filter')(param.data, function (d) {return d.id === param.projectPortId;})[0];
+//	 $scope.project = {
+//	            id: single_object.id,
+//	            description: single_object.content,
+//	        };
+//     //update
+//     $scope.update = function () {
+//    	 var fd = new FormData();
+//         fd.append("projectPost", angular.toJson($scope.project));
+//         projectPostService.updateProjectPost(fd, function (response) {
+//             alertify.success($rootScope.$lang.project_post_update_success);
+//             $uibModalInstance.close(response.objects);
+//         });
+//     };
+//     
+//    //cancel
+//    $scope.cancel = function () {
+//        $uibModalInstance.dismiss('cancel');
+//    };
+//
+//    //show more
+//    $scope.showMore = function (value) {
+//        $scope.more = value;
+//    }
+//}]);
+
 
 //edit project
 appRoot.controller('editProjectCtrl', ['$scope', 'projectService', '$location', '$uibModalInstance', '$rootScope', 'departmentService', 'alertify', '$timeout', 'employeeService', '$filter', 'statusService', 'priorityService', 
@@ -1152,9 +1221,9 @@ appRoot.controller('editProjectCtrl', ['$scope', 'projectService', '$location', 
                             }
                             fd.append("project", angular.toJson($scope.project));
                             projectService.editProject(fd, function (response) {
-//                                alertify.success($rootScope.$lang.project_update_success);
-//                                $rootScope.$emit('edit_project_success', {message: 'hung'});
-//                                $scope.step++;
+                                alertify.success($rootScope.$lang.project_update_success);
+                                $rootScope.$emit('edit_project_success', {message: 'hung'});
+                                $scope.step++;
                             });
                         }
                     } else {

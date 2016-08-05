@@ -167,10 +167,18 @@
                                     <span class="username"><a href="#/member/{{v.id}}"><b>{{v.employee_name}}</b></a></span>
                                     <span class="description">{{v.time| date : "fullDate" }}</span>
                                 </div>
-                                <!-- /.user-block -->
-                                <div class="box-tools">
-                                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                                </div>
+                                <div class="pull-right box-tools">
+                                       <!-- button with a dropdown -->
+                                       <div class="btn-group" ng-if="v.actionDelete == true">
+                                           <button type="button" class="btn btn-box-tool" data-toggle="dropdown" aria-expanded="false">
+                                           <i class="fa fa-bars"></i></button>
+                                           <ul class="dropdown-menu pull-right" role="menu">
+	                                           <li><a ng-click="editProjectPost(v, $index)">{{$root.$lang.button_update}}</a></li>
+	                                           <li><a ng-click="deleteProjectPost($index, v.id)">{{$root.$lang.remove}}</a></li>
+                                           </ul>
+                                       </div>
+                                       <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                               </div>
                                 <!-- /.box-tools -->
                             </div>
                             <!-- /.box-header -->

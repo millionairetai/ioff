@@ -13,6 +13,7 @@
             add_project : 'Thêm dự án',
             edit_project : 'Cập Nhật',
             delete_project : 'Xóa dự án',
+            edit_project_post : 'Cập nhật bài đăng',
             save : 'Lưu',
             remove: 'Xóa',
             post : 'Đăng',
@@ -47,6 +48,7 @@
             confirm_delete_file:'Bạn có chắc chắn xóa?.',
             remove_file_success:'File đã được xóa thành công.',
             remove_file_error:'File bạn cần xóa không thành công.',
+            remove_project_post_success:'Xóa dự án bài thành công.',
             last_modify: 'Ngày sửa',
             modify_by: 'Người tạo',
             search: 'Tìm kiếm',
@@ -120,6 +122,7 @@
             project_created_success:'Dự án đã được tạo thành công.',
             project_notify_success:'Dự án đã được tạo thành công.',
             project_update_success:'Dự án đã được cập nhật thành công.',
+            project_post_update_success:'Bài đăng dự án được cập nhật thành công.',
             success_add_project : 'Bạn đã tạo dự án thành công',
             //end project
             

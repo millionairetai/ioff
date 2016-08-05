@@ -395,6 +395,7 @@ class ProjectController extends ApiController {
                 $projectPost->content       = $projectHistory;
                 $projectPost->content_parse = $projectPost->content;
                 $projectPost->parent_employee_id = 0;
+                $projectPost->is_log_history = true;
 
                 if (!$projectPost->save()) {
                     throw new \Exception('Save record to table project_post fail');
