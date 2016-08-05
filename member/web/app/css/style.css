@@ -1,3 +1,6 @@
+.padding-left-0{
+    padding-left: 0 !important;
+}
 /* Custom dialog/modal headers */
 .dialog-header-warning { background-color: #EA9F0D; }
 .dialog-header-primary { background-color: #1AB394; }
