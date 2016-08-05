@@ -462,7 +462,7 @@ class ProjectController extends ApiController {
             \Yii::t('member', 'project description op') => array($dataPost['projectInfo_old']['description'] => $dataPost['description']),
             \Yii::t('member', 'project completed percent') => array($dataPost['projectInfo_old']['completed_percent']."%" => $dataPost['completed_percent']."%"),
             \Yii::t('member', 'project estimate op')    => array($dataPost['projectInfo_old']['estimate_hour'] => $dataPost['estimate_hour']),
-            \Yii::t('member', 'project manager op')     => array('<a href="#/member/' . $dataPost['projectInfo_old']['manager_project_id'] . '">' . $dataPost['projectInfo_old']['project_manager'] . '</a>' => !empty($dataPost['manager']['id']) ?  '<a href="#/member/' . $dataPost['manager']['id'] . '">' . $dataPost['manager']['firstname'] . '</a>' : $noSetting),
+            \Yii::t('member', 'project manager op')     => array(empty($dataPost['projectInfo_old']['manager_project_id']) ? $noSetting : '<a href="#/member/' . $dataPost['projectInfo_old']['manager_project_id'] . '">' . $dataPost['projectInfo_old']['project_manager'] . '</a>' => !empty($dataPost['manager']['id']) ?  '<a href="#/member/' . $dataPost['manager']['id'] . '">' . $dataPost['manager']['firstname'] . '</a>' : $noSetting),
         );
 
         //Create log project history text.
