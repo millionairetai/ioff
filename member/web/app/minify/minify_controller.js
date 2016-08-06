@@ -911,7 +911,7 @@ appRoot.controller('viewProjectCtrl', ['$scope', 'projectService', 'fileService'
                 }
 
                 fd.append("project", angular.toJson($scope.project));
-
+                
                 projectPostService.addProjectPost(fd, function (response) {
                     alertify.success($rootScope.$lang.project_update_success);
                     $rootScope.$emit('add_project_post_success', {});
@@ -920,6 +920,10 @@ appRoot.controller('viewProjectCtrl', ['$scope', 'projectService', 'fileService'
                         project_id: projectId,
                     };
                     $scope.files = [];
+                    $scope.release  = $scope.collection.file_info;
+                    $scope.releases = response.objects.files;
+                    $scope.releases = $scope.releases.concat($scope.release);
+                    $scope.collection.file_info = $scope.releases;
                 });
             }
         }
@@ -974,7 +978,6 @@ appRoot.controller('viewProjectCtrl', ['$scope', 'projectService', 'fileService'
                 fileService.removeFile({fileId: id}, function (data) {
                     $scope.collection.file_info.splice(index, 1);
                     alertify.success($rootScope.$lang.remove_file_success);
-                    $scope.getProjectPosts();
                 })
             });
         };
@@ -1020,8 +1023,8 @@ appRoot.controller('viewProjectCtrl', ['$scope', 'projectService', 'fileService'
     }]);
 
 
-appRoot.controller('editProjectPostCtrl', ['$scope', 'projectPostService', '$uibModalInstance', 'controllerService', 'actionService', '$rootScope', 'projectPost', 'alertify', 'dialogMessage',
-	function ($scope, projectPostService, $uibModalInstance, controllerService, actionService, $rootScope, projectPost, alertify, dialogMessage) {
+appRoot.controller('editProjectPostCtrl', ['$scope', 'projectPostService', '$uibModalInstance', 'controllerService', 'actionService', '$rootScope', 'projectPost', 'alertify', 'dialogMessage', 'socketService',
+	function ($scope, projectPostService, $uibModalInstance, controllerService, actionService, $rootScope, projectPost, alertify, dialogMessage, socketService) {
 		$scope.project = {
 				id: projectPost.id,
 				description: projectPost.content,
@@ -1031,7 +1034,6 @@ appRoot.controller('editProjectPostCtrl', ['$scope', 'projectPostService', '$uib
 			if (projectPostService.validateProjectPost($scope.project)) {
 				var params = {'id': projectPost.id, 'content': $scope.project.description};
 				projectPostService.updateProjectPost(params, function (data) {
-					console.log(data);
 					projectPost.content = $scope.project.description;
 			        alertify.success($rootScope.$lang.project_post_update_success);
 					$uibModalInstance.dismiss('save');
@@ -1051,8 +1053,8 @@ appRoot.controller('editProjectPostCtrl', ['$scope', 'projectPostService', '$uib
 
 
 //edit project
-appRoot.controller('editProjectCtrl', ['$scope', 'projectService', '$location', '$uibModalInstance', '$rootScope', 'departmentService', 'alertify', '$timeout', 'employeeService', '$filter', 'statusService', 'priorityService', 
-    function ($scope, projectService, $location, $uibModalInstance, $rootScope, departmentService, alertify, $timeout, employeeService, $filter, statusService, priorityService) {
+appRoot.controller('editProjectCtrl', ['$scope', 'projectService', '$location', '$uibModalInstance', '$rootScope', 'departmentService', 'alertify', '$timeout', 'employeeService', '$filter', 'statusService', 'priorityService', 'socketService',  
+    function ($scope, projectService, $location, $uibModalInstance, $rootScope, departmentService, alertify, $timeout, employeeService, $filter, statusService, priorityService, socketService) {
         //step
         $scope.step = 1;
         $scope.more = 0;
@@ -1211,6 +1213,7 @@ appRoot.controller('editProjectCtrl', ['$scope', 'projectService', '$location', 
                             projectService.editProject(fd, function (response) {
                                 alertify.success($rootScope.$lang.project_update_success);
                                 $rootScope.$emit('edit_project_success', {message: 'hung'});
+                                socketService.emit('notify', 'ok');
                                 $scope.step++;
                             });
                         }

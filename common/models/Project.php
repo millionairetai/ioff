@@ -171,6 +171,7 @@ class Project extends \common\components\db\ActiveRecord {
         }
 
         //Get file with where: project_id, company_id, owner_table=project
+        /*
         $files = File::find()
                     ->select(['id', 'name', 'path', 'datetime_created'])
                     ->where([
@@ -185,6 +186,22 @@ class Project extends \common\components\db\ActiveRecord {
                 'name' => $file->name,
                 'path' => \Yii::$app->params['PathUpload'] . DIRECTORY_SEPARATOR . $file->path,
                 'datetime_created' => date('Y-m-d', $file->datetime_created),
+            ];
+        }
+        */
+        $sql_limit = "
+	         	SELECT DISTINCT `file`.id, `file`.`id`, `file`.`name`, `file`.`path`, `file`.`datetime_created`  FROM `file`
+	        	INNER JOIN `project_post` ON `project_post`.id = file.owner_id OR `file`.owner_id = {$projectId}
+	        	WHERE (`file`.`company_id`= {$companyId})
+	        	AND (`file`.`owner_object` IN ('project', 'project_post')) AND file.`disabled`= ". self::STATUS_ENABLE . " order by `file`.datetime_created DESC";
+        $command = \Yii::$app->getDb()->createCommand($sql_limit);
+        $files = $command->queryAll();
+        foreach ($files as $file) {
+            $fileList[] = [
+                'id' => $file['id'],
+                'name' => $file['name'],
+                'path' => \Yii::$app->params['PathUpload'] . DIRECTORY_SEPARATOR . $file['path'],
+                'datetime_created' => date('Y-m-d', $file['datetime_created']),
             ];
         }
 

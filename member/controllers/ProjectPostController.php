@@ -111,7 +111,7 @@ class ProjectPostController extends ApiController {
             }
 
             //move file
-            File::addFiles($_FILES, \Yii::$app->params['PathUpload'], $projectPost->id, ProjectPost::TABLE_PROJECTPOST);
+            $fileList = File::addFiles($_FILES, \Yii::$app->params['PathUpload'], $projectPost->id, ProjectPost::TABLE_PROJECTPOST);
     
             //notifycation
             $themeEmail = \common\models\EmailTemplate::getThemeProjectPost();
@@ -194,7 +194,7 @@ class ProjectPostController extends ApiController {
             }
             
             $transaction->commit();
-            return $this->sendResponse(false, "", []);
+            return $this->sendResponse(false, "", ['files' => $fileList]);
         } catch (Exception $e) {
             $transaction->rollBack();
             return $this->sendResponse(true, \Yii::t('member', 'error_system'), []);
