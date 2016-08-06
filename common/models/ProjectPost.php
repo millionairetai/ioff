@@ -86,13 +86,13 @@ class ProjectPost extends \common\components\db\ActiveRecord
      * @return array|boolean
      */
     public static function getProjectPosts($projectId, $currentPage = 1, $itemPerPage = 10) {
-        $offset = $currentPage * $itemPerPage;
-        
+        $offset = --$currentPage * $itemPerPage;
         if (isset($projectId)){
             $data =  ProjectPost::find()
                         ->where(['project_id' => $projectId])
                         ->orderBy('datetime_created DESC')
-                        ->limit($offset)
+                        ->limit($itemPerPage)
+                        ->offset($offset)
                         ->andCompanyId()
                         ->all();
             

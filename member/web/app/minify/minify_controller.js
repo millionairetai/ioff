@@ -935,10 +935,16 @@ appRoot.controller('viewProjectCtrl', ['$scope', 'projectService', 'fileService'
             }
         };
 
-        //view more
+		//view more
         $scope.viewMore = function () {
             $scope.filter.currentPage++;
-            $scope.getProjectPosts();
+            projectPostService.getProjectPosts($scope.filter, function (response) {
+                $scope.release  = response.objects.collection;
+                $scope.releases = $scope.projectPost;
+                $scope.projectPost = $scope.releases.concat($scope.release);
+                $scope.projectPostFile = response.objects.files;
+                $scope.filter.totalItems = response.objects.totalItems;
+            });
         }
 
         //edit project
@@ -1010,6 +1016,12 @@ appRoot.controller('viewProjectCtrl', ['$scope', 'projectService', 'fileService'
         
         //handle create project post successful
         $rootScope.$on('add_project_post_success', function (event, data) {
+        	$scope.filter = {
+                    itemPerPage: PER_PAGE_VIEW_MORE,
+                    totalItems: 0,
+                    currentPage: 1,
+                    projectId: projectId
+                };
             $scope.getProjectPosts();
         });
         
