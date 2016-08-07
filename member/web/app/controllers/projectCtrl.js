@@ -445,6 +445,14 @@ appRoot.controller('viewProjectCtrl', ['$scope', 'projectService', 'fileService'
         	$scope.limit = 5;
         	$scope.limitFile = 5;
         });
+        
+        $scope.tinymceOptions = {
+                inline: false,
+                toolbar: 'formatselect | bold italic underline | bullist numlist | alignleft aligncenter alignright alignjustify | undo redo ',
+                menubar: false,
+                skin: 'lightgray',
+                theme: 'modern'
+            };
     }]);
 
 //edit project post
@@ -473,6 +481,14 @@ appRoot.controller('editProjectPostCtrl', ['$scope', 'projectPostService', '$uib
         //show more
         $scope.showMore = function (value) {
     	$scope.more = value;
+    	
+    	$scope.tinymceOptions = {
+                inline: false,
+                toolbar: 'formatselect | bold italic underline | bullist numlist | alignleft aligncenter alignright alignjustify | undo redo ',
+                menubar: false,
+                skin: 'lightgray',
+                theme: 'modern'
+            };
 	}
 }]);
 
@@ -663,5 +679,13 @@ appRoot.controller('editProjectCtrl', ['$scope', 'projectService', '$location', 
         $scope.showMore = function (value) {
             $scope.more = value;
         }
+        
+        $scope.tinymceOptions = {
+                inline: false,
+                toolbar: 'formatselect | bold italic underline | bullist numlist | alignleft aligncenter alignright alignjustify | undo redo ',
+                menubar: false,
+                skin: 'lightgray',
+                theme: 'modern'
+            };
 
     }]);

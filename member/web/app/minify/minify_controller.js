@@ -978,6 +978,14 @@ appRoot.controller('viewProjectCtrl', ['$scope', 'projectService', 'fileService'
             $scope.limitFile = 5;
         };
 
+        $scope.tinymceOptions = {
+                inline: false,
+                toolbar: 'formatselect | bold italic underline | bullist numlist | alignleft aligncenter alignright alignjustify | undo redo ',
+                menubar: false,
+                skin: 'lightgray',
+                theme: 'modern'
+            };
+        
         //removeFile
         $scope.removeFileProject = function (index, id) {
             dialogMessage.open('confirm', $rootScope.$lang.confirm_delete_file, function () {
@@ -1061,6 +1069,14 @@ appRoot.controller('editProjectPostCtrl', ['$scope', 'projectPostService', '$uib
 		$scope.showMore = function (value) {
 			$scope.more = value;
 		}
+		
+		$scope.tinymceOptions = {
+                inline: false,
+                toolbar: 'formatselect | bold italic underline | bullist numlist | alignleft aligncenter alignright alignjustify | undo redo ',
+                menubar: false,
+                skin: 'lightgray',
+                theme: 'modern'
+            };
 }]);
 
 
@@ -1251,5 +1267,13 @@ appRoot.controller('editProjectCtrl', ['$scope', 'projectService', '$location', 
         $scope.showMore = function (value) {
             $scope.more = value;
         }
+        
+        $scope.tinymceOptions = {
+                inline: false,
+                toolbar: 'formatselect | bold italic underline | bullist numlist | alignleft aligncenter alignright alignjustify | undo redo ',
+                menubar: false,
+                skin: 'lightgray',
+                theme: 'modern'
+            };
 
     }]);
