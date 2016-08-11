@@ -142,7 +142,7 @@
                         <tr>
                             <th width="10%">{{$root.$lang.project_description}}</th>
                             <td width="80%"> 
-                                <textarea class="form-control" rows="5" ng-model="project.description" ui-tinymce="tinymceOptions"></textarea>
+                                <textarea  class="form-control"  data-ui-tinymce ng-model="project.description" rows="5"></textarea>
                                 <br/>
                                 <input id="fileImage" type="file" class="form-control input-file-upload" name="file" onchange="angular.element(this).scope().addFile(this.files);
                                                 $('#fileImage').replaceWith($('#fileImage').clone());" />
