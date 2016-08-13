@@ -3,6 +3,20 @@
         padding-left: 0 !important;
     }
 }
+a:focus{
+    color: #3c8dbc;
+}
+.font24{
+    font-size: 24px;
+}
+.marg0{margin-bottom: 0 !important;}
+.aligncenter{
+    text-align: center;
+}
+.imgleft .image{
+    float: left;
+    margin-right: 10px;
+}
 /* Custom dialog/modal headers */
 .dialog-header-warning { background-color: #EA9F0D; }
 .dialog-header-primary { background-color: #1AB394; }
@@ -685,4 +699,91 @@ header.main-header{
     header.main-header{
         position: fixed;
     }
+}
+/* View calendar */
+/* Event member */
+.event-member .box-header dl{
+    width: 25%;
+    float: left;
+    margin-bottom: 0;
+}
+.event-department .box-body ul{
+    padding: 0;
+    margin: 0;
+    list-style: decimal;
+    list-style-position: inside;
+}
+.event-department .box-body ul li{
+    padding: 10px 0 0 10px;
+    border-top: 1px solid #f4f4f4;
+}
+.event-department .box-body ul li:first-child{
+    border-top: none;
+    padding-top: 0;
+}
+.event-member .box-body .image{
+    margin-bottom: 5px;
+    width: 64px;
+}
+.event-member .box-body .image img{
+    width: 100%;
+}
+.event-member .box-body dt span{
+    font-weight: normal;
+    font-style: italic;
+}
+/* related-event */
+.related-event .imgleft .image{
+    width: 64px;
+}
+.related-event .imgleft .image img{
+    width: 100%;
+}
+/* Main event */
+.top-event .image{
+    width: 40px;
+    height: 40px;
+    float: left;
+}
+.top-event .image img{
+    width: 100%;
+}
+.top-event dl{
+    margin-left: 50px;
+    margin-bottom: 0;
+}
+.top-event .username{
+    font-size: 16px;
+    font-weight: 600;
+    display: block;
+}
+.top-event .description{
+    color: #999;
+    font-size: 13px;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.detail-event .content-event{
+    max-height: 180px;
+    overflow: hidden;
+    position: relative;
+    -webkit-transition: max-height 1s; /* Safari */
+    transition: max-height 1s;
+}
+.detail-event .readmore{
+    display: block;
+    padding: 12px 0;
+    border-top: 1px solid #e9eaed;
+    position: absolute;
+    width: 100%;
+    bottom: -10px;
+    background: #fff;
+    z-index: 10;
+}
+.detail-event .content-event.viewall{
+    max-height: 10000px;
+}
+.detail-event .content-event.viewall .readmore{
+    display: none;
 }
