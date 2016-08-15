@@ -11,7 +11,7 @@ use Yii;
  * @property string $company_id
  * @property string $employee_id
  * @property string $event_id
- * @property string $confirm_event_id
+ * @property string $event_confirmation_type_id
  * @property string $datetime_created
  * @property string $lastup_datetime
  * @property string $created_employee_id
@@ -34,7 +34,7 @@ class EventConfirmation extends \common\components\db\ActiveRecord
     public function rules()
     {
         return [
-            [['company_id', 'employee_id', 'event_id', 'confirm_event_id', 'datetime_created', 'lastup_datetime', 'created_employee_id', 'lastup_employee_id'], 'integer'],
+            [['company_id', 'employee_id', 'event_id', 'event_confirmation_type_id', 'datetime_created', 'lastup_datetime', 'created_employee_id', 'lastup_employee_id'], 'integer'],
             [['disabled'], 'boolean']
         ];
     }
@@ -49,7 +49,7 @@ class EventConfirmation extends \common\components\db\ActiveRecord
             'company_id' => Yii::t('member', 'Company ID'),
             'employee_id' => Yii::t('member', 'Employee ID'),
             'event_id' => Yii::t('member', 'Event ID'),
-            'confirm_event_id' => Yii::t('member', 'Confirm Event ID'),
+            'event_confirmation_type_id' => Yii::t('member', 'Event Confirmation Type ID'),
             'datetime_created' => Yii::t('member', 'Datetime Created'),
             'lastup_datetime' => Yii::t('member', 'Lastup Datetime'),
             'created_employee_id' => Yii::t('member', 'Created Employee ID'),

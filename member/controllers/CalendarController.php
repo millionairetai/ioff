@@ -209,7 +209,7 @@ class CalendarController extends ApiController {
 
                 if (!empty($eventConfirmations)) {
                     if (!Yii::$app->db->createCommand()->batchInsert(
-                                    EventConfirmation::tableName(), ['event_id', 'employee_id', 'confirm_event_id'], $eventConfirmations)->execute()) {
+                                    EventConfirmation::tableName(), ['event_id', 'employee_id', 'event_confirmation_type_id'], $eventConfirmations)->execute()) {
                         throw new \Exception('BatchInsert to event_confirmation table fail');
                     }
                 }
