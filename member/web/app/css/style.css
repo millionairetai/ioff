@@ -721,16 +721,11 @@ header.main-header{
     border-top: none;
     padding-top: 0;
 }
-.event-member .box-body .image{
-    margin-bottom: 5px;
-    width: 64px;
+.event-member .user-block{
+    margin-bottom: 10px;
 }
-.event-member .box-body .image img{
-    width: 100%;
-}
-.event-member .box-body dt span{
-    font-weight: normal;
-    font-style: italic;
+.event-member .user-block:last-child{
+    margin-bottom: 0;
 }
 /* related-event */
 .related-event .imgleft .image{
@@ -741,15 +736,71 @@ header.main-header{
 }
 /* Main event */
 .top-event .image{
-    width: 40px;
-    height: 40px;
+    width: 78px;
+    height: 78px;
     float: left;
 }
 .top-event .image img{
     width: 100%;
 }
+.top-event time.icon
+{
+    font-size: 11px;
+    display: block;
+    position: relative;
+    width: 7em;
+    height: 7em;
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 1px 0 #3c8dbc, 0 0 0 1px #3c8dbc;
+    overflow: hidden;
+}
+
+.top-event time.icon *
+{
+    display: block;
+    width: 100%;
+    font-size: 1em;
+    font-weight: bold;
+    font-style: normal;
+    text-align: center;
+}
+
+.top-event time.icon strong
+{
+    position: absolute;
+    top: 0;
+    padding: 0.4em 0;
+    color: #fff;
+    background-color: #3c8dbc;
+    border-bottom: 1px dashed #367fa9;
+    box-shadow: 0 2px 0 #3c8dbc;
+}
+
+.top-event time.icon em
+{
+    position: absolute;
+    bottom: 0.3em;
+    color: #444;
+}
+
+.top-event time.icon span
+{
+    width: 100%;
+    font-size: 2.8em;
+    letter-spacing: -0.05em;
+    padding-top: 0.8em;
+    color: #2f2f2f;
+}
+
+.top-event time.icon:hover, time.icon:focus
+{
+    -webkit-animation: swing 0.6s ease-out;
+    animation: swing 0.6s ease-out;
+}
+
 .top-event dl{
-    margin-left: 50px;
+    margin-left: 88px;
     margin-bottom: 0;
 }
 .top-event .username{
@@ -786,18 +837,4 @@ header.main-header{
 }
 .detail-event .content-event.viewall .readmore{
     display: none;
-}
-.recent-post-event{
-    
-}
-.recent-post-event dl{
-    margin-bottom: 0;
-}
-.recent-post-event dl dd{
-    border-bottom:1px solid #f4f4f4;
-    margin-bottom: 10px;
-}
-.recent-post-event dl dd:last-child{
-    border-bottom: none;
-    margin-bottom: 0;
 }

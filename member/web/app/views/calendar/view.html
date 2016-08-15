@@ -11,7 +11,12 @@
             <div class="box box-solid top-event">
                 <div class="box-body" >
                     <div class="image">
-                        <img src="http://www.theneighborhoodhouse.com/images/calendar.png" alt=""/>
+                        <!-- the icon as a time element -->
+                        <time datetime="2014-09-20" class="icon">
+                            <em>Saturday</em>
+                            <strong>September</strong>
+                            <span>20</span>
+                        </time>
                     </div>
                     <dl>
                         <dd>
@@ -19,12 +24,14 @@
                                 <a href="#"> Leadership and Work Motivation (Lãnh đạo và Động lực làm việc).</a>
                             </span>
                             <span class="description">Public - created by Vũ Quốc Tú Hùng </span>
-                            <a class="btn btn-primary btn-flat btn-xs">attend</a>
-                            <a class="btn btn-info btn-flat btn-xs">maybe</a>
-                            <a class="btn btn-danger btn-flat btn-xs">not adttend</a>
+                            <div class="btn-group">
+                                <a class="btn btn-primary btn-xs">attend</a>
+                                <a class="btn btn-primary btn-xs">maybe</a>
+                                <a class="btn btn-primary btn-xs">not adttend</a>
+                            </div>
                         </dd>
                     </dl>
-                </div>
+                </div><!--box body-->
             </div>
             <div class="box box-solid header-event">
                 <div class="box-body">
@@ -37,7 +44,7 @@
                         <dd class="direct-chat-timestamp"><i class="fa fa-map-marker"></i> 191 Bà Triệu, Phường Lê Đại Hành, Quận Hai Bà Trưng, Hanoi, VietNam</dd>
                     </dl>
                     <h4>Calendar: *Meeting</h4>
-                </div>
+                </div><!--box body-->
             </div>
             <div class="form-group">
                 <textarea class="form-control textarea" placeholder="Enter text ..."></textarea>
@@ -72,39 +79,45 @@
                         </p>
                         <a href="javascript:void(0)" class="readmore aligncenter" ng-click="viewall = !viewall">Read more</a>
                     </div>
-                </div>
+                </div><!--box body-->
             </div>
-            <div class="box box-solid box-default recent-post-event">
+            <div class="box box-solid recent-post-event">
                 <div class="box-header with-border">
                     <h4 class="box-title">Recent posts</h4>
                 </div>
                 <div class="box-body">
-                    <dl>
-                        <dd>
+                    <div class="box box-solid recent-post-item">
+                        <div class="box-header with-border">
                             <div class="user-block">
                                 <img class="img-circle" src="https://s-media-cache-ak0.pinimg.com/236x/57/4e/0b/574e0b219d900e515249c3619e2d9683.jpg" alt="User Image">
                                 <span class="username"><a href="#">Jonathan Burke Jr.</a></span>
                                 <span class="description">Shared publicly - 7:30 PM Today</span>
                             </div>
+                        </div>
+                        <div class="box-body">
                             <p>
                                 Tìm hiểu, nghiên cứu, vẽ sơ đồ chức năng eOffice 
                                 Tìm hiểu, nghiên cứu, vẽ sơ đồ chức năng.
                                 Tìm hiểu, nghiên cứu, vẽ sơ đồ chức năng eOffice Tìm hiểu, nghiên cứu, vẽ sơ đồ chức năng.
                             </p>
-                        </dd>
-                        <dd>
+                        </div><!--box body-->
+                    </div><!-- Recent post item-->
+                    <div class="box box-solid recent-post-item">
+                        <div class="box-header with-border">
                             <div class="user-block">
                                 <img class="img-circle" src="https://s-media-cache-ak0.pinimg.com/236x/57/4e/0b/574e0b219d900e515249c3619e2d9683.jpg" alt="User Image">
                                 <span class="username"><a href="#">Jonathan Burke Jr.</a></span>
                                 <span class="description">Shared publicly - 7:30 PM Today</span>
                             </div>
+                        </div>
+                        <div class="box-body">
                             <p>
                                 Tìm hiểu, nghiên cứu, vẽ sơ đồ chức năng eOffice 
                                 Tìm hiểu, nghiên cứu, vẽ sơ đồ chức năng.
                                 Tìm hiểu, nghiên cứu, vẽ sơ đồ chức năng eOffice Tìm hiểu, nghiên cứu, vẽ sơ đồ chức năng.
                             </p>
-                        </dd>
-                    </dl>
+                        </div><!--box body-->
+                    </div><!-- Recent post item-->
                 </div>
             </div>
         </div>
@@ -156,16 +169,22 @@
                     </div>
                 </div>
                 <div class="box-body">
-                    <div class="imgleft">
-                        <div class="image">
-                            <img class="img-circle" src="https://s-media-cache-ak0.pinimg.com/236x/57/4e/0b/574e0b219d900e515249c3619e2d9683.jpg" alt=""/>
-                        </div>
-                        <dl>
-                            <dt><a href="#">Trần Văn Tài</a> <span>(Joined)</span></dt>
-                            <dd class="direct-chat-timestamp"><i class="fa fa-clock-o"></i> 12h ago</dd>
-                        </dl>
+                    <div class="user-block">
+                        <img src="https://s-media-cache-ak0.pinimg.com/236x/57/4e/0b/574e0b219d900e515249c3619e2d9683.jpg" class="img-circle" alt="User Image"/>
+                        <span class="username"><a href="#/member/161">Trần Văn Tài</a></span>
+                        <span class="description">04:51 04-07-2016 </span>
                     </div>
-                </div>
+                    <div class="user-block">
+                        <img src="https://s-media-cache-ak0.pinimg.com/236x/57/4e/0b/574e0b219d900e515249c3619e2d9683.jpg" class="img-circle" alt="User Image"/>
+                        <span class="username"><a href="#/member/161">Jonathan Burke Jr.</a></span>
+                        <span class="description">04:51 04-07-2016 </span>
+                    </div>
+                    <div class="user-block">
+                        <img src="https://s-media-cache-ak0.pinimg.com/236x/57/4e/0b/574e0b219d900e515249c3619e2d9683.jpg" class="img-circle" alt="User Image"/>
+                        <span class="username"><a href="#/member/161">Nayoka Akira</a></span>
+                        <span class="description">04:51 04-07-2016 </span>
+                    </div>
+                </div><!--box body-->
             </div>
 
             <div class="box box-solid">
