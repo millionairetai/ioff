@@ -787,3 +787,17 @@ header.main-header{
 .detail-event .content-event.viewall .readmore{
     display: none;
 }
+.recent-post-event{
+    
+}
+.recent-post-event dl{
+    margin-bottom: 0;
+}
+.recent-post-event dl dd{
+    border-bottom:1px solid #f4f4f4;
+    margin-bottom: 10px;
+}
+.recent-post-event dl dd:last-child{
+    border-bottom: none;
+    margin-bottom: 0;
+}
