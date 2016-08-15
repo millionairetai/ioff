@@ -82,6 +82,13 @@ class Event extends ActiveRecord {
     public static function getCalendarOption() {
         return ArrayHelper::map(Calendar::find()->asArray()->all(), 'id', 'name');
     }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCalendar() {
+        return $this->hasOne(Calendar::className(), ['id' => 'calendar_id']);
+    }
 
     /**
      * Get all calendar in company
@@ -143,6 +150,65 @@ class Event extends ActiveRecord {
             $command = \Yii::$app->getDb()->createCommand($sql);
             return $command->queryAll();
         }
+        
+        return [];
+    }
+    
+    /**
+     * Get all calendar in company
+     * 
+     * @param array $calendars
+     * @param integer $companyId
+     * @param integer $employeeId
+     * @param string $start
+     * @param string $end
+     * @return array
+     */
+    public static function getInfoEvent($eventId = null) {
+        if (empty($eventId)) {
+            return false;
+        }
+
+        $eventId = 1;
+        //get Id company of user login
+        $companyId = \Yii::$app->user->getCompanyId();
+        $event = Event::findOne(['id' => $eventId, 'company_id' => $companyId]);
+        if (empty($event)) {
+            return false;
+        }
+        
+        //Get file with where: project_id, company_id, owner_table=project
+        $fileList = File::getFileByOwnerIdAndTable($eventId, Event::tableName());
+        
+        
+        
+        
+        $result = [
+                'event' => [
+                        'name'              => $event->name,
+                        'color'             => $event->color,
+                        'address'           => $event->address,
+                        'description'       => $event->description,
+                        'description_parse' => $event->description_parse,
+                        'start_datetime'    => $event->start_datetime,
+                        'end_datetime'      => $event->end_datetime,
+                ],
+                'calendar' => [
+                        'name' => $event->calendar->getName(),
+                ],
+                'file_info' => $fileList,
+                //                 'event_confirmation' => [
+                        //                         'name' => ,
+                        //                 ],
+        ];
+        print_r($result);
+        
+        
+        die;
+        
+        
+        //get Id company of user login
+        
         
         return [];
     }

@@ -116,5 +116,14 @@ class Calendar extends ActiveRecord {
 
         return $return;
     }
+    
+    /**
+     * Get celendar Name
+     *
+     * @return string
+     */
+    public function getName() {
+        return $this->name;
+    }
 
 }

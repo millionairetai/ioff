@@ -290,5 +290,47 @@ class File extends \common\components\db\ActiveRecord {
         
         return true;
     }
+    
+    /**
+     * get list file by owner id and table name
+     * @param string $owner_id
+     * @param string $table_name
+     * @param string $object
+     * @return array|null
+     */
+    public static function getFileByOwnerIdAndTable($owner_id = null, $table_name = null, $object = false){
+        if (($owner_id == null) || ($table_name == null)) {
+            return null;
+        }
+        
+        $files = File::find()
+                    ->select(['file.id', 'file.name', 'file.path', 'file.datetime_created'])
+                    ->distinct()
+                    ->innerJoin(File::TABLE_PROJECT_POST, File::TABLE_PROJECT_POST.'.id = file.owner_id OR file.owner_id = '. $owner_id)
+                    ->where([
+                            'file.company_id'   => \Yii::$app->user->getCompanyId(),
+                            'file.owner_object' => [$table_name, File::TABLE_PROJECT_POST],
+                    ])
+                    ->all();
+        
+        if (empty($files)) {
+            return null;
+        }
+        
+        $fileList = [];
+        if (!$object) {
+            foreach ($files as $file) {
+                $fileList[] = [
+                        'id'    => $file->id,
+                        'name'  => $file->name,
+                        'path'  => \Yii::$app->params['PathUpload'] . DIRECTORY_SEPARATOR . $file->path,
+                        'datetime_created' => date('Y-m-d', $file->datetime_created),
+                ];
+            }
+        }else {
+            return $files;
+        }
+        return $fileList;
+    }
 
 }

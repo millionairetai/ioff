@@ -379,4 +379,40 @@ class Employee extends ActiveRecord implements IdentityInterface
     public function getFullName() {
     	return $this->firstname . ' ' . $this->lastname;
     }
+
+    /**
+     * get info of list employee
+     * @param unknown $departments
+     * @param unknown $employees
+     */
+    public static function getlistByepartmentIdsAndEmployeeIds($departments = [], $employees = []) {
+        $result = [];
+        $employeeIds   = empty($employees) ? null : $employees;
+        $departmentIds = empty($departments) ? null : $departments;
+        $employees = Employee::find()
+                        ->select(['id', 'firstname', 'lastname', 'profile_image_path', 'department_id'])
+                        ->andCompanyId()
+                        ->andWhere(['id' => $employeeIds])
+                        ->orWhere(['department_id' => $departmentIds])
+                        ->all();
+
+        if (!empty($employees)) {
+            foreach ($employees AS $employee) {
+                $result['employeeList'][] = [
+                    'id'        => $employee->id,
+                    'firstname' => $employee->getFullName(),
+                    'image'     => $employee->getImage()
+                ];
+                
+                if (!empty($employeeIds) && in_array($employee->id, $employeeIds)) {
+                    $result['employeeEditList'][] = [
+                            'id'        => $employee->id,
+                            'firstname' => $employee->getFullName(),
+                            'image'     => $employee->getImage()
+                    ];
+                }
+            }
+        }
+        return $result;
+    }
 }

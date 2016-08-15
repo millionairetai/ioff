@@ -163,7 +163,7 @@ class Project extends \common\components\db\ActiveRecord {
      */
     public static function getInfoProject($projectId) {
         $companyId = \Yii::$app->user->getCompanyId();
-        $participants = $departmentNames = $employeeList = $fileList = $projectManager = [];
+        $participants = $departmentNames = $employeeList = $projectManager = $employeeList = $employeeEditList = [];
 
         $project = Project::findOne(['id' => $projectId, 'company_id' => $companyId]);
         if (empty($project)) {
@@ -171,70 +171,24 @@ class Project extends \common\components\db\ActiveRecord {
         }
 
         //Get file with where: project_id, company_id, owner_table=project
-    	$files = File::find()
-                    ->select(['file.id', 'file.name', 'file.path', 'file.datetime_created'])
-                    ->distinct()
-                    ->innerJoin(File::TABLE_PROJECT_POST, File::TABLE_PROJECT_POST.'.id = file.owner_id OR file.owner_id = '. $projectId)
-                    ->where([
-                        'file.company_id'   => $companyId,
-                        'file.owner_object' => [File::TABLE_PROJECT, File::TABLE_PROJECT_POST],
-                    ])
-        			->all();
-
-        
-        foreach ($files as $file) {
-            $fileList[] = [
-                'id' => $file->id,
-                'name' => $file->name,
-                'path' => \Yii::$app->params['PathUpload'] . DIRECTORY_SEPARATOR . $file->path,
-                'datetime_created' => date('Y-m-d', $file->datetime_created),
-            ];
-        }
+        $fileList = File::getFileByOwnerIdAndTable($projectId, File::TABLE_PROJECT);
 
         //Department: inner join project_participant with department where project_id, company_id, owner_table=department.
-        $projectParticipants = ProjectParticipant::findAll(['company_id' => $companyId, 'project_id' => $projectId]);
-        if (!empty($projectParticipants)) {
-            foreach ($projectParticipants as $projectParticipant) {
-                $participants[$projectParticipant->owner_table][] = $projectParticipant->owner_id;
-                if ($projectParticipant->owner_table == 'department') {
-                    $departmentNames[$projectParticipant->department->id] = $projectParticipant->department->name;
-                }
-            }
+        $projectParticipants = ProjectParticipant::getListByProjectId($projectId);
+        if(!empty($projectParticipants)){
+            $departmentNames = empty($projectParticipants['department'])  ? [] : $projectParticipants['department'];
+            $participants    = empty($projectParticipants['owner_table']) ? [] : $projectParticipants['owner_table'];
         }
 
         // * Get employee information in employee table with where = employee_id or department_id
         $employeeIds = isset($participants['employee']) ? $participants['employee'] : null;
         $departmentIds = isset($participants['department']) ? $participants['department'] : null;
-        $participants = !empty($participants) ? $participants : null;
-        $employees = Employee::find()
-                        ->select(['id', 'firstname', 'lastname', 'profile_image_path'])
-                        ->andCompanyId()
-                        ->andWhere(['id' => $employeeIds])
-                        ->orWhere(['department_id' => $departmentIds])
-                        ->all();
-
-        foreach ($employees AS $employee) {
-            $employeeList[] = [
-                'id' => $employee->id,
-                'firstname' => $employee->getFullName(),
-                'image' => $employee->getImage()
-            ];
+        $employees = Employee::getlistByepartmentIdsAndEmployeeIds($departmentIds, $employeeIds);
+        if (!empty($employees)) {
+            $employeeList     = empty($employees['employeeList'])     ? [] : $employees['employeeList'];
+            $employeeEditList = empty($employees['employeeEditList']) ? [] : $employees['employeeEditList'];
         }
-
-        $employeesEdit = Employee::find()
-                            ->select(['id', 'firstname', 'lastname', 'profile_image_path'])
-                            ->andCompanyId()
-                            ->andWhere(['id' => $employeeIds])
-                            ->all();
-        $employeeEditList = [];
-        foreach ($employeesEdit as $employee) {
-            $employeeEditList[] = [
-                'id' => $employee->id,
-                'firstname' => $employee->getFullName(),
-                'image' => $employee->getImage()
-            ];
-        }
-
+        
         $projectParent = Project::findOne($project->parent_id);
 
         return [
