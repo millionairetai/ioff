@@ -25,6 +25,7 @@ appRoot.controller('calendarCtrl', ['$scope', '$uibModal', 'calendarService', '$
                 eventLimit: 4,
                 timezone: "local",
                 lang: settingSystem.language,
+                height: 'auto',
                 select: function (start, end, allDay) {
                     var modalInstance = $uibModal.open({
                         templateUrl: 'app/views/calendar/add.html',
@@ -302,4 +303,9 @@ appRoot.controller('addEventCtrl', ['$rootScope', 'data', '$scope', 'calendarSer
 
     }]);
 
+//Display info project
+var $dataEditEvent = [];
+appRoot.controller('viewCalendarCtrl', ['$scope', 'projectService', 'fileService', 'projectPostService', '$uibModal', '$rootScope', 'dialogMessage', '$routeParams', 'alertify', '$sce', 'PER_PAGE_VIEW_MORE', 
+    function ($scope, projectService, fileService, projectPostService, $uibModal, $rootScope, dialogMessage, $routeParams, alertify, $sce, PER_PAGE_VIEW_MORE) {
 
+    }]);
