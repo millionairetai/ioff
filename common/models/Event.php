@@ -102,7 +102,7 @@ class Event extends ActiveRecord {
      */
     public static function getEvents($calendars, $companyId, $employeeId, $start, $end) {
 
-        $sql = " SELECT event.name,event.start_datetime,event.end_datetime,event.color "
+        $sql = " SELECT event.id,event.name,event.start_datetime,event.end_datetime,event.color "
                 . " FROM event "
                 . "        INNER JOIN calendar	"
                 . "                ON event.calendar_id= calendar.id "
@@ -155,6 +155,20 @@ class Event extends ActiveRecord {
     }
     
     /**
+     * display info case is publuc
+     */
+    public function getIsPublic() {
+        return $this->is_public == true ? Yii::t('common', 'event_is_public') : Yii::t('common', 'event not public');
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getEmployee() {
+        return $this->hasOne(Employee::className(), ['id' => 'created_employee_id']);
+    }
+    
+    /**
      * Get all calendar in company
      * 
      * @param array $calendars
@@ -165,52 +179,59 @@ class Event extends ActiveRecord {
      * @return array
      */
     public static function getInfoEvent($eventId = null) {
-        if (empty($eventId)) {
-            return false;
-        }
-
-        $eventId = 1;
+        if (empty($eventId)) return false;
         //get Id company of user login
         $companyId = \Yii::$app->user->getCompanyId();
         $event = Event::findOne(['id' => $eventId, 'company_id' => $companyId]);
-        if (empty($event)) {
-            return false;
-        }
+        if (empty($event)) return false;
         
         //Get file with where: project_id, company_id, owner_table=project
         $fileList = File::getFileByOwnerIdAndTable($eventId, Event::tableName());
+
+        //Get all info event_confirmation_type 
+        $eventConfimationType = EventConfirmationType::find()->all();
+        $eventConfimationTypeList = [];
+        if (!empty($eventConfimationType)) {
+            foreach ($eventConfimationType as $info) {
+                $eventConfimationTypeList[] = [
+                        'id'    => $info->id,
+                        'name'  => $info->name,
+                ];
+            }
+        }
         
+        //Department: inner join Invitation with department where event_id
+        $invitations = Invitation::getListByEventId($eventId);
         
-        
+        //get remind by owverid 
+        $remind = Remind::findOne(['owner_id' => $eventId, 'owner_table' => Event::tableName(), 'company_id' => $companyId]);
         
         $result = [
                 'event' => [
+                        'id'                => $event->id,
                         'name'              => $event->name,
                         'color'             => $event->color,
                         'address'           => $event->address,
+                        'count_date'        => $event->getDiffBetweenDate(),
+                        'is_public'         => $event->is_public,
+                        'calendar_id'       => $event->calendar_id,
+                        'is_public_name'    => $event->getIsPublic(),
                         'description'       => $event->description,
                         'description_parse' => $event->description_parse,
-                        'start_datetime'    => $event->start_datetime,
-                        'end_datetime'      => $event->end_datetime,
+                        'start_datetime'    => $event->start_datetime * 1000,
+                        'start_time'        => $event->start_datetime * 1000,
+                        'end_datetime'      => $event->end_datetime  * 1000,
+                        'end_time'          => $event->end_datetime  * 1000,
+                        'created_employee_id'  => $event->employee->getFullName(),
                 ],
-                'calendar' => [
-                        'name' => $event->calendar->getName(),
-                ],
-                'file_info' => $fileList,
-                //                 'event_confirmation' => [
-                        //                         'name' => ,
-                        //                 ],
+                'calendar' => ['name' => $event->calendar->getName()],
+                'remind' => isset($remind->minute_before) ? $remind->minute_before : null,
+                'eventConfirmationType' => $eventConfimationTypeList,
+                'invitations' => $invitations
         ];
-        print_r($result);
-        
-        
-        die;
-        
-        
-        //get Id company of user login
-        
-        
-        return [];
+        return $result;
     }
 
+    
+    
 }

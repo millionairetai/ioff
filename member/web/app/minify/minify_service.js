@@ -172,6 +172,12 @@ appRoot.factory('calendarService', ['apiService','$rootScope','alertify', functi
             getLanguage : function (data,success,error){
                 apiService.upload('calendar/language',data,success,error);
             },
+            editEvent : function (data,success,error){
+            	apiService.upload('calendar/edit-event',data,success,error);
+            },
+            viewEvent: function (data,success,error){
+                apiService.post('calendar/view-event',data, success, error);
+            },
             //validate
             validate_step1 : function(object){
                 var message = "";

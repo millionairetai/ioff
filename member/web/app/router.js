@@ -49,8 +49,7 @@ appRoot.config(function ($routeProvider, $httpProvider) {
                     }
                 }
             })
-//            .when('/viewCalendar/:calendarId', {
-            .when('/viewCalendar', {
+            .when('/viewCalendar/:calendarId', {
             	templateUrl: 'app/views/calendar/view.html',
             	controller: 'viewCalendarCtrl'
             })

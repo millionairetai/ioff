@@ -77,7 +77,7 @@ class Employee extends ActiveRecord implements IdentityInterface
      */
     public static function tableName()
     {
-        return '{{%employee}}';
+        return 'employee';
     }
 
     public static function primaryKey()
@@ -390,10 +390,9 @@ class Employee extends ActiveRecord implements IdentityInterface
         $employeeIds   = empty($employees) ? null : $employees;
         $departmentIds = empty($departments) ? null : $departments;
         $employees = Employee::find()
-                        ->select(['id', 'firstname', 'lastname', 'profile_image_path', 'department_id'])
-                        ->andCompanyId()
+                        ->select(['id', 'firstname', 'lastname', 'profile_image_path', 'department_id', 'birthdate'])
                         ->andWhere(['id' => $employeeIds])
-                        ->orWhere(['department_id' => $departmentIds])
+                        ->orWhere(['department_id' => $departmentIds, 'company_id' => \Yii::$app->user->getCompanyId()])
                         ->all();
 
         if (!empty($employees)) {
@@ -401,14 +400,16 @@ class Employee extends ActiveRecord implements IdentityInterface
                 $result['employeeList'][] = [
                     'id'        => $employee->id,
                     'firstname' => $employee->getFullName(),
-                    'image'     => $employee->getImage()
+                    'image'     => $employee->getImage(),
+                    'birthdate' => $employee->birthdate,
                 ];
                 
                 if (!empty($employeeIds) && in_array($employee->id, $employeeIds)) {
                     $result['employeeEditList'][] = [
                             'id'        => $employee->id,
                             'firstname' => $employee->getFullName(),
-                            'image'     => $employee->getImage()
+                            'image'     => $employee->getImage(),
+                            'birthdate' => $employee->birthdate,
                     ];
                 }
             }

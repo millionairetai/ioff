@@ -1,33 +1,34 @@
 <section class="content-header">
-    <h1>
-        View calendar
-    </h1>
+    <h1>{{$root.$lang.calendar_title}}</h1>
 </section>
 
 <section class="content">
     <div class="row clearfix">
         <div class="col-md-9">
             <!-- Default box -->
+            <div class="modal-footer">
+                    <a href="#calendar"><button type="button" class="btn btn-default btn-flat" ><i class="fa fa-arrow-circle-left"></i> {{$root.$lang.button_back}}</button></a>
+                    <button type="button" class="btn btn-primary btn-flat" ng-click="editEvent()"><i class="fa fa-edit"></i> {{$root.$lang.edit_project}}</button>
+                    <button type="button" class="btn btn-danger btn-flat" ng-click="deleteEvent()"><i class="fa fa-remove"></i> {{$root.$lang.delete_project}}</button>
+                </div>
             <div class="box box-solid top-event">
                 <div class="box-body" >
                     <div class="image">
                         <!-- the icon as a time element -->
                         <time datetime="2014-09-20" class="icon">
-                            <em>Saturday</em>
-                            <strong>September</strong>
-                            <span>20</span>
+                            <em>{{collection.event.start_datetime | date:'EEEE'}}</em>
+                            <strong>{{collection.event.start_datetime | date:'MMMM'}}</strong>
+                            <span>{{collection.event.start_datetime | date:'d'}}</span>
                         </time>
                     </div>
                     <dl>
                         <dd>
                             <span class="username">
-                                <a href="#"> Leadership and Work Motivation (Lãnh đạo và Động lực làm việc).</a>
+                                <a href="#"> {{collection.event.name}}</a>
                             </span>
-                            <span class="description">Public - created by Vũ Quốc Tú Hùng </span>
-                            <div class="btn-group">
-                                <a class="btn btn-primary btn-xs">attend</a>
-                                <a class="btn btn-primary btn-xs">maybe</a>
-                                <a class="btn btn-primary btn-xs">not adttend</a>
+                            <span class="description">{{collection.event.is_public}} - {{$root.$lang.create_by}} {{collection.event.created_employee_id}}</span>
+                            <div class="btn-group" ng-repeat="val in collection.eventConfirmationType">
+                                <a class="btn btn-primary btn-xs">{{val.name}}</a> 
                             </div>
                         </dd>
                     </dl>
@@ -36,53 +37,51 @@
             <div class="box box-solid header-event">
                 <div class="box-body">
                     <dl>
-                        <dt>Sunday, July 31 at 7 PM - 10 PM</dt>
-                        <dd class="direct-chat-timestamp"><i class="fa fa-clock-o"></i> 1 day ago</dd>
+                        <dt ng-if="collection.event.count_date == 1">
+	                         {{collection.event.start_datetime |  date : "fullDate"}} At {{collection.event.time_start |  date : "shortTime"}} 
+                        </dt>
+                        <dt ng-if="collection.event.count_date != 1">
+	                        {{$root.$lang.project_start_date}} {{collection.event.start_datetime | date : "fullDate"}} {{collection.event.end_datetime |  date : "shortTime"}} 
+	                        - {{$root.$lang.project_end_date}} {{collection.event.end_datetime | date : "fullDate"}} {{collection.event.end_datetime |  date : "shortTime"}}
+                        </dt>
+                        <dd class="direct-chat-timestamp"><i class="fa fa-clock-o"></i> {{collection.event.count_date}} {{$root.$lang.day_ago}} </dd>
                     </dl>
                     <dl>
-                        <dt>NEST BY AIA - Hanoi</dt>
-                        <dd class="direct-chat-timestamp"><i class="fa fa-map-marker"></i> 191 Bà Triệu, Phường Lê Đại Hành, Quận Hai Bà Trưng, Hanoi, VietNam</dd>
+                        <dt>{{collection.event.address}}</dt>
+                        <dd class="direct-chat-timestamp"><i class="fa fa-map-marker"></i> {{collection.event.address}}</dd>
                     </dl>
-                    <h4>Calendar: *Meeting</h4>
+                    <h4>{{$root.$lang.calendar_title}} : {{collection.event.name}}</h4>
                 </div><!--box body-->
-            </div>
-            <div class="form-group">
-                <textarea class="form-control textarea" placeholder="Enter text ..."></textarea>
             </div>
             <div class="box box-solid detail-event">
                 <div class="box-header with-border">
-                    <h4 class="box-title">Detail</h4>
+                    <h4 class="box-title">{{$root.$lang.calendar_infomation}}</h4>
                     <div class="box-tools pull-right">
                         <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
                     </div>
                 </div>
                 <div class="box-body">
-                    <div class="content-event" ng-class="{viewall: viewall}">
-                        <p>
-                            “Trong Khởi Nghiệp, bạn sẽ không bao giờ Thành Công nếu chưa từng một lần Thất Bại. Nếu thất bại một lần hãy thất bại một cách thật thông minh.” Anh Nguyễn Hữu Thái Hòa - Phó Chủ tịch Hội đồng Tư vấn chiến lược kiêm Giám đốc Tư vấn chiến lược Tập đoàn VNPT đồng thời cũng là diễn giả của sự kiện FAIL SMART.
-                        </p>
-                        <p>
-                            Bạn nhìn những gì trong giới Khởi Nghiệp?
-                            Nơi những ước mơ, hoài bão trở thành hiện thực?
-                            Hay là mảnh đất màu mỡ để bạn thể hiện khả năng của bản thân?
-                        </p>
-                        <p>
-                            Nhưng bạn có biết bên cạnh những thành công hào nhoáng kia thì thất bại dường như cũng chẳng xa lạ trong giới khởi nghiệp bởi gần 99.99% dự án khởi nghiệp đều thất bại ngay năm đầu tiên. Để có thể khởi nghiệp thành công bạn chắc chắn ít nhất vài lần nếm mùi thất bại và cần chuẩn bị cho mình một tinh thần thép để có thể đối mặt với thất bại một cách thông minh nhất.
-                        </p>
-                        <p>
-                            “Trong Khởi Nghiệp, bạn sẽ không bao giờ Thành Công nếu chưa từng một lần Thất Bại. Nếu thất bại một lần hãy thất bại một cách thật thông minh.” Anh Nguyễn Hữu Thái Hòa - Phó Chủ tịch Hội đồng Tư vấn chiến lược kiêm Giám đốc Tư vấn chiến lược Tập đoàn VNPT đồng thời cũng là diễn giả của sự kiện FAIL SMART.
-                        </p>
-                        <p>
-                            Bạn nhìn những gì trong giới Khởi Nghiệp?
-                            Nơi những ước mơ, hoài bão trở thành hiện thực?
-                            Hay là mảnh đất màu mỡ để bạn thể hiện khả năng của bản thân?
-                        </p>
-                        <p>
-                            Nhưng bạn có biết bên cạnh những thành công hào nhoáng kia thì thất bại dường như cũng chẳng xa lạ trong giới khởi nghiệp bởi gần 99.99% dự án khởi nghiệp đều thất bại ngay năm đầu tiên. Để có thể khởi nghiệp thành công bạn chắc chắn ít nhất vài lần nếm mùi thất bại và cần chuẩn bị cho mình một tinh thần thép để có thể đối mặt với thất bại một cách thông minh nhất.
-                        </p>
-                        <a href="javascript:void(0)" class="readmore aligncenter" ng-click="viewall = !viewall">Read more</a>
+                    <div class="content-event">
+                        <p ng-text-truncate="collection.event.description" ng-tt-chars-threshold="250"></p>
                     </div>
                 </div><!--box body-->
+            </div>
+            <div class="box box-solid header-event">
+                <div class="box-body">
+                    <form class="form-horizontal">
+                        <textarea  class="form-control"  data-ui-tinymce ng-model="project.description" rows="5"></textarea>
+                            <br/>
+                            <input id="fileImage" type="file" class="form-control input-file-upload" name="file" onchange="angular.element(this).scope().addFile(this.files);
+	                                                $('#fileImage').replaceWith($('#fileImage').clone());" />
+                            <br/>
+                            <div class="show-file-name" ng-repeat="file in files">
+                                <strong>{{file.name}}</strong> <i class="fa fa-remove" ng-click="removeFile($index)"></i>
+                            </div>
+                           <div class="modal-footer">
+                                <button type="button" class="btn btn-primary btn-flat" ng-click="addProjectPost()" ><i class="fa fa-save"></i> {{$root.$lang.post}}</button>
+                           </div>
+                    </form>
+                </div>
             </div>
             <div class="box box-solid recent-post-event">
                 <div class="box-header with-border">
@@ -102,9 +101,9 @@
                         </div>
                         <div class="box-body">
                             <p>
-                                Tìm hiểu, nghiên cứu, vẽ sơ đồ chức năng eOffice 
-                                Tìm hiểu, nghiên cứu, vẽ sơ đồ chức năng.
-                                Tìm hiểu, nghiên cứu, vẽ sơ đồ chức năng eOffice Tìm hiểu, nghiên cứu, vẽ sơ đồ chức năng.
+                                Tﾃｬm hi盻ブ, nghiﾃｪn c盻ｩu, v蘯ｽ sﾆ｡ ﾄ黛ｻ� ch盻ｩc nﾄハg eOffice 
+                                Tﾃｬm hi盻ブ, nghiﾃｪn c盻ｩu, v蘯ｽ sﾆ｡ ﾄ黛ｻ� ch盻ｩc nﾄハg.
+                                Tﾃｬm hi盻ブ, nghiﾃｪn c盻ｩu, v蘯ｽ sﾆ｡ ﾄ黛ｻ� ch盻ｩc nﾄハg eOffice Tﾃｬm hi盻ブ, nghiﾃｪn c盻ｩu, v蘯ｽ sﾆ｡ ﾄ黛ｻ� ch盻ｩc nﾄハg.
                             </p>
                         </div><!--box body-->
                     </div><!-- Recent post item-->
@@ -118,9 +117,9 @@
                         </div>
                         <div class="box-body">
                             <p>
-                                Tìm hiểu, nghiên cứu, vẽ sơ đồ chức năng eOffice 
-                                Tìm hiểu, nghiên cứu, vẽ sơ đồ chức năng.
-                                Tìm hiểu, nghiên cứu, vẽ sơ đồ chức năng eOffice Tìm hiểu, nghiên cứu, vẽ sơ đồ chức năng.
+                                Tﾃｬm hi盻ブ, nghiﾃｪn c盻ｩu, v蘯ｽ sﾆ｡ ﾄ黛ｻ� ch盻ｩc nﾄハg eOffice 
+                                Tﾃｬm hi盻ブ, nghiﾃｪn c盻ｩu, v蘯ｽ sﾆ｡ ﾄ黛ｻ� ch盻ｩc nﾄハg.
+                                Tﾃｬm hi盻ブ, nghiﾃｪn c盻ｩu, v蘯ｽ sﾆ｡ ﾄ黛ｻ� ch盻ｩc nﾄハg eOffice Tﾃｬm hi盻ブ, nghiﾃｪn c盻ｩu, v蘯ｽ sﾆ｡ ﾄ黛ｻ� ch盻ｩc nﾄハg.
                             </p>
                         </div><!--box body-->
                     </div><!-- Recent post item-->
@@ -156,46 +155,38 @@
 
             <div class="box box-solid event-department">
                 <div class="box-header with-border">
-                    <h4 class="box-title">Department</h4>
+                    <h4 class="box-title">{{$root.$lang.department}}</h4>
                     <div class="box-tools pull-right">
                         <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
                     </div>
                 </div>
                 <div class="box-body">
                     <ul>
-                        <li>Account department</li>
-                        <li>Sale department</li>
-                        <li>Marketing department</li>
+                        <li ng-repeat="department in collection.invitations.department">{{department}}</li>
                     </ul>
                 </div>
             </div>
 
             <div class="box box-solid event-member">
                 <div class="box-header with-border">
-                    <h4 class="box-title">Invitees</h4>
+                    <h4 class="box-title">{{$root.$lang.members}}</h4>
                     <div class="box-tools pull-right">
                         <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
                     </div>
                 </div>
                 <div class="box-body">
-                    <div class="user-block">
-                        <img src="https://s-media-cache-ak0.pinimg.com/236x/57/4e/0b/574e0b219d900e515249c3619e2d9683.jpg" class="img-circle" alt="User Image"/>
-                        <span class="username"><a href="#/member/161">Trần Văn Tài</a></span>
-                        <span class="description">04:51 04-07-2016 </span>
-                    </div>
-                    <div class="user-block">
-                        <img src="https://s-media-cache-ak0.pinimg.com/236x/57/4e/0b/574e0b219d900e515249c3619e2d9683.jpg" class="img-circle" alt="User Image"/>
-                        <span class="username"><a href="#/member/161">Jonathan Burke Jr.</a></span>
-                        <span class="description">04:51 04-07-2016 </span>
-                    </div>
-                    <div class="user-block">
-                        <img src="https://s-media-cache-ak0.pinimg.com/236x/57/4e/0b/574e0b219d900e515249c3619e2d9683.jpg" class="img-circle" alt="User Image"/>
-                        <span class="username"><a href="#/member/161">Nayoka Akira</a></span>
-                        <span class="description">04:51 04-07-2016 </span>
+                    <div class="user-block" ng-repeat="employee in collection.invitations.departmentAndEmployee.employeeList | limitTo:limit">
+                        <img src="{{employee.image}}" class="img-circle" alt="User Image"/>
+                        <span class="username"><a href="#/member/161">{{employee.firstname}}</a></span>
+                        <span class="description">{{employee.birthdate | date : "fullDate"}} </span>
                     </div>
                 </div><!--box body-->
+                <div class=" text-center" >
+                    <a ng-click="loadMore()" class="pointer ng-binding" ng-if="limit < collection.invitations.departmentAndEmployee.employeeList.length && collection.invitations.departmentAndEmployee.employeeList.length > 5">{{$root.$lang.project_list_view_more}} </a>
+                    <a ng-click="closeMore()" class="pointer ng-binding" ng-if="limit > 5">{{$root.$lang.less}} </a>
+                </div>
+                <br/>
             </div>
-
             <div class="box box-solid">
                 <div class="box-header with-border">
                     <h4 class="box-title">Events</h4>

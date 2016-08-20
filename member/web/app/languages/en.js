@@ -106,6 +106,7 @@
             project_progress: 'Project progress',
             work_time: 'Work time',
             file_name :'Name',
+            day_ago : 'day ago',
             time_update :'Time Add',
             
             project_estimate_error : 'Estimate time is must numberic',
@@ -147,6 +148,8 @@
             calendar_add_event : "Add event",
             calendar_event_name : "Name",
             calendar_calendar_id : "Calendar",
+            calendar_infomation : 'Calendar information',
+            create_by : "create by",
             calendar_event_address : "Address",
             calendar_event_share : "Public",
             calendar_event_description : "Description",

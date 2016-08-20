@@ -61,4 +61,45 @@ class Invitation extends ActiveRecord
             'disabled' 			 => Yii::t('common', 'Disabled'),
         ];
     }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getDepartment() {
+        return $this->hasOne(Department::className(), ['id' => 'owner_id']);
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getEmployee() {
+        return $this->hasOne(Employee::className(), ['id' => 'owner_id']);
+    }
+    
+    /**
+     * get list ProjectParticipant by $projectId
+     * @param string $projectId
+     * @return boolean|array
+     */
+    public static function getListByEventId($eventId = null){
+        if ($eventId == null)  return false;
+        
+        $invitatinons = Invitation::findAll(['company_id' => \Yii::$app->user->getCompanyId(), 'event_id' => $eventId]);
+        if (!empty($invitatinons)) {
+            $result = [];
+            foreach ($invitatinons as $invitatinon) {
+                if ($invitatinon->owner_table == Department::tableName()) {
+                    $result[$invitatinon->owner_table][$invitatinon->owner_id] = $invitatinon->department->name;
+                }
+                if ($invitatinon->owner_table == Employee::tableName()) {
+                    $result[$invitatinon->owner_table][$invitatinon->owner_id] = $invitatinon->employee->fullname;
+                }
+            }
+            $departments = isset($result['department']) ? array_keys($result['department']) : null;
+            $employees   = isset($result['employee'])   ? array_keys($result['employee']) : null;
+            $result['departmentAndEmployee'] = Employee::getlistByepartmentIdsAndEmployeeIds($departments, $employees);
+            return $result;
+        }
+        return false;
+    }
 }

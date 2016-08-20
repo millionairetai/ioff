@@ -105,6 +105,7 @@
             project_parent: 'Dự án cha',
             project_progress: 'Tiến độ dự án',
             work_time: 'Thời gian làm việc',
+            day_ago : 'ngày',
             file_name :'Tên',
             time_update :'Ngày thêm vào',
             
@@ -144,8 +145,10 @@
             
             //calendar
             calendar_title : "Lịch",
+            calendar_infomation : 'Thông tin sự kiện',
             calendar_add_event : "Thêm sự kiện",
             calendar_event_name : "Tên sự kiện",
+            create_by : "tạo bởi",
             calendar_calendar_id : "Lịch",
             calendar_event_address : "Địa chỉ",
             calendar_event_share : "Công khai",

@@ -30,6 +30,7 @@ return [
     'event_start_datetime' => 'Start datetime',
     'event_end_datetime' => 'End datetime',
     'event_is_public' => 'Public',
+    'event_not_public' => 'Not Public',
     'event_datetime_created' => 'Created',
     'event_lastup_datetime' => 'Updated',
     'event_lastup_employee_id' => 'Employee',
