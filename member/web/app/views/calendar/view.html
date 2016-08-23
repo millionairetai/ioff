@@ -78,7 +78,7 @@
                                 <strong>{{file.name}}</strong> <i class="fa fa-remove" ng-click="removeFile($index)"></i>
                             </div>
                            <div class="modal-footer">
-                                <button type="button" class="btn btn-primary btn-flat" ng-click="addProjectPost()" ><i class="fa fa-save"></i> {{$root.$lang.post}}</button>
+                                <button type="button" class="btn btn-primary btn-flat" ng-click="addEventPost()" ><i class="fa fa-save"></i> {{$root.$lang.post}}</button>
                            </div>
                     </form>
                 </div>
@@ -131,22 +131,22 @@
                 <div class="box-header with-border">
                     <dl>
                         <dd>
-                            <p class="aligncenter font24">287</p><p class="aligncenter marg0">Attend</p>
+                            <p class="aligncenter font24">{{collection.attent.attend}}</p><p class="aligncenter marg0">{{$root.$lang.attend}}</p>
                         </dd>
                     </dl>
                     <dl>
                         <dd>
-                            <p class="aligncenter font24">987</p><p class="aligncenter marg0">Maybe</p>
+                            <p class="aligncenter font24">{{collection.attent.maybe}}</p><p class="aligncenter marg0">{{$root.$lang.maybe}}</p>
                         </dd>
                     </dl>
                     <dl>
                         <dd>
-                            <p class="aligncenter font24">1287</p><p class="aligncenter marg0">Not attend</p>
+                            <p class="aligncenter font24">{{collection.attent.no_attend}}</p><p class="aligncenter marg0">{{$root.$lang.no_attent}}</p>
                         </dd>
                     </dl>
                     <dl>
                         <dd>
-                            <p class="aligncenter font24">87</p><p class="aligncenter marg0">No comfirm</p>
+                            <p class="aligncenter font24">{{collection.attent.no_confirm}}</p><p class="aligncenter marg0">{{$root.$lang.no_confirm}}</p>
                         </dd>
                     </dl>
                 </div>

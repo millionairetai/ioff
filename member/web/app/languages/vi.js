@@ -170,7 +170,13 @@
             calendar_event_time_error : "Ngày kết thúc phải lớn hơn ngày bắt đầu",
             calendar_event_calendar_id_error_empty : "Lịch không được bỏ trống",
             calendar_notify_event_created_success : "Sự kiện của bạn đã được tạo thành công",
-            calendar_event_check_redmind : "Thời gian bắt đầu sự kiện so với thời gian hiện tại phải lớn hơn thời gian nhắc nhở"
+            calendar_event_check_redmind : "Thời gian bắt đầu sự kiện so với thời gian hiện tại phải lớn hơn thời gian nhắc nhở",
+            event_description_error_empty : 'Sự kiện mô tả không thể bỏ trống',
+            event_post_add_success : 'Sự kiện mô tả thêm thành công',
+            attend : 'Attent',
+            maybe : 'Maybe',
+            no_attent : 'Not Attent',
+            no_confirm : 'No confirm'
         };
     });
 })(window.angular);

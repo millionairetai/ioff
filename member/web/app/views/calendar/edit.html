@@ -100,6 +100,17 @@
                         <select class="form-control" ng-model="event.redmind" ng-options="redmind.id as redmind.name  for redmind in redminds" ></select>
 
                     </div>
+                    <div class="form-group">
+                        <label for="inputPassword3" class=" control-label">{{$root.$lang.project_files}}</label>
+                        <div class="container-imgs">
+                            <input id="fileImage" type="file" class="form-control input-file-upload" name="file" onchange="angular.element(this).scope().addFile(this.files);
+                                    $('#fileImage').replaceWith($('#fileImage').clone());" />
+                            <br/>
+                            <div class="show-file-name" ng-repeat="file in files">
+                                <strong>{{file.name}}</strong> <i class="fa fa-remove" ng-click="removeFile($index)"></i>
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
                 <div class="form-group">

@@ -202,6 +202,10 @@ class Event extends ActiveRecord {
         
         //Department: inner join Invitation with department where event_id
         $invitations = Invitation::getListByEventId($eventId);
+        $countdepartmentAndEmployee = 0;
+        if (!empty($invitations) && !empty($invitations['departmentAndEmployee']) && !empty($invitations['departmentAndEmployee']['count'])) {
+            $countdepartmentAndEmployee = $invitations['departmentAndEmployee']['count'];
+        }
         
         //get remind by owverid 
         $remind = Remind::findOne(['owner_id' => $eventId, 'owner_table' => Event::tableName(), 'company_id' => $companyId]);
@@ -224,10 +228,11 @@ class Event extends ActiveRecord {
                         'end_time'          => $event->end_datetime  * 1000,
                         'created_employee_id'  => $event->employee->getFullName(),
                 ],
-                'calendar' => ['name' => $event->calendar->getName()],
-                'remind' => isset($remind->minute_before) ? $remind->minute_before : null,
+                'calendar'      => ['name' => $event->calendar->getName()],
+                'remind'        => isset($remind->minute_before) ? $remind->minute_before : null,
                 'eventConfirmationType' => $eventConfimationTypeList,
-                'invitations' => $invitations
+                'invitations'   => $invitations,
+                'attent'        => EventConfirmationType::getInfoAttent($eventId, $countdepartmentAndEmployee)
         ];
         return $result;
     }

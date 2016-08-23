@@ -170,7 +170,13 @@
             calendar_event_time_error : "Enddate is must greater than startdate",
             calendar_event_calendar_id_error_empty : "Calendar is required",
             calendar_notify_event_created_success : "Event has created successfully",
-            calendar_event_check_redmind : "Startdate time with current time must be greater than remind time"
+            calendar_event_check_redmind : "Startdate time with current time must be greater than remind time",
+            event_description_error_empty : 'Event description is not empty',
+            event_post_add_success : 'event post add success',
+            attend : 'Attent',
+            maybe : 'Maybe',
+            no_attent : 'Not Attent',
+            no_confirm : 'No confirm'
         };
     });
 })(window.angular);

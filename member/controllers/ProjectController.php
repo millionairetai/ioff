@@ -284,7 +284,7 @@ class ProjectController extends ApiController {
         try {
             //Check if get project is null value.
             if (!$ob = Project::findOne($dataPost['project_id'])) {
-                throw new \Exception('Can not get project');
+                throw new \Exception('Can not get Event');
             }
 
             $ob->attributes         = $dataPost;

@@ -396,6 +396,7 @@ class Employee extends ActiveRecord implements IdentityInterface
                         ->all();
 
         if (!empty($employees)) {
+            $count = 0;
             foreach ($employees AS $employee) {
                 $result['employeeList'][] = [
                     'id'        => $employee->id,
@@ -412,6 +413,7 @@ class Employee extends ActiveRecord implements IdentityInterface
                             'birthdate' => $employee->birthdate,
                     ];
                 }
+                $result['count'] = ++$count;
             }
         }
         return $result;
