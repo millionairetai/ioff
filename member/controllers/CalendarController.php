@@ -5,6 +5,7 @@ namespace member\controllers;
 use common\models\Calendar;
 use common\models\Event;
 use common\models\Invitation;
+use common\models\Invitee;
 use common\models\File;
 use common\models\Activity;
 use common\models\EventConfirmation;
@@ -267,7 +268,6 @@ class CalendarController extends ApiController {
         if (strlen($eventJson)) {
             $dataPost = json_decode($eventJson, true);
         }
-        
 //         $transaction = \Yii::$app->db->beginTransaction();
 
         //create object and validate data
@@ -276,7 +276,7 @@ class CalendarController extends ApiController {
             if (!$ob = Event::find()->select(['id', 'name'])->where(['id' => $dataPost['id']])->one()) {
                 throw new \Exception('Get Event info fail');
             }
-            
+           
             $ob->attributes = $dataPost;
             $ob->employee_id = Yii::$app->user->getId();
             $ob->description_parse = strip_tags($ob->description);
@@ -289,32 +289,18 @@ class CalendarController extends ApiController {
                 throw new \Exception($this->_message);
             }
             
-            //add department
-//             if (!empty($dataPost['departments'])) {
-//                 $projectParticpants = [];
-//                 foreach ($dataPost['departments'] as $value) {
-//                     $projectParticpants[] = [$ob->id, $value, Invitation::TABLE_DEPARTMENT];
-//                 }
+            $dataMegre = $this->_megreDataDeparmentAndEmployee($dataPost);
+            
+            //update table invitation
+            $this->_updataInvitation($dataPost['id'], $dataMegre);
+            echo "!!!!!!!!!!!!!!!!";
+            die;
+            //update table invitee
+            $this->_updataInvitee($dataPost['id'], $dataMegre);
 
-//                 if (!Yii::$app->db->createCommand()->batchInsert(
-//                                 Invitation::tableName(), ['event_id', 'owner_id', 'owner_table'], $projectParticpants)->execute()) {
-//                     throw new \Exception('batchInsert for departments to table invitation fail');
-//                 }
-//             }
-
-//             //add member
-//             if (!empty($dataPost['members'])) {
-//                 $projectParticpants = [];
-//                 foreach ($dataPost['members'] as $item) {
-//                     $projectParticpants[] = [$ob->id, $item['id'], Invitation::TABLE_EMPLOYEE];
-//                 }
-
-//                 if (!Yii::$app->db->createCommand()->batchInsert(
-//                                 Invitation::tableName(), ['event_id', 'owner_id', 'owner_table'], $projectParticpants)->execute()) {
-//                     throw new \Exception('batchInsert for employees to table invitation fail');
-//                 }
-//             }
-
+            //update table Event_confirmation
+            $this->_updataEventConfirmation($dataPost['id'], $dataMegre);
+            
             //move file
             File::addFiles($_FILES, \Yii::$app->params['PathUpload'], $ob->id, File::TABLE_EVENT);
 
@@ -488,5 +474,176 @@ class CalendarController extends ApiController {
         $objects = ['language' => \Yii::$app->language];
         return $this->sendResponse($error, $message, $objects);
     }
+    
+    /**
+     * Function update or add info in table project_participant of screen edit project
+     *
+     * @param array $dataPost data get from employee.
+     * @return array
+     */
+    private function _megreDataEmployee($dataPost = []) {
+        
+        
+        
+        echo "OAAK";
+        
+        die;
+        if (empty($dataPost)) return false;
+        $departmentOld = !empty($dataPost['data_old']['invitations']['department']) ? $dataPost['data_old']['invitations']['department'] : null;
+        $departmentNew = !empty($dataPost['departments']) ? $dataPost['departments'] : null;
+        if (!empty($departmentNew) && !empty($departmentOld)) {
+            foreach ($departmentNew as $key_new => $val_New) {
+                foreach ($departmentOld as $key_old => $val_old) {
+                    if ($val_New == $key_old) {
+                        unset($departmentNew[$key_new]);
+                        unset($departmentOld[$key_old]);
+                    }
+                }
+            }
+        }
+        
+        $employeeOld = !empty($dataPost['data_old']['invitations']['employee']) ? $dataPost['data_old']['invitations']['employee'] : null;
+        $employeeNew = !empty($dataPost['members']) ? $dataPost['members'] : null;
+        if (!empty($employeeOld) && !empty($employeeNew)) {
+            foreach ($employeeOld as $keyEmployessOld => $valEmployeeOld) {
+                foreach ($dataPost['members'] as $keyMemberNew => $valMemberNew) {
+                    if ($keyEmployessOld == $valMemberNew['id']) {
+                        unset($employeeOld[$keyEmployessOld]);
+                        unset($employeeNew[$keyMemberNew]);
+                    }
+                }
+            }
+        }
+        return [
+                'departmentOld' => $departmentOld,
+                'departmentNew' => $departmentNew,
+                'employeeOld'   => $employeeOld,
+                'employeeNew'   => $employeeNew,
+        ];
+    }
 
+    /**
+     * Function update or add info in table project_participant of screen edit project
+     *
+     * @param array $dataPost data get from employee.
+     * @return array
+     */
+    private function _megreDataDeparmentAndEmployee($dataPost = []) {
+        if (empty($dataPost)) return false;
+        
+        $departmentOld = !empty($dataPost['data_old']['invitations']['department']) ? $dataPost['data_old']['invitations']['department'] : null;
+        $departmentNew = !empty($dataPost['departments']) ? $dataPost['departments'] : null;
+        if (!empty($departmentNew) && !empty($departmentOld)) {
+            foreach ($departmentNew as $key_new => $val_New) {
+                foreach ($departmentOld as $key_old => $val_old) {
+                    if ($val_New == $key_old) {
+                        unset($departmentNew[$key_new]);
+                        unset($departmentOld[$key_old]);
+                    }
+                }
+            }
+        }
+        
+        $employeeOld = !empty($dataPost['data_old']['invitations']['employee']) ? $dataPost['data_old']['invitations']['employee'] : null;
+        $employeeNew = !empty($dataPost['members']) ? $dataPost['members'] : null;
+        if (!empty($employeeOld) && !empty($employeeNew)) {
+            foreach ($employeeOld as $keyEmployessOld => $valEmployeeOld) {
+                foreach ($dataPost['members'] as $keyMemberNew => $valMemberNew) {
+                    if ($keyEmployessOld == $valMemberNew['id']) {
+                        unset($employeeOld[$keyEmployessOld]);
+                        unset($employeeNew[$keyMemberNew]);
+                    }
+                }
+            }
+        }
+        return [
+                'departmentOld' => $departmentOld,
+                'departmentNew' => $departmentNew,
+                'employeeOld'   => $employeeOld,
+                'employeeNew'   => $employeeNew,
+        ];
+    }
+
+    /**
+     * Function update invitee
+     *
+     * @param array $dataPost data get from employee.
+     * @return array
+     */
+    private function _updataEventConfirmation($event_id = null, $dataMegre = []) {
+        if (empty($event_id)) return false;
+        return true;
+    }
+
+    /**
+     * Function update invitee
+     *
+     * @param array $dataPost data get from employee.
+     * @return array
+     */
+    private function _updataInvitee($event_id = null, $dataMegre = []) {
+        if (empty($event_id)) return false;
+        return true;
+    }
+    
+    /**
+     * Function update Invitation
+     *
+     * @param array $dataPost data get from employee.
+     * @return array
+     */
+    private function _updataInvitation($event_id = null, $dataMegre = []) {
+        if (empty($event_id)) return false;
+        //delete department table Invitation
+        if (!empty($dataMegre['departmentOld'])) {
+            Invitation::deleteAll([
+                    'event_id'    => $event_id,
+                    'owner_id'    => array_keys($dataMegre['departmentOld']),
+                    'company_id'  => $this->_companyId,
+                    'owner_table' => Invitation::TABLE_DEPARTMENT,
+            ]);
+        }
+       
+        //Delete employee
+        if (!empty($dataMegre['employeeOld'])) {
+            Invitation::deleteAll([
+                    'event_id'    => $event_id,
+                    'owner_id'    => array_keys($dataMegre['employeeOld']),
+                    'company_id'  => $this->_companyId,
+                    'owner_table' => Invitation::TABLE_EMPLOYEE,
+            ]);
+        }
+
+        //add new department Invitation
+        $dataInsertInvitation = [];
+        if (!empty($dataMegre['departmentNew'])) {
+            foreach ($dataMegre['departmentNew'] as $owner_id) {
+                $dataInsertInvitation[] = [
+                        'event_id' => $event_id,
+                        'owner_id' => $owner_id,
+                        'company_id'  => $this->_companyId,
+                        'owner_table' => Invitation::TABLE_DEPARTMENT,
+                ];
+            }
+
+        }
+       
+        //Add new department
+        if (!empty($dataMegre['employeeNew'])) {
+            foreach ($dataMegre['employeeNew'] as $val) {
+                $dataInsertInvitation[] = [
+                        'event_id'  => $event_id,
+                        'owner_id'    => $val['id'],
+                        'company_id'  => $this->_companyId,
+                        'owner_table' => Invitation::TABLE_EMPLOYEE,
+                ];
+            }
+        }
+        if (!empty($dataInsertInvitation)) {
+            if (!\Yii::$app->db->createCommand()->batchInsert(Invitation::tableName(), array_keys($dataInsertInvitation[0]), $dataInsertInvitation)->execute()) {
+                throw new \Exception('Save record to table Project Participant fail');
+            }
+        }
+        return true;
+    }
 }
