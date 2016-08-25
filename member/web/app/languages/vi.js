@@ -7,6 +7,7 @@
             title_error_dialog : 'Thông báo lỗi',
             title_confirm_dialog : 'Xác nhận',
             ok : 'Chấp nhận',
+            at : 'đến',
             more : 'Xem thêm',
             less : 'Đóng',
             cancel : 'Hủy',

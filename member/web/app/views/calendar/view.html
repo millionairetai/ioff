@@ -26,7 +26,7 @@
                             <span class="username">
                                 <a href="#"> {{collection.event.name}}</a>
                             </span>
-                            <span class="description">{{collection.event.is_public}} - {{$root.$lang.create_by}} {{collection.event.created_employee_id}}</span>
+                            <span class="description">{{collection.event.is_public_name}} - {{$root.$lang.create_by}} {{collection.event.created_employee_id}}</span>
                             <div class="btn-group" ng-repeat="val in collection.eventConfirmationType">
                                 <a class="btn btn-primary btn-xs">{{val.name}}</a> 
                             </div>
@@ -37,12 +37,15 @@
             <div class="box box-solid header-event">
                 <div class="box-body">
                     <dl>
-                        <dt ng-if="collection.event.count_date == 1">
-	                         {{collection.event.start_datetime |  date : "fullDate"}} At {{collection.event.time_start |  date : "shortTime"}} 
+                        <dt ng-if="collection.event.count_date < 1">
+	                        {{$root.$lang.project_start_date}} {{collection.event.start_datetime | date : "fullDate"}} 
+	                        {{collection.event.start_time}}
+	                        {{$root.$lang.at}} 
+	                        {{collection.event.end_time}}
                         </dt>
-                        <dt ng-if="collection.event.count_date != 1">
-	                        {{$root.$lang.project_start_date}} {{collection.event.start_datetime | date : "fullDate"}} {{collection.event.end_datetime |  date : "shortTime"}} 
-	                        - {{$root.$lang.project_end_date}} {{collection.event.end_datetime | date : "fullDate"}} {{collection.event.end_datetime |  date : "shortTime"}}
+                        <dt ng-if="collection.event.count_date >= 1">
+	                        {{$root.$lang.project_start_date}} {{collection.event.start_datetime | date : "fullDate"}} {{collection.event.start_time}} 
+	                        - {{$root.$lang.project_end_date}} {{collection.event.end_datetime | date : "fullDate"}} {{collection.event.end_time}}
                         </dt>
                         <dd class="direct-chat-timestamp"><i class="fa fa-clock-o"></i> {{collection.event.count_date}} {{$root.$lang.day_ago}} </dd>
                     </dl>

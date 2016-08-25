@@ -7,6 +7,7 @@
             title_error_dialog : 'Error',
             title_confirm_dialog : 'Confirm',
             ok : 'Ok',
+            at : 'at',
             more : 'View more',
             less : 'View less',
             cancel : 'Cancel',

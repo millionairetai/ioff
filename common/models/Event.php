@@ -158,7 +158,7 @@ class Event extends ActiveRecord {
      * display info case is publuc
      */
     public function getIsPublic() {
-        return $this->is_public == true ? Yii::t('common', 'event_is_public') : Yii::t('common', 'event not public');
+        return $this->is_public == true ? Yii::t('common', 'event_is_public') : Yii::t('common', 'event_not_public');
     }
     
     /**
@@ -222,10 +222,10 @@ class Event extends ActiveRecord {
                         'is_public_name'    => $event->getIsPublic(),
                         'description'       => $event->description,
                         'description_parse' => $event->description_parse,
-                        'start_datetime'    => $event->start_datetime * 1000,
-                        'start_time'        => $event->start_datetime * 1000,
-                        'end_datetime'      => $event->end_datetime  * 1000,
-                        'end_time'          => $event->end_datetime  * 1000,
+                        'start_datetime'    => isset($event->start_datetime) ? date('Y-m-d', $event->start_datetime) : null,
+                        'start_time'        => isset($event->start_datetime) ? date('H:i', $event->start_datetime) : null,
+                        'end_datetime'      => isset($event->end_datetime) ? date('Y-m-d', $event->end_datetime) : null,
+                        'end_time'          => isset($event->end_datetime) ? date('H:i', $event->end_datetime) : null,
                         'created_employee_id'  => $event->employee->getFullName(),
                 ],
                 'calendar'      => ['name' => $event->calendar->getName()],

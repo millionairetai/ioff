@@ -402,7 +402,7 @@ class Employee extends ActiveRecord implements IdentityInterface
                     'id'        => $employee->id,
                     'firstname' => $employee->getFullName(),
                     'image'     => $employee->getImage(),
-                    'birthdate' => $employee->birthdate,
+                    'birthdate' => isset($employee->birthdate) ? date('Y-m-d', $employee->birthdate) : null,
                 ];
                 
                 if (!empty($employeeIds) && in_array($employee->id, $employeeIds)) {
@@ -410,7 +410,7 @@ class Employee extends ActiveRecord implements IdentityInterface
                             'id'        => $employee->id,
                             'firstname' => $employee->getFullName(),
                             'image'     => $employee->getImage(),
-                            'birthdate' => $employee->birthdate,
+                            'birthdate' =>  isset($employee->birthdate) ? date('Y-m-d', $employee->birthdate) : null,
                     ];
                 }
                 $result['count'] = ++$count;
