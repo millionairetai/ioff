@@ -652,6 +652,60 @@ appRoot.controller('viewCalendarCtrl', ['$scope', 'calendarService', 'fileServic
             }
         });
     };
+    
+    //get event post
+    $scope.getHtml = function (html) {
+        return $sce.trustAsHtml(html);
+    };
+    $scope.filter = {
+        itemPerPage: PER_PAGE_VIEW_MORE,
+        totalItems: 0,
+        currentPage: 1,
+        calendarId: calendarId
+    };
+    $scope.eventPost = [];
+    $scope.getEventPosts = function () {
+        EventPostService.getEventPosts($scope.filter, function (response) {
+            $scope.release  = response.objects.collection;
+            $scope.releases = $scope.eventPost;
+            $scope.eventPost = $scope.releases.concat($scope.release);
+            $scope.eventPostFile = response.objects.files;
+            $scope.filter.totalItems = response.objects.totalItems;
+        });
+    };
+    $scope.getEventPosts();
+    
+  //Delete event post
+    $scope.deleteEventPost = function (index, id) {
+         dialogMessage.open('confirm', $rootScope.$lang.confirm_delete_file, function () {
+             EventPostService.removeEventPost({ProjectPostId: id}, function (data) {
+                $scope.eventPost.splice(index, 1);
+                alertify.success($rootScope.$lang.remove_event_post_success);
+            });
+        });
+    };
+    
+    //edit event post
+    $scope.editProjectPost = function (eventPost, $index) {
+        var modalInstance = $uibModal.open({
+            templateUrl: 'app/views/eventPost/edit.html',
+            controller: 'editProjectPostCtrl',
+            size: 'lg',
+            keyboard: true,
+            backdrop: 'static',
+            resolve: {
+                eventPost: function () {
+                    return eventPost;
+                }
+            }
+        });
+    };
+    
+    //view more
+    $scope.viewMore = function () {
+        $scope.filter.currentPage++;
+        $scope.getEventPosts();
+    }
 }]);
 //edit event to calendar
 appRoot.controller('editEventCtrl', ['$rootScope', 'data', 'listCalendar', '$scope', 'calendarService', 'alertify', '$uibModalInstance', 'departmentService', 'employeeService', '$timeout', 'socketService',function ($rootScope, data, listCalendar,$scope, calendarService, alertify, $uibModalInstance, departmentService, employeeService, $timeout, socketService) {

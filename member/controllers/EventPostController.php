@@ -19,51 +19,49 @@ class EventPostController extends ApiController {
     /**
      * Get project post by project id
      */
-//     public function actionGetProjectPost() {
-//         $collection = [];
-//         $projectPostIds = [];
-//         $projectId = \Yii::$app->request->post('projectId');
-//         //fetch project post list
-//         $result = ProjectPost::getProjectPosts($projectId, \Yii::$app->request->post('currentPage'), \Yii::$app->request->post('itemPerPage'));
-//         foreach ($result as $item) {
-//             $actionDelete = false;
-//             if (((\Yii::$app->user->getId() == $item->created_employee_id) || (\Yii::$app->user->identity->is_admin)) && ($item->is_log_history == false)) {
-//                 $actionDelete = true;
-//             }
-//             $collection[] = [
-//                 'id'                 => $item->id,
-//                 'time'               => date('H:i d-m-Y ', $item->datetime_created),
-//                 'content'            => $item->content,
-//                 'employee_name'      => empty($item->employee) ? '' : $item->employee->getFullName(),
-//                 'profile_image_path' => empty($item->employee) ? '' : $item->employee->getImage(),
-//                 'actionDelete'       => $actionDelete,
-//             ];
-
-//             $projectPostIds[$item['id']] = $item->id;
-//         }
-
-
-//         $files = File::getFiles(array_keys($projectPostIds), ProjectPost::TABLE_PROJECTPOST);
-//         $fileData = [];
-
-//         foreach ($files AS $key => $val) {
-//             $fileData[$val->owner_id][] = [
-//                 'name' => $val->name,
-//                 'path' => \Yii::$app->params['PathUpload'] . DIRECTORY_SEPARATOR . $val->path
-//             ];
-//         }
-
-//         $objects['collection'] = $collection;
-//         $objects['files'] = $fileData;
-//         $objects['totalItems'] = 0;
-//         $objects['debugs'] = \Yii::$app->request->post('currentPage') . '++++'.  \Yii::$app->request->post('itemPerPage');
+    public function actionGetEventPost() {
+        $collection = [];
+        $eventPostIds = [];
+        $calendarId = \Yii::$app->request->post('calendarId');
         
-//         if (!empty($collection)) {
-//             $objects['totalItems'] = Projectpost::find()->where(['project_id' => $projectId])->count();
-//         }
+        //fetch event post list
+        $result = EventPost::getEventPosts($calendarId, \Yii::$app->request->post('currentPage'), \Yii::$app->request->post('itemPerPage'));
+        
+        foreach ($result as $item) {
+            $actionDelete = false;
+            if (((\Yii::$app->user->getId() == $item->created_employee_id) || (\Yii::$app->user->identity->is_admin)) && ($item->is_log_history == false)) {
+                $actionDelete = true;
+            }
+            $collection[] = [
+                'id'                 => $item->id,
+                'time'               => date('H:i d-m-Y ', $item->datetime_created),
+                'content'            => $item->content,
+                'employee_name'      => empty($item->employee) ? '' : $item->employee->getFullName(),
+                'profile_image_path' => empty($item->employee) ? '' : $item->employee->getImage(),
+                'actionDelete'       => $actionDelete,
+            ];
+            $eventPostIds[$item['id']] = $item->id;
+        }
 
-//         return $this->sendResponse(false, "", $objects);
-//     }
+        $files = File::getFiles(array_keys($eventPostIds), EventPost::tableName());
+        $fileData = [];
+
+        foreach ($files AS $key => $val) {
+            $fileData[$val->owner_id][] = [
+                'name' => $val->name,
+                'path' => \Yii::$app->params['PathUpload'] . DIRECTORY_SEPARATOR . $val->path
+            ];
+        }
+
+        $objects['collection'] = $collection;
+        $objects['files'] = $fileData;
+        $objects['totalItems'] = 0;
+        
+        if (!empty($collection)) {
+            $objects['totalItems'] = EventPost::find()->where(['event_id' => $calendarId])->count();
+        }
+        return $this->sendResponse(false, "", $objects);
+    }
 
     /*
      * Function remove file screen view project
@@ -165,51 +163,51 @@ class EventPostController extends ApiController {
         }
     }
     
-//    /**
-//      * Action delete project post
-//      */
-//     public function actionRemoveProjectPost() {
-//         $this->_message = \Yii::t('member', 'remove project post success');
-//         $transaction = \Yii::$app->db->beginTransaction();
-//         try {
-//             if (!ProjectPost::deleteAll(['id' => \Yii::$app->request->get('ProjectPostId')])) {
-//                  throw new \Exception('remove project post error');
-//             }
-//             $transaction->commit();
-//         } catch (\Exception $e) {
-//             $this->_error = true;
-//             $this->_message = \Yii::t('member', 'remove project post error');
-//             $transaction->rollBack();
-//             return $this->sendResponse($this->_error, $this->_message, []);
-//         }
-//         return $this->sendResponse($this->_error, $this->_message, []);
-//     }
-//     /**
-//      * Action update project post
-//      */
-//     public function actionUpdateProjectPost() {
-//     	$request = \Yii::$app->request->post();
-//         if (!(isset($request['id']) && $request['id'])) {
-//             throw new \Exception('Request fail');
-//         }
-//         $this->_message = "Updata Project Post Success";
-//         $transaction = \Yii::$app->db->beginTransaction();
-//         try {
-//         	if (!$projectPost = ProjectPost::findOne($request['id'])) {
-//         		throw new \Exception('Get project post info fail');
-//         	}
-//         	$projectPost->content       = $request['content'];
-//         	$projectPost->content_parse = $request['content'];
-//         	if (!$projectPost->update()) {
-//         		throw new \Exception('Save record to table project post fail');
-//         	}
-//         	$transaction->commit();
-//         } catch (\Exception $e) {
-//             $this->_message = "Error";
-//             $transaction->rollBack();
-//             return $this->sendResponse($this->_error, $this->_message, []);
-//         }
+   /**
+     * Action delete project post
+     */
+    public function actionRemoveEventPost() {
+        $this->_message = \Yii::t('member', 'remove Event post success');
+        $transaction = \Yii::$app->db->beginTransaction();
+        try {
+            if (!EventPost::deleteAll(['id' => \Yii::$app->request->get('calendarId')])) {
+                 throw new \Exception('remove event post error');
+            }
+            $transaction->commit();
+        } catch (\Exception $e) {
+            $this->_error = true;
+            $this->_message = \Yii::t('member', 'remove event post error');
+            $transaction->rollBack();
+            return $this->sendResponse($this->_error, $this->_message, []);
+        }
+        return $this->sendResponse($this->_error, $this->_message, []);
+    }
+    /**
+     * Action update project post
+     */
+    public function actionUpdateEventPost() {
+    	$request = \Yii::$app->request->post();
+        if (!(isset($request['id']) && $request['id'])) {
+            throw new \Exception('Request fail');
+        }
+        $this->_message = "Updata Event Post Success";
+        $transaction = \Yii::$app->db->beginTransaction();
+        try {
+        	if (!$eventPost = EventPost::findOne($request['id'])) {
+        		throw new \Exception('Get event post info fail');
+        	}
+        	$eventPost->content       = $request['content'];
+        	$eventPost->content_parse = $request['content'];
+        	if (!$eventPost->update()) {
+        		throw new \Exception('Save record to table event post fail');
+        	}
+        	$transaction->commit();
+        } catch (\Exception $e) {
+            $this->_message = "Error";
+            $transaction->rollBack();
+            return $this->sendResponse($this->_error, $this->_message, []);
+        }
         
-//         return $this->sendResponse($this->_error, $this->_message, ['content' => $request['content']]);
-//     }
+        return $this->sendResponse($this->_error, $this->_message, ['content' => $request['content']]);
+    }
 }

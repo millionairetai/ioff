@@ -94,40 +94,50 @@
                     </div>
                 </div>
                 <div class="box-body">
-                    <div class="box box-solid recent-post-item">
+                    <div class="box box-solid recent-post-item" ng-repeat="v in eventPost">
                         <div class="box-header with-border">
                             <div class="user-block">
-                                <img class="img-circle" src="https://s-media-cache-ak0.pinimg.com/236x/57/4e/0b/574e0b219d900e515249c3619e2d9683.jpg" alt="User Image">
-                                <span class="username"><a href="#">Jonathan Burke Jr.</a></span>
-                                <span class="description">Shared publicly - 7:30 PM Today</span>
+                                    <img src="{{v.profile_image_path}}" class="img-circle" alt="User Image" width="58px" height="58px">
+                                    <span class="username"><a href="#/member/{{v.id}}"><b>{{v.employee_name}}</b></a></span>
+                                    <span class="description">{{v.time| date : "fullDate" }}</span>
                             </div>
+                            
+                            <div class="pull-right box-tools">
+                                       <!-- button with a dropdown -->
+                                       <div class="btn-group" ng-if="v.actionDelete == true">
+                                           <button type="button" class="btn btn-box-tool" data-toggle="dropdown" aria-expanded="false">
+                                           <i class="fa fa-bars"></i></button>
+                                           <ul class="dropdown-menu pull-right" role="menu">
+                                               <li><a ng-click="editProjectPost(v, $index)">{{$root.$lang.button_update}}</a></li>
+                                               <li><a ng-click="deleteProjectPost($index, v.id)">{{$root.$lang.remove}}</a></li>
+                                           </ul>
+                                       </div>
+                                       <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                               </div>
                         </div>
-                        <div class="box-body">
-                            <p>
-                                Tﾃｬm hi盻ブ, nghiﾃｪn c盻ｩu, v蘯ｽ sﾆ｡ ﾄ黛ｻ� ch盻ｩc nﾄハg eOffice 
-                                Tﾃｬm hi盻ブ, nghiﾃｪn c盻ｩu, v蘯ｽ sﾆ｡ ﾄ黛ｻ� ch盻ｩc nﾄハg.
-                                Tﾃｬm hi盻ブ, nghiﾃｪn c盻ｩu, v蘯ｽ sﾆ｡ ﾄ黛ｻ� ch盻ｩc nﾄハg eOffice Tﾃｬm hi盻ブ, nghiﾃｪn c盻ｩu, v蘯ｽ sﾆ｡ ﾄ黛ｻ� ch盻ｩc nﾄハg.
-                            </p>
-                        </div><!--box body-->
-                    </div><!-- Recent post item-->
-                    <div class="box box-solid recent-post-item">
-                        <div class="box-header with-border">
-                            <div class="user-block">
-                                <img class="img-circle" src="https://s-media-cache-ak0.pinimg.com/236x/57/4e/0b/574e0b219d900e515249c3619e2d9683.jpg" alt="User Image">
-                                <span class="username"><a href="#">Jonathan Burke Jr.</a></span>
-                                <span class="description">Shared publicly - 7:30 PM Today</span>
-                            </div>
+                         <div class="box-body">
+                                <p ng-bind-html="getHtml(v.content)" ng-tt-chars-threshold="200"></p>
+                                <div class="padding-left-20" ng-repeat="file in projectPostFile[v.id]"><a href="{{file.path}}"><span class="glyphicon glyphicon-file" aria-hidden="true"></span> {{file.name}}</a></div>
                         </div>
-                        <div class="box-body">
-                            <p>
-                                Tﾃｬm hi盻ブ, nghiﾃｪn c盻ｩu, v蘯ｽ sﾆ｡ ﾄ黛ｻ� ch盻ｩc nﾄハg eOffice 
-                                Tﾃｬm hi盻ブ, nghiﾃｪn c盻ｩu, v蘯ｽ sﾆ｡ ﾄ黛ｻ� ch盻ｩc nﾄハg.
-                                Tﾃｬm hi盻ブ, nghiﾃｪn c盻ｩu, v蘯ｽ sﾆ｡ ﾄ黛ｻ� ch盻ｩc nﾄハg eOffice Tﾃｬm hi盻ブ, nghiﾃｪn c盻ｩu, v蘯ｽ sﾆ｡ ﾄ黛ｻ� ch盻ｩc nﾄハg.
-                            </p>
-                        </div><!--box body-->
+                        <!--box body-->
                     </div><!-- Recent post item-->
+                    <div class="box-footer text-center" >
+            <button class="btn form-control cursor-pointer viewmorecl" ng-click="viewMore()" ng-show="filter.totalItems > (filter.currentPage * filter.itemPerPage)"><a>{{$root.$lang.view_more_upper_case}}</a></button>
+        </div>
                 </div>
-            </div>
+            
+            
+            
+            
+            <div ng-repeat="v in eventPost">
+                        <div class="box box-widget">
+                            
+                        </div>
+                        <!-- END timeline item -->
+                    </div>
+                    
+                    
+                    </div>
         </div>
         <div class="col-md-3 padding-left-md-0">
             <div class="box box-solid event-member">

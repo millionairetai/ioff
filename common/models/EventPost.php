@@ -67,4 +67,33 @@ class EventPost extends \yii\db\ActiveRecord
             'disabled' => 'Disabled',
         ];
     }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getEmployee() {
+        return $this->hasOne(Employee::className(), ['id' => 'employee_id']);
+    }
+    
+    /**
+     * Get list event post by event id
+     *
+     * @param integer $projectId
+     * @param integer $currentPage
+     * @param integer $itemPerPage
+     * @return array|boolean
+     */
+    public static function getEventPosts($eventId, $currentPage = 1, $itemPerPage = 10) {
+        $offset = --$currentPage * $itemPerPage;
+        if (isset($eventId)){
+            $data =  EventPost::find()
+                            ->where(['event_id' => $eventId, 'company_id' => \Yii::$app->user->getCompanyId()])
+                            ->orderBy('datetime_created DESC')
+                            ->limit($itemPerPage)
+                            ->offset($offset)
+                            ->all();
+            return $data;
+        }
+        return [];
+    }
 }
