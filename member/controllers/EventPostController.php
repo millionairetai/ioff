@@ -70,18 +70,22 @@ class EventPostController extends ApiController {
      */
     public function actionAddEventPost() {
         try {
+           
             $transaction = \Yii::$app->db->beginTransaction();
             $dataPost = [];
             $eventson = \Yii::$app->request->post('event', '');
             if (strlen($eventson)) {
                 $dataPost = json_decode($eventson, true);
             }
+            if (empty($dataPost['employeeList'])) return true;
+            
             $eventInfo = [];
             if (isset($dataPost['calendarId'])) {
                 if (!$eventInfo = Event::find()->select(['id', 'name'])->where(['id' => $dataPost['calendarId']])->one()) {
                     throw new \Exception('Get Event info fail');
                 }
             }
+            
             //insert event_post table:
             $eventPost = new EventPost();
             $eventPost->event_id            = $dataPost['calendarId'];
@@ -112,14 +116,8 @@ class EventPostController extends ApiController {
             if (!$activity->save()) {
                 throw new \Exception('Save record to table Activity fail');
             }
-
-            //notifycation
-            $themeEmail = \common\models\EmailTemplate::getThemeProjectPost();//node fix lai get template event post
-            $dataSend = [
-                '{creator name}' => \Yii::$app->user->identity->firstname,
-                '{project name}' => $eventInfo->name
-            ];
-    
+           
+            
             $arrayEmployees = $dataPost['employeeList'];
             $dataInsert = [];
             foreach ($arrayEmployees as $item) {
@@ -131,26 +129,7 @@ class EventPostController extends ApiController {
                     'type'              => Activity::TYPE_CREATE_EVENT_POST,
                     'content'           => $content,
                 ];
-                    
-                //send email
-                $employee = new Employee();
-                $employee->id = $item['id'];
-                $employee->sendMail($dataSend, $themeEmail);
-                //send sms
-                $project = new Project();
-                if ($project->sms) {
-                    $dataInsert['sms'][] = [
-                        'owner_id'    => $eventPost->id,
-                        'employee_id' => $item['id'],
-                        'owner_table' => EventPost::tableName(),
-                        'content'     => $content,
-                        'is_success'  => \common\components\db\ActiveRecord::VAL_TRUE,
-                        'fee'         => 0,
-                        'agency_gateway' => 'esms'
-                    ];
-                }
             }
-
             if (!empty($dataInsert['notification'])) {
                 if (!\Yii::$app->db->createCommand()->batchInsert(Notification::tableName(), array_keys($dataInsert['notification'][0]), $dataInsert['notification'])->execute()) {
                     throw new \Exception('Save record to table Notification fail');
@@ -160,6 +139,21 @@ class EventPostController extends ApiController {
             if (!empty($dataInsert['sms'])) {
                 if (!\Yii::$app->db->createCommand()->batchInsert(Sms::tableName(), array_keys($dataInsert['sms'][0]), $dataInsert['sms'])->execute()) {
                     throw new \Exception('Save record to table Sms fail');
+                }
+            }
+            
+            $themeEmail = \common\models\EmailTemplate::getThemeCreateEventPost();
+            $themeSms   = \common\models\SmsTemplate::getThemeCreateEventPost();
+            //send email and sms
+            if (!empty($arrayEmployees) && ($eventInfo->sms)) {
+                $dataSend = [
+                        '{creator name}' => \Yii::$app->user->identity->firstname,
+                        '{event name}'  => $eventInfo->name
+                ];
+                $employees = new Employee();
+                foreach ($arrayEmployees as $item) {
+                    $employees->sendMail($dataSend, $themeEmail);
+                    $employees->sendSms($dataSend, $themeSms);
                 }
             }
             
