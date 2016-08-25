@@ -425,7 +425,13 @@ appRoot.controller('editEventCtrl', ['$rootScope', 'data', 'listCalendar', '$sco
         $scope.departments = [];
         $scope.allDepartment = 0;
         $scope.calendars = listCalendar;
-        
+        var departmentsData = membersData = [];
+        if(data.calendars.invitations.department != null) {
+            departmentsData = Object.keys(data.calendars.invitations.department);
+        }
+        if((data.calendars.invitations.departmentAndEmployee != null) && (data.calendars.invitations.departmentAndEmployee.employeeEditList != null)) {
+            membersData = data.calendars.invitations.departmentAndEmployee.employeeEditList;
+        }
         $scope.event = {
             id: data.calendars.event.id,
             var_start_datetime: data.calendars.event.start_datetime,
@@ -442,9 +448,11 @@ appRoot.controller('editEventCtrl', ['$rootScope', 'data', 'listCalendar', '$sco
             color: data.calendars.event.color,
             redmind: parseInt(data.calendars.remind),
             sms: 0,
-            departments: Object.keys(data.calendars.invitations.department),
-            members: data.calendars.invitations.departmentAndEmployee.employeeEditList,
+            departments: departmentsData,
+            members:  membersData,
+            data_old : data.calendars
         }
+        
         //add calendar 
         $scope.calendars = [];
         $scope.calendars.push({id: 0, name: '--', count: 0});
@@ -457,7 +465,7 @@ appRoot.controller('editEventCtrl', ['$rootScope', 'data', 'listCalendar', '$sco
 
         };
 
-        //add employee
+       //add employee
         $scope.findEmployeeForCalendar = function (keyword) {
             employeeService.searchEmployee({keyword: keyword, departments: $scope.event.departments, members: $scope.event.members}, function (response) {
                 $scope.employees = response.objects;
@@ -535,7 +543,6 @@ appRoot.controller('editEventCtrl', ['$rootScope', 'data', 'listCalendar', '$sco
                             $scope.event.start_datetime = moment($scope.event.var_start_datetime).format('YYYY-MM-DD HH:mm:ss');
                             $scope.event.end_datetime = moment($scope.event.var_end_datetime).format('YYYY-MM-DD HH:mm:ss');
                             var fd = new FormData();
-                            console.log($scope.files);
                             for (var i in $scope.files) {
                                 fd.append("file_" + i, $scope.files[i]);
                             }

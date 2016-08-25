@@ -268,9 +268,8 @@ class CalendarController extends ApiController {
         if (strlen($eventJson)) {
             $dataPost = json_decode($eventJson, true);
         }
-//         $transaction = \Yii::$app->db->beginTransaction();
+        $transaction = \Yii::$app->db->beginTransaction();
 
-        //create object and validate data
         try {
             //Check if get event is null value.
             if (!$ob = Event::find()->select(['id', 'name'])->where(['id' => $dataPost['id']])->one()) {
@@ -289,158 +288,95 @@ class CalendarController extends ApiController {
                 throw new \Exception($this->_message);
             }
             
-            $dataMegre = $this->_megreDataDeparmentAndEmployee($dataPost);
-            
+            $megreDataDeparmentAndEmployee = $this->_megreDataDeparmentAndEmployee($dataPost);
             //update table invitation
-            $this->_updataInvitation($dataPost['id'], $dataMegre);
-            echo "!!!!!!!!!!!!!!!!";
-            die;
+            $this->_updataInvitation($dataPost['id'], $megreDataDeparmentAndEmployee);
             //update table invitee
-            $this->_updataInvitee($dataPost['id'], $dataMegre);
-
+            $this->_updataInvitee();
+            
+            $megreEmployee = $this->_megreDataEmployee($dataPost);
             //update table Event_confirmation
-            $this->_updataEventConfirmation($dataPost['id'], $dataMegre);
+            $this->_updataEventConfirmation($dataPost['id'], $megreEmployee);
+            
+            //update table Remind
+            $this->_updataRemind($dataPost, $megreEmployee, $ob);
             
             //move file
             File::addFiles($_FILES, \Yii::$app->params['PathUpload'], $ob->id, File::TABLE_EVENT);
-
-//             //activity
-//             $activity = new Activity();
-//             $activity->owner_id = $ob->id;
-//             $activity->owner_table = Activity::TABLE_EVENT;
-//             $activity->parent_employee_id = 0;
-//             $activity->employee_id = \Yii::$app->user->getId();
-//             $activity->type = Activity::TYPE_CREATE_EVENT;
-//             $activity->content = \Yii::$app->user->identity->firstname . " " . \Yii::t('common', 'created') . " " . $ob->name;
-
-//             if (!$activity->save()) {
-//                 throw new \Exception('Save record to table Activity fail');
-//             }
-
-//             //Employee activity
-//             $employeeActivity = EmployeeActivity::find()->andCompanyId()->andWhere(['employee_id' => \Yii::$app->user->getId()])->one();
-//             if (!$employeeActivity) {
-//                 $employeeActivity = new EmployeeActivity();
-//                 $employeeActivity->employee_id = \Yii::$app->user->getId();
-//                 $employeeActivity->activity_calendar = $employeeActivity->activity_total = 0;
-//             }
-
-//             $employeeActivity->activity_calendar += 1;
-//             $employeeActivity->activity_total += 1;
-//             if (!$employeeActivity->save()) {
-//                 throw new \Exception('Save record to table EmployeeActivity fail');
-//             }
-
-//             //get all employ
-//             $arrayEmployees = [];
-//             $isQuery = false;
-//             $query = Employee::find()->andCompanyId();
-
-//             if (!empty($dataPost['members']) && !empty($dataPost['departments'])) {
-//                 $isQuery = true;
-//                 $idEmployees = [];
-
-//                 foreach ($dataPost['members'] as $item) {
-//                     $idEmployees[] = $item['id'];
-//                 }
-
-//                 $query->andWhere('id in (' . implode(',', $idEmployees) . ') or department_id in (' . implode(',', $dataPost['departments']) . ')');
-//             } elseif (!empty($dataPost['members'])) {
-//                 $isQuery = true;
-//                 $idEmployees = [];
-
-//                 foreach ($dataPost['members'] as $item) {
-//                     $idEmployees[] = $item['id'];
-//                 }
-
-//                 $query->andWhere(['id' => $idEmployees]);
-//             } elseif (!empty($dataPost['departments'])) {
-//                 $isQuery = true;
-//                 $query->andWhere(['department_id' => $dataPost['departments']]);
-//             }
-
-//             if ($isQuery) {
-//                 $content = \Yii::$app->user->identity->firstname . " " . \Yii::t('common', 'created') . " " . $ob->name;
-//                 $arrayEmployees = $query->all();
-
-//                 $dataSend = [
-//                     '{creator name}' => \Yii::$app->user->identity->firstname,
-//                     '{event name}' => $ob->name
-//                 ];
-
-//                 $themeEmail = \common\models\EmailTemplate::getThemeCreateEvent();
-//                 $themeSms = \common\models\SmsTemplate::getThemeCreateEvent();
-
-//                 $notifications = [];
-//                 $eventConfirmations = [];
-//                 $sms = [];
-//                 $remind = [];
-
-//                 foreach ($arrayEmployees as $item) {
-//                     //save notification
-//                     $notifications[] = [$ob->id, Notification::TABLE_EVENT, $item->id, \Yii::$app->user->getId(), "create_event", $content];
-
-//                     //event confirmation
-//                     $eventConfirmations[] = [$ob->id, $item->id, 0];
-
-//                     //save sms
-//                     if ($ob->sms) {
-//                         $sms[] = [$ob->id, $item->id, \common\models\Sms::TABLE_EVENT, $content, 1, 0];
-//                     }
+            
+            //update table activity
+            $activity = new Activity();
+            $activity->owner_id = $ob->id;
+            $activity->owner_table = Activity::TABLE_EVENT;
+            $activity->parent_employee_id = 0;
+            $activity->employee_id = \Yii::$app->user->getId();
+            $activity->type = Activity::TYPE_EDIT_EVENT;
+            $activity->content = \Yii::$app->user->identity->firstname . " " . \Yii::t('common', 'created') . " " . $ob->name;
+            if (!$activity->save()) {
+                throw new \Exception('Save record to table Activity fail');
+            }
+            
+            //update table Notification
+            if (!empty($megreEmployee['employees'])) {
+                //save sms
+                $dataInsertSms = $dataInsertNotification = [];
+                foreach ($megreEmployee['employees'] AS $key => $val) {
+                    $dataInsertNotification[] = [
+                            'owner_id'    => $ob->id,
+                            'owner_table' => Event::tableName(),
+                            'employee_id' => $val,
+                            'type'        =>  Activity::TYPE_EDIT_EVENT,
+                            'content'     => \Yii::$app->user->identity->firstname . " " . \Yii::t('common', 'created') . " " . $ob->name,
+                            'owner_employee_id' => 0
+                    ];
                     
-//                     //remind
-//                     if (!empty($dataPost['redmind'])) {
-//                         $remind[] = [$item->id, $ob->id, Remind::TABLE_EVENT, $ob->name, $ob->start_datetime - ($dataPost['redmind'] * 60), $dataPost['redmind'], 0, 0];
-//                     }
-//                 }
-
-//                 if (!empty($notifications)) {
-//                     if (!Yii::$app->db->createCommand()->batchInsert(
-//                                     Notification::tableName(), ['owner_id', 'owner_table', 'employee_id', 'owner_employee_id', 'type', 'content'], $notifications)->execute()) {
-//                         throw new \Exception('BatchInsert to notification table fail');
-//                     }
-//                 }
-
-//                 if (!empty($eventConfirmations)) {
-//                     if (!Yii::$app->db->createCommand()->batchInsert(
-//                                     EventConfirmation::tableName(), ['event_id', 'employee_id', 'event_confirmation_type_id'], $eventConfirmations)->execute()) {
-//                         throw new \Exception('BatchInsert to event_confirmation table fail');
-//                     }
-//                 }
+                    if ($ob->sms) {
+                        $dataInsertSms[] = [
+                                'owner_id'    => $ob->id,
+                                'employee_id' => $val,
+                                'owner_table' => Event::tableName(),
+                                'content'     => \Yii::$app->user->identity->firstname . " " . \Yii::t('common', 'created') . " " . $ob->name,
+                                'is_success'  => true,
+                                'fee'         => 0,
+                                'agency_gateway' => 'esms'
+                                
+                        ];
+                    }
+                }
+                if (!\Yii::$app->db->createCommand()->batchInsert(Notification::tableName(), array_keys($dataInsertNotification[0]), $dataInsertNotification)->execute()) {
+                    throw new \Exception('Save record to table Project Participant fail');
+                }
                 
-//                 if (!empty($remind)) {
-//                     if (!Yii::$app->db->createCommand()->batchInsert(
-//                                     Remind::tableName(), ['employee_id', 'owner_id', 'owner_table', 'content', 'remind_datetime', 'minute_before', 'repeated_time', 'is_snoozing'], $remind)->execute()) {
-//                         throw new \Exception('BatchInsert to remind table fail');
-//                     }
-//                 }
-
-//                 if (!empty($sms)) {
-//                     if (!Yii::$app->db->createCommand()->batchInsert(
-//                                     Sms::tableName(), ['owner_id', 'employee_id', 'owner_table', 'content', 'is_success', 'fee'], $sms)->execute()) {
-//                         throw new \Exception('BatchInsert to sms table fail');
-//                     }
-//                 }
-
-//                 //send email and sms
-//                 foreach ($arrayEmployees as $item) {
-//                     $item->sendMail($dataSend, $themeEmail);
-//                     if ($ob->sms) {
-//                         $item->sendSms($dataSend, $themeSms);
-//                     }
-//                 }
-//             }
-
-//             $transaction->commit();
+                if (!empty($dataInsertSms)) {
+                    if (!\Yii::$app->db->createCommand()->batchInsert(SMS::tableName(), array_keys($dataInsertSms[0]), $dataInsertSms)->execute()) {
+                        throw new \Exception('Save record to table Project Participant fail');
+                    }
+                }
+            }
+            $themeEmail = \common\models\EmailTemplate::getThemeEditEvent();
+            $themeSms   = \common\models\SmsTemplate::getThemeEditEvent();
+            
+            //send email and sms
+            if (!empty($megreEmployee['employees']) && ($ob->sms)) {
+                $dataSend = [
+                        '{creator name}' => \Yii::$app->user->identity->firstname,
+                        '{event name}'  => $ob->name
+                ];
+                $employees = new Employee();
+                foreach ($megreEmployee['employees'] as $item) {
+                    $employees->sendMail($dataSend, $themeEmail);
+                    $employees->sendSms($dataSend, $themeSms);
+                }
+            }
+            
+            $transaction->commit();
         } catch (\Exception $e) {
             $this->_message = $e->getMessage();
-
             if (!$this->_error) {
                 $this->_error = true;
                 $this->_message = \Yii::t('member', 'error_system');
             }
-
-//             $transaction->rollBack();
+            $transaction->rollBack();
             return $this->sendResponse($this->_error, $this->_message, []);
         }
 
@@ -482,44 +418,27 @@ class CalendarController extends ApiController {
      * @return array
      */
     private function _megreDataEmployee($dataPost = []) {
-        
-        
-        
-        echo "OAAK";
-        
-        die;
         if (empty($dataPost)) return false;
-        $departmentOld = !empty($dataPost['data_old']['invitations']['department']) ? $dataPost['data_old']['invitations']['department'] : null;
-        $departmentNew = !empty($dataPost['departments']) ? $dataPost['departments'] : null;
-        if (!empty($departmentNew) && !empty($departmentOld)) {
-            foreach ($departmentNew as $key_new => $val_New) {
-                foreach ($departmentOld as $key_old => $val_old) {
-                    if ($val_New == $key_old) {
-                        unset($departmentNew[$key_new]);
-                        unset($departmentOld[$key_old]);
-                    }
-                }
-            }
-        }
         
-        $employeeOld = !empty($dataPost['data_old']['invitations']['employee']) ? $dataPost['data_old']['invitations']['employee'] : null;
-        $employeeNew = !empty($dataPost['members']) ? $dataPost['members'] : null;
-        if (!empty($employeeOld) && !empty($employeeNew)) {
+        $employeeOld = !empty($dataPost['data_old']['invitations']['departmentAndEmployee']['employeeList']) ? $dataPost['data_old']['invitations']['departmentAndEmployee']['employeeList'] : null;
+        $employeeNew = Employee::getlistByepartmentIdsAndEmployeeIds($dataPost['departments'], $dataPost['members']);
+        $result = [];
+        if (!empty($employeeOld) && !empty($employeeNew['employeeList'])) {
             foreach ($employeeOld as $keyEmployessOld => $valEmployeeOld) {
-                foreach ($dataPost['members'] as $keyMemberNew => $valMemberNew) {
-                    if ($keyEmployessOld == $valMemberNew['id']) {
+                $result['employeeOld'][$keyEmployessOld] = $valEmployeeOld['id'];
+                foreach ($employeeNew['employeeList'] as $keyMemberNew => $valMemberNew) {
+                    $result['employeeNew'][$keyMemberNew] = $valMemberNew['id'];
+                    $result['employees'][$keyMemberNew] = $valMemberNew['id'];
+                    if ($valEmployeeOld['id'] == $valMemberNew['id']) {
                         unset($employeeOld[$keyEmployessOld]);
-                        unset($employeeNew[$keyMemberNew]);
+                        unset($employeeNew['employeeList'][$keyMemberNew]);
+                        unset($result['employeeOld'][$keyEmployessOld]);
+                        unset($result['employeeNew'][$keyMemberNew]);
                     }
                 }
             }
         }
-        return [
-                'departmentOld' => $departmentOld,
-                'departmentNew' => $departmentNew,
-                'employeeOld'   => $employeeOld,
-                'employeeNew'   => $employeeNew,
-        ];
+        return $result;
     }
 
     /**
@@ -572,6 +491,33 @@ class CalendarController extends ApiController {
      */
     private function _updataEventConfirmation($event_id = null, $dataMegre = []) {
         if (empty($event_id)) return false;
+        if (empty($dataMegre)) return true;
+        
+        //Delete employee
+        if (!empty($dataMegre['employeeOld'])) {
+            EventConfirmation::deleteAll([
+                    'company_id'  => $this->_companyId,
+                    'employee_id' => array_values($dataMegre['employeeOld']),
+                    'event_id'    => $event_id,
+            ]);
+        }
+        
+        //Add new employee
+        $dataInsertInvitation = [];
+        if (!empty($dataMegre['employeeNew'])) {
+            foreach ($dataMegre['employeeNew'] as $val) {
+                $dataInsertInvitation[] = [
+                        'employee_id' => $val,
+                        'event_id'    => $event_id
+                ];
+            }
+        }
+         
+        if (!empty($dataInsertInvitation)) {
+            if (!\Yii::$app->db->createCommand()->batchInsert(EventConfirmation::tableName(), array_keys($dataInsertInvitation[0]), $dataInsertInvitation)->execute()) {
+                throw new \Exception('Save record to table Project Participant fail');
+            }
+        }
         return true;
     }
 
@@ -581,9 +527,54 @@ class CalendarController extends ApiController {
      * @param array $dataPost data get from employee.
      * @return array
      */
-    private function _updataInvitee($event_id = null, $dataMegre = []) {
-        if (empty($event_id)) return false;
+    private function _updataRemind($dataPost = [], $dataMegre = [], $object = null) {
+        if (empty($dataPost['id'])) return false;
+        if (empty($dataMegre)) return true;
+        if (empty($object)) return true;
+        
+        $event_id = $dataPost['id'];
+        //Delete employee
+        if (!empty($dataMegre['employeeOld'])) {
+            Remind::deleteAll([
+                    'company_id'  => $this->_companyId,
+                    'employee_id' => array_values($dataMegre['employeeOld']),
+                    'owner_id'    => $event_id,
+                    'owner_table' => Event::tableName(),
+            ]);
+        }
+        //Add new employee
+        $dataInsertInvitation = [];
+        if (!empty($dataMegre['employeeNew'])) {
+            foreach ($dataMegre['employeeNew'] as $val) {
+                $dataInsertInvitation[] = [
+                        'employee_id' => $val,
+                        'owner_id'    => $event_id,
+                        'owner_table' => Event::tableName(),
+                        'content'     => $dataPost['name'],
+                        'remind_datetime' => $object->start_datetime - ($dataPost['redmind'] * 60),
+                        'minute_before' => $dataPost['redmind'],
+                        'repeated_time' => 0,
+                        'is_snoozing'   => 0,
+                ];
+            }
+        }
+        if (!empty($dataInsertInvitation)) {
+            if (!\Yii::$app->db->createCommand()->batchInsert(Remind::tableName(), array_keys($dataInsertInvitation[0]), $dataInsertInvitation)->execute()) {
+                throw new \Exception('Save record to table Project Participant fail');
+            }
+        }
         return true;
+    }
+
+    /**
+     * Function update invitee
+     *
+     * @param array $dataPost data get from employee.
+     * @return array
+     */
+    private function _updataInvitee() {
+//         if (empty($event_id)) return false;
+//         return true;
     }
     
     /**
@@ -594,6 +585,8 @@ class CalendarController extends ApiController {
      */
     private function _updataInvitation($event_id = null, $dataMegre = []) {
         if (empty($event_id)) return false;
+        if (empty($dataMegre)) return true;
+        
         //delete department table Invitation
         if (!empty($dataMegre['departmentOld'])) {
             Invitation::deleteAll([
@@ -621,7 +614,6 @@ class CalendarController extends ApiController {
                 $dataInsertInvitation[] = [
                         'event_id' => $event_id,
                         'owner_id' => $owner_id,
-                        'company_id'  => $this->_companyId,
                         'owner_table' => Invitation::TABLE_DEPARTMENT,
                 ];
             }
@@ -634,7 +626,6 @@ class CalendarController extends ApiController {
                 $dataInsertInvitation[] = [
                         'event_id'  => $event_id,
                         'owner_id'    => $val['id'],
-                        'company_id'  => $this->_companyId,
                         'owner_table' => Invitation::TABLE_EMPLOYEE,
                 ];
             }

@@ -669,10 +669,10 @@ appRoot.controller('editEventCtrl', ['$rootScope', 'data', 'listCalendar', '$sco
         $scope.calendars = listCalendar;
         var departmentsData = membersData = [];
         if(data.calendars.invitations.department != null) {
-            departments = Object.keys(data.calendars.invitations.department);
+            departmentsData = Object.keys(data.calendars.invitations.department);
         }
         if((data.calendars.invitations.departmentAndEmployee != null) && (data.calendars.invitations.departmentAndEmployee.employeeEditList != null)) {
-            members = data.calendars.invitations.departmentAndEmployee.employeeEditList;
+            membersData = data.calendars.invitations.departmentAndEmployee.employeeEditList;
         }
         $scope.event = {
             id: data.calendars.event.id,
@@ -691,9 +691,10 @@ appRoot.controller('editEventCtrl', ['$rootScope', 'data', 'listCalendar', '$sco
             redmind: parseInt(data.calendars.remind),
             sms: 0,
             departments: departmentsData,
-            members: membersData,
+            members:  membersData,
             data_old : data.calendars
         }
+        
         //add calendar 
         $scope.calendars = [];
         $scope.calendars.push({id: 0, name: '--', count: 0});

@@ -112,6 +112,26 @@ class EmailTemplate extends \common\components\db\ActiveRecord
         
         return null;
     }
+
+    /**
+     * Get theme email of creating event 
+     * 
+     * @return string|null
+     */
+    public static function getThemeEditEvent(){
+        
+        $theme = self::find([
+            'column_name' => Activity::TYPE_EDIT_EVENT,
+            'language_code' => \Yii::$app->language,
+            'disabled' => self::STATUS_ENABLE
+        ])->one();
+        
+        if($theme){
+            return $theme;
+        }
+        
+        return null;
+    }
     
     /**
      * Get theme email of Edit project 
