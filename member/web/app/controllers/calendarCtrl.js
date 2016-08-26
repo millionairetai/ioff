@@ -410,7 +410,86 @@ appRoot.controller('viewCalendarCtrl', ['$scope', 'calendarService', 'fileServic
             }
         });
     };
+    
+    //get event post
+    $scope.getHtml = function (html) {
+        return $sce.trustAsHtml(html);
+    };
+    $scope.filter = {
+        itemPerPage: PER_PAGE_VIEW_MORE,
+        totalItems: 0,
+        currentPage: 1,
+        calendarId: calendarId
+    };
+    $scope.eventPost = [];
+    $scope.getEventPosts = function () {
+        EventPostService.getEventPosts($scope.filter, function (response) {
+            $scope.release  = response.objects.collection;
+            $scope.releases = $scope.eventPost;
+            $scope.eventPost = $scope.releases.concat($scope.release);
+            $scope.eventPostFile = response.objects.files;
+            $scope.filter.totalItems = response.objects.totalItems;
+        });
+    };
+    $scope.getEventPosts();
+    
+  //Delete event post
+    $scope.deleteEventPost = function (index, id) {
+         dialogMessage.open('confirm', $rootScope.$lang.confirm_delete_file, function () {
+                EventPostService.removeEventPost({calendarId: id}, function (data) {
+                $scope.eventPost.splice(index, 1);
+                alertify.success($rootScope.$lang.remove_event_post_success);
+            });
+        });
+    };
+    
+    //edit event post
+    $scope.editEventPost = function (eventPost, $index) {
+        var modalInstance = $uibModal.open({
+            templateUrl: 'app/views/eventPost/edit.html',
+            controller: 'editEventPostCtrl',
+            size: 'lg',
+            keyboard: true,
+            backdrop: 'static',
+            resolve: {
+                eventPost: function () {
+                    return eventPost;
+                }
+            }
+        });
+    };
+    
+    //view more
+    $scope.viewMore = function () {
+        $scope.filter.currentPage++;
+        $scope.getEventPosts();
+    }
+
 }]);
+
+//edit project post
+appRoot.controller('editEventPostCtrl', ['$scope', 'EventPostService', '$uibModalInstance', 'controllerService', 'actionService', '$rootScope', 'eventPost', 'alertify', 'dialogMessage', 'socketService',
+    function ($scope, EventPostService, $uibModalInstance, controllerService, actionService, $rootScope, eventPost, alertify, dialogMessage, socketService) {
+            $scope.eventpost = {
+                id: eventPost.id,
+                description: eventPost.content,
+            };
+            $scope.update = function () {
+                if (EventPostService.validateEventPost($scope.eventpost)) {
+                        var params = {'id': eventPost.id, 'content': $scope.eventpost.description};
+                        EventPostService.updateEventPost(params, function (data) {
+                        eventPost.content = $scope.eventpost.description;
+                        alertify.success($rootScope.$lang.project_post_update_success);
+                        $uibModalInstance.dismiss('save');
+                    });
+                }
+            };
+        //cancel
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
+}]);
+
 //edit event to calendar
 appRoot.controller('editEventCtrl', ['$rootScope', 'data', 'listCalendar', '$scope', 'calendarService', 'alertify', '$uibModalInstance', 'departmentService', 'employeeService', '$timeout', 'socketService',function ($rootScope, data, listCalendar,$scope, calendarService, alertify, $uibModalInstance, departmentService, employeeService, $timeout, socketService) {
         //step
