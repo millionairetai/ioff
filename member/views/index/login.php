@@ -6,7 +6,7 @@ use yii\widgets\ActiveForm;
 
     <div class="login-box-body">
         <div class="login-logo">
-            <b>CENTER</b>OFFICE
+            <img src="/img/logo-bgwhite.png" />
         </div><!-- /.login-logo -->
         <!--<br />-->
             <!--<p class="login-box-msg">Sign in to start your session</p>-->

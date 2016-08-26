@@ -1,10 +1,7 @@
 <header class="main-header">
     <!-- Logo -->
     <a href="/#/home" class="logo">
-        <!-- mini logo for sidebar mini 50x50 pixels -->
-        <!--<span class="logo-mini"><b>C</b>CE</span>-->
-        <!-- logo for regular state and mobile devices -->
-        <span><b>CENTER</b>OFFICE</span>
+        <span><b>I</b>OFFICEZ</span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top" role="navigation">
@@ -23,15 +20,12 @@
                     <!-- Single button -->
                     <div class="btn-group">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Tất cả <span class="caret"></span>
+                            Công việc <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu">
-                            <li><a href="#">Tất cả</a></li>
                             <li><a href="#">Dự án</a></li>
                             <li><a href="#">Sự kiện</a></li>
                             <li><a href="#">Công việc</a></li>
-                            <li role="separator" class="divider"></li>
-                            <li><a href="#">Event</a></li>
                         </ul>
                     </div>
                     <!---->
