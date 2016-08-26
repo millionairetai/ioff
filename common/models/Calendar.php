@@ -64,7 +64,7 @@ class Calendar extends ActiveRecord {
      */
     public static function getAllCalendar($companyId, $employeeId) {
         $sql = "SELECT event.calendar_id, calendar.name, count(event.id) AS `number_event`																
-                FROM EVENT																
+                FROM event																
                     INNER JOIN calendar ON event.calendar_id= calendar.id AND calendar.company_id={$companyId} AND calendar.disabled=0															
                     WHERE (event.is_public=1 OR event.created_employee_id={$employeeId} OR (EXISTS(															
                     SELECT *															
