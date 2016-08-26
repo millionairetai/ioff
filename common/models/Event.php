@@ -194,8 +194,9 @@ class Event extends ActiveRecord {
         if (!empty($eventConfimationType)) {
             foreach ($eventConfimationType as $info) {
                 $eventConfimationTypeList[] = [
-                        'id'    => $info->id,
-                        'name'  => $info->name,
+                        'id'   => $info->id,
+                        'name' => $info->name,
+                        'column_name' => $info->column_name,
                 ];
             }
         }
@@ -209,7 +210,7 @@ class Event extends ActiveRecord {
         
         //get remind by owverid 
         $remind = Remind::findOne(['owner_id' => $eventId, 'owner_table' => Event::tableName(), 'company_id' => $companyId]);
-        
+        $ActiveAttent= EventConfirmationType::getActiveAttent($eventId, \Yii::$app->user->getId());
         $result = [
                 'event' => [
                         'id'                => $event->id,
@@ -227,6 +228,7 @@ class Event extends ActiveRecord {
                         'end_datetime'      => isset($event->end_datetime) ? date('Y-m-d', $event->end_datetime) : null,
                         'end_time'          => isset($event->end_datetime) ? date('H:i', $event->end_datetime) : null,
                         'created_employee_id'  => $event->employee->getFullName(),
+                        'active_attend'     => empty($ActiveAttent) ? '' : $ActiveAttent[0]['column_name'],
                 ],
                 'calendar'      => ['name' => $event->calendar->getName()],
                 'remind'        => isset($remind->minute_before) ? $remind->minute_before : null,

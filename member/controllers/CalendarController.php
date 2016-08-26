@@ -16,6 +16,7 @@ use common\models\Sms;
 use common\models\EmployeeActivity;
 use Yii;
 use common\models\Project;
+use common\models\EventConfirmationType;
 
 class CalendarController extends ApiController {
 
@@ -644,5 +645,33 @@ class CalendarController extends ApiController {
             }
         }
         return true;
+    }
+    
+    /**
+     * Fuction display detail od Event by id
+     * @return multitype:unknown
+     */
+    public function actionAttend() {
+        $attend_type = \Yii::$app->request->post('attend_type');
+        $calendarId = \Yii::$app->request->post('calendarId');
+        if (empty($attend_type) || empty($calendarId)) {
+            return $this->sendResponse(true, "", 'Save record to table event_confirmation_type fail');
+        }
+        $EventConfirmationType = EventConfirmationType::find()->select(['id', 'name'])->where(['column_name' => $attend_type])->one();
+        
+        if (!empty($EventConfirmationType)) {
+            $eventConfirmation = EventConfirmation::find()
+                ->where(['company_id' => $this->_companyId, 'employee_id' => \Yii::$app->user->getId(), 'event_id' => $calendarId])
+                ->one();
+            if (empty($eventConfirmation)) {
+                return $this->sendResponse(true, "Get EventConfirmation info fail", []);
+            }
+            $eventConfirmation->event_confirmation_type_id = $EventConfirmationType->id;
+            if (!$eventConfirmation->update()) {
+                throw new \Exception('Save record to table eventConfirmation fail');
+            }
+        }
+        
+        return $this->sendResponse(false, "", []);
     }
 }

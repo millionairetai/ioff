@@ -50,6 +50,9 @@
             remove_file_success:'File đã được xóa thành công.',
             remove_file_error:'File bạn cần xóa không thành công.',
             remove_project_post_success:'Xóa dự án bài thành công.',
+            remove_event_post_success:'Xóa sự kiện thành công.',
+            update_attend_success:'Attend thành công.',
+            update_attend_error:'Attend Error.',
             last_modify: 'Ngày sửa',
             modify_by: 'Người tạo',
             search: 'Tìm kiếm',
@@ -177,7 +180,8 @@
             attend : 'Attent',
             maybe : 'Maybe',
             no_attent : 'Not Attent',
-            no_confirm : 'No confirm'
+            no_confirm : 'No confirm',
+            recent_post : 'Bài gần đây'
         };
     });
 })(window.angular);

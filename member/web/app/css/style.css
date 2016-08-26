@@ -832,3 +832,8 @@ header.main-header{
 .detail-event .content-event.viewall .readmore{
     display: none;
 }
+
+.active {
+    background: #023e61;
+    border-color: #fff6f4;
+}

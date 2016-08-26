@@ -48,6 +48,9 @@
             confirm_delete_file:'Are you sure delete?',
             remove_file_success:'Delete File success.',
             remove_project_post_success:'Delete Project Post success.',
+            remove_event_post_success:'Delete Event Post success.',
+            update_attend_success:'Attend success.',
+            update_attend_error:'Attend error.',
             remove_file_error:'Delete File Error.',
             last_modify: 'Last modified',
             modify_by: 'Modify by',
@@ -177,7 +180,8 @@
             attend : 'Attent',
             maybe : 'Maybe',
             no_attent : 'Not Attent',
-            no_confirm : 'No confirm'
+            no_confirm : 'No confirm',
+            recent_post : 'Recent post'
         };
     });
 })(window.angular);

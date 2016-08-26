@@ -27,8 +27,14 @@
                                 <a href="#"> {{collection.event.name}}</a>
                             </span>
                             <span class="description">{{collection.event.is_public_name}} - {{$root.$lang.create_by}} {{collection.event.created_employee_id}}</span>
+                            
                             <div class="btn-group" ng-repeat="val in collection.eventConfirmationType">
-                                <a class="btn btn-primary btn-xs">{{val.name}}</a> 
+                                <span ng-if="activeAttend === val.column_name">
+                                    <a class="btn btn-primary btn-xs active">{{val.name}}</a> 
+                                </span>
+                                <span ng-if="activeAttend !== val.column_name">
+                                    <a class="btn btn-primary btn-xs" ng-click="attend(val.column_name)" >{{val.name}}</a> 
+                                </span>
                             </div>
                         </dd>
                     </dl>
@@ -88,7 +94,7 @@
             </div>
             <div class="box box-solid recent-post-event">
                 <div class="box-header with-border">
-                    <h4 class="box-title">Recent posts</h4>
+                    <h4 class="box-title">{{$root.$lang.recent_post}}</h4>
                     <div class="box-tools pull-right">
                         <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
                     </div>
@@ -122,22 +128,10 @@
                         <!--box body-->
                     </div><!-- Recent post item-->
                     <div class="box-footer text-center" >
-            <button class="btn form-control cursor-pointer viewmorecl" ng-click="viewMore()" ng-show="filter.totalItems > (filter.currentPage * filter.itemPerPage)"><a>{{$root.$lang.view_more_upper_case}}</a></button>
-        </div>
+                    <button class="btn form-control cursor-pointer viewmorecl" ng-click="viewMore()" ng-show="filter.totalItems > (filter.currentPage * filter.itemPerPage)"><a>{{$root.$lang.view_more_upper_case}}</a></button>
                 </div>
-            
-            
-            
-            
-            <div ng-repeat="v in eventPost">
-                        <div class="box box-widget">
-                            
-                        </div>
-                        <!-- END timeline item -->
-                    </div>
-                    
-                    
-                    </div>
+            </div>
+        </div>
         </div>
         <div class="col-md-3 padding-left-md-0">
             <div class="box box-solid event-member">

@@ -554,11 +554,12 @@ appRoot.controller('viewCalendarCtrl', ['$scope', 'calendarService', 'fileServic
     var calendarId = $routeParams.calendarId;
     //set paramter for layout
     $scope.collection = [];
+    $scope.activeAttend = '';
     $scope.getInfoEvent = function () {
         calendarService.viewEvent({calendarId: calendarId}, function (response) {
             if (response.error) $location.path('/calendar');
-            console.log(response);
             $scope.collection = response.objects;
+            $scope.activeAttend = response.objects.event.active_attend;
         });
     };
     $scope.getInfoEvent();
@@ -705,6 +706,39 @@ appRoot.controller('viewCalendarCtrl', ['$scope', 'calendarService', 'fileServic
     $scope.viewMore = function () {
         $scope.filter.currentPage++;
         $scope.getEventPosts();
+    }
+    
+    //action click attend
+    $scope.attend = function (attend) {
+        calendarService.attend({attend_type: attend, calendarId: calendarId}, function (response) {
+            switch($scope.activeAttend) {
+                case 'attend':
+                    $scope.collection.attent.attend--;
+                    break;
+                case 'maybe':
+                    $scope.collection.attent.maybe--;
+                    break;
+                case 'no_attend':
+                    $scope.collection.attent.no_attend--;
+                    break;
+                }
+            switch(attend) {
+                case 'attend':
+                    $scope.collection.attent.attend++;
+                    break;
+                case 'maybe':
+                    $scope.collection.attent.maybe++;
+                    break;
+                case 'no_attend':
+                    $scope.collection.attent.no_attend++;
+                    break;
+                }
+            if ($scope.activeAttend == null) {
+                $scope.collection.attent.no_confirm--;
+            }
+            alertify.success($rootScope.$lang.update_attend_success);
+            $scope.activeAttend = attend;
+        });
     }
 }]);
 

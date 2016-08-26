@@ -84,4 +84,21 @@ class EventConfirmationType extends \common\components\db\ActiveRecord
                     EventConfirmationType::NO_CONFIRM => $countDefault
                 ];
     }
+    
+    /**
+     * Get count of status evetn attent
+     * @param string $eventID
+     * @param number $countDefault
+     */
+    public static function getActiveAttent($eventID = null, $employee_id = null) {
+       return EventConfirmation::find()->select([EventConfirmationType::tableName().'.column_name AS column_name'])
+                ->innerJoin('event_confirmation_type', ' event_confirmation_type.id = event_confirmation.event_confirmation_type_id')
+                ->where([
+                        'event_confirmation.event_id' => $eventID, 
+                        'event_confirmation.company_id' => \Yii::$app->user->getCompanyId(), 
+                        'event_confirmation.employee_id' => $employee_id]
+                        )
+                ->asArray()
+                ->all();
+    }
 }
