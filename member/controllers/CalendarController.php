@@ -291,8 +291,6 @@ class CalendarController extends ApiController {
             $megreDataDeparmentAndEmployee = $this->_megreDataDeparmentAndEmployee($dataPost);
             //update table invitation
             $this->_updataInvitation($dataPost['id'], $megreDataDeparmentAndEmployee);
-            //update table invitee
-            $this->_updataInvitee();
             
             $megreEmployee = $this->_megreDataEmployee($dataPost);
             //update table Event_confirmation
@@ -329,6 +327,11 @@ class CalendarController extends ApiController {
                             'content'     => \Yii::$app->user->identity->firstname . " " . \Yii::t('common', 'created') . " " . $ob->name,
                             'owner_employee_id' => 0
                     ];
+
+                    $dataInsertInvitee[] = [
+                            'event_id'    => $ob->id,
+                            'employee_id' => $val,
+                    ];
                     
                     if ($ob->sms) {
                         $dataInsertSms[] = [
@@ -343,6 +346,11 @@ class CalendarController extends ApiController {
                         ];
                     }
                 }
+                //update table invitee
+                if (!\Yii::$app->db->createCommand()->batchInsert(Invitee::tableName(), array_keys($dataInsertInvitee[0]), $dataInsertInvitee)->execute()) {
+                    throw new \Exception('Save record to table Project Participant fail');
+                }
+                
                 if (!\Yii::$app->db->createCommand()->batchInsert(Notification::tableName(), array_keys($dataInsertNotification[0]), $dataInsertNotification)->execute()) {
                     throw new \Exception('Save record to table Project Participant fail');
                 }
