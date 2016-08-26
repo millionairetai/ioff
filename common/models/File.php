@@ -108,8 +108,7 @@ class File extends \common\components\db\ActiveRecord {
             $size = $file["size"];
             $temp = $file["tmp_name"];
             $error = $file["error"];
-//             $extension = end(explode('.', $fileName));
-            $extension = "txt";
+            $extension = end(explode('.', $fileName));
             $fileEncodeName = md5($employeeId . uniqid() . $key) . "." . $extension;
 
             if ($error > 0) {
