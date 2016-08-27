@@ -32,16 +32,20 @@
                     <div class="col-sm-9">
                         <div class="row">
                             <div class="col-sm-6">
-                                <div class="input-group"> 
-                                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span> 
-                                    <input placeholder="{{$root.$lang.project_start_date}}" type="text"  class="form-control"  ng-model="project.start_datetime" datepicker-popup="dd-MM-yyyy"  datepicker-popup="mediumDate"  is-open="openFrom" ng-click="openFrom = true" show-button-bar="false" />
-                    </div>
-                </div>
+                                <p class="input-group">
+                                    <input type="text" class="form-control" uib-datepicker-popup="dd-MM-yyyy" ng-model="project.start_datetime" is-open="open_start_datetime" datepicker-options="dateOptions" ng-required="true" close-text="{{$root.$lang.datepicker_close}}"  clear-text="{{$root.$lang.datepicker_clear}}" current-text="{{$root.$lang.datepicker_today}}" ng-focus="open_start_datetime = true" />
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="open_start_datetime = true"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </p>
+                            </div>
                             <div class="col-sm-6">
-                                <div class="input-group"> 
-                                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span> 
-                                    <input placeholder="{{$root.$lang.project_end_date}}" type="text"  class="form-control"  ng-model="project.duedatetime" datepicker-popup="dd-MM-yyyy"  datepicker-popup="mediumDate"  is-open="openTo" ng-click="openTo = true"  show-button-bar="false"/>
-                                </div>
+                                <p class="input-group">
+                                    <input type="text" class="form-control" uib-datepicker-popup="dd-MM-yyyy" ng-model="project.duedatetime" is-open="open_end_datetime" datepicker-options="dateOptions" ng-required="true" close-text="{{$root.$lang.datepicker_close}}"  clear-text="{{$root.$lang.datepicker_clear}}" current-text="{{$root.$lang.datepicker_today}}" ng-focus="open_end_datetime = true"/>
+                                    <span class="input-group-btn">
+                                        <button type="button" class="btn btn-default" ng-click="open_end_datetime = true"><i class="glyphicon glyphicon-calendar"></i></button>
+                                    </span>
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -93,9 +97,9 @@
                                 <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span> 
                                 <input type="text" class="form-control" auto-numeric="{vMin: 0, vMax:4294967295}" ng-model="project.estimate_hour">
                                 <span class="input-group-addon">{{$root.$lang.project_hour}}</span> 
+                            </div>
+
                         </div>
-                             
-                    </div>
                     </div>
                     <div class="form-group">
                         <label for="inputPassword3" class="col-sm-3 control-label">{{$root.$lang.project_status}}</label>
@@ -137,7 +141,7 @@
                     <label for="inputEmail3" class="col-sm-3 control-label">{{$root.$lang.project_manager}}</label>
 
                     <div class="col-sm-9">
-                        
+
                         <ui-select   ng-model="project.manager" theme="bootstrap" ng-disabled="disabled" on-select="selectManager($item, $model)">
                             <ui-select-match placeholder="" id="manager-match">
                                 <span ng-show="project.manager"><i class="fa fa-remove red cursor-pointer"  ng-click="clearManager()" style="position: absolute;left: 37px;top: 0px;"></i></span>
@@ -156,7 +160,7 @@
                                 </div>
                             </ui-select-choices>
                         </ui-select>
-                        
+
 
 
                     </div>
@@ -170,9 +174,9 @@
                             <input type="checkbox" ng-change="checkAll()" ng-model="allDepartment" icheck> {{$root.$lang.project_choose_all}}
                         </label>
                         <div id="container-department">
-                        <label ng-repeat="department in departments">
-                            <input type="checkbox" checklist-model="project.departments" checklist-value="department.id" icheck ng-change="clickCheckAll()"> {{department.name}}
-                        </label>
+                            <label ng-repeat="department in departments">
+                                <input type="checkbox" checklist-model="project.departments" checklist-value="department.id" icheck ng-change="clickCheckAll()"> {{department.name}}
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -196,10 +200,10 @@
                                         <div class="clearBoth"></div>
                                     </div>
                                 </div>
-                                
+
                             </ui-select-choices>
                         </ui-select>
-                        
+
 
                     </div>
                 </div>

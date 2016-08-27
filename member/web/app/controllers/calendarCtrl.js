@@ -319,6 +319,7 @@ appRoot.controller('viewCalendarCtrl', ['$scope', 'calendarService', 'fileServic
             $scope.collection = response.objects;
             $scope.activeAttend = response.objects.event.active_attend;
         });
+    }
     $scope.getInfoEvent();
     
     //function add event post

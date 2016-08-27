@@ -561,7 +561,7 @@ appRoot.controller('viewCalendarCtrl', ['$scope', 'calendarService', 'fileServic
             $scope.collection = response.objects;
             $scope.activeAttend = response.objects.event.active_attend;
         });
-    };
+    }
     $scope.getInfoEvent();
     
     //function add event post
@@ -679,7 +679,7 @@ appRoot.controller('viewCalendarCtrl', ['$scope', 'calendarService', 'fileServic
   //Delete event post
     $scope.deleteEventPost = function (index, id) {
          dialogMessage.open('confirm', $rootScope.$lang.confirm_delete_file, function () {
-             EventPostService.removeEventPost({calendarId: id}, function (data) {
+                EventPostService.removeEventPost({calendarId: id}, function (data) {
                 $scope.eventPost.splice(index, 1);
                 alertify.success($rootScope.$lang.remove_event_post_success);
             });
@@ -708,7 +708,7 @@ appRoot.controller('viewCalendarCtrl', ['$scope', 'calendarService', 'fileServic
         $scope.getEventPosts();
     }
     
-    //action click attend
+  //action click attend
     $scope.attend = function (attend) {
         calendarService.attend({attend_type: attend, calendarId: calendarId}, function (response) {
             switch($scope.activeAttend) {
@@ -740,6 +740,7 @@ appRoot.controller('viewCalendarCtrl', ['$scope', 'calendarService', 'fileServic
             $scope.activeAttend = attend;
         });
     }
+
 }]);
 
 //edit project post
@@ -1067,6 +1068,9 @@ appRoot.controller('addProjectCtrl', ['socketService','$scope', 'projectService'
         $scope.files = [];
         $scope.people = [];
         $scope.employees = [];
+        $scope.open_start_datetime = false;
+        $scope.open_end_datetime = false;
+        
         $scope.project = {
             parent_id: 0,
             manager: null,
