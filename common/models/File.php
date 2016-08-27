@@ -310,6 +310,7 @@ class File extends \common\components\db\ActiveRecord {
                     ->where([
                             'file.company_id'   => \Yii::$app->user->getCompanyId(),
                             'file.owner_object' => [$table_name, File::TABLE_PROJECT_POST],
+                            'file.owner_id'     => $owner_id,
                     ])
                     ->all();
         
