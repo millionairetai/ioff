@@ -1,0 +1,80 @@
+<section class="content-header" ng-controller="taskCtrl">
+    <h1>
+        {{$root.$lang.task_manage}}
+    </h1>
+    <div class="tool-right">
+        <a class="btn btn-primary btn-flat" ng-click="add()"><i class="fa fa-plus-square"></i> {{$root.$lang.task_add}}</a>
+    </div>
+</section>
+
+<section class="content" ng-controller="taskCtrl">
+    <!-- Default box -->
+    <div class="box">
+        <div class="box-header with-border">
+            <h3 class="box-title">{{$root.$lang.task_list}}</h3>
+            <div class="box-tools pull-right">
+                <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
+                <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
+            </div>
+        </div>
+
+        <br/>
+        <div class="box-body">
+            <div class = "container" ng-show="collection.length">
+                <!--<div class="tool-right">-->
+                    <input type="text" ng-model="pagination.config.search_text" ng-keyup="searchByName()"/>
+                    <a class="btn btn-info" ><i class="fa fa-search"></i></a>
+                <!--</div>-->
+                <div class ="row task-row" ng-repeat="ob in collection">
+                    <div class = "col-lg-12 container">
+                        <div class = "row">
+                            <div class="pull-left" id="name-desc">
+                                <div class="row"><a href="#calendar"><div class="inline"><strong>#584.</strong></div><strong>{{ob.name}}</strong></a></div>
+                                <div class="row"><i>{{ob.description}}</i></div>
+                            </div>
+                            <div class="pull-left task-creator">
+                                <label class="task-creator pull-left">{{$root.$lang.task_creator}}</label>
+                                <ul class="users-list task-creator pull-left"><li><img height = "30" width = "30" src="{{ob.creator.image}}" title="{{ob.creator.firstname}}" /><label class="users-list-name">{{ob.creator.firstname}}</label></li></ul>                                
+                            </div>
+                        </div>
+
+                        <div class = "row">
+                            <div class="pull-left assignee-to">
+                                <label class="assignee-to clearfix pull-left">{{$root.$lang.assigned_to}}</label>
+                                <ul class="col-lg-10 users-list pull-left assignee-to">
+                                    <li ng-repeat="x in ob.assignees"><img height = "30" width = "30" src="{{x.image}}" title="{{x.firstname}}" /><label class="users-list-name">{{x.firstname}}</label></li>
+                                </ul>
+                            </div>
+                            <div ng-show="ob.followers.length > 0" class="pull-left follow-to">
+                                <label class="follow-to pull-left">{{$root.$lang.follow_to}}</label>
+                                <ul class="users-list pull-left follow-to">
+                                    <li class="follow-to" ng-repeat="x in ob.followers"><img ng-if ="x.image != '/flies/employee/'" height = "30" width = "30" src="{{x.image}}" title="{{x.firstname}}" /><label class="users-list-name">{{x.firstname}}</label></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <!--end table-->
+            <!--pagination-->
+            <ul ng-show="pagination.total > pagination.config.count" ng-class="{hidden: pagination.total == 0}" class="pagination pagination-sm no-margin pull-right">
+                <li ng-click="pagination.config.page = pagination.config.page - 1"
+                    ng-class="{disabled: pagination.config.page == 1}" >
+                    <a href="#/task">&laquo;</a>
+                </li>
+                <li ng-repeat="p in pagination.pages"
+                    ng-click="pagination.config.page = p"
+                    ng-class="{active: p == pagination.config.page}">
+                    <a href="#/task">{{p}}</a>
+                </li>
+                <li ng-click="pagination.config.page = pagination.config.page + 1"
+                    ng-class="{disabled: pagination.config.page == pagination.pages.length}">
+                    <a href="#/task">&raquo;</a>
+                </li>
+            </ul >
+        </div>
+
+    </div><!-- /.box -->
+
+</section>

@@ -42,7 +42,7 @@ AppAsset::register($this);
             </div>    
             <footer class="main-footer">
                 <div class="pull-right hidden-xs">
-                    <b>Centeroffice</b>
+                    <b>@iofficez</b>
                 </div>
             </footer>
             <div class="control-sidebar-bg"></div>

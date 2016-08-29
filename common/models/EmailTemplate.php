@@ -93,6 +93,24 @@ class EmailTemplate extends \common\components\db\ActiveRecord
         return null;
     }
     
+    public static function getThemeCreateTaskForAssigner(){
+        $theme = self::find()->andWhere(['column_name' => 'create_project','language_code' => \Yii::$app->language])->one();
+        if($theme){
+            return $theme;
+        }
+        
+        return null;
+    }
+    
+    public static function getThemeCreateTaskForFollower(){
+        $theme = self::find()->andWhere(['column_name' => 'create_project','language_code' => \Yii::$app->language])->one();
+        if($theme){
+            return $theme;
+        }
+        
+        return null;
+    }
+    
     /**
      * Get theme email of creating event 
      * 

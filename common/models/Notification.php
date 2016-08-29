@@ -24,6 +24,7 @@ class Notification extends \common\components\db\ActiveRecord
 {
     const TABLE_PROJECT = "project";
     const TABLE_EVENT = "event";
+    const TABLE_TASK = "task";
     /**
      * @inheritdoc
      */

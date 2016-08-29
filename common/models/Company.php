@@ -87,4 +87,10 @@ class Company extends \common\components\db\ActiveRecord
             'disabled' => Yii::t('common', 'Disabled'),
         ];
     }
+    
+    public function getEmployees(){
+        return $this->hasMany(Employee::className(), ['company_id'=>'id']);
+    }
+    
+    
 }

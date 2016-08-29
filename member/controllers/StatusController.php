@@ -21,5 +21,22 @@ class StatusController extends ApiController {
         }
         return $this->sendResponse(false, "", $objects);
     }
-
+    
+    public function actionGetTaskStatusList(){                
+        $objects = [];       
+        $statuses = Status::find()->select(['id','name'])->where(['column_name' => 'task'])->andCompanyId()->all();;
+        
+        $collection = [];
+                
+        foreach ($statuses as $status) {
+            $collection[] = [
+                'id' => $status->id,
+                'name' => $status->name
+            ];
+        }
+        
+        $objects['collection'] = $collection;
+        
+        return $this->sendResponse(false, "", $objects);
+    }   
 }

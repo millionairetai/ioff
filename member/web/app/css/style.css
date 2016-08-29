@@ -675,3 +675,74 @@ header.main-header{
         position: fixed;
     }
 }
+
+
+/*task*/
+label.assignee-to,label.task-creator,label.follow-to{
+    size: 0.1em;
+    font-weight: 100;
+    font-style: italic;
+}
+
+label.assignee-to,label.follow-to{
+    padding-top:38px;
+}
+
+.block-image-name{
+    margin-top: 5px;
+    margin-left: 5px;
+}
+
+ /*task list*/
+ 
+.task-row{
+    padding-top: 10px;
+}
+
+.task-row:not(:last-child){
+    border-bottom:solid 1px #CCCCCC;
+}
+
+div#name-desc{
+    /*min-width: 40%;*/
+    width: :auto;
+}
+
+div.assignee-to{
+    min-width: 15%;
+}
+    
+ul.users-list.assignee-to{
+    width: 60%
+}
+
+
+.users-list.assignee-to > li img, .users-list.follow-to > li img, .users-list.task-creator > li img {
+    height: 30px;
+    width: 30px;
+}
+
+.users-list.assignee-to > li img, .users-list.follow-to > li img, .users-list.task-creator > li img {
+    height: 30px;
+    width: 30px;
+}
+
+.users-list.assignee-to > li .users-list-name, .users-list.follow-to > li .users-list-name, .users-list.task-creator > li .users-list-name {
+    font-weight: 100!important;
+}
+
+.users-list.assignee-to > li,.users-list.follow-to > li, .users-list.task-creator > li {
+    width : auto !important;
+}
+
+label.task-creator {
+    height: 50px;
+    padding-top: 40px;
+}
+
+div.task-creator{
+    margin-left: 5%;
+    margin-top: -15px;
+}
+
+

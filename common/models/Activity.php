@@ -27,6 +27,7 @@ class Activity extends \common\components\db\ActiveRecord
     //const for owner table.
     const TABLE_PROJECT = "project";  
     const TABLE_EVENT = "event"; 
+    const TABLE_TASK = "task"; 
     
     //const for type of activity
     const TYPE_CREATE_TASK = 'create_task';

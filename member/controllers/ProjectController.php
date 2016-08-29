@@ -629,5 +629,20 @@ class ProjectController extends ApiController {
 
         return $result;
     }
-
+    
+    public function actionGetAllProjectIdAndNames() {
+        $objects = [];
+        $collection = [];
+        $projects = Project::find()->select(['id','name'])->andCompanyId()->all();
+        
+        foreach ($projects as $project) {
+            $collection[] = [
+                'id' => $project->id,
+                'name' => $project->name
+            ];
+        }
+        
+        $objects['collection'] = $collection;
+        return $this->sendResponse(false, "", $objects);
+    }
 }

@@ -26,6 +26,7 @@ use Yii;
 class File extends \common\components\db\ActiveRecord {
 
     const TABLE_PROJECT = "project";
+    const TABLE_TASK = "task";
     const TABLE_EVENT = "event";
     const TABLE_PROJECT_POST = 'project_post';
 
@@ -137,6 +138,10 @@ class File extends \common\components\db\ActiveRecord {
 
                 if ($table == self::TABLE_EVENT) {
                     $employeeSpace->space_calendar += $size;
+                }
+                
+                if($table == self::TABLE_TASK) {
+                    $employeeSpace->space_task += $size;
                 }
 
                 $employeeSpace->space_total += $size;

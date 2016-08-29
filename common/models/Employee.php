@@ -379,4 +379,14 @@ class Employee extends ActiveRecord implements IdentityInterface
     public function getFullName() {
     	return $this->firstname . ' ' . $this->lastname;
     }
+    
+    public function getAssignedTasks(){
+        return $this->hasMany(Task::className(), ['id'=>'task_id'])->viaTable('task_assignment', ['employee_id' => 'id'])->joinWith(['company'=>function($query){            
+            $query->onCondition(Company::tableName().'.id ='.\Yii::$app->user->getCompanyId());
+        }]);
+    }
+                    
+    public function getCompany(){
+        return $this->hasOne(Company::className(), ['id'=>'company_id']);        
+    }
 }

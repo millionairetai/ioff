@@ -54,6 +54,14 @@ appRoot.config(function ($routeProvider, $httpProvider) {
                 templateUrl: 'app/views/authority/index.html',
                 controller: 'AuthorityCtrl'
             })
+            //task
+            .when('/task', {
+                templateUrl: 'app/views/task/index.html'
+            })
+            .when('/addTask', {
+                templateUrl: 'app/views/task/add.html',
+                controller: 'addTaskCtrl'
+            })
             .otherwise({redirectTo: '/home'});
 
 });

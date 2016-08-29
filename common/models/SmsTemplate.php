@@ -126,4 +126,27 @@ class SmsTemplate extends \common\components\db\ActiveRecord
         
         return null;
     }
+    
+    /**
+     * get theme sms of creating task for assigner 
+     */
+    public static function getThemeCreateTaskForAssigner(){
+        $theme = self::find()->andWhere(['column_name' => 'create_project','language_code' => \Yii::$app->language])->one();
+        if($theme){
+            return $theme;
+        }
+        
+        return null;
+    }
+    
+    /**
+     * get theme sms of creating task for follower  
+     */
+    public static function getThemeCreateTaskForFollower(){
+        $theme = self::find()->andWhere(['column_name' => 'create_project','language_code' => \Yii::$app->language])->one();
+        if($theme){
+            return $theme;
+        }
+        return null;
+    }
 }

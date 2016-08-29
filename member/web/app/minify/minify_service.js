@@ -301,6 +301,12 @@ appRoot.factory('employeeService', ['apiService', function (apiService) {
         return {
             searchEmployee : function (data,success,error){
                 return apiService.post('employee/search',data,success,error);
+            },
+            searchEmployeeByProjectIdAndKeyword : function (data,success,error){
+                return apiService.post('employee/search-by-project-id-and-keyword',data,success,error);
+            },
+            searchEmployeeByKeyword : function (data,success,error){
+                return apiService.post('employee/search-by-keyword',data,success,error);
             }
         };
     }]);
@@ -331,6 +337,9 @@ appRoot.factory('projectService', ['apiService','$rootScope','alertify', functio
         return {
             listProject : function (data,success,error){
                 apiService.post('project/index',data,success,error);
+            },
+            getProjectList : function (data,success,error) {
+                apiService.post('project/get-all-project-id-and-names',data,success,error);
             },
             addProject : function (data,success,error){
                 apiService.upload('project/add',data,success,error);
@@ -443,6 +452,84 @@ appRoot.factory('statusService', ['apiService', function (apiService) {
         }
     };
 }]);
+appRoot.factory('taskService', ['apiService','$rootScope','alertify', function (apiService,$rootScope,alertify) {
+
+        return {
+            getPriorityList : function (data,success,error) {
+                apiService.get('priority/get-priority-list',data,success,error);
+            },
+            getStatusList : function (data,success,error) {
+                apiService.get('status/get-task-status-list',data,success,error);
+            },                        
+            getTaskGroupList : function (data,success,error) {
+                apiService.get('task/get-task-group',data,success,error);
+            },
+            getRemindBeforeList : function (data,success,error) {
+                apiService.get('task/get-task-remind-before-list',data,success,error);
+            },
+            getParentTaskList : function (data,success,error) {
+                apiService.get('task/get-tasks-by-project',data,success,error);
+            },
+            validate_step1 : function(object) {
+                var message = "";
+                var now = new Date();
+                
+                if(object.name.length == 0){
+                    message += $rootScope.$lang.task_name_error_empty + "<br/>";
+                }
+                
+                if(object.project_id.length == 0){
+                    message += $rootScope.$lang.task_project_name_error_empty + "<br/>";
+                }
+                
+                if(object.description.length == 0){
+                    message += $rootScope.$lang.task_description_error_empty + "<br/>";
+                }
+                
+                if(!isNaN(parseFloat(object.estimate_hour)) && isFinite(object.estimate_hour)){
+                    if(object.estimate_hour < 0){
+                        message += $rootScope.$lang.task_estimate_error_0 + "<br/>";
+                    }
+                    
+                }else{
+                    message += $rootScope.$lang.task_estimate_error + "<br/>";
+                }
+                                
+                //check enddate
+                if((typeof object.duedatetime) === 'undefined'){
+                    message += $rootScope.$lang.task_end_date_error_empty + "<br/>";
+                }                               
+                
+                if(message.length > 0){
+                    alertify.error(message);
+                    return false;
+                }
+                return true;
+                
+            },
+            validate_step2 : function(object){
+                console.log(JSON.stringify(object));
+                var message = "";
+                                
+                if(object.taskGroupIds.length == 0){
+                    message += $rootScope.$lang.task_group_error_empty + "<br/>";
+                }
+                
+                if(message.length > 0){
+                    alertify.error(message);
+                    return false;
+                }
+                return true;
+                
+            },
+            addTask : function (data,success,error){
+                apiService.upload('task/add',data,success,error);
+            },
+            getTasks : function (data,success,error) {
+                apiService.get('task/get-assigned-tasks',data,success,error);
+            }            
+        };
+    }]);
 appRoot.factory( "ValidationServices", function() {
     return {
         failIfWrongThreshouldConfig: function( firstThreshould, secondThreshould ) {

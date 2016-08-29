@@ -17,6 +17,11 @@ use yii\helpers\Url;
               </a>
             </li>
             <li>
+              <a href="#task">
+                <i class="fa fa-tasks"></i> <span>Task</span> 
+              </a>
+            </li>
+            <li>
               <a href="#calendar">
                 <i class="fa fa-calendar"></i> <span>Calendar</span> 
               </a>
