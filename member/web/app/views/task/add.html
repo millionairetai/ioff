@@ -210,26 +210,14 @@
                             </ui-select-choices>
                         </ui-select>
                     </div>
-                </div>                                
-                <!--                <div class="form-group">
-                                    <label class="col-sm-3 control-label">{{task_remind}}</label>
-                                    <div class="col-sm-9" >
-                                        <div class="col-xs-12">
-                                            <label class="col-xs-1">{{task_remind_datetime}}</label>
-                                            <input type="text" class="col-xs-3" ng-model="task.remindDatetime" datepicker-popup="dd-MM-yyyy"  datepicker-popup="mediumDate"  is-open="openFrom" ng-click="openFrom = true" show-button-bar="false" />
-                                        </div>
-                                        <div class="col-xs-12">
-                                            <label class="col-xs-1">{{task_remind_before}}</label>
-                                            <select class="col-xs-3" ng-model="task.remindBefore">
-                                                <option ng-repeat="x in remindBefores" value="{{x}}" >{{x}} {{minute}}</option>
-                                            </select> 
-                                        </div>
-                                        <div class="col-xs-12">
-                                            <label class="col-xs-1">{{task_remind_repeat}}</label>
-                                            <input class="col-xs-3" type="text"/> 
-                                        </div>
-                                    </div>
-                                </div>-->
+                </div>                              
+                
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">{{$root.$lang.calendar_event_redmind}}</label>
+                    <div class="col-sm-9">
+                        <select class="form-control" ng-model="task.redmind" ng-options="redmind.id as redmind.name  for redmind in redminds" ></select>
+                    </div>
+                </div>   
 
                 <div class="form-group">
                     <label class="col-sm-3 control-label">Sms</label>
@@ -244,7 +232,7 @@
     </div>    
     <div ng-show="step == 3">
         <h3 class="text-center">{{$root.$lang.project_final}}</h3>
-        <h4 class="text-center">{{$root.$lang.project_created_success}}</h4>
+        <h4 class="text-center">{{$root.$lang.task_created_success}}</h4>
     </div>
 
 </div>

@@ -210,6 +210,7 @@
             task_members_error_empty: 'Department and Employee is not empty',
             task_created_success:'Create task is successful',
             task_notify_success:'Project has created successfully.',
+            task_created_success: 'Task has created successfully'
             //end task
             
         };

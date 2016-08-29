@@ -26,6 +26,7 @@ use Yii;
  */
 class Remind extends \common\components\db\ActiveRecord {
     const TABLE_EVENT = "event";
+    const TABLE_TASK = "task";
     
     public $is_remind;
     /**

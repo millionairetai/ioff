@@ -74,6 +74,7 @@ appRoot.controller('addTaskCtrl', ['socketService', '$scope', 'taskService', '$l
         $scope.files = [];
         $scope.taskGroups = [];
         $scope.parentTasks = [];
+        $scope.redminds = taskService.redmind();
                                                         
         //task object init
         $scope.task = {

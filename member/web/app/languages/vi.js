@@ -235,6 +235,7 @@
             task_creator:'bởi',
             task_search:'tìm công việc',
             time_create:'thời gian tạo',
+            task_created_success: 'Công việc được tạo thành công'
             //end task
         };
     });

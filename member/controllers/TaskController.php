@@ -14,6 +14,7 @@ use common\models\TaskGroupAllocation;
 use common\models\TaskAssignment;
 use common\models\Follower;
 use common\models\Notification;
+use common\models\Remind;
 
 class TaskController extends ApiController {     
     
@@ -108,7 +109,8 @@ class TaskController extends ApiController {
                                 ->andCompanyId()
                                 ->all();
                 
-                $notificationContent = \Yii::$app->user->identity->firstname . " " . \Yii::t('common', 'created') . " " . $task->name;
+                $remind = [];
+                $noContent = \Yii::$app->user->identity->firstname . " " . \Yii::t('common', 'created') . " " . $task->name;
                 foreach ($employees as $employee) {
                     //notification
                     $no = new Notification();
@@ -117,7 +119,7 @@ class TaskController extends ApiController {
                     $no->employee_id = $employee->id;
                     $no->owner_employee_id = \Yii::$app->user->getId();
                     $no->type = "create_task";
-                    $no->content = $notificationContent;
+                    $no->content = $noContent;
 
                     if (!$no->save()) {
                         throw new \Exception('Save to table Notification fail');
@@ -146,7 +148,7 @@ class TaskController extends ApiController {
                         $sms->owner_id = $task->id;
                         $sms->employee_id = $employee->id;
                         $sms->owner_table = \common\models\Sms::TABLE_TASK;
-                        $sms->content = $notificationContent;
+                        $sms->content = $noContent;
                         $sms->is_success = 1;
                         $sms->fee = 0;
                         if (!$sms->save()) {
@@ -156,7 +158,19 @@ class TaskController extends ApiController {
                         //send sms
                         $employee->sendSms($dataSend, $themeSms);
                     }
+                    
+                    //remind
+                    if (!empty($postData['redmind'])) {
+                        $remind[] = [$employee->id, $task->id, Remind::TABLE_TASK, $task->name, $task->duedatetime - ($postData['redmind'] * 60), $postData['redmind'], 0, 0];
+                    }
                 }//end foreach employees
+                
+                if (!empty($remind)) {
+                    if (!Yii::$app->db->createCommand()->batchInsert(
+                                    Remind::tableName(), ['employee_id', 'owner_id', 'owner_table', 'content', 'remind_datetime', 'minute_before', 'repeated_time', 'is_snoozing'], $remind)->execute()) {
+                        throw new \Exception('BatchInsert to remind table fail');
+                    }
+                }
             } else {
                 $message = $this->parserMessage($task->getErrors());
                 $error = true;
@@ -173,9 +187,12 @@ class TaskController extends ApiController {
     }    
     
     public function actionGetTasksByProject() {        
-        $projectId = \Yii::$app->request->get('project_id');
-        $tasks = Project::findOne($projectId)->getTasks()->select([Task::tableName().'.id',Task::tableName().'.name'])->joinWith('company')->all();
-        $collection = [];
+        $collection = []; 
+        $tasks = Task::find()
+                    ->select(['id', 'name'])
+                    ->where(['project_id' => \Yii::$app->request->get('project_id')])
+                    ->andCompanyId()
+                    ->all();
         
         foreach ($tasks as $task){
             $collection[] = [
@@ -186,8 +203,7 @@ class TaskController extends ApiController {
         
         $objects = [];
         $objects['collection'] = $collection;
-        
-        return $this->sendResponse(FALSE, '', $objects);        
+        return $this->sendResponse(false, '', $objects);        
     }
     
     public function actionGetTaskGroup() {

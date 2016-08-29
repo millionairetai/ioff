@@ -38,8 +38,8 @@ class Task extends \common\components\db\ActiveRecord {
     
     function __construct($config = []) {
         parent::__construct();
-        $companyId = \Yii::$app->user->getCompanyId();
-        $this->setCompanyId($companyId);
+//        $companyId = \Yii::$app->user->getCompanyId();
+//        $this->setCompanyId($companyId);
     }
 
     /**
@@ -92,19 +92,13 @@ class Task extends \common\components\db\ActiveRecord {
         ];
     }
     
-    public static function find()
-    {  
-        //use origin class to avoid totalCount = 0
-        return new \yii\db\ActiveQuery(get_called_class());
-    }
-    
-    public function setCompanyId($companyId){
-        if($companyId){            
-            $this->company_id = $companyId;
-        }
-        
-        return $this->company_id;
-    }
+//    public function setCompanyId($companyId){
+//        if($companyId){            
+//            $this->company_id = $companyId;
+//        }
+//        
+//        return $this->company_id;
+//    }
                                 
     public function getStatus(){
         return $this->hasOne(Status::className(),['id'=>'status_id']);

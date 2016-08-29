@@ -141,7 +141,6 @@ class CalendarController extends ApiController {
             $arrayEmployees = [];
             $isQuery = false;
             $query = Employee::find()->andCompanyId();
-
             if (!empty($dataPost['members']) && !empty($dataPost['departments'])) {
                 $isQuery = true;
                 $idEmployees = [];

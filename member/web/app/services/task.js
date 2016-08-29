@@ -72,6 +72,17 @@ appRoot.factory('taskService', ['apiService','$rootScope','alertify', function (
             },
             getTasks : function (data,success,error) {
                 apiService.get('task/get-assigned-tasks',data,success,error);
+            },
+            redmind : function(){
+                return [
+                    {id:0,name:$rootScope.$lang.calendar_event_redmine_0},
+                    {id:30,name:$rootScope.$lang.calendar_event_redmine_30},
+                    {id:60,name:$rootScope.$lang.calendar_event_redmine_60},
+                    {id:120,name:$rootScope.$lang.calendar_event_redmine_120},
+                    {id:240,name:$rootScope.$lang.calendar_event_redmine_240},
+                    {id:1440,name:$rootScope.$lang.calendar_event_redmine_1440},
+                    {id:2880,name:$rootScope.$lang.calendar_event_redmine_2880},
+                ];
             }            
         };
     }]);
