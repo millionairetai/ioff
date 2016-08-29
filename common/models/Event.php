@@ -203,14 +203,28 @@ class Event extends ActiveRecord {
         
         //Department: inner join Invitation with department where event_id
         $invitations = Invitation::getListByEventId($eventId);
-        $countdepartmentAndEmployee = 0;
-        if (!empty($invitations) && !empty($invitations['departmentAndEmployee']) && !empty($invitations['departmentAndEmployee']['count'])) {
-            $countdepartmentAndEmployee = $invitations['departmentAndEmployee']['count'];
-        }
         
         //get remind by owverid 
         $remind = Remind::findOne(['owner_id' => $eventId, 'owner_table' => Event::tableName(), 'company_id' => $companyId]);
-        $ActiveAttent= EventConfirmationType::getActiveAttent($eventId, \Yii::$app->user->getId());
+
+        $attend = EventConfirmationType::getInfoAttend($eventId);
+        
+        $listEmployeeAttend = [];
+        if (isset($invitations['departmentAndEmployee']['employeeList']) && isset($attend['attendListEmployeeId'])) {
+            foreach ($invitations['departmentAndEmployee']['employeeList'] AS $key => $val) {
+                if (isset($attend['attendListEmployeeId'][EventConfirmationType::ATTEND]) && in_array($val['id'], $attend[$attend['attendListEmployeeId'][EventConfirmationType::ATTEND]])) {
+                    $listEmployeeAttend[EventConfirmationType::ATTEND][] = $val;
+                }
+                if (isset($attend['attendListEmployeeId'][EventConfirmationType::MAYBE]) && in_array($val['id'], $attend['attendListEmployeeId'][EventConfirmationType::MAYBE])) {
+                    $listEmployeeAttend[EventConfirmationType::MAYBE][] = $val;
+                }
+                if (isset($attend['attendListEmployeeId'][EventConfirmationType::NO_ATTEND]) && in_array($val['id'], $attend['attendListEmployeeId'][EventConfirmationType::NO_ATTEND])) {
+                    $listEmployeeAttend[EventConfirmationType::NO_ATTEND][] = $val;
+                }
+            }
+        }
+        $countEmployee = empty($invitations) ? 0 : $invitations['departmentAndEmployee']['count'];
+        $attend[EventConfirmationType::NO_CONFIRM] = $countEmployee - $attend['countConfirm'];
         $result = [
                 'event' => [
                         'id'                => $event->id,
@@ -227,14 +241,15 @@ class Event extends ActiveRecord {
                         'start_time'        => isset($event->start_datetime) ? date('H:i', $event->start_datetime) : null,
                         'end_datetime'      => isset($event->end_datetime) ? date('Y-m-d', $event->end_datetime) : null,
                         'end_time'          => isset($event->end_datetime) ? date('H:i', $event->end_datetime) : null,
-                        'created_employee_id'  => $event->employee->getFullName(),
-                        'active_attend'     => empty($ActiveAttent) ? '' : $ActiveAttent[0]['column_name'],
+                        'created_employee_id' => $event->employee->getFullName(),
+                        'active_attend'     => $attend['activeAttendByEmployee'],
                 ],
                 'calendar'      => ['name' => $event->calendar->getName()],
                 'remind'        => isset($remind->minute_before) ? $remind->minute_before : null,
                 'eventConfirmationType' => $eventConfimationTypeList,
                 'invitations'   => $invitations,
-                'attent'        => EventConfirmationType::getInfoAttent($eventId, $countdepartmentAndEmployee)
+                'listEmployeeAttend' => $listEmployeeAttend, 
+                'attent'        => $attend
         ];
         return $result;
     }

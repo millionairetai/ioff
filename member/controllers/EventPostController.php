@@ -155,8 +155,17 @@ class EventPostController extends ApiController {
                 }
             }
             
+            $collection= [
+                    'id'                 => $eventPost->id,
+                    'time'               => date('H:i d-m-Y ', $eventPost->datetime_created),
+                    'content'            => $dataPost['description'],
+                    'employee_name'      => \Yii::$app->user->identity->FullName,
+                    'profile_image_path' => \Yii::$app->user->identity->Image,
+                    'actionDelete'       => true,
+            ];
+            
             $transaction->commit();
-            return $this->sendResponse(false, \Yii::t('member', 'error_system'), []);
+            return $this->sendResponse(false, [], ['collection' => $collection]);
         } catch (Exception $e) {
             $transaction->rollBack();
             return $this->sendResponse(true, \Yii::t('member', 'error_system'), []);
