@@ -28,7 +28,7 @@ AppAsset::register($this);
         <![endif]-->
         <script src="http://localhost:3000/socket.io/socket.io.js"></script>
     </head>
-    <body class="hold-transition sidebar-collapse skin-blue-light sidebar-mini" ng-app="centeroffice" ng-controller="centerofficeCtrl">
+    <body class="hold-transition sidebar-collapse skin-blue-light sidebar-mini" ng-app="iofficez" ng-controller="iofficezCtrl">
         <?php $this->beginBody() ?>
         <!-- Site wrapper -->
         <div class="wrapper">

@@ -201,7 +201,7 @@ appRoot.directive('checklistModel', ['$parse', '$compile', function($parse, $com
     }
   };
 }]);
-angular.module('centeroffice').directive('clickOnce', function ($timeout) {
+angular.module('iofficez').directive('clickOnce', function ($timeout) {
     return {
         restrict: 'A',
         link: function (scope, element, attrs) {

@@ -1,4 +1,4 @@
-appRoot = angular.module('centeroffice', ['ui.tinymce', 'ngRoute', 'ui.bootstrap', "ngAlertify", 'ui.slider', 'ui.select', 'ngTagsInput', 'ui.calendar', 'ui.bootstrap.datetimepicker', 'btford.socket-io']);
+appRoot = angular.module('iofficez', ['ui.tinymce', 'ngRoute', 'ui.bootstrap', "ngAlertify", 'ui.slider', 'ui.select', 'ngTagsInput', 'ui.calendar', 'ui.bootstrap.datetimepicker', 'btford.socket-io']);
 
 //constant for paging
 appRoot.constant('PER_PAGE_VIEW_MORE', 10);
@@ -10,7 +10,7 @@ appRoot.constant('MAX_SIZE_UPLOAD', 10485760);
 appRoot.constant('MAX_FILE_UPLOAD', 20);
 
 //main controller
-appRoot.controller('centerofficeCtrl', ['$scope', function ($scope) {
+appRoot.controller('iofficezCtrl', ['$scope', function ($scope) {
     ///////////////////////////////////
         $scope.clearCache = function() { 
         $templateCache.removeAll();

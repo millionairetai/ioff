@@ -9,7 +9,7 @@ use Firebase\JWT\JWT;
  */
 class JsonWebToken {
 
-    const KEY = "centeroffice";
+    const KEY = "iofficez";
 
     public static function createToken($data) {
         $issuedAt = time();

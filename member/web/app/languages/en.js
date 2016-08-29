@@ -1,7 +1,7 @@
 (function (angular) {
     'user strict';
 
-    angular.module('centeroffice').controller('centerofficeCtrl', function ($rootScope) {
+    angular.module('iofficez').controller('iofficezCtrl', function ($rootScope) {
         $rootScope.$lang = {
             //-----------------------------------------Common languages here----------------------------------
             title_error_dialog : 'Error',
