@@ -364,8 +364,7 @@ appRoot.directive('radioColor', function($timeout, $parse) {
             } );
         }
     };
-}]);
-angular.module('ui.tinymce', [])
+}]);angular.module('ui.tinymce', [])
     .value('uiTinymceConfig', {})
     .directive('uiTinymce', ['uiTinymceConfig', function(uiTinymceConfig) {
     uiTinymceConfig = uiTinymceConfig || {};

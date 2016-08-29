@@ -554,10 +554,12 @@ appRoot.controller('viewCalendarCtrl', ['$scope', 'calendarService', 'fileServic
     var calendarId = $routeParams.calendarId;
     //set paramter for layout
     $scope.collection = [];
+    $scope.activeAttend = '';
     $scope.getInfoEvent = function () {
         calendarService.viewEvent({calendarId: calendarId}, function (response) {
             if (response.error) $location.path('/calendar');
             $scope.collection = response.objects;
+            $scope.activeAttend = response.objects.event.active_attend;
         });
     }
     $scope.getInfoEvent();
@@ -579,19 +581,12 @@ appRoot.controller('viewCalendarCtrl', ['$scope', 'calendarService', 'fileServic
             fd.append("event", angular.toJson($scope.project));
             EventPostService.addEventPost(fd, function (response) {
                 alertify.success($rootScope.$lang.event_post_add_success);
+                $rootScope.$emit('event_post_add_success', {});
                 $scope.project = {
                     description: '',
                     calendarId: calendarId,
                 };
-                
-//                $scope.files = [];
-                
-                $scope.release  = response.objects.collection;
-                $scope.releases = $scope.eventPost;
-                $scope.eventPost = $scope.releases.concat($scope.release);
-//                $scope.eventPostFile = response.objects.files;
-//                $scope.filter.totalItems = response.objects.totalItems;
-                
+                $scope.files = [];
 //                $scope.release  = $scope.collection.file_info;
 //                $scope.releases = response.objects.files;
 //                $scope.releases = $scope.releases.concat($scope.release);
@@ -716,7 +711,7 @@ appRoot.controller('viewCalendarCtrl', ['$scope', 'calendarService', 'fileServic
   //action click attend
     $scope.attend = function (attend) {
         calendarService.attend({attend_type: attend, calendarId: calendarId}, function (response) {
-            switch($scope.collection.event.active_attend) {
+            switch($scope.activeAttend) {
                 case 'attend':
                     $scope.collection.attent.attend--;
                     break;
@@ -738,67 +733,37 @@ appRoot.controller('viewCalendarCtrl', ['$scope', 'calendarService', 'fileServic
                     $scope.collection.attent.no_attend++;
                     break;
                 }
-            if ($scope.collection.event.active_attend == '') {
+            if ($scope.activeAttend == null) {
                 $scope.collection.attent.no_confirm--;
             }
             alertify.success($rootScope.$lang.update_attend_success);
-            $scope.collection.event.active_attend = attend;
+            $scope.activeAttend = attend;
         });
     }
 
 }]);
 
-//show attend 
-appRoot.controller('showAttendCtrl', ['$scope', 'EventPostService', '$uibModalInstance', 'controllerService', 'actionService', '$rootScope', 'eventPost', 'alertify', 'dialogMessage', 'socketService',
-    function ($scope, EventPostService, $uibModalInstance, controllerService, actionService, $rootScope, eventPost, alertify, dialogMessage, socketService) {
-    $scope.tabs = function ($index) {
-        alert($index);
-    }
-    
-    //            $scope.eventpost = {
-//                id: eventPost.id,
-//                description: eventPost.content,
-//            };
-//            $scope.update = function () {
-//                if (EventPostService.validateEventPost($scope.eventpost)) {
-//                        var params = {'id': eventPost.id, 'content': $scope.eventpost.description};
-//                        EventPostService.updateEventPost(params, function (data) {
-//                        eventPost.content = $scope.eventpost.description;
-//                        alertify.success($rootScope.$lang.project_post_update_success);
-//                        $uibModalInstance.dismiss('save');
-//                    });
-//                }
-//            };
-//        //cancel
-//        $scope.cancel = function () {
-//            $uibModalInstance.dismiss('cancel');
-//        };
-//    $scope.showFirstTab = function(){
-//        angular.element('[data-target="#tab1"]').tab('show');
-//      }
-}]);
-
 //edit project post
 appRoot.controller('editEventPostCtrl', ['$scope', 'EventPostService', '$uibModalInstance', 'controllerService', 'actionService', '$rootScope', 'eventPost', 'alertify', 'dialogMessage', 'socketService',
-                                         function ($scope, EventPostService, $uibModalInstance, controllerService, actionService, $rootScope, eventPost, alertify, dialogMessage, socketService) {
-    $scope.eventpost = {
-            id: eventPost.id,
-            description: eventPost.content,
-    };
-    $scope.update = function () {
-        if (EventPostService.validateEventPost($scope.eventpost)) {
-            var params = {'id': eventPost.id, 'content': $scope.eventpost.description};
-            EventPostService.updateEventPost(params, function (data) {
-                eventPost.content = $scope.eventpost.description;
-                alertify.success($rootScope.$lang.project_post_update_success);
-                $uibModalInstance.dismiss('save');
-            });
-        }
-    };
-    //cancel
-    $scope.cancel = function () {
-        $uibModalInstance.dismiss('cancel');
-    };
+    function ($scope, EventPostService, $uibModalInstance, controllerService, actionService, $rootScope, eventPost, alertify, dialogMessage, socketService) {
+            $scope.eventpost = {
+                id: eventPost.id,
+                description: eventPost.content,
+            };
+            $scope.update = function () {
+                if (EventPostService.validateEventPost($scope.eventpost)) {
+                        var params = {'id': eventPost.id, 'content': $scope.eventpost.description};
+                        EventPostService.updateEventPost(params, function (data) {
+                        eventPost.content = $scope.eventpost.description;
+                        alertify.success($rootScope.$lang.project_post_update_success);
+                        $uibModalInstance.dismiss('save');
+                    });
+                }
+            };
+        //cancel
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
 }]);
 
 //edit event to calendar
