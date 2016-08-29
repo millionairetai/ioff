@@ -1238,8 +1238,8 @@ appRoot.controller('taskCtrl', ['$scope', 'taskService', '$uibModal','$rootScope
 }]);
 
 /*add Task Popup Controller*/
-appRoot.controller('addTaskCtrl', ['$scope', 'taskService', '$location', '$uibModalInstance', '$rootScope', 'departmentService','alertify','$timeout','employeeService','projectService','$cacheFactory', 
-    function ($scope, taskService, $location, $uibModalInstance, $rootScope, departmentService,alertify,$timeout,employeeService,projectService,$cacheFactory) {
+appRoot.controller('addTaskCtrl', ['socketService', '$scope', 'taskService', '$location', '$uibModalInstance', '$rootScope', 'departmentService','alertify','$timeout','employeeService','projectService','$cacheFactory', 
+    function (socketService, $scope, taskService, $location, $uibModalInstance, $rootScope, departmentService,alertify,$timeout,employeeService,projectService,$cacheFactory) {
         //init
         $scope.step = 1;
         $scope.more = 0;
@@ -1452,6 +1452,7 @@ appRoot.controller('addTaskCtrl', ['$scope', 'taskService', '$location', '$uibMo
                             taskService.addTask(fd,function(response){
                                 alertify.success($rootScope.$lang.task_notify_success);
                                 $rootScope.$emit('create_task_success', {message: 'danh'});
+                                socketService.emit('notify', 'ok');
                                 $scope.step++;
                             });
                             

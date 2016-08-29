@@ -508,7 +508,6 @@ appRoot.factory('taskService', ['apiService','$rootScope','alertify', function (
                 
             },
             validate_step2 : function(object){
-                console.log(JSON.stringify(object));
                 var message = "";
                                 
                 if(object.taskGroupIds.length == 0){
