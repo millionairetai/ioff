@@ -34,7 +34,7 @@ use yii\data\ActiveDataProvider;
  */
 class Task extends \common\components\db\ActiveRecord {
 
-//    public $sms = 0;
+    public $sms = 0;
     
     function __construct($config = []) {
         parent::__construct();
