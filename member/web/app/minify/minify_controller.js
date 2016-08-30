@@ -583,18 +583,11 @@ appRoot.controller('viewCalendarCtrl', ['$scope', 'calendarService', 'fileServic
                     description: '',
                     calendarId: calendarId,
                 };
-                
-//                $scope.files = [];
-                $scope.release  = [response.objects.collection];
-                $scope.releases = $scope.eventPost;
-                $scope.eventPost = $scope.release.concat($scope.releases);
-//                $scope.eventPostFile = response.objects.files;
-//                $scope.filter.totalItems = response.objects.totalItems;
-                
-//                $scope.release  = $scope.collection.file_info;
-//                $scope.releases = response.objects.files;
-//                $scope.releases = $scope.releases.concat($scope.release);
-//                $scope.collection.file_info = $scope.releases;
+                $scope.files = [];
+                $scope.getEventPosts();
+//                $scope.release  = [response.objects.collection];
+//                $scope.releases = $scope.eventPost;
+//                $scope.eventPost = $scope.release.concat($scope.releases);
             });
         }
     }
@@ -673,6 +666,7 @@ appRoot.controller('viewCalendarCtrl', ['$scope', 'calendarService', 'fileServic
         calendarId: calendarId
     };
     $scope.eventPost = [];
+    $scope.eventPostFile = [];
     $scope.getEventPosts = function () {
         EventPostService.getEventPosts($scope.filter, function (response) {
             $scope.release  = response.objects.collection;
@@ -765,6 +759,26 @@ appRoot.controller('viewCalendarCtrl', ['$scope', 'calendarService', 'fileServic
                     return calendarId;
                 }
             }
+        });
+    };
+    
+  //load move - close file
+    $scope.limitFile = 5;
+    $scope.loadMoreFile = function () {
+        $scope.limitFile = $scope.collection.file_info.length;
+    };
+
+    $scope.closeMoreFile = function () {
+        $scope.limitFile = 5;
+    };
+
+    //removeFile
+    $scope.removeFileProject = function (index, id) {
+        dialogMessage.open('confirm', $rootScope.$lang.confirm_delete_file, function () {
+            fileService.removeFile({fileId: id}, function (data) {
+                $scope.collection.file_info.splice(index, 1);
+                alertify.success($rootScope.$lang.remove_file_success);
+            })
         });
     };
 }]);

@@ -185,9 +185,6 @@ class Event extends ActiveRecord {
         $event = Event::findOne(['id' => $eventId, 'company_id' => $companyId]);
         if (empty($event)) return false;
        
-        //Get file with where: project_id, company_id, owner_table=project
-        $fileList = File::getFileByOwnerIdAndTable($eventId, Event::tableName());
-       
         //Get all info event_confirmation_type 
         $eventConfimationType = EventConfirmationType::find()->all();
         $eventConfimationTypeList = [];
@@ -235,6 +232,7 @@ class Event extends ActiveRecord {
                 'eventConfirmationType' => $eventConfimationTypeList,
                 'invitations'   => $invitations,
                 'attent'        => $attend,
+                'file_info'     => $fileList,
         ];
         return $result;
     }

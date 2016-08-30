@@ -71,9 +71,21 @@
                 </div>
                 <div class="box-body">
                     <div class="content-event">
-                        <p ng-text-truncate="collection.event.description" ng-tt-chars-threshold="250"></p>
+                        <p ng-bind-html="getHtml(collection.event.description)" ng-tt-chars-threshold="200"></p>
+                    </div>
+                    <br/>
+                    <div  ng-if="collection.file_info != ''" ng-repeat="files in collection.file_info| limitTo:limitFile">
+                                <div>
+                                    <a href="{{files.path}}"><span class="glyphicon glyphicon-file" aria-hidden="true"></span>{{files.name}}</a>
+                                    <i ng-click="removeFileProject($index, files.id)" class="fa fa-remove cursor-point"></i>
+                                </div>
+                            </div>
+                            <div class=" text-center" >
+                                <a ng-click="loadMoreFile()" class="pointer ng-binding" ng-if="limitFile < collection.file_info.length && collection.file_info.length > 5">{{$root.$lang.project_list_view_more}} </a>
+                                <a ng-click="closeMoreFile()" class="pointer ng-binding" ng-if="limitFile > 5">{{$root.$lang.less}} </a>
                     </div>
                 </div><!--box body-->
+                
             </div>
             <div class="box box-solid header-event">
                 <div class="box-body">
@@ -123,7 +135,7 @@
                         </div>
                          <div class="box-body">
                                 <p ng-bind-html="getHtml(v.content)" ng-tt-chars-threshold="200"></p>
-                                <div class="padding-left-20" ng-repeat="file in projectPostFile[v.id]"><a href="{{file.path}}"><span class="glyphicon glyphicon-file" aria-hidden="true"></span> {{file.name}}</a></div>
+                                <div class="padding-left-20" ng-repeat="file in eventPostFile[v.id]"><a href="{{file.path}}"><span class="glyphicon glyphicon-file" aria-hidden="true"></span> {{file.name}}</a></div>
                         </div>
                         <!--box body-->
                     </div><!-- Recent post item-->
