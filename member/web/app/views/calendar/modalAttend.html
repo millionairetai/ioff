@@ -1,0 +1,43 @@
+<div class="modal-body">
+        <div class="tabbable"> <!-- Only required for left/right tabs -->
+            <ul class="nav nav-tabs">
+                <li ng-class="{active: tabsName == 'attend'}"><a ng-click="tabs('attend')">{{$root.$lang.attend}}</a></li>
+                <li ng-class="{active: tabsName == 'maybe'}"><a ng-click="tabs('maybe')" data-toggle="tab">{{$root.$lang.maybe}}</a></li>
+                <li ng-class="{active: tabsName == 'no_attend'}"><a ng-click="tabs('no_attend')" data-toggle="tab">{{$root.$lang.no_attent}}</a></li>
+                <li ng-class="{active: tabsName == 'no_confirm'}"><a ng-click="tabs('no_confirm')" data-toggle="tab">{{$root.$lang.no_confirm}}</a></li>
+            </ul>
+                <div class="box-body " ng-show="tabsName == 'attend'">
+                    <div class="user-block padding_10" ng-repeat="employee in attendList.attend">
+                        <img src="{{employee.image}}" class="img-circle" alt="User Image"/>
+                        <span class="username"><a href="#/member/161">{{employee.firstname}}</a></span>
+                        <span class="description">{{employee.birthdate | date : "fullDate"}} </span>
+                    </div>
+                </div>
+                <div class="box-body" ng-show="tabsName == 'maybe'">
+                    <div class="user-block padding_10" ng-repeat="employee in attendList.maybe">
+                        <img src="{{employee.image}}" class="img-circle" alt="User Image"/>
+                        <span class="username"><a href="#/member/161">{{employee.firstname}}</a></span>
+                        <span class="description">{{employee.birthdate | date : "fullDate"}} </span>
+                    </div>
+                </div>
+                <div class="box-body" ng-show="tabsName == 'no_attend'">
+                    <div class="user-block padding_10" ng-repeat="employee in attendList.no_attend">
+                        <img src="{{employee.image}}" class="img-circle" alt="User Image"/>
+                        <span class="username"><a href="#/member/161">{{employee.firstname}}</a></span>
+                        <span class="description">{{employee.birthdate | date : "fullDate"}} </span>
+                    </div>
+                </div>
+                <div class="box-body" ng-show="tabsName == 'no_confirm'">
+                    <div class="user-block padding_10" ng-repeat="employee in attendList.no_confirm">
+                        <img src="{{employee.image}}" class="img-circle" alt="User Image"/>
+                        <span class="username"><a href="#/member/161">{{employee.firstname}}</a></span>
+                        <span class="description">{{employee.birthdate | date : "fullDate"}} </span>
+                    </div>
+                </div>
+                
+               
+        </div>
+   </div>
+   <div class="modal-footer">
+         <button type="button" class="btn btn-default btn-flat" ng-click="cancel()"><i class="fa fa-remove"></i> {{$root.$lang.button_close}}</button>
+   </div>

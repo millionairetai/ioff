@@ -184,10 +184,10 @@ class Event extends ActiveRecord {
         $companyId = \Yii::$app->user->getCompanyId();
         $event = Event::findOne(['id' => $eventId, 'company_id' => $companyId]);
         if (empty($event)) return false;
-        
+       
         //Get file with where: project_id, company_id, owner_table=project
         $fileList = File::getFileByOwnerIdAndTable($eventId, Event::tableName());
-
+       
         //Get all info event_confirmation_type 
         $eventConfimationType = EventConfirmationType::find()->all();
         $eventConfimationTypeList = [];
@@ -206,23 +206,8 @@ class Event extends ActiveRecord {
         
         //get remind by owverid 
         $remind = Remind::findOne(['owner_id' => $eventId, 'owner_table' => Event::tableName(), 'company_id' => $companyId]);
-
         $attend = EventConfirmationType::getInfoAttend($eventId);
-        
-        $listEmployeeAttend = [];
-        if (isset($invitations['departmentAndEmployee']['employeeList']) && isset($attend['attendListEmployeeId'])) {
-            foreach ($invitations['departmentAndEmployee']['employeeList'] AS $key => $val) {
-                if (isset($attend['attendListEmployeeId'][EventConfirmationType::ATTEND]) && in_array($val['id'], $attend[$attend['attendListEmployeeId'][EventConfirmationType::ATTEND]])) {
-                    $listEmployeeAttend[EventConfirmationType::ATTEND][] = $val;
-                }
-                if (isset($attend['attendListEmployeeId'][EventConfirmationType::MAYBE]) && in_array($val['id'], $attend['attendListEmployeeId'][EventConfirmationType::MAYBE])) {
-                    $listEmployeeAttend[EventConfirmationType::MAYBE][] = $val;
-                }
-                if (isset($attend['attendListEmployeeId'][EventConfirmationType::NO_ATTEND]) && in_array($val['id'], $attend['attendListEmployeeId'][EventConfirmationType::NO_ATTEND])) {
-                    $listEmployeeAttend[EventConfirmationType::NO_ATTEND][] = $val;
-                }
-            }
-        }
+       
         $countEmployee = empty($invitations) ? 0 : $invitations['departmentAndEmployee']['count'];
         $attend[EventConfirmationType::NO_CONFIRM] = $countEmployee - $attend['countConfirm'];
         $result = [
@@ -243,17 +228,47 @@ class Event extends ActiveRecord {
                         'end_time'          => isset($event->end_datetime) ? date('H:i', $event->end_datetime) : null,
                         'created_employee_id' => $event->employee->getFullName(),
                         'active_attend'     => $attend['activeAttendByEmployee'],
+                        'employee_id'       => \Yii::$app->user->getId(),
                 ],
                 'calendar'      => ['name' => $event->calendar->getName()],
                 'remind'        => isset($remind->minute_before) ? $remind->minute_before : null,
                 'eventConfirmationType' => $eventConfimationTypeList,
                 'invitations'   => $invitations,
-                'listEmployeeAttend' => $listEmployeeAttend, 
-                'attent'        => $attend
+                'attent'        => $attend,
         ];
         return $result;
     }
 
-    
-    
+        
+    /**
+     * Get list Attend
+     *
+     * @param array $calendars
+     * @param integer $companyId
+     * @param integer $employeeId
+     * @param string $start
+     * @param string $end
+     * @return array
+     */
+    public static function getInfoAttend($eventId = null) {
+        if (empty($eventId)) return false;
+        $attend = EventConfirmationType::getInfoAttend($eventId);
+        //Department: inner join Invitation with department where event_id
+        $invitations = Invitation::getListByEventId($eventId);
+        $listEmployeeAttend = [];
+        if (isset($invitations['departmentAndEmployee']['employeeList']) && isset($attend['attendListEmployeeId'])) {
+            foreach ($invitations['departmentAndEmployee']['employeeList'] AS $key => $val) {
+                if (isset($attend['attendListEmployeeId'][EventConfirmationType::ATTEND]) && in_array($val['id'], $attend['attendListEmployeeId'][EventConfirmationType::ATTEND])) {
+                    $listEmployeeAttend[EventConfirmationType::ATTEND][] = $val;
+                }else if (isset($attend['attendListEmployeeId'][EventConfirmationType::MAYBE]) && in_array($val['id'], $attend['attendListEmployeeId'][EventConfirmationType::MAYBE])) {
+                        $listEmployeeAttend[EventConfirmationType::MAYBE][] = $val;
+                }else if (isset($attend['attendListEmployeeId'][EventConfirmationType::NO_ATTEND]) && in_array($val['id'], $attend['attendListEmployeeId'][EventConfirmationType::NO_ATTEND])) {
+                            $listEmployeeAttend[EventConfirmationType::NO_ATTEND][] = $val;
+                }else{
+                    $listEmployeeAttend[EventConfirmationType::NO_CONFIRM][] = $val;
+                }
+            }
+        }
+        return $listEmployeeAttend;
+    }
 }

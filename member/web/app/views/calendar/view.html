@@ -29,10 +29,10 @@
                             <span class="description">{{collection.event.is_public_name}} - {{$root.$lang.create_by}} {{collection.event.created_employee_id}}</span>
                             
                             <div class="btn-group" ng-repeat="val in collection.eventConfirmationType">
-                                <span ng-if="activeAttend === val.column_name">
-                                    <a class="btn btn-primary btn-xs active">{{val.name}}</a> 
+                                <span ng-if="collection.event.active_attend === val.column_name">
+                                    <a class="btn btn-primary btn-xs active_attend">{{val.name}}</a> 
                                 </span>
-                                <span ng-if="activeAttend !== val.column_name">
+                                <span ng-if="collection.event.active_attend !== val.column_name">
                                     <a class="btn btn-primary btn-xs" ng-click="attend(val.column_name)" >{{val.name}}</a> 
                                 </span>
                             </div>
@@ -138,22 +138,22 @@
                 <div class="box-header with-border">
                     <dl>
                         <dd>
-                            <p class="aligncenter font24">{{collection.attent.attend}}</p><p class="aligncenter marg0">{{$root.$lang.attend}}</p>
+                            <a ng-click="showAttend('attend', $index)"><p class="aligncenter font24">{{collection.attent.attend}}</p><p class="aligncenter marg0">{{$root.$lang.attend}}</p></a>
                         </dd>
                     </dl>
                     <dl>
                         <dd>
-                            <p class="aligncenter font24">{{collection.attent.maybe}}</p><p class="aligncenter marg0">{{$root.$lang.maybe}}</p>
+                            <a ng-click="showAttend('maybe', $index)"><p class="aligncenter font24">{{collection.attent.maybe}}</p><p class="aligncenter marg0">{{$root.$lang.maybe}}</p></a>
                         </dd>
                     </dl>
                     <dl>
                         <dd>
-                            <p class="aligncenter font24">{{collection.attent.no_attend}}</p><p class="aligncenter marg0">{{$root.$lang.no_attent}}</p>
+                            <a ng-click="showAttend('no_attend', $index)"><p class="aligncenter font24">{{collection.attent.no_attend}}</p><p class="aligncenter marg0">{{$root.$lang.no_attent}}</p></a>
                         </dd>
                     </dl>
                     <dl>
                         <dd>
-                            <p class="aligncenter font24">{{collection.attent.no_confirm}}</p><p class="aligncenter marg0">{{$root.$lang.no_confirm}}</p>
+                            <a ng-click="showAttend('no_confirm', $index)"><p class="aligncenter font24">{{collection.attent.no_confirm}}</p><p class="aligncenter marg0">{{$root.$lang.no_confirm}}</p></a>
                         </dd>
                     </dl>
                 </div>

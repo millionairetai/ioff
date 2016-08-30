@@ -17,6 +17,7 @@ use common\models\EmployeeActivity;
 use Yii;
 use common\models\Project;
 use common\models\EventConfirmationType;
+use common\models\EventPost;
 
 class CalendarController extends ApiController {
 
@@ -276,7 +277,7 @@ class CalendarController extends ApiController {
             if (!$ob = Event::find()->select(['id', 'name'])->where(['id' => $dataPost['id']])->one()) {
                 throw new \Exception('Get Event info fail');
             }
-           
+            
             $ob->attributes = $dataPost;
             $ob->employee_id = Yii::$app->user->getId();
             $ob->description_parse = strip_tags($ob->description);
@@ -299,9 +300,8 @@ class CalendarController extends ApiController {
             
             //update table Remind
             $this->_updataRemind($dataPost, $megreEmployee, $ob);
-            
             //move file
-            File::addFiles($_FILES, \Yii::$app->params['PathUpload'], $ob->id, File::TABLE_EVENT);
+            $dataPost['fileList'] = File::addFiles($_FILES, \Yii::$app->params['PathUpload'], $ob->id, File::TABLE_EVENT);
             
             //update table activity
             $activity = new Activity();
@@ -362,6 +362,26 @@ class CalendarController extends ApiController {
                     }
                 }
             }
+            
+            //Write log history for editing this project.
+            
+            $dataPost['employeeMegre'] = $megreDataDeparmentAndEmployee;
+            if (($eventHistory = $this->_makeEventHistory($dataPost)) && !empty($eventHistory)) {
+                //insert project_post table:
+                $eventPost = new EventPost();
+                $eventPost->event_id    = $ob->id;
+                $eventPost->company_id    = $this->_companyId;
+                $eventPost->employee_id   = \Yii::$app->user->getId();
+                $eventPost->parent_employee_id     = 0;
+                $eventPost->parent_id     = 0;
+                $eventPost->content       = $eventHistory;
+                $eventPost->content_parse       = $eventHistory;
+                $eventPost->is_log_history = true;
+                if (!$eventPost->save()) {
+                    throw new \Exception('Save record to table project_post fail');
+                }
+            }
+            
             $themeEmail = \common\models\EmailTemplate::getThemeEditEvent();
             $themeSms   = \common\models\SmsTemplate::getThemeEditEvent();
             
@@ -561,7 +581,7 @@ class CalendarController extends ApiController {
                         'owner_table' => Event::tableName(),
                         'content'     => $dataPost['name'],
                         'remind_datetime' => $object->start_datetime - ($dataPost['redmind'] * 60),
-                        'minute_before' => $dataPost['redmind'],
+                        'minute_before' => isset($dataPost['redmind']) ? $dataPost['redmind'] : 0,
                         'repeated_time' => 0,
                         'is_snoozing'   => 0,
                 ];
@@ -663,6 +683,7 @@ class CalendarController extends ApiController {
             $eventConfirmation = EventConfirmation::find()
                 ->where(['company_id' => $this->_companyId, 'employee_id' => \Yii::$app->user->getId(), 'event_id' => $calendarId])
                 ->one();
+            
             if (empty($eventConfirmation)) {
                 return $this->sendResponse(true, "Get EventConfirmation info fail", []);
             }
@@ -673,5 +694,114 @@ class CalendarController extends ApiController {
         }
         
         return $this->sendResponse(false, "", []);
+    }
+    
+    /**
+     * Fuction display detail od Event by id
+     * @return multitype:unknown
+     */
+    public function actionViewAttend() {
+        try {
+            if ($calendarId = \Yii::$app->request->post('calendarId')) {
+                if ($event = Event::getInfoAttend($calendarId)) {
+                    return $this->sendResponse(false, "", $event);
+                }
+            }
+            throw new \Exception(\Yii::t('member', 'Can not get event info'));
+        } catch (\Exception $e) {
+            return $this->sendResponse(true, $e->getMessage(), []);
+        }
+    }
+    
+    /**
+     * Make project history
+     *
+     * @param array $dataPost
+     * @return string
+     */
+    private function _makeEventHistory($dataPost) {
+        $content = '';
+        if (empty($dataPost)) {
+            return $content;
+        }
+        
+        $noSetting = \Yii::t('member', 'no setting');
+        
+        $caledarname = empty($dataPost['calendar_id']) ? '' : Calendar::find()->select("name")->where(['id' => $dataPost['calendar_id']])->one();
+        $redmindNew = empty($dataPost['redmind']) ? 0 : $dataPost['redmind'];
+        $redmindOd = empty($dataPost['data_old']['remind']) ? 0 : $dataPost['data_old']['remind'];
+        
+        $dataReplace = array(
+                \Yii::t('member', 'start datetime') => array($dataPost['data_old']['event']['start_datetime'].' '. $dataPost['data_old']['event']['start_time'].':00' => $dataPost['start_datetime']),
+                \Yii::t('member', 'end datetime')   => array($dataPost['data_old']['event']['end_datetime']  .' '. $dataPost['data_old']['event']['end_time']  .':00' => $dataPost['end_datetime']),
+                \Yii::t('member', 'event name')     => array($dataPost['data_old']['event']['name'] => $dataPost['name']),
+                \Yii::t('member', 'calendar name')  => array($dataPost['data_old']['calendar']['name'] => empty($dataPost['calendar_id']) ? '' : $caledarname->name),
+                \Yii::t('member', 'address')        => array($dataPost['data_old']['event']['address'] => $dataPost['address']),
+                \Yii::t('member', 'color')          => array($dataPost['data_old']['event']['color'] => $dataPost['color']),
+                \Yii::t('member', 'remind')         => array(\Yii::t('member', 'calendar_event_redmine_'.$redmindOd)=> \Yii::t('member', 'calendar_event_redmine_'.$redmindNew)),
+        );
+        
+        //Create log project history text.
+        foreach ($dataReplace as $key => $value) {
+            if (!empty($value)) {
+                foreach ($value as $after => $befor) {
+                    if ($after != $befor) {
+                        $after = empty($after) ? \Yii::t('member', 'no setting') : $after;
+                        $befor = empty($befor) ? \Yii::t('member', 'no setting') : $befor;
+                        $content .= '<li>'.str_replace(array('{{title}}', '{{after}}', '{{befor}}'), array($key, $after, $befor), \Yii::t('member', 'message info content')) .'</li>';
+                    }
+                }
+            }
+        }
+        
+        if (!empty($dataPost['fileList'])) {
+            $content .= '<li>'.\Yii::t('member', 'add file').'</li>';
+            foreach ($dataPost['fileList'] as $key => $file) {
+                $content .= '<div class="padding-left-20"><i><a href="' . \Yii::$app->params['PathUpload'] . DIRECTORY_SEPARATOR . $file['path'] . '">' . $file['name'] . '</a></i></div>';
+            }
+        }
+        
+        $tplEmployess = $tmpDepartment = '';
+        if (!empty($dataPost['employeeMegre'])) {
+            if (!empty($dataPost['employeeMegre']['employeeNew']) || !empty($dataPost['employeeMegre']['employeeOld'])) {
+                $content .= '<li>'.\Yii::t('member', 'change employee').'</li>';
+                if (!empty($dataPost['employeeMegre']['employeeOld'])) {
+                    $content .= '<div class="padding-left-20">'.\Yii::t('member', 'delete').'</div>';
+                    foreach ($dataPost['employeeMegre']['employeeOld'] as $key => $val) {
+                        $content .='<div class="padding-left-20"><a href="#/member/' . $key . '"><i>' . $val . '</i></a></div>';
+                    }
+                }
+                
+                if (!empty($dataPost['employeeMegre']['employeeNew'])) {
+                    $content .= '<div class="padding-left-20">'.\Yii::t('member', 'add new').'</div>';
+                    foreach ($dataPost['employeeMegre']['employeeNew'] as $key => $val) {
+                        $content .='<div class="padding-left-20"><a href="#/member/' . $val['id'] . '"><i>' . $val['firstname'] . '</i></a></div>';
+                    }
+                }
+            }
+            
+            if (!empty($dataPost['employeeMegre']['departmentOld']) || !empty($dataPost['employeeMegre']['departmentNew'])) {
+                $content .= '<li>'.\Yii::t('member', 'change department').'</li>';
+                
+                if (!empty($dataPost['employeeMegre']['departmentOld'])) {
+                    $content .= '<div class="padding-left-20">'.\Yii::t('member', 'delete').'</div>';
+                    foreach ($dataPost['employeeMegre']['departmentOld'] as $key => $val) {
+                        $content .='<div class="padding-left-20"><i>' . $val . '</i></div>';
+                    }
+                }
+                
+                if (!empty($dataPost['employeeMegre']['departmentNew'])) {
+                    $content .= '<div class="padding-left-20">'.\Yii::t('member', 'add new').'</div>';
+                    foreach ($dataPost['employeeMegre']['departmentNew'] as $departmentId) {
+                        foreach ($dataPost['departmentlist'] as $valdepartmentlist) {
+                            if ($departmentId == $valdepartmentlist['id']) {
+                                $content .='<div class="padding-left-20"><i>' . $valdepartmentlist['name'] . '</i></div>';
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return $content == '' ? false : "<ul>". $content."</ul>";
     }
 }

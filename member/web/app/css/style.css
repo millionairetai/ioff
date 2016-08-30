@@ -833,7 +833,10 @@ header.main-header{
     display: none;
 }
 
-.active {
+.active_attend {
     background: #023e61;
     border-color: #fff6f4;
+}
+.padding_10{
+    padding: 10px;
 }
