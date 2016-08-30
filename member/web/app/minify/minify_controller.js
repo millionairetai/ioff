@@ -714,6 +714,7 @@ appRoot.controller('viewCalendarCtrl', ['$scope', 'calendarService', 'fileServic
     $scope.objectEmployee = {};
     $scope.attend = function (attend) {
         calendarService.attend({attend_type: attend, calendarId: calendarId}, function (response) {
+            $scope.message = '';
             switch($scope.collection.event.active_attend) {
                 case 'attend':
                     $scope.collection.attent.attend--;
@@ -728,18 +729,21 @@ appRoot.controller('viewCalendarCtrl', ['$scope', 'calendarService', 'fileServic
             switch(attend) {
                 case 'attend':
                     $scope.collection.attent.attend++;
+                    $scope.message = $rootScope.$lang.update_attend_success;
                     break;
                 case 'maybe':
                     $scope.collection.attent.maybe++;
+                    $scope.message = $rootScope.$lang.update_maybe_success;
                     break;
                 case 'no_attend':
                     $scope.collection.attent.no_attend++;
+                    $scope.message = $rootScope.$lang.update_no_attend_success;
                     break;
                 }
             if ($scope.collection.event.active_attend == '') {
                 $scope.collection.attent.no_confirm--;
             }
-            alertify.success($rootScope.$lang.update_attend_success);
+            alertify.success($scope.message);
             $scope.collection.event.active_attend = attend;
         });
     }

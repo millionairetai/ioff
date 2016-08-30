@@ -6,11 +6,6 @@
     <div class="row clearfix">
         <div class="col-md-9">
             <!-- Default box -->
-            <div class="modal-footer">
-                    <a href="#calendar"><button type="button" class="btn btn-default btn-flat" ><i class="fa fa-arrow-circle-left"></i> {{$root.$lang.button_back}}</button></a>
-                    <button type="button" class="btn btn-primary btn-flat" ng-click="editEvent()"><i class="fa fa-edit"></i> {{$root.$lang.edit_project}}</button>
-                    <button type="button" class="btn btn-danger btn-flat" ng-click="deleteEvent()"><i class="fa fa-remove"></i> {{$root.$lang.delete_project}}</button>
-                </div>
             <div class="box box-solid top-event">
                 <div class="box-body" >
                     <div class="image">
@@ -51,7 +46,7 @@
                         </dt>
                         <dt ng-if="collection.event.count_date >= 1">
 	                        {{$root.$lang.project_start_date}} {{collection.event.start_datetime | date : "fullDate"}} {{collection.event.start_time}} 
-	                        - {{$root.$lang.project_end_date}} {{collection.event.end_datetime | date : "fullDate"}} {{collection.event.end_time}}
+	                        <br/> {{$root.$lang.project_end_date}} {{collection.event.end_datetime | date : "fullDate"}} {{collection.event.end_time}}
                         </dt>
                         <dd class="direct-chat-timestamp"><i class="fa fa-clock-o"></i> {{collection.event.count_date}} {{$root.$lang.day_ago}} </dd>
                     </dl>
@@ -59,7 +54,7 @@
                         <dt>{{collection.event.address}}</dt>
                         <dd class="direct-chat-timestamp"><i class="fa fa-map-marker"></i> {{collection.event.address}}</dd>
                     </dl>
-                    <h4>{{$root.$lang.calendar_title}} : {{collection.event.name}}</h4>
+                    <h4>{{$root.$lang.calendar_title}} : {{collection.calendar.name}}</h4>
                 </div><!--box body-->
             </div>
             <div class="box box-solid detail-event">
@@ -85,7 +80,15 @@
                                 <a ng-click="closeMoreFile()" class="pointer ng-binding" ng-if="limitFile > 5">{{$root.$lang.less}} </a>
                     </div>
                 </div><!--box body-->
-                
+            </div>
+            <div class="box box-solid header-event">
+                <div class="box-header with-border">
+                    <div class="modal-footer">
+                        <a href="#calendar"><button type="button" class="btn btn-default btn-flat" ><i class="fa fa-arrow-circle-left"></i> {{$root.$lang.button_back}}</button></a>
+                        <button type="button" class="btn btn-primary btn-flat" ng-click="editEvent()"><i class="fa fa-edit"></i> {{$root.$lang.edit_project}}</button>
+                        <button type="button" class="btn btn-danger btn-flat" ng-click="deleteEvent()"><i class="fa fa-remove"></i> {{$root.$lang.delete_project}}</button>
+                    </div>
+                </div>
             </div>
             <div class="box box-solid header-event">
                 <div class="box-body">
@@ -150,22 +153,22 @@
                 <div class="box-header with-border">
                     <dl>
                         <dd>
-                            <a ng-click="showAttend('attend', $index)"><p class="aligncenter font24">{{collection.attent.attend}}</p><p class="aligncenter marg0">{{$root.$lang.attend}}</p></a>
+                            <a ng-click="showAttend('attend', $index)" class='color-black'><p class="aligncenter font24">{{collection.attent.attend}}</p><p class="aligncenter marg0">{{$root.$lang.attend}}</p></a>
                         </dd>
                     </dl>
                     <dl>
                         <dd>
-                            <a ng-click="showAttend('maybe', $index)"><p class="aligncenter font24">{{collection.attent.maybe}}</p><p class="aligncenter marg0">{{$root.$lang.maybe}}</p></a>
+                            <a ng-click="showAttend('maybe', $index)" class='color-black'><p class="aligncenter font24">{{collection.attent.maybe}}</p><p class="aligncenter marg0">{{$root.$lang.maybe}}</p></a>
                         </dd>
                     </dl>
                     <dl>
                         <dd>
-                            <a ng-click="showAttend('no_attend', $index)"><p class="aligncenter font24">{{collection.attent.no_attend}}</p><p class="aligncenter marg0">{{$root.$lang.no_attent}}</p></a>
+                            <a ng-click="showAttend('no_attend', $index)" class='color-black'><p class="aligncenter font24">{{collection.attent.no_attend}}</p><p class="aligncenter marg0">{{$root.$lang.no_attent}}</p></a>
                         </dd>
                     </dl>
                     <dl>
                         <dd>
-                            <a ng-click="showAttend('no_confirm', $index)"><p class="aligncenter font24">{{collection.attent.no_confirm}}</p><p class="aligncenter marg0">{{$root.$lang.no_confirm}}</p></a>
+                            <a ng-click="showAttend('no_confirm', $index)" class='color-black'><p class="aligncenter font24">{{collection.attent.no_confirm}}</p><p class="aligncenter marg0">{{$root.$lang.no_confirm}}</p></a>
                         </dd>
                     </dl>
                 </div>
@@ -206,28 +209,6 @@
                 </div>
                 <br/>
             </div>
-            <div class="box box-solid">
-                <div class="box-header with-border">
-                    <h4 class="box-title">Events</h4>
-                    <div class="box-tools pull-right">
-                        <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
-                    </div>
-                </div>
-                <div class="box-body related-event">
-                    <div class="imgleft clearfix">
-                        <div class="image">
-                            <img src="https://www.yorkcounty.gov/portals/6/2015/2016-Events_webbot.jpg?ver=2015-12-14-115822-533" alt=""/>
-                        </div>
-                        <dl>
-                            <dt><a href="#">First event</a></dt>
-                            <dd class="direct-chat-timestamp"><i class="fa fa-clock-o"></i> 18days ago</dd>
-                            <dd><a href="#">delete</a> - <a href="#">remove</a></dd>
-                        </dl>
-                    </div>
-                </div>
-                <!-- /.box-body -->
-            </div>
         </div>
     </div>
-
 </section>

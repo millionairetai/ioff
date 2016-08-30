@@ -52,6 +52,8 @@
             remove_project_post_success:'Xóa dự án bài thành công.',
             remove_event_post_success:'Xóa sự kiện thành công.',
             update_attend_success:'Attend thành công.',
+            update_maybe_success:'Maybe thành công.',
+            update_no_attend_success:'No attend thành công.',
             update_attend_error:'Attend Error.',
             last_modify: 'Ngày sửa',
             modify_by: 'Người tạo',
@@ -182,7 +184,8 @@
             maybe : 'Maybe',
             no_attent : 'Not Attent',
             no_confirm : 'No confirm',
-            recent_post : 'Bài gần đây'
+            recent_post : 'Bài gần đây',
+            show_attend : 'Thông tin attend'
         };
     });
 })(window.angular);

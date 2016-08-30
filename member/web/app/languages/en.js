@@ -50,6 +50,8 @@
             remove_project_post_success:'Delete Project Post success.',
             remove_event_post_success:'Delete Event Post success.',
             update_attend_success:'Attend success.',
+            update_maybe_success:'Maybe success.',
+            update_no_attend_success:'No attend success.',
             update_attend_error:'Attend error.',
             remove_file_error:'Delete File Error.',
             last_modify: 'Last modified',
@@ -182,7 +184,8 @@
             maybe : 'Maybe',
             no_attent : 'Not Attent',
             no_confirm : 'No confirm',
-            recent_post : 'Recent post'
+            recent_post : 'Recent post',
+            show_attend : 'Info Attend'
         };
     });
 })(window.angular);
