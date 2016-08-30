@@ -207,6 +207,9 @@ class Event extends ActiveRecord {
        
         $countEmployee = empty($invitations) ? 0 : $invitations['departmentAndEmployee']['count'];
         $attend[EventConfirmationType::NO_CONFIRM] = $countEmployee - $attend['countConfirm'];
+        
+        $fileList = File::getFileByOwnerIdAndTable($eventId, Event::tableName());
+        
         $result = [
                 'event' => [
                         'id'                => $event->id,
