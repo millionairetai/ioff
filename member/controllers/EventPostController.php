@@ -100,8 +100,14 @@ class EventPostController extends ApiController {
             }
 
             //move file
-            $fileList = File::addFiles($_FILES, \Yii::$app->params['PathUpload'], $eventPost->id, EventPost::tableName());
-            
+            $files = File::addFiles($_FILES, \Yii::$app->params['PathUpload'], $eventPost->id, EventPost::tableName());
+            $fileList = [];
+            foreach ($files AS $key => $val) {
+                $fileList[] = [
+                        'name' => $val['name'],
+                        'path' => \Yii::$app->params['PathUpload'] . DIRECTORY_SEPARATOR . $val['path']
+                ];
+            }
             //activity
             $content = \Yii::$app->user->identity->firstname . " " . \Yii::t('common', 'created') . " " . $eventInfo->name;
             $activity = new Activity();
@@ -165,7 +171,7 @@ class EventPostController extends ApiController {
             ];
             
             $transaction->commit();
-            return $this->sendResponse(false, [], ['collection' => $collection]);
+            return $this->sendResponse(false, [], ['collection' => $collection, 'files' => $fileList]);
         } catch (Exception $e) {
             $transaction->rollBack();
             return $this->sendResponse(true, \Yii::t('member', 'error_system'), []);

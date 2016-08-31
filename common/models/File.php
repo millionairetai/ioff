@@ -302,15 +302,15 @@ class File extends \common\components\db\ActiveRecord {
         if (($owner_id == null) || ($table_name == null)) {
             return null;
         }
-        
+        $table_injoin = $table_name.'_post';
         $files = File::find()
                     ->select(['file.id', 'file.name', 'file.path', 'file.datetime_created'])
                     ->distinct()
-                    ->innerJoin(File::TABLE_PROJECT_POST, File::TABLE_PROJECT_POST.'.id = file.owner_id OR file.owner_id = '. $owner_id)
+                    ->innerJoin($table_injoin, $table_injoin.'.id = file.owner_id OR file.owner_id = '. $owner_id)
                     ->where([
-                            'file.company_id'   => \Yii::$app->user->getCompanyId(),
-                            'file.owner_object' => [$table_name, File::TABLE_PROJECT_POST],
-                            'file.owner_id'     => $owner_id,
+                            'file.company_id'     => \Yii::$app->user->getCompanyId(),
+                            'file.owner_object'   => [$table_name, $table_injoin],
+                            'event_post.event_id' => $owner_id,
                     ])
                     ->all();
         

@@ -683,7 +683,6 @@ class CalendarController extends ApiController {
             $eventConfirmation = EventConfirmation::find()
                 ->where(['company_id' => $this->_companyId, 'employee_id' => \Yii::$app->user->getId(), 'event_id' => $calendarId])
                 ->one();
-            
             if (empty($eventConfirmation)) {
                 return $this->sendResponse(true, "Get EventConfirmation info fail", []);
             }

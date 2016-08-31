@@ -585,9 +585,9 @@ appRoot.controller('viewCalendarCtrl', ['$scope', 'calendarService', 'fileServic
                 };
                 $scope.files = [];
                 $scope.getEventPosts();
-//                $scope.release  = [response.objects.collection];
-//                $scope.releases = $scope.eventPost;
-//                $scope.eventPost = $scope.release.concat($scope.releases);
+                $scope.release  = response.objects.files;
+                $scope.releases = $scope.collection.file_info;
+                $scope.collection.file_info = $scope.release.concat($scope.releases);
             });
         }
     }
