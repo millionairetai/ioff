@@ -1,4 +1,4 @@
-<section class="content-header" ng-controller="taskCtrl">
+<section class="content-header">
     <h1>
         {{$root.$lang.task_manage}}
     </h1>
@@ -21,35 +21,28 @@
         <br/>
         <div class="box-body">
             <div class = "container" ng-show="collection.length">
-                <!--<div class="tool-right">-->
-                    <input type="text" ng-model="pagination.config.search_text" ng-keyup="searchByName()"/>
-                    <a class="btn btn-info" ><i class="fa fa-search"></i></a>
-                <!--</div>-->
+                <input type="text" ng-model="pagination.config.search_text" ng-keyup="searchByName()"/>
+                <a class="btn btn-info" ><i class="fa fa-search"></i></a>
                 <div class ="row task-row" ng-repeat="ob in collection">
                     <div class = "col-lg-12 container">
-                        <div class = "row">
+                        <div class="row">
                             <div class="pull-left" id="name-desc">
-                                <div class="row"><a href="#calendar"><div class="inline"><strong>#584.</strong></div><strong>{{ob.name}}</strong></a></div>
-                                <div class="row"><i>{{ob.description}}</i></div>
+                                <div class="row"><a href="#calendar"><div>#{{ob.id}}. &nbsp; {{ob.name}}</div></a></div>
                             </div>
                             <div class="pull-left task-creator">
-                                <label class="task-creator pull-left">{{$root.$lang.task_creator}}</label>
-                                <ul class="users-list task-creator pull-left"><li><img height = "30" width = "30" src="{{ob.creator.image}}" title="{{ob.creator.firstname}}" /><label class="users-list-name">{{ob.creator.firstname}}</label></li></ul>                                
+                                <span class="padding-img">{{$root.$lang.task_creator}}:</span>
+                                <span><img class="img-circle" height = "30" width = "30" src="{{ob.creator.image}}" title="{{ob.creator.firstname}}" /><label class="users-list-name">{{ob.creator.firstname}}</span>                                
                             </div>
                         </div>
-
+                        <div class="row"><i>{{ob.description}}</i></div>
                         <div class = "row">
                             <div class="pull-left assignee-to">
-                                <label class="assignee-to clearfix pull-left">{{$root.$lang.assigned_to}}</label>
-                                <ul class="col-lg-10 users-list pull-left assignee-to">
-                                    <li ng-repeat="x in ob.assignees"><img height = "30" width = "30" src="{{x.image}}" title="{{x.firstname}}" /><label class="users-list-name">{{x.firstname}}</label></li>
-                                </ul>
+                                <span class="padding-img">{{$root.$lang.assigned_to}}:</span>
+                                <span class="padding-img-circle" ng-repeat="x in ob.assignees"><img class="img-circle" height = "30" width = "30" src="{{x.image}}" title="{{x.firstname}}" /></span>
                             </div>
                             <div ng-show="ob.followers.length > 0" class="pull-left follow-to">
-                                <label class="follow-to pull-left">{{$root.$lang.follow_to}}</label>
-                                <ul class="users-list pull-left follow-to">
-                                    <li class="follow-to" ng-repeat="x in ob.followers"><img ng-if ="x.image != '/flies/employee/'" height = "30" width = "30" src="{{x.image}}" title="{{x.firstname}}" /><label class="users-list-name">{{x.firstname}}</label></li>
-                                </ul>
+                                <span class="padding-img">{{$root.$lang.follow_to}}:</span>
+                                <span class="padding-img-circle" ng-repeat="x in ob.followers"><img class="img-circle" ng-if ="x.image != '/flies/employee/'" height = "30" width = "30" src="{{x.image}}" title="{{x.firstname}}" /></span>
                             </div>
                         </div>
 

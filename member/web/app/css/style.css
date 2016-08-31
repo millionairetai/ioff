@@ -685,7 +685,8 @@ label.assignee-to,label.task-creator,label.follow-to{
 }
 
 label.assignee-to,label.follow-to{
-    padding-top:38px;
+    padding: 25px;
+    padding-top:40px;
 }
 
 .block-image-name{
@@ -696,7 +697,9 @@ label.assignee-to,label.follow-to{
  /*task list*/
  
 .task-row{
-    padding-top: 10px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-left: auto;
 }
 
 .task-row:not(:last-child){
@@ -713,7 +716,7 @@ div.assignee-to{
 }
     
 ul.users-list.assignee-to{
-    width: 60%
+    /*width: 60%*/
 }
 
 
@@ -737,12 +740,21 @@ ul.users-list.assignee-to{
 
 label.task-creator {
     height: 50px;
-    padding-top: 40px;
+    padding: 40px;
+    padding-top: 15px;
 }
 
 div.task-creator{
     margin-left: 5%;
-    margin-top: -15px;
+    margin-top: -5px;
+}
+
+.task-row .padding-img {
+    padding-left: 40px;padding-right: 10px;
+}
+
+.task-row .padding-img-circle {
+    padding-left: 5px;padding-right: 5px;
 }
 
 

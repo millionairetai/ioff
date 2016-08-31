@@ -56,7 +56,8 @@ appRoot.config(function ($routeProvider, $httpProvider) {
             })
             //task
             .when('/task', {
-                templateUrl: 'app/views/task/index.html'
+                templateUrl: 'app/views/task/index.html',
+                controller: 'taskCtrl'
             })
             .when('/addTask', {
                 templateUrl: 'app/views/task/add.html',

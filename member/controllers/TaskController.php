@@ -263,26 +263,30 @@ class TaskController extends ApiController {
             $followers = [];
             $collection = [];
             foreach ($tasks as $task) {
+                $assignees = [];
+                $followers = [];
                 $creator = $task->creator;
                 foreach ($task->assignees as $assignee) {
-                    $assignees[] = ['firstname' => $assignee->firstname, 'email' => $assignee->email, 'image' => $assignee->getImage()];
+                    $assignees[] = ['fullname' => $assignee->fullname, 'email' => $assignee->email, 'image' => $assignee->getImage()];
                 }
 
                 foreach ($task->followers as $follower) {
-                    $followers[] = ['firstname' => $follower->firstname, 'email' => $follower->email, 'image' => $follower->getImage()];
+                    $followers[] = ['fullname' => $follower->fullname, 'email' => $follower->email, 'image' => $follower->getImage()];
                 }
 
                 $collection[] = [
                     'id' => $task->id,
                     'name' => $task->name,
-                    'description' => strlen($task->description) > 70 ? (substr($task->description, 0, 70) . "...") : $task->description,
-                    'creator' => ['firstname' => $creator->firstname, 'email' => $creator->email, 'image' => $creator->getImage()],
+                    'description' => strlen($task->description) > 400 ? (substr($task->description, 0, 400) . "...") : $task->description,
+                    'creator' => ['fullname' => $creator->fullname, 'email' => $creator->email, 'image' => $creator->getImage()],
                     'followers' => $followers,
-                    '$assignees' => $assignees,
+                    'assignees' => $assignees,
                 ];
             }
         } catch (\Exception $e) {
-            var_dump($e->getMessage());die;
+            $collection = [];
+            $totalCount = 0;
+            
         }
 
         $objects = [];
