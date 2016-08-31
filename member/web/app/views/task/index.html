@@ -20,52 +20,67 @@
 
         <br/>
         <div class="box-body">
-            <div class = "container" ng-show="collection.length">
-                <input type="text" ng-model="pagination.config.search_text" ng-keyup="searchByName()"/>
-                <a class="btn btn-info" ><i class="fa fa-search"></i></a>
-                <div class ="row task-row" ng-repeat="ob in collection">
-                    <div class = "col-lg-12 container">
-                        <div class="row">
-                            <div class="pull-left" id="name-desc">
-                                <div class="row"><a href="#calendar"><div>#{{ob.id}}. &nbsp; {{ob.name}}</div></a></div>
-                            </div>
-                            <div class="pull-left task-creator">
-                                <span class="padding-img">{{$root.$lang.task_creator}}:</span>
-                                <span><img class="img-circle" height = "30" width = "30" src="{{ob.creator.image}}" title="{{ob.creator.firstname}}" /><label class="users-list-name">{{ob.creator.firstname}}</span>                                
-                            </div>
-                        </div>
-                        <div class="row"><i>{{ob.description}}</i></div>
-                        <div class = "row">
-                            <div class="pull-left assignee-to">
-                                <span class="padding-img">{{$root.$lang.assigned_to}}:</span>
-                                <span class="padding-img-circle" ng-repeat="x in ob.assignees"><img class="img-circle" height = "30" width = "30" src="{{x.image}}" title="{{x.firstname}}" /></span>
-                            </div>
-                            <div ng-show="ob.followers.length > 0" class="pull-left follow-to">
-                                <span class="padding-img">{{$root.$lang.follow_to}}:</span>
-                                <span class="padding-img-circle" ng-repeat="x in ob.followers"><img class="img-circle" ng-if ="x.image != '/flies/employee/'" height = "30" width = "30" src="{{x.image}}" title="{{x.firstname}}" /></span>
-                            </div>
-                        </div>
+            <div class="nav-tabs-custom"> <!-- Only required for left/right tabs -->
+                <ul class="nav nav-tabs">
+                    <li class="active"><a onclick="event.preventDefault();" href="#tab_1" data-toggle="tab">My task</a></li>
+                    <li><a onclick="event.preventDefault();" href="#tab_2" data-toggle="tab">My followed task</a></li>
+                    <li><a onclick="event.preventDefault();" href="#tab_3" data-toggle="tab">All task</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab_1">
+                        <input type="text" ng-model="pagination.config.search_text" ng-keyup="searchByName()"/>
+                        <a class="btn btn-info" ><i class="fa fa-search"></i></a>
+                        <div class ="row task-row" ng-repeat="ob in collection">
+                            <div class = "col-lg-12 container">
+                                <div class="row">
+                                    <div class="pull-left" id="name-desc">
+                                        <div class="row"><a href="#calendar"><div>#{{ob.id}}. &nbsp; {{ob.name}}</div></a></div>
+                                    </div>
+                                    <div class="pull-left task-creator">
+                                        <span class="padding-img">{{$root.$lang.task_creator}}:</span>
+                                        <span><img class="img-circle" height = "30" width = "30" src="{{ob.creator.image}}" title="{{ob.creator.firstname}}" /><label class="users-list-name">{{ob.creator.firstname}}</span>                                
+                                    </div>
+                                </div>
+                                <div class="row"><i>{{ob.description}}</i></div>
+                                <div class = "row">
+                                    <div class="pull-left assignee-to">
+                                        <span class="padding-img">{{$root.$lang.assigned_to}}:</span>
+                                        <span class="padding-img-circle" ng-repeat="x in ob.assignees"><img class="img-circle" height = "30" width = "30" src="{{x.image}}" title="{{x.firstname}}" /></span>
+                                    </div>
+                                    <div ng-show="ob.followers.length > 0" class="pull-left follow-to">
+                                        <span class="padding-img">{{$root.$lang.follow_to}}:</span>
+                                        <span class="padding-img-circle" ng-repeat="x in ob.followers"><img class="img-circle" ng-if ="x.image != '/flies/employee/'" height = "30" width = "30" src="{{x.image}}" title="{{x.firstname}}" /></span>
+                                    </div>
+                                </div>
 
+                            </div>
+                        </div>
+                        <ul ng-show="pagination.total > pagination.config.count" ng-class="{hidden: pagination.total == 0}" class="pagination pagination-sm no-margin pull-right">
+                        <li ng-click="pagination.config.page = pagination.config.page - 1"
+                            ng-class="{disabled: pagination.config.page == 1}" >
+                            <a href="#/task">&laquo;</a>
+                        </li>
+                        <li ng-repeat="p in pagination.pages"
+                            ng-click="pagination.config.page = p"
+                            ng-class="{active: p == pagination.config.page}">
+                            <a href="#/task">{{p}}</a>
+                        </li>
+                        <li ng-click="pagination.config.page = pagination.config.page + 1"
+                            ng-class="{disabled: pagination.config.page == pagination.pages.length}">
+                            <a href="#/task">&raquo;</a>
+                        </li>
+                    </ul >
+                    </div>
+                    <!--end table-->
+                    <!--pagination-->
+                    <div class="tab-pane" id="tab_2">
+                        followed task
+                    </div>
+                    <div class="tab-pane" id="tab_3">
+                    all task
                     </div>
                 </div>
             </div>
-            <!--end table-->
-            <!--pagination-->
-            <ul ng-show="pagination.total > pagination.config.count" ng-class="{hidden: pagination.total == 0}" class="pagination pagination-sm no-margin pull-right">
-                <li ng-click="pagination.config.page = pagination.config.page - 1"
-                    ng-class="{disabled: pagination.config.page == 1}" >
-                    <a href="#/task">&laquo;</a>
-                </li>
-                <li ng-repeat="p in pagination.pages"
-                    ng-click="pagination.config.page = p"
-                    ng-class="{active: p == pagination.config.page}">
-                    <a href="#/task">{{p}}</a>
-                </li>
-                <li ng-click="pagination.config.page = pagination.config.page + 1"
-                    ng-class="{disabled: pagination.config.page == pagination.pages.length}">
-                    <a href="#/task">&raquo;</a>
-                </li>
-            </ul >
         </div>
 
     </div><!-- /.box -->
