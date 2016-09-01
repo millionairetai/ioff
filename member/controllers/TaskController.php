@@ -296,7 +296,7 @@ class TaskController extends ApiController {
     }
     
     /**
-     * Get task list assigned for currrent login employee.
+     * Get task list follower for currrent login employee.
      */
     public function actionGetFollowTasks() {
         $itemPerPage = \Yii::$app->request->get('limit');
@@ -357,7 +357,26 @@ class TaskController extends ApiController {
         $objects['totalItems'] = (int) $totalCount;
         return $this->sendResponse(false, '', $objects);
     }
-
+    
+        /**
+     * Get task list follower for currrent login employee.
+     */
+    public function actionGetTasks() {
+        $itemPerPage = \Yii::$app->request->get('limit');
+        $currentPage = \Yii::$app->request->get('page');
+        $searchText = \Yii::$app->request->get('searchText');
+        try {
+            $task = Task::getTask($itemPerPage, $currentPage, $searchText);
+        } catch (\Exception $e) {
+            $collection = [];
+            $totalCount = 0;  
+        }
+        
+        $objects = [];
+        $objects['collection'] = $collection;
+        $objects['totalItems'] = (int) $totalCount;
+        return $this->sendResponse(false, '', $objects);
+    }
 //    public function actionGetAssignedTasks1() {
 //        $employeeId = \Yii::$app->user->getId();
 //        $itemPerPage = \Yii::$app->request->get('count');

@@ -22,18 +22,18 @@
         <div class="box-body">
             <div class="nav-tabs-custom"> <!-- Only required for left/right tabs -->
                 <ul class="nav nav-tabs">
-                    <li class="active"><a onclick="event.preventDefault();" href="#tab_1" data-toggle="tab">My task</a></li>
-                    <li><a onclick="event.preventDefault();" href="#tab_2" data-toggle="tab">My followed task</a></li>
-                    <li><a onclick="event.preventDefault();" href="#tab_3" data-toggle="tab">All task</a></li>
+                    <li class="active"><a ng-click="getList('my_task', $event)" href="#tab_1" data-toggle="tab">My task</a></li>
+                    <li><a ng-click="getList('follow_task', $event)" href="#tab_2" data-toggle="tab">My followed task</a></li>
+                    <li><a ng-click="getList('all_task', $event)" href="#tab_3" data-toggle="tab">All task</a></li>
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active" id="tab_1">
                         <div class="row">
                             <div class="col-sm-9"></div>
                             <div class="col-sm-3">
-                                <form class="form-group sidebar-form1" ng-keyup="searchByName()">
+                                <form class="form-group sidebar-form1" ng-submit="searchByName('my_task')">
                                     <div class="input-group">
-                                        <input type="text" ng-model="params.searchText" class="form-control" placeholder="Name task"/>
+                                        <input type="text" ng-model="task.searchAssigned" class="form-control" placeholder="Name task"/>
                                         <span class="input-group-btn">
                                             <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
                                         </span>                     
@@ -46,11 +46,61 @@
                             <div class = "col-lg-12 container">
                                 <div class="row">
                                     <div class="pull-left" id="name-desc">
-                                        <div class="row"><a href="#calendar"><div>#{{ob.id}}. &nbsp; {{ob.name}}</div></a></div>
+                                        <div class="row"><a href="#/viewTask/{{ob.id}}"><div>#{{ob.id}}. &nbsp; {{ob.name}}</div></a></div>
                                     </div>
                                     <div class="pull-left task-creator">
                                         <span class="padding-img">{{$root.$lang.task_creator}}:</span>
-                                        <span><img class="img-circle" height = "30" width = "30" src="{{ob.creator.image}}" title="{{ob.creator.firstname}}" /><label class="users-list-name">{{ob.creator.firstname}}</span>                                
+                                        <span title="{{ob.creator.fullname}}"><img class="img-circle" height = "30" width = "30" src="{{ob.creator.image}}" /></span>                                
+                                    </div>
+                                </div>
+                                <div class="row"><i>{{ob.description}}</i></div>
+                                <div class = "row">
+                                    <div class="pull-left assignee-to">
+                                        <span class="padding-img">{{$root.$lang.assigned_to}}:</span>
+                                        <span class="padding-img-circle" ng-repeat="x in ob.assignees"><img class="img-circle" height = "30" width = "30" src="{{x.image}}" title="{{x.fullname}}" /></span>
+                                    </div>
+                                    <div ng-show="ob.followers.length > 0" class="pull-left follow-to">
+                                        <span class="padding-img">{{$root.$lang.follow_to}}:</span>
+                                        <span class="padding-img-circle" ng-repeat="x in ob.followers"><img class="img-circle" ng-if ="x.image != '/flies/employee/'" height = "30" width = "30" src="{{x.image}}" title="{{x.fullname}}" /></span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="text-right" ng-show="totalItems > params.limit">
+                            <uib-pagination total-items="totalItems" ng-model="task.pageAssigned" max-size="maxPageSize" class="pagination-sm"
+                                            boundary-links="true" first-text="&lsaquo;&lsaquo;" previous-text="&lsaquo;" next-text="&rsaquo;" last-text="&rsaquo;&rsaquo;" items-per-page="params.limit"
+                                            ng-change="getList('my_task', '')" num-pages="numPages" rotate="false"></uib-pagination>                                  
+                        </div>
+
+                    </div>
+                    <!--end table-->
+                    <!--pagination-->
+                    <div class="tab-pane" id="tab_2">
+                        <div class="row">
+                            <div class="col-sm-9"></div>
+                            <div class="col-sm-3">
+                                <form class="form-group sidebar-form1" ng-submit="searchByName('follow_task')">
+                                    <div class="input-group">
+                                        <input type="text" ng-model="task.searchFollow" class="form-control" placeholder="Name task"/>
+                                        <span class="input-group-btn">
+                                            <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
+                                        </span>                     
+                                    </div>
+                                </form>
+                            </div>              
+                        </div>
+                        <div class="clear"></div>  
+                        <div class ="row task-row" ng-repeat="ob in collection">
+                            <div class = "col-lg-12 container">
+                                <div class="row">
+                                    <div class="pull-left" id="name-desc">
+                                        <div class="row"><a href="#/viewTask/{{ob.id}}"><div>#{{ob.id}}. &nbsp; {{ob.name}}</div></a></div>
+                                    </div>
+                                    <div class="pull-left task-creator">
+                                        <span class="padding-img">{{$root.$lang.task_creator}}:</span>
+                                        <span><img class="img-circle" height = "30" width = "30" src="{{ob.creator.image}}" title="{{ob.creator.fullname}}" /><label class="users-list-name">{{ob.creator.fullname}}</span>                                
                                     </div>
                                 </div>
                                 <div class="row"><i>{{ob.description}}</i></div>
@@ -69,22 +119,61 @@
                         </div>
 
                         <div class="text-right" ng-show="totalItems > params.limit">
-                            <uib-pagination total-items="totalItems" ng-model="params.page" max-size="maxPageSize" class="pagination-sm"
+                            <uib-pagination total-items="totalItems" ng-model="task.pageFollow" max-size="maxPageSize" class="pagination-sm"
                                             boundary-links="true" first-text="&lsaquo;&lsaquo;" previous-text="&lsaquo;" next-text="&rsaquo;" last-text="&rsaquo;&rsaquo;" items-per-page="params.limit"
-                                            ng-change="getList()" num-pages="numPages" rotate="false"></uib-pagination>                                  
+                                            ng-change="getList('follow_task', '')" num-pages="numPages" rotate="false"></uib-pagination>                                  
                         </div>
 
                     </div>
-                    <!--end table-->
-                    <!--pagination-->
-                    <div class="tab-pane" id="tab_2">
-                        followed task
-                    </div>
                     <div class="tab-pane" id="tab_3">
-                        all task
+                        <div class="row">
+                            <div class="col-sm-9"></div>
+                            <div class="col-sm-3">
+                                <form class="form-group sidebar-form1" ng-submit="searchByName('all_task')">
+                                    <div class="input-group">
+                                        <input type="text" ng-model="task.searchTasks" class="form-control" placeholder="Name task"/>
+                                        <span class="input-group-btn">
+                                            <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
+                                        </span>                     
+                                    </div>
+                                </form>
+                            </div>              
+                        </div>
+                        <div class="clear"></div>  
+                        <div class ="row task-row" ng-repeat="ob in collection">
+                            <div class = "col-lg-12 container">
+                                <div class="row">
+                                    <div class="pull-left" id="name-desc">
+                                        <div class="row"><a href="#/viewTask/{{ob.id}}"><div>#{{ob.id}}. &nbsp; {{ob.name}}</div></a></div>
+                                    </div>
+                                    <div class="pull-left task-creator">
+                                        <span class="padding-img">{{$root.$lang.task_creator}}:</span>
+                                        <span><img class="img-circle" height = "30" width = "30" src="{{ob.creator.image}}" title="{{ob.creator.fullname}}" /><label class="users-list-name">{{ob.creator.fullname}}</span>                                
+                                    </div>
+                                </div>
+                                <div class="row"><i>{{ob.description}}</i></div>
+                                <div class = "row">
+                                    <div class="pull-left assignee-to">
+                                        <span class="padding-img">{{$root.$lang.assigned_to}}:</span>
+                                        <span class="padding-img-circle" ng-repeat="x in ob.assignees"><img class="img-circle" height = "30" width = "30" src="{{x.image}}" title="{{x.firstname}}" /></span>
+                                    </div>
+                                    <div ng-show="ob.followers.length > 0" class="pull-left follow-to">
+                                        <span class="padding-img">{{$root.$lang.follow_to}}:</span>
+                                        <span class="padding-img-circle" ng-repeat="x in ob.followers"><img class="img-circle" ng-if ="x.image != '/flies/employee/'" height = "30" width = "30" src="{{x.image}}" title="{{x.firstname}}" /></span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="text-right" ng-show="totalItems > params.limit">
+                            <uib-pagination total-items="totalItems" ng-model="task.pageTasks" max-size="maxPageSize" class="pagination-sm"
+                                            boundary-links="true" first-text="&lsaquo;&lsaquo;" previous-text="&lsaquo;" next-text="&rsaquo;" last-text="&rsaquo;&rsaquo;" items-per-page="params.limit"
+                                            ng-change="getList('all_task', '')" num-pages="numPages" rotate="false"></uib-pagination>                                  
+                        </div>
                     </div>
                 </div>
-                 <div ng-show="!collection.length">
+                <div ng-show="!collection.length">
                     {{$root.$lang.no_data}}
                 </div>
             </div>

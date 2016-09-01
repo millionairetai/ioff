@@ -8,25 +8,88 @@ appRoot.controller('taskCtrl', ['$scope', 'taskService', '$uibModal', '$rootScop
             orderType: ''
         };
 
+        $scope.task = {
+            searchFollow: '',
+            searchAssigned: '',
+            pageFollow: 1,
+            pageAssigned: 1
+        };
 
         //array store task collection response from server
         $scope.collection = [];
         $scope.totalItems = 0;
         $scope.maxPageSize = MAX_PAGE_SIZE;
+
         //get list with pagination
-        $scope.getList = function () {
-            taskService.getTasks($scope.params, function (response) {
-                $scope.collection = response.objects.collection;
-                $scope.totalItems  = response.objects.totalItems;
-                if (!$scope.$$phase) {
-                    $scope.$apply();
-                }
-            });
+        $scope.getList = function (type, $event) {
+            if ($event != '') {
+                $event.preventDefault();
+            }
+
+            //check if this tab is checked, we don't get ajax again.
+            if ($($event.target).parent().hasClass('active')) {
+                return true;
+            }
+
+            switch (type) {
+                case 'my_task':
+                    {
+                        $scope.params.searchText = $scope.task.searchAssigned;
+                        $scope.params.page = $scope.task.pageAssigned;
+                        taskService.getAssingedTasks($scope.params, function (response) {
+                            $scope.collection = response.objects.collection;
+                            $scope.totalItems = response.objects.totalItems;
+                            if (!$scope.$$phase) {
+                                $scope.$apply();
+                            }
+                        });
+                    }
+                    break;
+                case 'follow_task':
+                    {
+                        $scope.params.searchText = $scope.task.searchFollow;
+                        $scope.params.page = $scope.task.pageFollow;
+                        taskService.getFollowTasks($scope.params, function (response) {
+                            $scope.collection = response.objects.collection;
+                            $scope.totalItems = response.objects.totalItems;
+                            if (!$scope.$$phase) {
+                                $scope.$apply();
+                            }
+                        });
+                    }
+                    break;
+                case 'all_task':
+                    {
+                        $scope.params.searchText = $scope.task.searchFollow;
+                        $scope.params.page = $scope.task.pageFollow;
+                        taskService.getTasks($scope.params, function (response) {
+                            $scope.collection = response.objects.collection;
+                            $scope.totalItems = response.objects.totalItems;
+                            if (!$scope.$$phase) {
+                                $scope.$apply();
+                            }
+                        });
+                    }
+                    break;
+            }
         };
 
+        $scope._resetParams = function () {
+            $scope.params = {
+                page: 1,
+                limit: 5,
+                searchText: '',
+                orderBy: '',
+                orderType: ''
+            };
+        };
+
+        //initial task list
+        $scope.getList('my_task', '');
+
         //search by task name
-        $scope.searchByName = function () {
-            $scope.getList($scope.params);
+        $scope.searchByName = function (type) {
+            $scope.getList(type, '');
         };
 
         //call popup add task
@@ -42,11 +105,8 @@ appRoot.controller('taskCtrl', ['$scope', 'taskService', '$uibModal', '$rootScop
 
         //when add task successfully
         $rootScope.$on('create_task_success', function (event, data) {
-            $scope.getList($scope.params);
+            $scope.getList('my_task', '');
         });
-
-        //initial task list
-        $scope.getList($scope.params);
     }]);
 
 /*add Task Popup Controller*/

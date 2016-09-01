@@ -33,33 +33,4 @@ appRoot.run(function ($rootScope, socketService, notifyService) {
             $rootScope.sum_notify = respone.objects;
         });
     });
-    
-    /////////////////////
-        /*pagination*/
-    $rootScope.getPaginationPages = function(totalCount,paginationSize,countPerPage,currentPage){
-        var totalPages = Math.ceil(totalCount / countPerPage);
-        var pages = [];
-        var start = currentPage - Math.floor(paginationSize/2);
-        var finish = null;
-
-        if((start + paginationSize - 1) > totalPages){
-            start = totalPages - paginationSize;
-        }
-        if(start <= 0) {
-            start = 1;
-        }
-
-       finish = start +  paginationSize - 1;
-       if(finish > totalPages){
-           finish = totalPages;
-       }
-
-
-        for (var i = start; i <= finish; i++) {
-            pages.push(i);
-        }
-
-        return pages;
-    }
-    /////////////////////////
 });

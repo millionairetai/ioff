@@ -123,5 +123,8 @@ class Task extends \common\components\db\ActiveRecord {
     public function getTaskGroups(){
         return $this->hasMany(TaskGroup::className(), ['project_id'=>'id']);
     }
-            
+     
+    public static function getTasks() {
+        
+    }
 }

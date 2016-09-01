@@ -70,8 +70,14 @@ appRoot.factory('taskService', ['apiService','$rootScope','alertify', function (
             addTask : function (data,success,error){
                 apiService.upload('task/add',data,success,error);
             },
-            getTasks : function (data,success,error) {
+            getAssingedTasks : function (data,success,error) {
                 apiService.get('task/get-assigned-tasks',data,success,error);
+            },
+            getFollowTasks : function (data,success,error) {
+                apiService.get('task/get-follow-tasks',data,success,error);
+            },
+            getTasks: function(data,success,error) {
+                apiService.get('task/get-tasks',data,success,error);
             },
             redmind : function(){
                 return [
