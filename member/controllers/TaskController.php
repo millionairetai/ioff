@@ -236,9 +236,9 @@ class TaskController extends ApiController {
      * Get task list assigned for currrent login employee.
      */
     public function actionGetAssignedTasks() {
-        $itemPerPage = \Yii::$app->request->get('count');
+        $itemPerPage = \Yii::$app->request->get('limit');
         $currentPage = \Yii::$app->request->get('page');
-        $search_text = \Yii::$app->request->get('search_text');
+        $search_text = \Yii::$app->request->get('searchText');
         try {
             $taskAss = TaskAssignment::find()
                             ->select(['task_id'])
@@ -291,7 +291,70 @@ class TaskController extends ApiController {
 
         $objects = [];
         $objects['collection'] = $collection;
-        $objects['totalCount'] = (int) $totalCount;
+        $objects['totalItems'] = (int) $totalCount;
+        return $this->sendResponse(false, '', $objects);
+    }
+    
+    /**
+     * Get task list assigned for currrent login employee.
+     */
+    public function actionGetFollowTasks() {
+        $itemPerPage = \Yii::$app->request->get('limit');
+        $currentPage = \Yii::$app->request->get('page');
+        $search_text = \Yii::$app->request->get('searchText');
+        try {
+            $taskAss = Follower::find()
+                            ->select(['task_id'])
+                            ->where(['employee_id' => \Yii::$app->user->identity->id])
+                            ->andCompanyId()->asArray()->all();
+            if (empty($taskAss)) {
+                throw new \Exception('Get task_assigment empty');
+            }
+
+            $tasks = Task::find()->andWhere(['id' => array_map('current', $taskAss)])->andCompanyId();
+            if ($search_text) {
+                $tasks->andFilterWhere(['like', 'name', $search_text]);
+            }
+
+            $totalCount = $tasks->count();
+            $tasks = $tasks->limit($itemPerPage)->offset(($currentPage - 1) * $itemPerPage)->all();
+            if (empty($tasks)) {
+                throw new \Exception('Get task empty');
+            }
+
+            $assignees = [];
+            $followers = [];
+            $collection = [];
+            foreach ($tasks as $task) {
+                $assignees = [];
+                $followers = [];
+                $creator = $task->creator;
+                foreach ($task->assignees as $assignee) {
+                    $assignees[] = ['fullname' => $assignee->fullname, 'email' => $assignee->email, 'image' => $assignee->getImage()];
+                }
+
+                foreach ($task->followers as $follower) {
+                    $followers[] = ['fullname' => $follower->fullname, 'email' => $follower->email, 'image' => $follower->getImage()];
+                }
+
+                $collection[] = [
+                    'id' => $task->id,
+                    'name' => $task->name,
+                    'description' => strlen($task->description) > 400 ? (substr($task->description, 0, 400) . "...") : $task->description,
+                    'creator' => ['fullname' => $creator->fullname, 'email' => $creator->email, 'image' => $creator->getImage()],
+                    'followers' => $followers,
+                    'assignees' => $assignees,
+                ];
+            }
+        } catch (\Exception $e) {
+            $collection = [];
+            $totalCount = 0;
+            
+        }
+
+        $objects = [];
+        $objects['collection'] = $collection;
+        $objects['totalItems'] = (int) $totalCount;
         return $this->sendResponse(false, '', $objects);
     }
 

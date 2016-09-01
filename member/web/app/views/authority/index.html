@@ -86,19 +86,20 @@
                     </table>
 
                     <div class="text-right"  ng-show="totalItems > params.limit">
-                      <uib-pagination total-items="totalItems" ng-model="params.page" max-size="maxPageSize" class="pagination-sm"
-                          boundary-links="true" first-text="&lsaquo;&lsaquo;" previous-text="&lsaquo;" next-text="&rsaquo;" last-text="&rsaquo;&rsaquo;" items-per-page="params.limit"
-                                 ng-change="findAll()" num-pages="numPages" rotate="false"></uib-pagination>                                  
-                </div>
+                        <uib-pagination total-items="totalItems" ng-model="params.page" max-size="maxPageSize" class="pagination-sm"
+                                        boundary-links="true" first-text="&lsaquo;&lsaquo;" previous-text="&lsaquo;" next-text="&rsaquo;" last-text="&rsaquo;&rsaquo;" items-per-page="params.limit"
+                                        ng-change="findAll()" num-pages="numPages" rotate="false"></uib-pagination>                                  
+                    </div>
 
+
+
+                </div>
                 <div ng-show="!authorities.length">
                     {{$root.$lang.no_data}}
                 </div>
+                <div class="box-footer text-center" ></div><!-- /.box-footer-->
 
-            </div>
-            <div class="box-footer text-center" ></div><!-- /.box-footer-->
-
-        </div><!-- /.box -->
+            </div><!-- /.box -->
 
     </section>
 </div>

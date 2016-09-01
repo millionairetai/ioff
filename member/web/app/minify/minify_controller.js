@@ -1176,70 +1176,60 @@ appRoot.controller('editProjectCtrl', ['$scope', 'projectService', '$location', 
         }
 
     }]);
-appRoot.controller('taskCtrl', ['$scope', 'taskService', '$uibModal','$rootScope', 
-    function ($scope, taskService, $uibModal,$rootScope) {
-        
-    //pagination configuration
-    $scope.pagination = {
-        total: 0,
-        pages: [],
-        config: {
-            count: 5,
+appRoot.controller('taskCtrl', ['$scope', 'taskService', '$uibModal', '$rootScope', 'PER_PAGE', 'MAX_PAGE_SIZE',
+    function ($scope, taskService, $uibModal, $rootScope, PER_PAGE, MAX_PAGE_SIZE) {
+        $scope.params = {
             page: 1,
-            size: 7,
-            search_text:''
-        }            
-    };
+            limit: 5,
+            searchText: '',
+            orderBy: '',
+            orderType: ''
+        };
 
-    //array store task collection response from server
-    $scope.collection = [];
 
-    //get list with pagination
-    $scope.getList = function(paginationConfig) {
-        taskService.getTasks(paginationConfig, function (response) {
-            $scope.collection = response.objects.collection;
-            $scope.pagination.total = response.objects.totalCount;
-            $scope.pagination.pages = $rootScope.getPaginationPages($scope.pagination.total,paginationConfig.size,paginationConfig.count,paginationConfig.page);
+        //array store task collection response from server
+        $scope.collection = [];
+        $scope.totalItems = 0;
+        $scope.maxPageSize = MAX_PAGE_SIZE;
+        //get list with pagination
+        $scope.getList = function () {
+            taskService.getTasks($scope.params, function (response) {
+                $scope.collection = response.objects.collection;
+                $scope.totalItems  = response.objects.totalItems;
+                if (!$scope.$$phase) {
+                    $scope.$apply();
+                }
+            });
+        };
+
+        //search by task name
+        $scope.searchByName = function () {
+            $scope.getList($scope.params);
+        };
+
+        //call popup add task
+        $scope.add = function () {
+            var modalInstance = $uibModal.open({
+                templateUrl: 'app/views/task/add.html',
+                controller: 'addTaskCtrl',
+                size: 'lg',
+                keyboard: true,
+                backdrop: 'static',
+            });
+        };
+
+        //when add task successfully
+        $rootScope.$on('create_task_success', function (event, data) {
+            $scope.getList($scope.params);
         });
-    };
 
-    //search by task name
-    $scope.searchByName = function () {
-        $scope.getList($scope.pagination.config);
-    };
-
-    //call popup add task
-    $scope.add = function () {
-        var modalInstance = $uibModal.open({
-            templateUrl: 'app/views/task/add.html',
-            controller: 'addTaskCtrl',
-            size: 'lg',
-            keyboard : true,
-            backdrop: 'static',
-        });
-    };
-
-    //when add task successfully
-    $rootScope.$on('create_task_success', function(event, data) { 
-        $scope.getList($scope.pagination.config);
-    });
-
-    //when click pager button
-    $scope.$watch("pagination.config.page", function(newValue, oldValue){
-        if(newValue === oldValue){
-            return;
-        }
-
-        $scope.getList($scope.pagination.config);
-    });
-
-    //initial task list
-    $scope.getList($scope.pagination.config);                        
-}]);
+        //initial task list
+        $scope.getList($scope.params);
+    }]);
 
 /*add Task Popup Controller*/
-appRoot.controller('addTaskCtrl', ['socketService', '$scope', 'taskService', '$location', '$uibModalInstance', '$rootScope', 'departmentService','alertify','$timeout','employeeService','projectService','$cacheFactory', 
-    function (socketService, $scope, taskService, $location, $uibModalInstance, $rootScope, departmentService,alertify,$timeout,employeeService,projectService,$cacheFactory) {
+appRoot.controller('addTaskCtrl', ['socketService', '$scope', 'taskService', '$location', '$uibModalInstance', '$rootScope', 'departmentService', 'alertify', '$timeout', 'employeeService', 'projectService', '$cacheFactory',
+    function (socketService, $scope, taskService, $location, $uibModalInstance, $rootScope, departmentService, alertify, $timeout, employeeService, projectService, $cacheFactory) {
         //init
         $scope.step = 1;
         $scope.more = 0;
@@ -1253,12 +1243,12 @@ appRoot.controller('addTaskCtrl', ['socketService', '$scope', 'taskService', '$l
         $scope.taskGroups = [];
         $scope.parentTasks = [];
         $scope.redminds = taskService.redmind();
-                                                        
+
         //task object init
         $scope.task = {
             name: '',
-            project_id : 0,                        
-            duedatetime : '',
+            project_id: 0,
+            duedatetime: '',
             priority_id: 3,
             completed_percent: 0,
             description: '',
@@ -1266,15 +1256,15 @@ appRoot.controller('addTaskCtrl', ['socketService', '$scope', 'taskService', '$l
             worked_hour: 0,
             parent_id: 0,
             status_id: 1,
-            assigningEmployees : [],
-            followingEmployees : [],
+            assigningEmployees: [],
+            followingEmployees: [],
             is_public: 0,
-            taskGroupIds:[],                                                    
-            sms : 0,                                                
+            taskGroupIds: [],
+            sms: 0,
         };
-                                
+
         /*Helpers*/
-        $scope.vietnammesePreProc = function(str){
+        $scope.vietnammesePreProc = function (str) {
             str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
             str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
             str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
@@ -1282,86 +1272,86 @@ appRoot.controller('addTaskCtrl', ['socketService', '$scope', 'taskService', '$l
             str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
             str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y");
             str = str.replace(/đ/g, "d");
-            
+
             return str;
         }
-        
+
         //employees
-        $scope.findEmployeeForTask = function(keyword) {
+        $scope.findEmployeeForTask = function (keyword) {
             $scope.searchedEmployees = [];
-            
-            if (keyword =='') {
+
+            if (keyword == '') {
                 $scope.searchedEmployees = $scope.employees;
-            } else {            
+            } else {
                 var searchedIdx = [];
                 var preProcStr = '';
-                var preProcKeyword ='';
+                var preProcKeyword = '';
                 preProcKeyword = keyword.toLowerCase();
-                
+
                 if ($rootScope.$lang.language == 'vi') {
                     preProcKeyword = $scope.vietnammesePreProc(preProcKeyword);
                 }
-                
+
                 //begin with keyword                
-                for(i=0;i<$scope.employees.length;i++) {                    
+                for (i = 0; i < $scope.employees.length; i++) {
                     preProcStr = $scope.employees[i].firstname.toLowerCase();
-                    if($rootScope.$lang.language == 'vi') {
+                    if ($rootScope.$lang.language == 'vi') {
                         preProcStr = $scope.vietnammesePreProc(preProcStr);
                     }
-                    
-                    if (preProcStr.indexOf(preProcKeyword) === 0) {                
+
+                    if (preProcStr.indexOf(preProcKeyword) === 0) {
                         $scope.searchedEmployees.push($scope.employees[i]);
                         searchedIdx.push(i);
-                    }                                         
+                    }
                 }
 
                 //contains keyword
-                for(i=0; i<$scope.employees.length; i++) {                    
+                for (i = 0; i < $scope.employees.length; i++) {
                     preProcStr = $scope.employees[i].firstname.toLowerCase();
-                    if($rootScope.$lang.language == 'vi') {
+                    if ($rootScope.$lang.language == 'vi') {
                         preProcStr = $scope.vietnammesePreProc(preProcStr);
                     }
-                    
-                    if (searchedIdx.indexOf(i) === -1 && preProcStr.indexOf(preProcKeyword) > 0) {                
+
+                    if (searchedIdx.indexOf(i) === -1 && preProcStr.indexOf(preProcKeyword) > 0) {
                         $scope.searchedEmployees.push($scope.employees[i]);
-                    }       
+                    }
                 }
             }
         };
-        
-        $scope.filterFollowingEmployees = function(person) {
-            for(i=0; i<$scope.task.followingEmployees.length; i++){
-                if(person.email == $scope.task.followingEmployees[i].email) {
+
+        $scope.filterFollowingEmployees = function (person) {
+            for (i = 0; i < $scope.task.followingEmployees.length; i++) {
+                if (person.email == $scope.task.followingEmployees[i].email) {
                     return false;
                 }
             }
-            
+
             return true;
         };
-        
-        $scope.filterAssigningEmployees = function(person) {
-            for(i=0;i<$scope.task.assigningEmployees.length;i++) {
-                if(person.email == $scope.task.assigningEmployees[i].email) {
+
+        $scope.filterAssigningEmployees = function (person) {
+            for (i = 0; i < $scope.task.assigningEmployees.length; i++) {
+                if (person.email == $scope.task.assigningEmployees[i].email) {
                     return false;
                 }
             }
-            
+
             return true;
         };
-        
+
         //add file
         $scope.addFile = function (files) {
             $scope.$apply(function () {
                 for (var i = 0; i < files.length; i++) {
-                    if(files[i].size > 10485760){
+                    if (files[i].size > 10485760) {
                         alertify.error($rootScope.$lang.max_size);
                     } else {
-                        if($scope.files.length >=20){
+                        if ($scope.files.length >= 20) {
                             alertify.error($rootScope.$lang.max_length);
                             return true;
                         } else {
                             $scope.files.push(files[i]);
-                        }  
+                        }
                     }
                 }
             });
@@ -1373,15 +1363,15 @@ appRoot.controller('addTaskCtrl', ['socketService', '$scope', 'taskService', '$l
                 $scope.files.splice($index, 1);
             }
         };
-        
+
         $scope.taskGroupTagTransform = function (newTag) {
             var item = {
-                name: $rootScope.$lang.task_group + newTag,                
+                name: $rootScope.$lang.task_group + newTag,
             };
 
             return item;
         };
-        
+
         $scope.updateAfterProjectChanged = function () {
             var $httpDefaultCache = $cacheFactory.get('$http');
             $httpDefaultCache.removeAll();
@@ -1389,76 +1379,76 @@ appRoot.controller('addTaskCtrl', ['socketService', '$scope', 'taskService', '$l
             $scope.task.taskGroupIds = 0;
             $scope.task.assigningEmployees = [];
             $scope.task.followingEmployees = [];
-            
+
             //status
-            taskService.getParentTaskList({project_id:$scope.task.project_id},function(data) {
-                $scope.parentTasks = data.objects.collection;                        
+            taskService.getParentTaskList({project_id: $scope.task.project_id}, function (data) {
+                $scope.parentTasks = data.objects.collection;
             });
-            
-            taskService.getTaskGroupList({project_id:$scope.task.project_id},function(data) {
+
+            taskService.getTaskGroupList({project_id: $scope.task.project_id}, function (data) {
                 $scope.taskGroups = data.objects.collection;
             });
-            
-            employeeService.searchEmployeeByProjectIdAndKeyword({keyword:'',project_id:$scope.task.project_id},function(response){
-                $scope.employees = response.objects.collection;                
-            });     
-                    
+
+            employeeService.searchEmployeeByProjectIdAndKeyword({keyword: '', project_id: $scope.task.project_id}, function (response) {
+                $scope.employees = response.objects.collection;
+            });
+
         };
-        
-        $scope.checkProject = function (){
-            if($scope.task.project_id === 0 || $scope.task.project_id === undefined){
+
+        $scope.checkProject = function () {
+            if ($scope.task.project_id === 0 || $scope.task.project_id === undefined) {
                 alertify.error($rootScope.$lang.task_project_empty);
             }
-        }          
-        /*Call services*/                              
+        }
+        /*Call services*/
         //project 
-        projectService.getProjectList({}, function (data) {           
-            $scope.projects = data.objects.collection;            
+        projectService.getProjectList({}, function (data) {
+            $scope.projects = data.objects.collection;
         });
-                                       
+
         //priority
         taskService.getPriorityList({}, function (data) {
             $scope.priorities = data.objects.collection;
-            if($scope.priorities.length > 0){
+            if ($scope.priorities.length > 0) {
                 $scope.task.priority_id = $scope.priorities[0].id;
             }
         });
-        
+
         //status
-        taskService.getStatusList({},function(data) {
+        taskService.getStatusList({}, function (data) {
             $scope.statuses = data.objects.collection;
-            
-            if($scope.statuses.length > 0){
+
+            if ($scope.statuses.length > 0) {
                 $scope.task.status_id = $scope.statuses[0].id;
             }
         });
-                                 
+
         //next
         $scope.next = function () {
             if ($scope.step < 3) {
                 //check validate when go to step 2
-                if($scope.step == 1){
-                    if(taskService.validate_step1($scope.task)){                                                                        
+                if ($scope.step == 1) {
+                    if (taskService.validate_step1($scope.task)) {
                         $scope.step++;
                     }
-                }else{
-                    if($scope.step == 2){
+                } else {
+                    if ($scope.step == 2) {
                         //check validate when go to step 3
-                        if(taskService.validate_step2($scope.task)) {
+                        if (taskService.validate_step2($scope.task)) {
                             var fd = new FormData();
                             for (var i in $scope.files) {
-                                fd.append("file_"+i, $scope.files[i]);
+                                fd.append("file_" + i, $scope.files[i]);
                             }
                             fd.append("task", angular.toJson($scope.task));
-                            taskService.addTask(fd,function(response){
+                            taskService.addTask(fd, function (response) {
                                 alertify.success($rootScope.$lang.task_notify_success);
                                 $rootScope.$emit('create_task_success', {message: 'danh'});
                                 socketService.emit('notify', 'ok');
                                 $scope.step++;
                             });
-                            
+
                         }
-                    }else{
+                    } else {
                         $scope.step++;
                     }
                 }
@@ -1480,4 +1470,4 @@ appRoot.controller('addTaskCtrl', ['socketService', '$scope', 'taskService', '$l
         $scope.showMore = function (value) {
             $scope.more = value;
         }
-}]);
+    }]);

@@ -699,7 +699,7 @@ label.assignee-to,label.follow-to{
 .task-row{
     padding-top: 20px;
     padding-bottom: 20px;
-    margin-left: auto;
+    margin-left: 20px;
 }
 
 .task-row:not(:last-child){
@@ -708,7 +708,7 @@ label.assignee-to,label.follow-to{
 
 div#name-desc{
     /*min-width: 40%;*/
-    width: :auto;
+    width: auto;
 }
 
 div.assignee-to{
