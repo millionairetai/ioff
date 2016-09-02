@@ -47,6 +47,7 @@ class AppAsset extends AssetBundle
         'app/js/plugins/socket/socket.js',
         'app/js/plugins/tinymce/tinymce.min.js',
         'app/js/plugins/tinymce/ng-tinymce.js',
+        'app/js/plugins/ngInfiniteScrol/ng-infinite-scroll.min.js',
         'app/app.js',
         'app/router.js',
         'app/minify/minify_service.js',

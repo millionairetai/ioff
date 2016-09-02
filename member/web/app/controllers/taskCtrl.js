@@ -60,8 +60,8 @@ appRoot.controller('taskCtrl', ['$scope', 'taskService', '$uibModal', '$rootScop
                     break;
                 case 'all_task':
                     {
-                        $scope.params.searchText = $scope.task.searchFollow;
-                        $scope.params.page = $scope.task.pageFollow;
+                        $scope.params.searchText = $scope.task.searchTasks;
+                        $scope.params.page = $scope.task.pageTasks;
                         taskService.getTasks($scope.params, function (response) {
                             $scope.collection = response.objects.collection;
                             $scope.totalItems = response.objects.totalItems;

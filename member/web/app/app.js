@@ -1,4 +1,6 @@
-appRoot = angular.module('iofficez', ['ui.tinymce', 'ngRoute', 'ui.bootstrap', "ngAlertify", 'ui.slider', 'ui.select', 'ngTagsInput', 'ui.calendar', 'ui.bootstrap.datetimepicker', 'btford.socket-io']);
+appRoot = angular.module('iofficez',
+        ['ui.tinymce', 'ngRoute', 'ui.bootstrap', "ngAlertify", 'ui.slider', 'ui.select', 'ngTagsInput',
+            'ui.calendar', 'ui.bootstrap.datetimepicker', 'btford.socket-io', 'infinite-scroll']);
 
 //constant for paging
 appRoot.constant('PER_PAGE_VIEW_MORE', 10);
@@ -11,14 +13,14 @@ appRoot.constant('MAX_FILE_UPLOAD', 20);
 
 //main controller
 appRoot.controller('iofficezCtrl', ['$scope', function ($scope) {
-    ///////////////////////////////////
-        $scope.clearCache = function() { 
-        $templateCache.removeAll();
-    }
-    
-    $scope.clearCache();
-    ///////////////////////////
-}]);
+        ///////////////////////////////////
+        $scope.clearCache = function () {
+            $templateCache.removeAll();
+        }
+
+        $scope.clearCache();
+        ///////////////////////////
+    }]);
 
 // run project
 appRoot.run(function ($rootScope, socketService, notifyService) {
@@ -26,11 +28,17 @@ appRoot.run(function ($rootScope, socketService, notifyService) {
     notifyService.countNotification({}, function (respone) {
         $rootScope.sum_notify = respone.objects;
     });
-    
+
     //Get notification
     socketService.on('broadcast', function (data) {
         notifyService.countNotification({}, function (respone) {
             $rootScope.sum_notify = respone.objects;
         });
     });
+
+    $rootScope.getNotifications = function () {
+        notifyService.getNotifications({}, function (respone) {
+            $rootScope.notifications = respone.objects.collection;
+        });
+    }
 });

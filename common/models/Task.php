@@ -5,7 +5,6 @@ namespace common\models;
 use Yii;
 use yii\data\ActiveDataProvider;
 
-
 /**
  * This is the model class for table "task".
  *
@@ -35,11 +34,9 @@ use yii\data\ActiveDataProvider;
 class Task extends \common\components\db\ActiveRecord {
 
     public $sms = 0;
-    
+
     function __construct($config = []) {
         parent::__construct();
-//        $companyId = \Yii::$app->user->getCompanyId();
-//        $this->setCompanyId($companyId);
     }
 
     /**
@@ -91,40 +88,99 @@ class Task extends \common\components\db\ActiveRecord {
             'disabled' => 'Disabled',
         ];
     }
-    
-//    public function setCompanyId($companyId){
-//        if($companyId){            
-//            $this->company_id = $companyId;
-//        }
-//        
-//        return $this->company_id;
-//    }
-                                
-    public function getStatus(){
-        return $this->hasOne(Status::className(),['id'=>'status_id']);
+
+    public function getStatus() {
+        return $this->hasOne(Status::className(), ['id' => 'status_id']);
     }
-    
-    public function getCreator(){
-        return $this->hasOne(Employee::className(), ['id'=>'created_employee_id']);
+
+    public function getCreator() {
+        return $this->hasOne(Employee::className(), ['id' => 'created_employee_id']);
     }
-    
-    public function getFollowers(){
-       return $this->hasMany(Employee::className(), ['id'=>'employee_id'])->viaTable('follower', ['task_id' => 'id']);         
+
+    public function getFollowers() {
+        return $this->hasMany(Employee::className(), ['id' => 'employee_id'])->viaTable('follower', ['task_id' => 'id']);
     }
-    
-    public function getAssignees(){
-       return $this->hasMany(Employee::className(), ['id'=>'employee_id'])->viaTable('task_assignment', ['task_id' => 'id']);         
+
+    public function getAssignees() {
+        return $this->hasMany(Employee::className(), ['id' => 'employee_id'])->viaTable('task_assignment', ['task_id' => 'id']);
     }
-        
-    public function getCompany(){
-        return $this->hasOne(Company::className(), ['id'=>'company_id']);        
+
+    public function getCompany() {
+        return $this->hasOne(Company::className(), ['id' => 'company_id']);
     }
-    
-    public function getTaskGroups(){
-        return $this->hasMany(TaskGroup::className(), ['project_id'=>'id']);
+
+    public function getTaskGroups() {
+        return $this->hasMany(TaskGroup::className(), ['project_id' => 'id']);
     }
-     
-    public static function getTasks() {
-        
+
+    /**
+     * Get all that employee can be able to see.
+     * @param interger $itemPerPage
+     * @param interger $currentPage
+     * @param string $searchText
+     * @return array|null
+     */
+    public static function getTasks($itemPerPage, $currentPage, $searchText) {
+        $tasks = self::find()
+                        ->select(['task.id', 'task.name', 'task.description'])
+                        ->distinct()
+                        ->innerJoin('task_assignment', 'task.id = task_assignment.task_id')
+                        ->innerJoin('follower', 'task.id = follower.task_id')
+                        ->orWhere([
+                            'task.is_public' => self::VAL_TRUE,
+                        ])->orWhere([
+                    'task.created_employee_id' => \Yii::$app->user->identity->id,
+                ])->orWhere([
+                    'task_assignment.employee_id' => \Yii::$app->user->identity->id,
+                ])->orWhere([
+            'follower.employee_id' => \Yii::$app->user->identity->id,
+        ]);
+
+        if ($searchText) {
+            $tasks->andFilterWhere(['like', 'name', $searchText]);
+        }
+
+//        var_dump($tasks);
+//        var_dump($tasks->createCommand()->sql);
+//        die;
+
+        $totalCount = $tasks->count();
+        $tasks = $tasks->limit($itemPerPage)
+                ->offset(($currentPage - 1) * $itemPerPage)
+                ->all();
+        if (empty($tasks)) {
+            return [];
+        }
+
+        $assignees = [];
+        $followers = [];
+        $collection = [];
+        foreach ($tasks as $task) {
+            $assignees = [];
+            $followers = [];
+            $creator = $task->creator;
+            foreach ($task->assignees as $assignee) {
+                $assignees[] = ['fullname' => $assignee->fullname, 'email' => $assignee->email, 'image' => $assignee->getImage()];
+            }
+
+            foreach ($task->followers as $follower) {
+                $followers[] = ['fullname' => $follower->fullname, 'email' => $follower->email, 'image' => $follower->getImage()];
+            }
+            
+            $collection[] = [
+                'id' => $task->id,
+                'name' => $task->name,
+                'description' => strlen($task->description) > 400 ? (substr($task->description, 0, 400) . "...") : $task->description,
+//                'creator' => ['fullname' => $creator->fullname, 'email' => $creator->email, 'image' => $creator->getImage()],
+                'followers' => $followers,
+                'assignees' => $assignees,
+            ];
+        }
+
+        return [
+            'collection' => $collection,
+            'totalCount' => $totalCount,
+        ];
     }
+
 }

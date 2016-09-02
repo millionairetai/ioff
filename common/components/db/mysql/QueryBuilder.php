@@ -27,7 +27,7 @@ class QueryBuilder extends \yii\db\mysql\QueryBuilder
         $params = empty($params) ? $query->params : array_merge($params, $query->params);
         
         $where = $this->buildWhere($query->where, $params);
-        $where .= ($where ? " AND " : " WHERE ") . "{$query->from[0]}.`disabled`=" . ActiveRecord::STATUS_ENABLE;
+//        $where .= ($where ? " AND " : " WHERE ") . "{$query->from[0]}.`disabled`=" . ActiveRecord::STATUS_ENABLE;
         //$query->from[0] --> first table join with others. Sql we get it has '... WHERE ... AND disabled=0'
         
         $clauses = [

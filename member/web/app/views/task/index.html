@@ -22,9 +22,9 @@
         <div class="box-body">
             <div class="nav-tabs-custom"> <!-- Only required for left/right tabs -->
                 <ul class="nav nav-tabs">
-                    <li class="active"><a ng-click="getList('my_task', $event)" href="#tab_1" data-toggle="tab">My task</a></li>
-                    <li><a ng-click="getList('follow_task', $event)" href="#tab_2" data-toggle="tab">My followed task</a></li>
-                    <li><a ng-click="getList('all_task', $event)" href="#tab_3" data-toggle="tab">All task</a></li>
+                    <li class="active"><a ng-click="getList('my_task', $event)" href="#tab_1" data-toggle="tab">{{$root.$lang.task_my_task}}</a></li>
+                    <li><a ng-click="getList('follow_task', $event)" href="#tab_2" data-toggle="tab">{{$root.$lang.task_my_followed_task}}</a></li>
+                    <li><a ng-click="getList('all_task', $event)" href="#tab_3" data-toggle="tab">{{$root.$lang.task_all_task}}</a></li>
                 </ul>
                 <div class="tab-content">
                     <div class="tab-pane active" id="tab_1">

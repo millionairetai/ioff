@@ -59,4 +59,12 @@ return [
     'project completed percent' => 'Thực tế',
     'comment update after'      => 'đã được thay đổi thành',
     'project share'             => 'chia sẻ',
+    //Type activity respective to type field in table.
+    'create activity post' => 'Thêm bài đăng hoạt động',
+    'create event' => 'Thêm sự kiện',
+    'create event post' => 'Thêm bài đăng sự kiện',
+    'create project' => 'Thêm dự án',
+    'create project post' => 'Thêm bài đăng dự án',
+    'create task' => 'Thêm task',
+    'edit event' => 'Chỉnh sửa sự kiện',
 ];

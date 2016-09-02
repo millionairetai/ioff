@@ -68,6 +68,7 @@
             members: 'Thành viên',
             name : "Tên",
             redmind : "Nhắc nhở",
+            see_all: "Xem tất cả",
             //-----------------------------------------End of common language.----------------------------------
             
             //project
@@ -235,7 +236,10 @@
             task_creator:'bởi',
             task_search:'tìm công việc',
             time_create:'thời gian tạo',
-            task_created_success: 'Công việc được tạo thành công'
+            task_created_success: 'Công việc được tạo thành công',
+            task_my_task: 'Công việc của tôi',
+            task_my_followed_task: 'Công việc tôi theo dõi',
+            task_all_task: 'Tất cả công việc'
             //end task
         };
     });

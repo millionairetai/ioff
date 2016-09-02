@@ -57,4 +57,12 @@ return [
     'project completed percent' => 'Project completed percent',
     'comment update after'      => 'has been changed',
     'project share'             => 'share',
+    //Type activity respective to type field in table.
+    'create activity post' => 'Add activity post',
+    'create event' => 'Add event',
+    'create event post' => 'Add event post',
+    'create project' => 'Add project',
+    'create project post' => 'Add project post',
+    'create task' => 'Add task',
+    'edit event' => 'Edit event',
 ];

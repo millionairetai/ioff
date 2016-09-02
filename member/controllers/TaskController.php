@@ -286,7 +286,6 @@ class TaskController extends ApiController {
         } catch (\Exception $e) {
             $collection = [];
             $totalCount = 0;
-            
         }
 
         $objects = [];
@@ -294,7 +293,7 @@ class TaskController extends ApiController {
         $objects['totalItems'] = (int) $totalCount;
         return $this->sendResponse(false, '', $objects);
     }
-    
+
     /**
      * Get task list follower for currrent login employee.
      */
@@ -349,7 +348,6 @@ class TaskController extends ApiController {
         } catch (\Exception $e) {
             $collection = [];
             $totalCount = 0;
-            
         }
 
         $objects = [];
@@ -357,8 +355,8 @@ class TaskController extends ApiController {
         $objects['totalItems'] = (int) $totalCount;
         return $this->sendResponse(false, '', $objects);
     }
-    
-        /**
+
+    /**
      * Get task list follower for currrent login employee.
      */
     public function actionGetTasks() {
@@ -366,83 +364,18 @@ class TaskController extends ApiController {
         $currentPage = \Yii::$app->request->get('page');
         $searchText = \Yii::$app->request->get('searchText');
         try {
-            $task = Task::getTask($itemPerPage, $currentPage, $searchText);
+            $result = Task::getTasks($itemPerPage, $currentPage, $searchText);
         } catch (\Exception $e) {
-            $collection = [];
-            $totalCount = 0;  
+            $result = [
+                'collection' => [],
+                'totalCount' => 0,
+            ];
         }
-        
+
         $objects = [];
-        $objects['collection'] = $collection;
-        $objects['totalItems'] = (int) $totalCount;
+        $objects['collection'] = $result['collection'];
+        $objects['totalItems'] = (int) $result['totalCount'];
         return $this->sendResponse(false, '', $objects);
     }
-//    public function actionGetAssignedTasks1() {
-//        $employeeId = \Yii::$app->user->getId();
-//        $itemPerPage = \Yii::$app->request->get('count');
-//        $currentPage = \Yii::$app->request->get('page');
-//        $search_text = \Yii::$app->request->get('search_text');
-//        $employee = new Employee(['id' => $employeeId]);
-//
-//        $query = $employee->getAssignedTasks();
-//
-//        if ($search_text) {
-//            $query->andFilterWhere(['like', 'name', $search_text]);
-//        }
-//
-//        $totalCount = $query->count();
-//
-//        $tasks = $query
-//                        ->with(['assignees' => function ($query) {
-////                    $query->select([Employee::tableName().'.firstname',Employee::tableName().'.email',Employee::tableName().'.profile_image_path']);
-//                            }])
-//                        ->with(['creator' => function ($query) {
-////                    $query->select([Employee::tableName().'.firstname',Employee::tableName().'.email',Employee::tableName().'.profile_image_path']);
-//                            }])
-//                        ->with(['followers' => function ($query) {
-////                    $query->select([Employee::tableName().'.firstname',Employee::tableName().'.email',Employee::tableName().'.profile_image_path']);
-//                            }])
-//                        ->limit($itemPerPage)->offset(($currentPage - 1) * $itemPerPage)->all();
-////        echo $query->createCommand()->sql;die();
-//        $collection = [];
-//
-//        foreach ($tasks as $task) {
-//            $creator = $task->creator;
-//            $assignees = [];
-//            $followers = [];
-////            var_dump($task->id);
-////            if(empty($task->creator)) {
-////                var_dump($task->id);
-////                var_dump($task->creator);die;
-////            }
-//            foreach ($task->assignees as $assignee) {
-//                $assignees[] = ['firstname' => $assignee->firstname, 'email' => $assignee->email, 'image' => $assignee->getImage()];
-//            }
-//
-//            foreach ($task->followers as $follower) {
-//                $followers[] = ['firstname' => $follower->firstname, 'email' => $follower->email, 'image' => $follower->getImage()];
-//            }
-//
-//            $collection[] = [
-//                'id' => $task->id,
-//                'name' => $task->name,
-//                'description' => strlen($task->description) > 70 ? (substr($task->description, 0, 70) . "...") : $task->description,
-//                'creator' => ['firstname' => $creator->firstname, 'email' => $creator->email, 'image' => $creator->getImage()],
-//                'followers' => $followers,
-//                '$assignees' => $assignees,
-//            ];
-////            var_dump($task->followers);die;
-//        }
-//
-//
-////                exit();
-//
-//        $objects = [];
-//        $objects['collection'] = $collection;
-//        //total count
-//        $objects['totalCount'] = (int) $totalCount;
-//
-//        return $this->sendResponse(FALSE, '', $objects);
-//    }
 
 }

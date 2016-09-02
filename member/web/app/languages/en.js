@@ -68,6 +68,7 @@
             members: 'Members',
             name : "Name",
             redmind : "Redmind me",
+            see_all: "See all",
             //-----------------------------------------End of common language.----------------------------------
             
             //project
@@ -210,8 +211,12 @@
             task_members_error_empty: 'Department and Employee is not empty',
             task_created_success:'Create task is successful',
             task_notify_success:'Project has created successfully.',
-            task_created_success: 'Task has created successfully'
+            task_created_success: 'Task has created successfully',
+            task_my_task: 'My task',
+            task_my_followed_task: 'My followed task',
+            task_all_task: 'All task'
             //end task
+            
             
         };
     });
