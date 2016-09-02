@@ -378,4 +378,25 @@ class TaskController extends ApiController {
         return $this->sendResponse(false, '', $objects);
     }
 
+    /**
+     * Get task list follower for currrent login employee.
+     */
+    public function actionGetTaskForDropdown() {
+        $itemPerPage = \Yii::$app->request->get('limit');
+        $currentPage = \Yii::$app->request->get('page');
+        $searchText = \Yii::$app->request->get('searchText');
+        try {
+            $result = Task::getTasks(10, 1, '');
+        } catch (\Exception $e) {
+            $result = [
+                'collection' => [],
+                'totalCount' => 0,
+            ];
+        }
+
+        $objects = [];
+        $objects['collection'] = $result['collection'];
+        $objects['totalItems'] = (int) $result['totalCount'];
+        return $this->sendResponse(false, '', $objects);
+    }
 }

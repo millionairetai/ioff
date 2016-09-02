@@ -122,7 +122,7 @@ class Task extends \common\components\db\ActiveRecord {
      */
     public static function getTasks($itemPerPage, $currentPage, $searchText) {
         $tasks = self::find()
-                        ->select(['task.id', 'task.name', 'task.description'])
+                        ->select(['task.id', 'task.name', 'task.description', 'completed_percent',])
                         ->distinct()
                         ->innerJoin('task_assignment', 'task.id = task_assignment.task_id')
                         ->innerJoin('follower', 'task.id = follower.task_id')
@@ -174,6 +174,7 @@ class Task extends \common\components\db\ActiveRecord {
 //                'creator' => ['fullname' => $creator->fullname, 'email' => $creator->email, 'image' => $creator->getImage()],
                 'followers' => $followers,
                 'assignees' => $assignees,
+                'completed_percent' => $task->completed_percent,
             ];
         }
 

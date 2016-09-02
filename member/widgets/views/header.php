@@ -100,24 +100,24 @@
                 </li>
                 <!-- Tasks: style can be found in dropdown.less -->
                 <li class="dropdown tasks-menu">
-                    <a class="dropdown-toggle cursor-pointer" data-toggle="dropdown">
+                    <a class="dropdown-toggle cursor-pointer" data-toggle="dropdown" ng-click="getTaskForDropdown()">
                         <i class="fa fa-flag-o"></i>
                         <span class="label label-danger">9</span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li class="header">You have 9 tasks</li>
+                        <li class="header">Bạn có 9 công việc</li>
                         <li>
                             <!-- inner menu: contains the actual data -->
                             <ul class="menu">
-                                <li><!-- Task item -->
+                                <li ng-repeat="task in taskDropdown"><!-- Task item -->
                                     <a href="#">
                                         <h3>
-                                            Design some buttons
-                                            <small class="pull-right">20%</small>
+                                            {{task.name}}
+                                            <small class="pull-right">{{task.completed_percent}}%</small>
                                         </h3>
                                         <div class="progress xs">
-                                            <div class="progress-bar progress-bar-aqua" style="width: 20%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                                                <span class="sr-only">20% Complete</span>
+                                            <div class="progress-bar progress-bar-aqua" style="width: {{task.completed_percent}}%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
+                                                <span class="sr-only">{{task.completed_percent}}% Complete</span>
                                             </div>
                                         </div>
                                     </a>
@@ -125,7 +125,7 @@
                             </ul>
                         </li>
                         <li class="footer">
-                            <a href="#">View all tasks</a>
+                            <a href="#/task">{{$root.$lang.see_all}}</a>
                         </li>
                     </ul>
                 </li>

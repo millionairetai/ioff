@@ -15,7 +15,7 @@ appRoot.constant('MAX_FILE_UPLOAD', 20);
 appRoot.controller('iofficezCtrl', ['$scope', function ($scope) {
         ///////////////////////////////////
         $scope.clearCache = function () {
-            $templateCache.removeAll();
+//            $templateCache.removeAll();
         }
 
         $scope.clearCache();
@@ -23,7 +23,7 @@ appRoot.controller('iofficezCtrl', ['$scope', function ($scope) {
     }]);
 
 // run project
-appRoot.run(function ($rootScope, socketService, notifyService, $sce) {
+appRoot.run(function ($rootScope, socketService, notifyService, taskService, $sce) {
     //init
     notifyService.countNotification({}, function (respone) {
         $rootScope.sum_notify = respone.objects;
@@ -41,8 +41,14 @@ appRoot.run(function ($rootScope, socketService, notifyService, $sce) {
             $rootScope.notifications = respone.objects.collection;
         });
     }
-    
+
     $rootScope.getHtml = function (html) {
         return $sce.trustAsHtml(html);
     };
+
+    $rootScope.getTaskForDropdown = function () {
+        taskService.getTaskForDropdown({}, function (respone) {
+            $rootScope.taskDropdown = respone.objects.collection;
+        });
+    }
 });

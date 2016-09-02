@@ -1,11 +1,4 @@
 //list auhthorities
-appRoot.controller('NotifyCtrl', ['$scope', 'notifyService', '$rootScope', 'PER_PAGE', 'MAX_PAGE_SIZE','$sce',
-    function ($scope, notifyService, $rootScope, PER_PAGE, MAX_PAGE_SIZE, $sce) {
-//        $scope.getHtml = function (html) {
-//            return $sce.trustAsHtml(html);
-//        };
-    }]);
-//list auhthorities
 appRoot.controller('AuthorityCtrl', ['$scope', '$uibModal', 'authorityService', '$rootScope', 'alertify', 'PER_PAGE', 'MAX_PAGE_SIZE', 
     function ($scope, $uibModal, authorityService, $rootScope, alertify, PER_PAGE, MAX_PAGE_SIZE) {
         $scope.params = {
@@ -593,6 +586,13 @@ appRoot.controller('homeCtrl', ['$scope','dialogMessage','alertify',function($sc
 }]);
 
 
+//list auhthorities
+appRoot.controller('NotifyCtrl', ['$scope', 'notifyService', '$rootScope', 'PER_PAGE', 'MAX_PAGE_SIZE','$sce',
+    function ($scope, notifyService, $rootScope, PER_PAGE, MAX_PAGE_SIZE, $sce) {
+//        $scope.getHtml = function (html) {
+//            return $sce.trustAsHtml(html);
+//        };
+    }]);
 //list project
 appRoot.controller('projectCtrl', ['$scope', 'projectService', '$uibModal','$rootScope','socketService', 'PER_PAGE_VIEW_MORE',
     function ($scope, projectService, $uibModal, $rootScope, socketService, PER_PAGE_VIEW_MORE) {
