@@ -239,8 +239,12 @@
             task_created_success: 'Công việc được tạo thành công',
             task_my_task: 'Công việc của tôi',
             task_my_followed_task: 'Công việc tôi theo dõi',
-            task_all_task: 'Tất cả công việc'
+            task_all_task: 'Tất cả công việc',
             //end task
+            
+            //notify
+            notfication_manage: 'Quản lý thông báo',
+            notfication_list: 'Danh sách thông báo',            
         };
     });
 })(window.angular);

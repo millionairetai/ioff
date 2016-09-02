@@ -63,6 +63,11 @@ appRoot.config(function ($routeProvider, $httpProvider) {
                 templateUrl: 'app/views/task/add.html',
                 controller: 'addTaskCtrl'
             })
+            //notify
+            .when('/notify', {
+                templateUrl: 'app/views/notify/index.html',
+                controller: 'NotifyCtrl'
+            })
             .otherwise({redirectTo: '/home'});
 
 });

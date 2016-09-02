@@ -24,6 +24,9 @@ class NotificationController extends ApiController {
         $notifications = Notification::find()
                 ->select(['content', 'datetime_created', 'type'])
                 ->where(['employee_id' => Yii::$app->user->getId(),])
+                ->orderBy('datetime_created DESC')
+                ->limit(30)
+//                ->offset(($currentPage - 1) * $itemPerPage)
                 ->all();
         foreach ($notifications as $notification) {
             $collection[] = [

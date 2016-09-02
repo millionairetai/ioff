@@ -42,12 +42,13 @@
                 <!-- Notifications: style can be found in dropdown.less -->
                 <li class="dropdown messages-menu">
                     <a  class="dropdown-toggle cursor-pointer" data-toggle="dropdown">
-                        <i class="fa fa-bell-o"></i>
+                        <i class="fa fa-comments"></i>
                         <span class="label label-warning">{{$root.sum_notify}}</span>
                     </a>
                     <ul class="dropdown-menu">
                         <li class="header">Bạn có {{$root.sum_notify}} thông báo</li>
-                        <li infinite-scroll="getNotifications()" infinite-scroll-distance="3">
+                        <li>
+                            <div infinite-scroll="getNotifications()" infinite-scroll-distance="3">
                             <!-- inner menu: contains the actual data -->
                             <ul class="menu">
                                 <li ng-repeat="notification in notifications"><!-- start message -->
@@ -57,12 +58,13 @@
                                         </div>
                                         <h4>
                                             {{notification.type}}
-                                            <small><i class="fa fa-clock-o"></i> {{notification.datetime_created*1000 | date : 'medium'}}</small>
                                         </h4>
-                                        <p>{{notification.content}}</p>
+                                        <p ng-bind-html="getHtml(notification.content)"></p>
+                                        <small style="color:#888888;"><i class="fa fa-clock-o"></i> {{notification.datetime_created*1000 | date : 'medium'}}</small>
                                     </a>
                                 </li><!-- end message -->
                             </ul>
+                            </div>
                         </li>
                         <li class="footer"><a href="#/notify">{{$root.$lang.see_all}}</a></li>
                     </ul>

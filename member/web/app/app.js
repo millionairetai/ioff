@@ -23,7 +23,7 @@ appRoot.controller('iofficezCtrl', ['$scope', function ($scope) {
     }]);
 
 // run project
-appRoot.run(function ($rootScope, socketService, notifyService) {
+appRoot.run(function ($rootScope, socketService, notifyService, $sce) {
     //init
     notifyService.countNotification({}, function (respone) {
         $rootScope.sum_notify = respone.objects;
@@ -41,4 +41,8 @@ appRoot.run(function ($rootScope, socketService, notifyService) {
             $rootScope.notifications = respone.objects.collection;
         });
     }
+    
+    $rootScope.getHtml = function (html) {
+        return $sce.trustAsHtml(html);
+    };
 });

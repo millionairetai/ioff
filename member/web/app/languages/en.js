@@ -214,9 +214,12 @@
             task_created_success: 'Task has created successfully',
             task_my_task: 'My task',
             task_my_followed_task: 'My followed task',
-            task_all_task: 'All task'
+            task_all_task: 'All task',
             //end task
-            
+                        
+            //notify
+            notfication_manage: 'Quản lý thông báo',
+            notfication_list: 'Danh sách thông báo',   
             
         };
     });
