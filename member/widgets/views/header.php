@@ -30,7 +30,9 @@
                     </div>
                     <!---->
                     <div class="input-group">
-                        <input type="text" name="q" class="input-search form-control" placeholder="<?php echo \Yii::t('common', 'Search'); ?>...">
+                        <autocomplete ng-model="result" attr-placeholder="<?php echo \Yii::t('common', 'Search');?>" 
+                                      click-activation="true" data="movies" on-type="doSomething" on-select="doSomethingElse"></autocomplete>
+                        <!--<input type="text" name="q" class="input-search form-control" placeholder="<?php echo \Yii::t('common', 'Search'); ?>...">-->
                         <button type="submit" name="search" id="search-btn" class="btn search-button"><i class="fa fa-search"></i></button>
                     </div>
                 </form>

@@ -589,9 +589,7 @@ appRoot.controller('homeCtrl', ['$scope','dialogMessage','alertify',function($sc
 //list auhthorities
 appRoot.controller('NotifyCtrl', ['$scope', 'notifyService', '$rootScope', 'PER_PAGE', 'MAX_PAGE_SIZE','$sce',
     function ($scope, notifyService, $rootScope, PER_PAGE, MAX_PAGE_SIZE, $sce) {
-//        $scope.getHtml = function (html) {
-//            return $sce.trustAsHtml(html);
-//        };
+
     }]);
 //list project
 appRoot.controller('projectCtrl', ['$scope', 'projectService', '$uibModal','$rootScope','socketService', 'PER_PAGE_VIEW_MORE',
