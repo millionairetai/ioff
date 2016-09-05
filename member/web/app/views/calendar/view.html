@@ -51,10 +51,11 @@
                         <dd class="direct-chat-timestamp"><i class="fa fa-clock-o"></i> {{collection.event.count_date}} {{$root.$lang.day_ago}} </dd>
                     </dl>
                     <dl>
-                        <dt>{{collection.event.address}}</dt>
-                        <dd class="direct-chat-timestamp"><i class="fa fa-map-marker"></i> {{collection.event.address}}</dd>
+                        <!--<i class="fa fa-map-marker"></i> {{collection.event.address}}-->
+                        <dt><i class="fa fa-map-marker"></i>{{collection.event.address}}</dt>
+                        <!--<dd class="direct-chat-timestamp"><i class="fa fa-map-marker"></i> {{collection.event.address}}</dd>-->
                     </dl>
-                    <h4>{{$root.$lang.calendar_title}} : {{collection.calendar.name}}</h4>
+                    <h4>{{$root.$lang.calendar_title}}: {{collection.calendar.name}}</h4>
                 </div><!--box body-->
             </div>
             <div class="box box-solid detail-event">

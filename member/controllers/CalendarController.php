@@ -672,20 +672,22 @@ class CalendarController extends ApiController {
      * @return multitype:unknown
      */
     public function actionAttend() {
-        $attend_type = \Yii::$app->request->post('attend_type');
-        $calendarId = \Yii::$app->request->post('calendarId');
-        if (empty($attend_type) || empty($calendarId)) {
+        $attendType = \Yii::$app->request->post('attend_type');
+        $eventId = \Yii::$app->request->post('calendarId');
+        if (empty($attendType) || empty($eventId)) {
             return $this->sendResponse(true, "", 'Save record to table event_confirmation_type fail');
         }
-        $EventConfirmationType = EventConfirmationType::find()->select(['id', 'name'])->where(['column_name' => $attend_type])->one();
+        $EventConfirmationType = EventConfirmationType::find()->select(['id', 'name'])->where(['column_name' => $attendType])->one();
         
         if (!empty($EventConfirmationType)) {
             $eventConfirmation = EventConfirmation::find()
-                ->where(['company_id' => $this->_companyId, 'employee_id' => \Yii::$app->user->getId(), 'event_id' => $calendarId])
+                ->where(['employee_id' => \Yii::$app->user->getId(), 'event_id' => $eventId])
                 ->one();
+            
             if (empty($eventConfirmation)) {
                 return $this->sendResponse(true, "Get EventConfirmation info fail", []);
             }
+            
             $eventConfirmation->event_confirmation_type_id = $EventConfirmationType->id;
             if (!$eventConfirmation->update()) {
                 throw new \Exception('Save record to table eventConfirmation fail');
