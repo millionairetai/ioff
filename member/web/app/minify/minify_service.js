@@ -254,6 +254,15 @@ appRoot.factory('calendarService', ['apiService','$rootScope','alertify', functi
             }
         };
     }]);
+appRoot.factory('commonService', ['apiService', 'taskService', 'projectService', 'calendarService',
+    function (apiService, taskService, projectService, calendarService) {
+
+        return {
+            getSearchGlobalSuggest: function (params, success, error) {
+                return apiService.post('task/get-search-global-suggestion', params, success, error, 0);
+            }
+        };
+    }]);
 appRoot.factory('controllerService', ['apiService', function (apiService) {
 
         return {
@@ -537,7 +546,10 @@ appRoot.factory('taskService', ['apiService','$rootScope','alertify', function (
                 apiService.get('task/get-tasks',data,success,error);
             },
             getTaskForDropdown: function(data,success,error) {
-                apiService.get('task/get-task-for-dropdown',data,success,error);
+                apiService.post('task/get-task-for-dropdown',data,success,error, 0);
+            },
+            getSearchGlobalTasks:  function(data,success,error) {
+                apiService.post('task/get-search-global-tasks',data,success,error);
             },
             redmind : function(){
                 return [

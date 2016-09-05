@@ -68,6 +68,11 @@ appRoot.config(function ($routeProvider, $httpProvider) {
                 templateUrl: 'app/views/notify/index.html',
                 controller: 'NotifyCtrl'
             })
+            //notify
+            .when('/search', {
+                templateUrl: 'app/views/search/index.html',
+                controller: 'searchCtrl'
+            })
             .otherwise({redirectTo: '/home'});
 
 });

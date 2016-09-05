@@ -16,24 +16,24 @@
         <div class="containbox-search">
             <a class="show-form-search" ng-click="displaysearch = !displaysearch" href="javascript:void(0)"><i class="fa fa-search"></i></a>
             <div class="search-form" ng-show="displaysearch">
-                <form action="#" method="get">
+                <form action="#/search" method="get">
                     <!-- Single button -->
                     <div class="btn-group">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Công việc <span class="caret"></span>
+                            {{searchGlobalType ? searchGlobalType: $root.$lang.task}} <span class="caret"></span>
                         </button>
                         <ul class="dropdown-menu">
-                            <li><a href="#">Dự án</a></li>
-                            <li><a href="#">Sự kiện</a></li>
-                            <li><a href="#">Công việc</a></li>
+                            <li><a ng-click="selectSearchGlobalType($root.$lang.task, 'task')">{{$root.$lang.task}}</a></li>
+                            <li><a ng-click="selectSearchGlobalType($root.$lang.project, 'project')">{{$root.$lang.project}}</a></li>
+                            <li><a ng-click="selectSearchGlobalType($root.$lang.event, 'event')">{{$root.$lang.event}}</a></li>
                         </ul>
                     </div>
                     <!---->
                     <div class="input-group">
-                        <autocomplete ng-model="result" attr-placeholder="<?php echo \Yii::t('common', 'Search');?>" 
-                                      click-activation="true" data="movies" on-type="doSomething" on-select="doSomethingElse"></autocomplete>
+                        <autocomplete ng-model="searchVal" attr-placeholder="<?php echo \Yii::t('common', 'Search');?>" 
+                                      click-activation="false" data="searchGlobalItems" on-type="getSuggestSearchGlobal" on-select="showItemSearchGlobal"></autocomplete>
                         <!--<input type="text" name="q" class="input-search form-control" placeholder="<?php echo \Yii::t('common', 'Search'); ?>...">-->
-                        <button type="submit" name="search" id="search-btn" class="btn search-button"><i class="fa fa-search"></i></button>
+                        <a href="#/search" id="search-btn" class="btn search-button"><i class="fa fa-search"></i></a>
                     </div>
                 </form>
             </div>
@@ -44,7 +44,7 @@
                 <!-- Notifications: style can be found in dropdown.less -->
                 <li class="dropdown messages-menu">
                     <a  class="dropdown-toggle cursor-pointer" data-toggle="dropdown">
-                        <i class="fa fa-comments"></i>
+                        <i class="fa fa-bell-o"></i>
                         <span class="label label-warning">{{$root.sum_notify}}</span>
                     </a>
                     <ul class="dropdown-menu">

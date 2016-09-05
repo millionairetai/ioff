@@ -72,6 +72,7 @@
             //-----------------------------------------End of common language.----------------------------------
             
             //project
+            project: 'Dự án',
             project_list_view_more : 'Xem thêm',
             project_add : 'Tạo dự án',
             project_empty : 'Chưa có dự án nào được tạo',
@@ -167,7 +168,11 @@
             calendar_notify_event_created_success : "Sự kiện của bạn đã được tạo thành công",
             calendar_event_check_redmind : "Thời gian bắt đầu sự kiện so với thời gian hiện tại phải lớn hơn thời gian nhắc nhở",
             
+            //Event
+            event: 'Sự kiện',
+            
             //task
+            task: 'Công việc',
             task_list_view_more : 'Xem thêm',
             task_add : 'Thêm công việc',
             task_empty : 'Chưa có công việc nào được tạo',
@@ -241,10 +246,13 @@
             task_my_followed_task: 'Công việc tôi theo dõi',
             task_all_task: 'Tất cả công việc',
             //end task
-            
             //notify
             notfication_manage: 'Quản lý thông báo',
-            notfication_list: 'Danh sách thông báo',            
+            notfication_list: 'Danh sách thông báo',   
+            //search
+            search: 'Tìm kiếm',
+            search_result: 'Kết quả tìm kiếm',
+            search_result_for: 'Kết quả tìm kiếm cho'
         };
     });
 })(window.angular);

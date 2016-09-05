@@ -72,6 +72,7 @@
             //-----------------------------------------End of common language.----------------------------------
             
             //project
+            project: 'Project',
             project_list_view_more : 'View more',//
             project_add : 'Create project',
             project_empty : 'There is not project',
@@ -166,8 +167,12 @@
             calendar_event_calendar_id_error_empty : "Calendar is required",
             calendar_notify_event_created_success : "Event has created successfully",
             calendar_event_check_redmind : "Startdate time with current time must be greater than remind time",
+                        
+            //Event
+            event: 'Event',
             
-             //task
+            //task
+            task: 'Task',
             task_list_view_more : 'View More',
             task_add : 'Add task',
             task_empty : 'There is not task',
@@ -215,12 +220,14 @@
             task_my_task: 'My task',
             task_my_followed_task: 'My followed task',
             task_all_task: 'All task',
-            //end task
-                        
+            //end task        
             //notify
             notfication_manage: 'Quản lý thông báo',
             notfication_list: 'Danh sách thông báo',   
-            
+            //search
+            search: 'Search',
+            search_result: 'Search result',
+            search_result_for: 'Search result for'
         };
     });
 })(window.angular);
