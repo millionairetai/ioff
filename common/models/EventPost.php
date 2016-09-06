@@ -1,7 +1,7 @@
 <?php
 
 namespace common\models;
-
+use common\components\db\ActiveRecord;
 use Yii;
 
 /**
@@ -22,7 +22,7 @@ use Yii;
  * @property string $lastup_employee_id
  * @property boolean $disabled
  */
-class EventPost extends \yii\db\ActiveRecord
+class EventPost extends ActiveRecord
 {
     /**
      * @inheritdoc

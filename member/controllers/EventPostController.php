@@ -102,7 +102,7 @@ class EventPostController extends ApiController {
             //move file
             $files = File::addFiles($_FILES, \Yii::$app->params['PathUpload'], $eventPost->id, EventPost::tableName());
             $fileList = [];
-            foreach ($files AS $key => $val) {
+            foreach ((array)$files AS $key => $val) {
                 $fileList[] = [
                         'name' => $val['name'],
                         'path' => \Yii::$app->params['PathUpload'] . DIRECTORY_SEPARATOR . $val['path']
