@@ -17,21 +17,22 @@ use common\models\Event;
 class EventPostController extends ApiController {
 
     /**
-     * Get project post by project id
+     * Get event post by event id
      */
     public function actionGetEventPost() {
         $collection = [];
         $eventPostIds = [];
-        $calendarId = \Yii::$app->request->post('calendarId');
+        $eventId = \Yii::$app->request->get('eventId');
         
         //fetch event post list
-        $result = EventPost::getEventPosts($calendarId, \Yii::$app->request->post('currentPage'), \Yii::$app->request->post('itemPerPage'));
-        
+        $result = EventPost::getEventPosts($eventId, \Yii::$app->request->get('currentPage'), \Yii::$app->request->get('itemPerPage'));
         foreach ($result as $item) {
             $actionDelete = false;
+            //No add condition for admin here.
             if (((\Yii::$app->user->getId() == $item->created_employee_id) || (\Yii::$app->user->identity->is_admin)) && ($item->is_log_history == false)) {
                 $actionDelete = true;
             }
+            
             $collection[] = [
                 'id'                 => $item->id,
                 'time'               => date('H:i d-m-Y ', $item->datetime_created),
@@ -45,8 +46,7 @@ class EventPostController extends ApiController {
 
         $files = File::getFiles(array_keys($eventPostIds), EventPost::tableName());
         $fileData = [];
-
-        foreach ($files AS $key => $val) {
+        foreach ($files as $val) {
             $fileData[$val->owner_id][] = [
                 'name' => $val->name,
                 'path' => \Yii::$app->params['PathUpload'] . DIRECTORY_SEPARATOR . $val->path
@@ -58,7 +58,7 @@ class EventPostController extends ApiController {
         $objects['totalItems'] = 0;
         
         if (!empty($collection)) {
-            $objects['totalItems'] = EventPost::find()->where(['event_id' => $calendarId])->count();
+            $objects['totalItems'] = EventPost::find()->where(['event_id' => $eventId])->count();
         }
         return $this->sendResponse(false, "", $objects);
     }
@@ -205,6 +205,7 @@ class EventPostController extends ApiController {
         if (!(isset($request['id']) && $request['id'])) {
             throw new \Exception('Request fail');
         }
+        
         $this->_message = "Updata Event Post Success";
         $transaction = \Yii::$app->db->beginTransaction();
         try {

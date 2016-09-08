@@ -421,8 +421,9 @@ appRoot.controller('viewCalendarCtrl', ['$scope', 'calendarService', 'fileServic
         itemPerPage: PER_PAGE_VIEW_MORE,
         totalItems: 0,
         currentPage: 1,
-        calendarId: calendarId
+        eventId: calendarId
     };
+    
     $scope.eventPost = [];
     $scope.eventPostFile = [];
     $scope.getEventPosts = function () {
@@ -434,8 +435,8 @@ appRoot.controller('viewCalendarCtrl', ['$scope', 'calendarService', 'fileServic
             $scope.filter.totalItems = response.objects.totalItems;
         });
     };
-    $scope.getEventPosts();
     
+    $scope.getEventPosts();
   //Delete event post
     $scope.deleteEventPost = function (index, id) {
          dialogMessage.open('confirm', $rootScope.$lang.confirm_delete_file, function () {

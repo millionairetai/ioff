@@ -11,9 +11,9 @@
                     <div class="image">
                         <!-- the icon as a time element -->
                         <time datetime="2014-09-20" class="icon">
-                            <em>{{collection.event.start_datetime | date:'EEEE'}}</em>
-                            <strong>{{collection.event.start_datetime | date:'MMMM'}}</strong>
-                            <span>{{collection.event.start_datetime | date:'d'}}</span>
+                            <em>{{collection.event.start_datetime| date:'EEEE'}}</em>
+                            <strong>{{collection.event.start_datetime| date:'MMMM'}}</strong>
+                            <span>{{collection.event.start_datetime| date:'d'}}</span>
                         </time>
                     </div>
                     <dl>
@@ -22,7 +22,7 @@
                                 <a href="#"> {{collection.event.name}}</a>
                             </span>
                             <span class="description">{{collection.event.is_public_name}} - {{$root.$lang.create_by}} {{collection.event.created_employee_id}}</span>
-                            
+
                             <div class="btn-group" ng-repeat="val in collection.eventConfirmationType">
                                 <span ng-if="collection.event.active_attend === val.column_name">
                                     <a class="btn btn-primary btn-xs active_attend">{{val.name}}</a> 
@@ -39,14 +39,14 @@
                 <div class="box-body">
                     <dl>
                         <dt ng-if="collection.event.count_date < 1">
-	                        {{$root.$lang.project_start_date}} {{collection.event.start_datetime | date : "fullDate"}} 
-	                        {{collection.event.start_time}}
-	                        {{$root.$lang.at}} 
-	                        {{collection.event.end_time}}
+                        {{$root.$lang.project_start_date}} {{collection.event.start_datetime| date : "fullDate"}} 
+                        {{collection.event.start_time}}
+                        {{$root.$lang.at}} 
+                        {{collection.event.end_time}}
                         </dt>
                         <dt ng-if="collection.event.count_date >= 1">
-	                        {{$root.$lang.project_start_date}} {{collection.event.start_datetime | date : "fullDate"}} {{collection.event.start_time}} 
-	                        <br/> {{$root.$lang.project_end_date}} {{collection.event.end_datetime | date : "fullDate"}} {{collection.event.end_time}}
+                        {{$root.$lang.project_start_date}} {{collection.event.start_datetime| date : "fullDate"}} {{collection.event.start_time}} 
+                        <br/> {{$root.$lang.project_end_date}} {{collection.event.end_datetime| date : "fullDate"}} {{collection.event.end_time}}
                         </dt>
                         <dd class="direct-chat-timestamp"><i class="fa fa-clock-o"></i> {{collection.event.count_date}} {{$root.$lang.day_ago}} </dd>
                     </dl>
@@ -71,14 +71,14 @@
                     </div>
                     <br/>
                     <div  ng-if="collection.file_info != ''" ng-repeat="files in collection.file_info| limitTo:limitFile">
-                                <div>
-                                    <a href="{{files.path}}"><span class="glyphicon glyphicon-file" aria-hidden="true"></span>{{files.name}}</a>
-                                    <i ng-click="removeFileProject($index, files.id)" class="fa fa-remove cursor-point"></i>
-                                </div>
-                            </div>
-                            <div class=" text-center" >
-                                <a ng-click="loadMoreFile()" class="pointer ng-binding" ng-if="limitFile < collection.file_info.length && collection.file_info.length > 5">{{$root.$lang.project_list_view_more}} </a>
-                                <a ng-click="closeMoreFile()" class="pointer ng-binding" ng-if="limitFile > 5">{{$root.$lang.less}} </a>
+                        <div>
+                            <a href="{{files.path}}"><span class="glyphicon glyphicon-file" aria-hidden="true"></span>{{files.name}}</a>
+                            <i ng-click="removeFileProject($index, files.id)" class="fa fa-remove cursor-point"></i>
+                        </div>
+                    </div>
+                    <div class=" text-center" >
+                        <a ng-click="loadMoreFile()" class="pointer ng-binding" ng-if="limitFile < collection.file_info.length && collection.file_info.length > 5">{{$root.$lang.project_list_view_more}} </a>
+                        <a ng-click="closeMoreFile()" class="pointer ng-binding" ng-if="limitFile > 5">{{$root.$lang.less}} </a>
                     </div>
                 </div><!--box body-->
             </div>
@@ -94,17 +94,17 @@
             <div class="box box-solid header-event">
                 <div class="box-body">
                     <form class="form-horizontal">
-                        <textarea  class="form-control"  data-ui-tinymce ng-model="project.description" rows="5"></textarea>
-                            <br/>
-                            <input id="fileImage" type="file" class="form-control input-file-upload" name="file" onchange="angular.element(this).scope().addFile(this.files);
-	                                                $('#fileImage').replaceWith($('#fileImage').clone());" />
-                            <br/>
-                            <div class="show-file-name" ng-repeat="file in files">
-                                <strong>{{file.name}}</strong> <i class="fa fa-remove" ng-click="removeFile($index)"></i>
-                            </div>
-                           <div class="modal-footer">
-                                <button type="button" class="btn btn-primary btn-flat" ng-click="addEventPost()" ><i class="fa fa-save"></i> {{$root.$lang.post}}</button>
-                           </div>
+                        <textarea class="form-control"  data-ui-tinymce ng-model="project.description" rows="5"></textarea>
+                        <br/>
+                               <input id="fileImage" type="file" class="form-control input-file-upload" name="file" onchange="angular.element(this).scope().addFile(this.files);
+                                    $('#fileImage').replaceWith($('#fileImage').clone());" />
+                        <br/>
+                        <div class="show-file-name" ng-repeat="file in files">
+                            <strong>{{file.name}}</strong> <i class="fa fa-remove" ng-click="removeFile($index)"></i>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary btn-flat" ng-click="addEventPost()" ><i class="fa fa-save"></i> {{$root.$lang.post}}</button>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -119,35 +119,35 @@
                     <div class="box box-solid recent-post-item" ng-repeat="v in eventPost">
                         <div class="box-header with-border">
                             <div class="user-block">
-                                    <img src="{{v.profile_image_path}}" class="img-circle" alt="User Image" width="58px" height="58px">
-                                    <span class="username"><a href="#/member/{{v.id}}"><b>{{v.employee_name}}</b></a></span>
-                                    <span class="description">{{v.time| date : "fullDate" }}</span>
+                                <img src="{{v.profile_image_path}}" class="img-circle" alt="User Image" width="58px" height="58px">
+                                <span class="username"><a href="#/member/{{v.id}}"><b>{{v.employee_name}}</b></a></span>
+                                <span class="description">{{v.time| date : "fullDate" }}</span>
                             </div>
-                            
+
                             <div class="pull-right box-tools">
-                                       <!-- button with a dropdown -->
-                                       <div class="btn-group" ng-if="v.actionDelete == true">
-                                           <button type="button" class="btn btn-box-tool" data-toggle="dropdown" aria-expanded="false">
-                                           <i class="fa fa-bars"></i></button>
-                                           <ul class="dropdown-menu pull-right" role="menu">
-                                               <li><a ng-click="editEventPost(v, $index)">{{$root.$lang.button_update}}</a></li>
-                                               <li><a ng-click="deleteEventPost($index, v.id)">{{$root.$lang.remove}}</a></li>
-                                           </ul>
-                                       </div>
-                                       <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                               </div>
+                                <!-- button with a dropdown -->
+                                <div class="btn-group" ng-if="v.actionDelete == true">
+                                    <button type="button" class="btn btn-box-tool" data-toggle="dropdown" aria-expanded="false">
+                                        <i class="fa fa-bars"></i></button>
+                                    <ul class="dropdown-menu pull-right" role="menu">
+                                        <li><a ng-click="editEventPost(v, $index)">{{$root.$lang.button_update}}</a></li>
+                                        <li><a ng-click="deleteEventPost($index, v.id)">{{$root.$lang.remove}}</a></li>
+                                    </ul>
+                                </div>
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                            </div>
                         </div>
-                         <div class="box-body">
-                                <p ng-bind-html="getHtml(v.content)" ng-tt-chars-threshold="200"></p>
-                                <div class="padding-left-20" ng-repeat="file in eventPostFile[v.id]"><a href="{{file.path}}"><span class="glyphicon glyphicon-file" aria-hidden="true"></span> {{file.name}}</a></div>
+                        <div class="box-body">
+                            <p ng-bind-html="getHtml(v.content)" ng-tt-chars-threshold="200"></p>
+                            <div class="padding-left-20" ng-repeat="file in eventPostFile[v.id]"><a href="{{file.path}}"><span class="glyphicon glyphicon-file" aria-hidden="true"></span> {{file.name}}</a></div>
                         </div>
                         <!--box body-->
                     </div><!-- Recent post item-->
                     <div class="box-footer text-center" >
-                    <button class="btn form-control cursor-pointer viewmorecl" ng-click="viewMore()" ng-show="filter.totalItems > (filter.currentPage * filter.itemPerPage)"><a>{{$root.$lang.view_more_upper_case}}</a></button>
+                        <button class="btn form-control cursor-pointer viewmorecl" ng-click="viewMore()" ng-show="filter.totalItems > (filter.currentPage * filter.itemPerPage)"><a>{{$root.$lang.view_more_upper_case}}</a></button>
+                    </div>
                 </div>
             </div>
-        </div>
         </div>
         <div class="col-md-3 padding-left-md-0">
             <div class="box box-solid event-member">
@@ -198,10 +198,10 @@
                     </div>
                 </div>
                 <div class="box-body">
-                    <div class="user-block" ng-repeat="employee in collection.invitations.departmentAndEmployee.employeeList | limitTo:limit">
+                    <div class="user-block" ng-repeat="employee in collection.invitations.departmentAndEmployee.employeeList| limitTo:limit">
                         <img src="{{employee.image}}" class="img-circle" alt="User Image"/>
                         <span class="username"><a href="#/member/161">{{employee.firstname}}</a></span>
-                        <span class="description">{{employee.birthdate | date : "fullDate"}} </span>
+                        <span class="description">{{employee.birthdate| date : "fullDate"}} </span>
                     </div>
                 </div><!--box body-->
                 <div class=" text-center" >

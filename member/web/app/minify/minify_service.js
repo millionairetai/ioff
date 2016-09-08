@@ -322,13 +322,13 @@ appRoot.factory('EventPostService', ['apiService', '$rootScope', 'alertify', fun
             apiService.upload('event-post/add-event-post', data, success, error);
         },
         getEventPosts: function (data, success, error) {
-            apiService.post('event-post/get-event-post', data, success, error);
+            apiService.get('event-post/get-event-post', data, success, error);
         },
         removeEventPost : function (data,success,error){
-            apiService.get('event-post/remove-event-post', data, success, error);
+            apiService.delete('event-post/remove-event-post', data, success, error);
         },
         updateEventPost : function (data,success,error){
-            apiService.post('event-post/update-event-post', data, success, error);
+            apiService.put('event-post/update-event-post', data, success, error);
         },
         validateEventPost: function (object) {
             var message = "";

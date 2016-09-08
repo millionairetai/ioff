@@ -195,17 +195,17 @@ class File extends \common\components\db\ActiveRecord {
         if (empty($fileId)) {
             throw new \Exception('Can not get file id');
         }
-        
+
         $file = File::findOne($fileId);
 
         if (empty($file)) {
             throw new \Exception('Can not get file');
         }
-        
+
         if (!$file->delete()) {
             throw new \Exception('Can not delete file');
         }
-        
+
         file_exists($unlink = \Yii::$app->params['PathUpload'] . DIRECTORY_SEPARATOR . $file->path) ? unlink($unlink) : false;
         //subtract total_storage and space_project
         $company = Company::find(['total_storage'])->where(Yii::$app->user->identity->company_id)->one();
@@ -214,9 +214,9 @@ class File extends \common\components\db\ActiveRecord {
         if (!$company->save(false)) {
             throw new \Exception('Save record to table company fail');
         }
-        
+
         $this->_updateStorageAndLogHistory($file);
-        
+
         return true;
     }
 
@@ -230,15 +230,15 @@ class File extends \common\components\db\ActiveRecord {
     public static function getFiles($ids = array(), $table = null) {
         if (!empty($ids)) {
             return File::findAll([
-                        'owner_id' => $ids,
-                        'owner_object' => $table,
+                                'owner_id' => $ids,
+                                'owner_object' => $table,
                         'company_id' => \Yii::$app->user->getCompanyId()
             ]);
         }
 
         return [];
     }
-    
+
     /**
      * Update storage and log history for project, project post, task
      *      task_post, event, event_post
@@ -271,26 +271,26 @@ class File extends \common\components\db\ActiveRecord {
                 }
 
                 break;
-            
+
             case 'task':
             case 'task_post':
                 break;
-            
+
             case 'event':
             case 'event_post':
                 break;
-            
+
             default:
                 break;
         }
-        
+
         if (!$employeeSpace->save(false)) {
             throw new \Exception('Save record to table employee space fail');
         }
-        
+
         return true;
     }
-    
+
     /**
      * get list file by owner id and table name
      * @param string $owner_id
@@ -298,37 +298,37 @@ class File extends \common\components\db\ActiveRecord {
      * @param string $object
      * @return array|null
      */
-    public static function getFileByOwnerIdAndTable($owner_id = null, $table_name = null, $object = false){
+    public static function getFileByOwnerIdAndTable($owner_id = null, $table_name = null, $object = false) {
         if (($owner_id == null) || ($table_name == null)) {
             return null;
         }
-        $table_injoin = $table_name.'_post';
+        $table_injoin = $table_name . '_post';
         $files = File::find()
-                    ->select(['file.id', 'file.name', 'file.path', 'file.datetime_created'])
-                    ->distinct()
-                    ->innerJoin($table_injoin, $table_injoin.'.id = file.owner_id OR file.owner_id = '. $owner_id)
-                    ->where([
-                            'file.company_id'     => \Yii::$app->user->getCompanyId(),
-                            'file.owner_object'   => [$table_name, $table_injoin],
-                             $table_injoin.'.'.$table_name.'_id' => $owner_id,
-                    ])
-                    ->all();
-        
+                ->select(['file.id', 'file.name', 'file.path', 'file.datetime_created'])
+                ->distinct()
+                ->innerJoin($table_injoin, $table_injoin . '.id = file.owner_id OR file.owner_id = ' . $owner_id)
+                ->where([
+                    'file.company_id' => \Yii::$app->user->getCompanyId(),
+                    'file.owner_object' => [$table_name, $table_injoin],
+                    $table_injoin . '.' . $table_name . '_id' => $owner_id,
+                ])
+                ->all();
+
         if (empty($files)) {
             return null;
         }
-        
+
         $fileList = [];
         if (!$object) {
             foreach ($files as $file) {
                 $fileList[] = [
-                        'id'    => $file->id,
-                        'name'  => $file->name,
-                        'path'  => \Yii::$app->params['PathUpload'] . DIRECTORY_SEPARATOR . $file->path,
-                        'datetime_created' => date('Y-m-d', $file->datetime_created),
+                    'id' => $file->id,
+                    'name' => $file->name,
+                    'path' => \Yii::$app->params['PathUpload'] . DIRECTORY_SEPARATOR . $file->path,
+                    'datetime_created' => date('Y-m-d', $file->datetime_created),
                 ];
             }
-        }else {
+        } else {
             return $files;
         }
         return $fileList;

@@ -78,7 +78,7 @@ class EventPost extends ActiveRecord
     /**
      * Get list event post by event id
      *
-     * @param integer $projectId
+     * @param integer $eventId
      * @param integer $currentPage
      * @param integer $itemPerPage
      * @return array|boolean
@@ -87,13 +87,16 @@ class EventPost extends ActiveRecord
         $offset = --$currentPage * $itemPerPage;
         if (isset($eventId)){
             $data =  EventPost::find()
-                            ->where(['event_id' => $eventId, 'company_id' => \Yii::$app->user->getCompanyId()])
+                            ->select(['id', 'employee_id', 'datetime_created', 'content', 'created_employee_id', 'is_log_history'])
+                            ->where(['event_id' => $eventId])
+                            ->andCompanyId()
                             ->orderBy('datetime_created DESC')
                             ->limit($itemPerPage)
                             ->offset($offset)
                             ->all();
             return $data;
         }
+        
         return [];
     }
 }
