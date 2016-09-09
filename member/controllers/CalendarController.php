@@ -414,16 +414,16 @@ class CalendarController extends ApiController {
 
 
     /**
-     * Fuction display detail od Event by id
-     * @return multitype:unknown
+     * Fuction display detail of Event by id
      */
     public function actionViewEvent() {
         try {
-            if ($calendarId = \Yii::$app->request->post('calendarId')) {
-                if ($event = Event::getInfoEvent($calendarId)) {
+            if ($eventId = \Yii::$app->request->get('eventId')) {
+                if ($event = Event::getInfoEvent($eventId)) {
                     return $this->sendResponse(false, "", $event);
                 }
             }
+            
             throw new \Exception(\Yii::t('member', 'Can not get event info'));
         } catch (\Exception $e) {
             return $this->sendResponse(true, $e->getMessage(), []);

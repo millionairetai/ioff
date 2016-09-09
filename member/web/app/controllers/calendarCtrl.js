@@ -77,7 +77,7 @@ appRoot.controller('calendarCtrl', ['$scope', '$uibModal', 'calendarService', '$
                         start: moment(respone.objects[$i].start).toDate(),
                         end: moment(respone.objects[$i].end).toDate(),
                         color: respone.objects[$i].color,
-                        url: '#/viewCalendar/' + respone.objects[$i].id
+                        url: '#/viewEvent/' + respone.objects[$i].id
                     };
                     $scope.events.push(newEvent);
                 }
@@ -307,13 +307,13 @@ appRoot.controller('addEventCtrl', ['$rootScope', 'data', '$scope', 'calendarSer
 
 //Display info detail of calendar
 var $dataEditEvent = [];
-appRoot.controller('viewCalendarCtrl', ['$scope', 'calendarService', 'fileService', 'EventPostService', '$uibModal', '$rootScope', 'dialogMessage', '$routeParams', 'alertify', '$sce', 'PER_PAGE_VIEW_MORE', 
+appRoot.controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService', 'EventPostService', '$uibModal', '$rootScope', 'dialogMessage', '$routeParams', 'alertify', '$sce', 'PER_PAGE_VIEW_MORE', 
     function ($scope, calendarService, fileService, EventPostService, $uibModal, $rootScope, dialogMessage, $routeParams, alertify, $sce, PER_PAGE_VIEW_MORE) {
-    var calendarId = $routeParams.calendarId;
+    var calendarId = $routeParams.eventId;
     //set paramter for layout
     $scope.collection = [];
     $scope.getInfoEvent = function () {
-        calendarService.viewEvent({calendarId: calendarId}, function (response) {
+        calendarService.viewEvent({eventId: calendarId}, function (response) {
             if (response.error) $location.path('/calendar');
             $scope.collection = response.objects;
         });
@@ -326,14 +326,18 @@ appRoot.controller('viewCalendarCtrl', ['$scope', 'calendarService', 'fileServic
             calendarId : calendarId,
         };
     $scope.addEventPost = function () {
-        if(($scope.collection.invitations != null) && ($scope.collection.invitations.departmentAndEmployee != null) && ($scope.collection.invitations.departmentAndEmployee.employeeList != null) ){
+        if (($scope.collection.invitations != null) 
+                && ($scope.collection.invitations.departmentAndEmployee != null) 
+                && ($scope.collection.invitations.departmentAndEmployee.employeeList != null) ) {
             $scope.project.employeeList = $scope.collection.invitations.departmentAndEmployee.employeeList;
         }
+        
         if (EventPostService.validateEventPost($scope.project)) {
             var fd = new FormData();
             for (var i in $scope.files) {
                 fd.append("file_" + i, $scope.files[i]);
             }
+            
             fd.append("event", angular.toJson($scope.project));
             EventPostService.addEventPost(fd, function (response) {
                 alertify.success($rootScope.$lang.event_post_add_success);
@@ -436,8 +440,14 @@ appRoot.controller('viewCalendarCtrl', ['$scope', 'calendarService', 'fileServic
         });
     };
     
-    $scope.getEventPosts();
-  //Delete event post
+    $scope.getEventPosts();    
+    //view more
+    $scope.viewMore = function () {
+        $scope.filter.currentPage++;
+        $scope.getEventPosts();
+    }
+    
+    //Delete event post
     $scope.deleteEventPost = function (index, id) {
          dialogMessage.open('confirm', $rootScope.$lang.confirm_delete_file, function () {
              EventPostService.removeEventPost({calendarId: id}, function (data) {
@@ -462,12 +472,6 @@ appRoot.controller('viewCalendarCtrl', ['$scope', 'calendarService', 'fileServic
             }
         });
     };
-    
-    //view more
-    $scope.viewMore = function () {
-        $scope.filter.currentPage++;
-        $scope.getEventPosts();
-    }
     
     //action click attend
     $scope.objectEmployee = {};

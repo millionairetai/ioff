@@ -169,13 +169,9 @@ class Event extends ActiveRecord {
     }
     
     /**
-     * Get all calendar in company
+     * Get event info
      * 
-     * @param array $calendars
-     * @param integer $companyId
-     * @param integer $employeeId
-     * @param string $start
-     * @param string $end
+     * @param integer $eventId
      * @return array
      */
     public static function getInfoEvent($eventId = null) {

@@ -49,9 +49,9 @@ appRoot.config(function ($routeProvider, $httpProvider) {
                     }
                 }
             })
-            .when('/viewCalendar/:calendarId', {
+            .when('/viewEvent/:eventId', {
             	templateUrl: 'app/views/calendar/view.html',
-            	controller: 'viewCalendarCtrl'
+            	controller: 'viewEventCtrl'
             })
             //authority
             .when('/authority', {
