@@ -70,7 +70,7 @@
                         <p ng-bind-html="getHtml(collection.event.description)" ng-tt-chars-threshold="200"></p>
                     </div>
                     <br/>
-                    <div  ng-if="collection.file_info != ''" ng-repeat="files in collection.file_info| limitTo:limitFile">
+                    <div ng-if="collection.file_info != ''" ng-repeat="files in collection.file_info| limitTo:limitFile">
                         <div>
                             <a href="{{files.path}}"><span class="glyphicon glyphicon-file" aria-hidden="true"></span>{{files.name}}</a>
                             <i ng-click="removeFileProject($index, files.id)" class="fa fa-remove cursor-point"></i>
@@ -94,7 +94,7 @@
             <div class="box box-solid header-event">
                 <div class="box-body">
                     <form class="form-horizontal">
-                        <textarea class="form-control"  data-ui-tinymce ng-model="project.description" rows="5"></textarea>
+                        <textarea class="form-control"  data-ui-tinymce ng-model="eventPostData.description" rows="5"></textarea>
                         <br/>
                                <input id="fileImage" type="file" class="form-control input-file-upload" name="file" onchange="angular.element(this).scope().addFile(this.files);
                                     $('#fileImage').replaceWith($('#fileImage').clone());" />
@@ -144,7 +144,7 @@
                         <!--box body-->
                     </div><!-- Recent post item-->
                     <div class="box-footer text-center" >
-                        <button class="btn form-control cursor-pointer viewmorecl" ng-click="viewMore()" ng-show="filter.totalItems > (filter.currentPage * filter.itemPerPage)"><a>{{$root.$lang.view_more_upper_case}}</a></button>
+                        <button class="btn form-control cursor-pointer viewmorecl" ng-click="viewMore()" ng-show="filter.totalItems > (filter.offset + filter.itemPerPage)"><a>{{$root.$lang.view_more_upper_case}}</a></button>
                     </div>
                 </div>
             </div>

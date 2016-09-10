@@ -38,6 +38,7 @@ class AppAsset extends AssetBundle
         'app/js/plugins/autoNumeric/autoNumeric.js',
         'app/js/plugins/select/select.js',
         'app/js/plugins/tags/tags.js',
+        'app/js/plugins/underscore/underscore-min.js',
         'app/js/plugins/moment/min/moment.min.js',
         'app/js/plugins/fullcalendar/dist/fullcalendar.min.js',
         'app/js/plugins/fullcalendar/dist/lang-all.js',

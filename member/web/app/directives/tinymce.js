@@ -27,7 +27,7 @@ angular.module('ui.tinymce', [])
                     });
                     // Update model on keypress
                     ed.on('KeyUp', function(e) {
-                        console.log(ed.isDirty());
+//                        console.log(ed.isDirty());
                         ed.save();
                         ngModel.$setViewValue(elm.val());
                         if (!scope.$$phase) {

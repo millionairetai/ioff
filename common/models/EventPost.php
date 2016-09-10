@@ -83,8 +83,8 @@ class EventPost extends ActiveRecord
      * @param integer $itemPerPage
      * @return array|boolean
      */
-    public static function getEventPosts($eventId, $currentPage = 1, $itemPerPage = 10) {
-        $offset = --$currentPage * $itemPerPage;
+    public static function getEventPosts($eventId, $offset = 0, $itemPerPage = 10) {
+//        $offset = --$currentPage * $itemPerPage;
         if (isset($eventId)){
             $data =  EventPost::find()
                             ->select(['id', 'employee_id', 'datetime_created', 'content', 'created_employee_id', 'is_log_history'])
