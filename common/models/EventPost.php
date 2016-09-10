@@ -84,7 +84,6 @@ class EventPost extends ActiveRecord
      * @return array|boolean
      */
     public static function getEventPosts($eventId, $offset = 0, $itemPerPage = 10) {
-//        $offset = --$currentPage * $itemPerPage;
         if (isset($eventId)){
             $data =  EventPost::find()
                             ->select(['id', 'employee_id', 'datetime_created', 'content', 'created_employee_id', 'is_log_history'])
@@ -99,4 +98,23 @@ class EventPost extends ActiveRecord
         
         return [];
     }
+    
+    /**
+     * Get last event post by event id
+     *
+     * @return array|boolean
+     */
+    public static function getLastEventPosts() {
+        $data =  EventPost::find()
+                    ->select(['id', 'employee_id', 'datetime_created', 'content', 'created_employee_id', 'is_log_history'])
+                    ->where(['id' => EventPost::find()->max('id')])
+                    ->andCompanyId()
+                    ->one();
+        if ($data) {
+            return $data;
+        }
+        
+        return [];
+    }
+    
 }

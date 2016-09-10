@@ -324,6 +324,9 @@ appRoot.factory('EventPostService', ['apiService', '$rootScope', 'alertify', fun
         getEventPosts: function (data, success, error) {
             apiService.get('event-post/get-event-post', data, success, error);
         },
+        getLastEventPost: function (data, success, error) {
+            apiService.get('event-post/get-last-event-post', data, success, error);
+        },
         removeEventPost : function (data,success,error){
             apiService.get('event-post/remove-event-post', data, success, error);
         },

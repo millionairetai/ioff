@@ -421,7 +421,7 @@ appRoot.controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService',
             });
             modalInstance.result.then(function (data) {
                 $scope.getInfoEvent();
-                $scope.getEventPosts();
+                $scope.getLastEventPost();
             }, function () {
             });
         };
@@ -442,13 +442,13 @@ appRoot.controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService',
         $scope.eventPostFile = [];
         $scope.getEventPosts = function () {
             EventPostService.getEventPosts($scope.filter, function (response) {
-                if ($scope.eventPost.length > 0) {
+                if ($scope.eventPost.length > 0 && response.objects.collection) {
                     $scope.eventPost = $scope.eventPost.concat(response.objects.collection);
                 } else {
                     $scope.eventPost = response.objects.collection;
                 }
 
-                if (_.size($scope.eventPostFile) > 0) {
+                if (_.size($scope.eventPostFile) > 0 && response.objects.files) {
                     $scope.eventPostFile = angular.merge($scope.eventPostFile, response.objects.files);
                 } else {
                     $scope.eventPostFile = response.objects.files;
@@ -463,6 +463,24 @@ appRoot.controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService',
         $scope.viewMore = function () {
             $scope.filter.offset = $scope.eventPost.length;
             $scope.getEventPosts();
+        }
+        
+        $scope.getLastEventPost = function () {
+            EventPostService.getLastEventPost({eventId: calendarId}, function (response) {
+                if ($scope.eventPost.length > 0 && response.objects.collection) {
+                    $scope.eventPost = response.objects.collection.concat($scope.eventPost);
+                } else {
+                    $scope.eventPost = response.objects.collection;
+                }
+
+                if (_.size($scope.eventPostFile) > 0 && response.objects.files) {
+                    $scope.eventPostFile = angular.merge($scope.eventPostFile, response.objects.files);
+                } else {
+                    $scope.eventPostFile = response.objects.files;
+                }
+
+                $scope.filter.totalItems = response.objects.totalItems;
+            });
         }
 
         //Delete event post

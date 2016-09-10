@@ -96,8 +96,8 @@
                     <form class="form-horizontal">
                         <textarea class="form-control"  data-ui-tinymce ng-model="eventPostData.description" rows="5"></textarea>
                         <br/>
-                               <input id="fileImage" type="file" class="form-control input-file-upload" name="file" onchange="angular.element(this).scope().addFile(this.files);
-                                    $('#fileImage').replaceWith($('#fileImage').clone());" />
+                        <input id="fileImage" type="file" class="form-control input-file-upload" name="file" onchange="angular.element(this).scope().addFile(this.files);
+                                $('#fileImage').replaceWith($('#fileImage').clone());" />
                         <br/>
                         <div class="show-file-name" ng-repeat="file in files">
                             <strong>{{file.name}}</strong> <i class="fa fa-remove" ng-click="removeFile($index)"></i>

@@ -63,6 +63,47 @@ class EventPostController extends ApiController {
         return $this->sendResponse(false, "", $objects);
     }
 
+    /**
+     * Get lasted event post by event id
+     */
+    public function actionGetLastEventPost() {
+        $collection = [];
+        //fetch event post list
+        $eventPost = EventPost::getLastEventPosts();
+        $actionDelete = false;
+        //No add condition for admin here.
+        if (((\Yii::$app->user->getId() == $eventPost->created_employee_id) || (\Yii::$app->user->identity->is_admin)) && ($eventPost->is_log_history == false)) {
+            $actionDelete = true;
+        }
+
+        $collection[] = [
+            'id' => $eventPost->id,
+            'time' => date('H:i d-m-Y ', $eventPost->datetime_created),
+            'content' => $eventPost->content,
+            'employee_name' => empty($eventPost->employee) ? '' : $eventPost->employee->getFullName(),
+            'profile_image_path' => empty($eventPost->employee) ? '' : $eventPost->employee->getImage(),
+            'actionDelete' => $actionDelete,
+        ];
+
+        $files = File::getFiles($eventPost->id, EventPost::tableName());
+        $fileData = [];
+        foreach ($files as $val) {
+            $fileData[$val->owner_id][] = [
+                'name' => $val->name,
+                'path' => \Yii::$app->params['PathUpload'] . DIRECTORY_SEPARATOR . $val->path
+            ];
+        }
+
+        $objects['collection'] = $collection;
+        $objects['files'] = $fileData;
+        $objects['totalItems'] = 0;
+
+        if (!empty($collection)) {
+            $objects['totalItems'] = EventPost::find()->where(['event_id' => \Yii::$app->request->get('eventId')])->count();
+        }
+        return $this->sendResponse(false, "", $objects);
+    }
+
     /*
      * Function remove file screen view project
      */

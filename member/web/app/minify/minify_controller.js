@@ -241,7 +241,8 @@ appRoot.controller('AddAuthorityCtrl', ['$scope', '$uibModalInstance', 'controll
             });
         };
     }]);//show calendar
-appRoot.controller('calendarCtrl', ['$scope', '$uibModal', 'calendarService', '$timeout', 'settingSystem', 'uiCalendarConfig', 'listCalendar', '$rootScope', function ($scope, $uibModal, calendarService, $timeout, settingSystem, uiCalendarConfig, listCalendar, $rootScope) {
+appRoot.controller('calendarCtrl', ['$scope', '$uibModal', 'calendarService', '$timeout', 'settingSystem', 'uiCalendarConfig', 'listCalendar', '$rootScope',
+    function ($scope, $uibModal, calendarService, $timeout, settingSystem, uiCalendarConfig, listCalendar, $rootScope) {
         var date = new Date();
         var d = date.getDate();
         var m = date.getMonth();
@@ -331,7 +332,8 @@ appRoot.controller('calendarCtrl', ['$scope', '$uibModal', 'calendarService', '$
 
 //add event to calendar
 
-appRoot.controller('addEventCtrl', ['$rootScope', 'data', '$scope', 'calendarService', 'alertify', '$uibModalInstance', 'departmentService', 'employeeService', '$timeout', 'socketService', function ($rootScope, data, $scope, calendarService, alertify, $uibModalInstance, departmentService, employeeService, $timeout, socketService) {
+appRoot.controller('addEventCtrl', ['$rootScope', 'data', '$scope', 'calendarService', 'alertify', '$uibModalInstance', 'departmentService', 'employeeService', '$timeout', 'socketService',
+    function ($rootScope, data, $scope, calendarService, alertify, $uibModalInstance, departmentService, employeeService, $timeout, socketService) {
         //step
         $scope.step = 1;
         $scope.more = 0;
@@ -590,10 +592,8 @@ appRoot.controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService',
                     };
 
                     $scope.files = [];
-//                    $scope.release = response.objects.files;
                     $scope.releases = response.objects.collection;
                     $scope.collection.file_info = $scope.collection.file_info.concat(response.objects.files[Object.keys(response.objects.files)[0]]);
-//                    $scope.collection.file_info = $scope.collection.file_info.concat($scope.releases]);
 
                     var temp = [];
                     temp = temp.concat($scope.releases);
@@ -602,6 +602,7 @@ appRoot.controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService',
                 });
             }
         }
+        
         $scope.files = [];
         //add file post
         $scope.addFile = function (files) {
@@ -662,7 +663,7 @@ appRoot.controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService',
             });
             modalInstance.result.then(function (data) {
                 $scope.getInfoEvent();
-                $scope.getEventPosts();
+                $scope.getLastEventPost();
             }, function () {
             });
         };
@@ -682,21 +683,19 @@ appRoot.controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService',
         $scope.eventPost = [];
         $scope.eventPostFile = [];
         $scope.getEventPosts = function () {
-            EventPostService.getEventPosts($scope.filter, function (response) {               
+            EventPostService.getEventPosts($scope.filter, function (response) {
                 if ($scope.eventPost.length > 0) {
                     $scope.eventPost = $scope.eventPost.concat(response.objects.collection);
-                }
-                else {
+                } else {
                     $scope.eventPost = response.objects.collection;
                 }
-                
+
                 if (_.size($scope.eventPostFile) > 0) {
                     $scope.eventPostFile = angular.merge($scope.eventPostFile, response.objects.files);
-                }
-                else {
+                } else {
                     $scope.eventPostFile = response.objects.files;
                 }
-                
+
                 $scope.filter.totalItems = response.objects.totalItems;
             });
         };
@@ -706,6 +705,25 @@ appRoot.controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService',
         $scope.viewMore = function () {
             $scope.filter.offset = $scope.eventPost.length;
             $scope.getEventPosts();
+        }
+        
+        $scope.getLastEventPost = function () {
+            EventPostService.getLastEventPost({eventId: calendarId}, function (response) {
+                if ($scope.eventPost.length > 0 && response.objects.collection) {
+                    $scope.eventPost = response.objects.collection.concat($scope.eventPost);
+//                    $scope.eventPost = $scope.eventPost.concat(response.objects.collection);
+                } else {
+                    $scope.eventPost = response.objects.collection;
+                }
+
+                if (_.size($scope.eventPostFile) > 0 && response.objects.files) {
+                    $scope.eventPostFile = angular.merge($scope.eventPostFile, response.objects.files);
+                } else {
+                    $scope.eventPostFile = response.objects.files;
+                }
+
+                $scope.filter.totalItems = response.objects.totalItems;
+            });
         }
 
         //Delete event post
@@ -854,7 +872,8 @@ appRoot.controller('editEventPostCtrl', ['$scope', 'EventPostService', '$uibModa
     }]);
 
 //edit event to calendar
-appRoot.controller('editEventCtrl', ['$rootScope', 'data', 'listCalendar', '$scope', 'calendarService', 'alertify', '$uibModalInstance', 'departmentService', 'employeeService', '$timeout', 'socketService', function ($rootScope, data, listCalendar, $scope, calendarService, alertify, $uibModalInstance, departmentService, employeeService, $timeout, socketService) {
+appRoot.controller('editEventCtrl', ['$rootScope', 'data', 'listCalendar', '$scope', 'calendarService', 'alertify', '$uibModalInstance', 'departmentService', 'employeeService', '$timeout', 'socketService', 
+    function ($rootScope, data, listCalendar, $scope, calendarService, alertify, $uibModalInstance, departmentService, employeeService, $timeout, socketService) {
         //step
         $scope.step = 1;
         $scope.more = 0;
