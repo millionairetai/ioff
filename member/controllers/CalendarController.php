@@ -420,7 +420,30 @@ class CalendarController extends ApiController {
         try {
             if ($eventId = \Yii::$app->request->get('eventId')) {
                 if ($event = Event::getInfoEvent($eventId)) {
-                    return $this->sendResponse(false, "", $event);
+                    //check authentication
+                    //**check case is public
+                    if (($event['event']['is_public'] == true) 
+                            || (\Yii::$app->user->identity->is_admin == true)
+                            || ($event['event']['manager_event_id'] == Yii::$app->user->identity->id)
+                        ) {
+                        return $this->sendResponse(false, "", $event);
+                    } else {
+                        $EmployeesInEvent = EventConfirmation::find()
+                                                ->select(['id'])
+                                                ->where([
+                                                            'company_id'  => $this->_companyId,
+                                                            'event_id'    => $eventId,
+                                                            'employee_id' => Yii::$app->user->identity->id,
+                                                        ])
+                                                ->one();
+                        if (!empty($EmployeesInEvent)) {
+                            return $this->sendResponse(false, "", $event);
+                        }else {
+                            Yii::$app->session->setFlash('errorViewProject', \Yii::t('member', "you do not have authoirity"));
+                            $objects['collection']['error'] = true;
+                            return $this->sendResponse(false, $eventId, $event);
+                        }
+                    }
                 }
             }
             
