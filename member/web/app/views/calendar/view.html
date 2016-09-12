@@ -50,7 +50,7 @@
                         </dt>
                         <dd class="direct-chat-timestamp"><i class="fa fa-clock-o"></i> {{collection.event.count_date}} {{$root.$lang.day_ago}} </dd>
                     </dl>
-                    <dl>
+                    <dl ng-show="collection.event.address">
                         <!--<i class="fa fa-map-marker"></i> {{collection.event.address}}-->
                         <dt><i class="fa fa-map-marker"></i>{{collection.event.address}}</dt>
                         <!--<dd class="direct-chat-timestamp"><i class="fa fa-map-marker"></i> {{collection.event.address}}</dd>-->
@@ -73,7 +73,7 @@
                     <div ng-if="collection.file_info != ''" ng-repeat="files in collection.file_info| limitTo:limitFile">
                         <div>
                             <a href="{{files.path}}"><span class="glyphicon glyphicon-file" aria-hidden="true"></span>{{files.name}}</a>
-                            <i ng-click="removeFileProject($index, files.id)" class="fa fa-remove cursor-point"></i>
+                            <i ng-click="deleteFile($index, files.id)" class="fa fa-remove cursor-point"></i>
                         </div>
                     </div>
                     <div class=" text-center" >
@@ -198,10 +198,9 @@
                     </div>
                 </div>
                 <div class="box-body">
-                    <div class="user-block" ng-repeat="employee in collection.invitations.departmentAndEmployee.employeeList| limitTo:limit">
-                        <img src="{{employee.image}}" class="img-circle" alt="User Image"/>
-                        <span class="username"><a href="#/member/161">{{employee.firstname}}</a></span>
-                        <span class="description">{{employee.birthdate| date : "fullDate"}} </span>
+                    <div class="user-block-text-center-right" ng-repeat="employee in collection.invitations.departmentAndEmployee.employeeList| limitTo:limit">
+                        <img src="{{employee.image}}" class="img-circle" width="58px" height="58px"> 
+                        <a href="#/member/{{employee.id}}" class="ng-binding">{{employee.firstname}}</a>
                     </div>
                 </div><!--box body-->
                 <div class=" text-center" >

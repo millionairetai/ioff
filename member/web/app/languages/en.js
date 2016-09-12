@@ -49,9 +49,7 @@
             remove_file_success:'Delete File success.',
             remove_project_post_success:'Delete Project Post success.',
             remove_event_post_success:'Delete Event Post success.',
-            update_attend_success:'Attend success.',
-            update_maybe_success:'Maybe success.',
-            update_no_attend_success:'No attend success.',
+            confirm_success: 'Confirm successfully',
             update_attend_error:'Attend error.',
             remove_file_error:'Delete File Error.',
             last_modify: 'Last modified',
@@ -179,13 +177,13 @@
             calendar_notify_event_edit_success : "Event has edit successfully",
             calendar_event_check_redmind : "Startdate time with current time must be greater than remind time",
             event_description_error_empty : 'Event description is not empty',
-            event_post_add_success : 'event post add success',
-            attend : 'Attent',
+            event_post_add_success : 'Event post add successfully',
+            attend : 'Attend',
             maybe : 'Maybe',
             no_attent : 'Not Attent',
             no_confirm : 'No confirm',
             recent_post : 'Recent post',
-            show_attend : 'Info Attend'
+            show_attend : "Information of event's participation"
         };
     });
 })(window.angular);

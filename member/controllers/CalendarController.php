@@ -668,8 +668,7 @@ class CalendarController extends ApiController {
     }
     
     /**
-     * Fuction display detail od Event by id
-     * @return multitype:unknown
+     * Fuction to save employee's confirmation 
      */
     public function actionAttend() {
         $attendType = \Yii::$app->request->post('attend_type');
@@ -684,12 +683,19 @@ class CalendarController extends ApiController {
                 ->where(['employee_id' => \Yii::$app->user->getId(), 'event_id' => $eventId])
                 ->one();
             
+//            if (empty($eventConfirmation)) {
+//                return $this->sendResponse(true, "Get EventConfirmation info fail", []);
+//            }
+//            var_dump($eventConfirmation);die;
+            
             if (empty($eventConfirmation)) {
-                return $this->sendResponse(true, "Get EventConfirmation info fail", []);
+                $eventConfirmation = new EventConfirmation();
+                $eventConfirmation->event_id = $eventId;
+                $eventConfirmation->employee_id = \Yii::$app->user->getId();
             }
             
             $eventConfirmation->event_confirmation_type_id = $EventConfirmationType->id;
-            if (!$eventConfirmation->update()) {
+            if (!$eventConfirmation->save()) {
                 throw new \Exception('Save record to table eventConfirmation fail');
             }
         }
@@ -698,13 +704,12 @@ class CalendarController extends ApiController {
     }
     
     /**
-     * Fuction display detail od Event by id
-     * @return multitype:unknown
+     * Fuction display number of event confirmation type
      */
     public function actionViewAttend() {
         try {
-            if ($calendarId = \Yii::$app->request->post('calendarId')) {
-                if ($event = Event::getInfoAttend($calendarId)) {
+            if ($eventId = \Yii::$app->request->get('eventId')) {
+                if ($event = Event::getInfoAttend($eventId)) {
                     return $this->sendResponse(false, "", $event);
                 }
             }

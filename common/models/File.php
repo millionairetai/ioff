@@ -28,6 +28,7 @@ class File extends \common\components\db\ActiveRecord {
     const TABLE_PROJECT = "project";
     const TABLE_EVENT = "event";
     const TABLE_PROJECT_POST = 'project_post';
+    const TABLE_EVENT_POST = 'event_post';
 
     /**
      * @inheritdoc
@@ -278,6 +279,18 @@ class File extends \common\components\db\ActiveRecord {
 
             case 'event':
             case 'event_post':
+                //write logs event post
+                $eventPost = new EventPost();
+                $eventPost->event_id = $file->owner_id;
+                $eventPost->employee_id = \Yii::$app->user->getId();
+                $eventPost->parent_id = 0;
+                $eventPost->is_log_history = self::VAL_TRUE;
+                $eventPost->content = '<ul><li>' . \Yii::t('member', 'delete file') . '<div class="padding-left-20">' . $file->name . '</div></li></ul>';
+                $eventPost->content_parse = '<ul><li>' . \Yii::t('member', 'delete file') . '<div class="padding-left-20">' . $file->name . '</div></li></ul>';
+                $eventPost->parent_employee_id = 0;
+                if (!$eventPost->save(false)) {
+                    throw new \Exception('Save record to table event post fail');
+                }
                 break;
 
             default:

@@ -51,9 +51,7 @@
             remove_file_error:'File bạn cần xóa không thành công.',
             remove_project_post_success:'Xóa dự án bài thành công.',
             remove_event_post_success:'Xóa sự kiện thành công.',
-            update_attend_success:'Attend thành công.',
-            update_maybe_success:'Maybe thành công.',
-            update_no_attend_success:'No attend thành công.',
+            confirm_success: 'Xác nhận thành công',
             update_attend_error:'Attend Error.',
             last_modify: 'Ngày sửa',
             modify_by: 'Người tạo',
@@ -179,13 +177,13 @@
             calendar_notify_event_edit_success : "Sự kiện của bạn đã được cập nhật thành công",
             calendar_event_check_redmind : "Thời gian bắt đầu sự kiện so với thời gian hiện tại phải lớn hơn thời gian nhắc nhở",
             event_description_error_empty : 'Sự kiện mô tả không thể bỏ trống',
-            event_post_add_success : 'Sự kiện mô tả thêm thành công',
-            attend : 'Attent',
-            maybe : 'Maybe',
-            no_attent : 'Not Attent',
-            no_confirm : 'No confirm',
+            event_post_add_success : 'Bài đăng thêm thành công',
+            attend : 'Tham dự',
+            maybe : 'Có thể',
+            no_attent : 'Không tham dự',
+            no_confirm : 'Chưa xác nhận',
             recent_post : 'Bài gần đây',
-            show_attend : 'Thông tin attend'
+            show_attend : 'Thông tin tham dự sự kiện'
         };
     });
 })(window.angular);

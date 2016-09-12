@@ -43,11 +43,12 @@ class EventConfirmationType extends \common\components\db\ActiveRecord
     }
     
     /**
-     * Get count of status evetn attent
-     * @param string $eventID
+     * Get count of status evetn attend
+     * 
+     * @param string $eventId
      * @param number $countDefault
      */
-    public static function getInfoAttend($eventID = null) {
+    public static function getInfoAttend($eventId = null) {
         $attent = EventConfirmation::find()->select([
                     EventConfirmation::tableName().'.employee_id',
                     EventConfirmation::tableName().'.event_confirmation_type_id',
@@ -55,14 +56,14 @@ class EventConfirmationType extends \common\components\db\ActiveRecord
                     EventConfirmationType::tableName().'.column_name'
                 ])
                 ->innerJoin('event_confirmation_type', ' event_confirmation_type.id = event_confirmation.event_confirmation_type_id')
-                ->where(['event_confirmation.event_id' => $eventID, 'event_confirmation.company_id' => \Yii::$app->user->getCompanyId()])
+                ->where(['event_confirmation.event_id' => $eventId, 'event_confirmation.company_id' => \Yii::$app->user->getCompanyId()])
                 ->asArray()
                 ->all();
         
         $result = [];
         $attendActive = '';
         $count = 0;
-        foreach ($attent AS $key => $val) {
+        foreach ($attent as $key => $val) {
             $result[$val['column_name']][] = $val['employee_id'];
             $count ++;
             if ($val['employee_id'] == \Yii::$app->user->getId()) {

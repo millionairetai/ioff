@@ -194,13 +194,18 @@ class Event extends ActiveRecord {
             }
         }
         
-        //Department: inner join Invitation with department where event_id
-        $invitations = Invitation::getListByEventId($eventId);
-        
-        //get remind by owverid 
+        //get remind by owner id
         $remind = Remind::findOne(['owner_id' => $eventId, 'owner_table' => Event::tableName(), 'company_id' => $companyId]);
         $attend = EventConfirmationType::getInfoAttend($eventId);
-       
+        $confirmedEmployeeIds = [];
+        foreach ($attend['attendListEmployeeId'] as $item) {
+            foreach ($item as $val) {
+                $confirmedEmployeeIds[] = $val;
+            }
+        }
+        
+        //Department: inner join Invitation with department where event_id
+        $invitations = Invitation::getListByEventId($eventId, $confirmedEmployeeIds);
         $countEmployee = empty($invitations) ? 0 : $invitations['departmentAndEmployee']['count'];
         $attend[EventConfirmationType::NO_CONFIRM] = $countEmployee - $attend['countConfirm'];
         
@@ -235,26 +240,30 @@ class Event extends ActiveRecord {
         ];
         return $result;
     }
-
-        
+   
     /**
-     * Get list Attend
+     * Get number of each event confirmation type.
      *
-     * @param array $calendars
-     * @param integer $companyId
-     * @param integer $employeeId
-     * @param string $start
-     * @param string $end
+     * @param integer $eventId
+     * 
      * @return array
      */
     public static function getInfoAttend($eventId = null) {
         if (empty($eventId)) return false;
         $attend = EventConfirmationType::getInfoAttend($eventId);
+        $confirmedEmployeeIds = [];
+        
+        foreach ($attend['attendListEmployeeId'] as $item) {
+            foreach ($item as $val) {
+                $confirmedEmployeeIds[] = $val;
+            }
+        }
+        
         //Department: inner join Invitation with department where event_id
-        $invitations = Invitation::getListByEventId($eventId);
+        $invitations = Invitation::getListByEventId($eventId, $confirmedEmployeeIds);
         $listEmployeeAttend = [];
         if (isset($invitations['departmentAndEmployee']['employeeList']) && isset($attend['attendListEmployeeId'])) {
-            foreach ($invitations['departmentAndEmployee']['employeeList'] AS $key => $val) {
+            foreach ($invitations['departmentAndEmployee']['employeeList'] as $key => $val) {
                 if (isset($attend['attendListEmployeeId'][EventConfirmationType::ATTEND]) && in_array($val['id'], $attend['attendListEmployeeId'][EventConfirmationType::ATTEND])) {
                     $listEmployeeAttend[EventConfirmationType::ATTEND][] = $val;
                 }else if (isset($attend['attendListEmployeeId'][EventConfirmationType::MAYBE]) && in_array($val['id'], $attend['attendListEmployeeId'][EventConfirmationType::MAYBE])) {
@@ -266,6 +275,7 @@ class Event extends ActiveRecord {
                 }
             }
         }
+        
         return $listEmployeeAttend;
     }
 }

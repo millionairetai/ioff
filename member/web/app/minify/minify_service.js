@@ -182,7 +182,7 @@ appRoot.factory('calendarService', ['apiService','$rootScope','alertify', functi
                 apiService.post('calendar/attend',data, success, error);
             },
             viewAttend: function (data,success,error){
-                apiService.post('calendar/view-attend',data, success, error);
+                apiService.get('calendar/view-attend',data, success, error);
             },
             //validate
             validate_step1 : function(object){

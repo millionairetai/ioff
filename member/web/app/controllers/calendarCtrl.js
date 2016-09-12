@@ -528,15 +528,15 @@ appRoot.controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService',
                 switch (attend) {
                     case 'attend':
                         $scope.collection.attent.attend++;
-                        $scope.message = $rootScope.$lang.update_attend_success;
+                        $scope.message = $rootScope.$lang.confirm_success;
                         break;
                     case 'maybe':
                         $scope.collection.attent.maybe++;
-                        $scope.message = $rootScope.$lang.update_maybe_success;
+                        $scope.message = $rootScope.$lang.confirm_success;
                         break;
                     case 'no_attend':
                         $scope.collection.attent.no_attend++;
-                        $scope.message = $rootScope.$lang.update_no_attend_success;
+                        $scope.message = $rootScope.$lang.confirm_success;
                         break;
                 }
                 if ($scope.collection.event.active_attend == '') {
@@ -576,10 +576,11 @@ appRoot.controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService',
         };
 
         //removeFile
-        $scope.removeFileProject = function (index, id) {
+        $scope.deleteFile = function (index, id) {
             dialogMessage.open('confirm', $rootScope.$lang.confirm_delete_file, function () {
                 fileService.removeFile({fileId: id}, function (data) {
                     $scope.collection.file_info.splice(index, 1);
+                    $scope.getLastEventPost();
                     alertify.success($rootScope.$lang.remove_file_success);
                 })
             });
@@ -591,7 +592,7 @@ appRoot.controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService',
 appRoot.controller('showAttendCtrl', ['$scope', 'eventPost', 'calendarId', 'calendarService', '$uibModalInstance',
     function ($scope, eventPost, calendarId, calendarService, $uibModalInstance) {
         $scope.tabsName = eventPost;
-        calendarService.viewAttend({calendarId: calendarId}, function (response) {
+        calendarService.viewAttend({eventId: calendarId}, function (response) {
             $scope.attendList = response.objects;
         });
 

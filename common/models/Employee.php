@@ -381,9 +381,12 @@ class Employee extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * get info of list employee
-     * @param unknown $departments
-     * @param unknown $employees
+     * Get info of list employee
+     * 
+     * @param array $departments
+     * @param array $employees
+     * 
+     * @return array
      */
     public static function getlistByepartmentIdsAndEmployeeIds($departments = [], $employees = []) {
         $result = [];
@@ -416,6 +419,7 @@ class Employee extends ActiveRecord implements IdentityInterface
                 $result['count'] = ++$count;
             }
         }
+        
         return $result;
     }
 }

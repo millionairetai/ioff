@@ -77,11 +77,16 @@ class Invitation extends ActiveRecord
     }
     
     /**
-     * get list ProjectParticipant by $projectId
-     * @param string $projectId
+     * Get list employee by eventId
+     * 
+     * @param string $eventId
+     * @param array $confirmedEmployeeIds - employee ids confirmed, 
+     *      in case event is pubic, we must get more employees who isn't invited to show in the dialog
+     *      of maybe|attend|no attend
+     * 
      * @return boolean|array
      */
-    public static function getListByEventId($eventId = null){
+    public static function getListByEventId($eventId = null, $confirmedEmployeeIds = []) {
         if ($eventId == null)  return false;
         
         $invitatinons = Invitation::findAll(['company_id' => \Yii::$app->user->getCompanyId(), 'event_id' => $eventId]);
@@ -95,8 +100,20 @@ class Invitation extends ActiveRecord
                     $result[$invitatinon->owner_table][$invitatinon->owner_id] = $invitatinon->employee->fullname;
                 }
             }
+            
             $departments = isset($result['department']) ? array_keys($result['department']) : null;
             $employees   = isset($result['employee'])   ? array_keys($result['employee']) : null;
+            if (!empty($confirmedEmployeeIds)) {
+                foreach ($confirmedEmployeeIds as $id) {
+                    $employees[] = $id;
+                }
+            }
+            
+            //Check if employees is null, we avoid error null with function of array_unique.
+            if ($employees) {
+                $employees = array_unique($employees);
+            }
+            
             $result['departmentAndEmployee'] = Employee::getlistByepartmentIdsAndEmployeeIds($departments, $employees);
             return $result;
         }

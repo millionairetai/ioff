@@ -19,6 +19,7 @@ class FileController extends ApiController {
             $transaction->commit();
         } catch (\Exception $e) {
             $this->_error = true;
+            var_dump($e->getMessage());die;
             $this->_message = \Yii::t('member', 'remove file error');
             $transaction->rollBack();
             return $this->sendResponse($this->_error, $this->_message, []);
