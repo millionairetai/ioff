@@ -400,7 +400,7 @@ class Employee extends ActiveRecord implements IdentityInterface
 
         if (!empty($employees)) {
             $count = 0;
-            foreach ($employees AS $employee) {
+            foreach ($employees as $employee) {
                 $result['employeeList'][] = [
                     'id'        => $employee->id,
                     'firstname' => $employee->getFullName(),

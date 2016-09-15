@@ -182,7 +182,7 @@ class Event extends ActiveRecord {
         if (empty($event)) return false;
        
         //Get all info event_confirmation_type 
-        $eventConfimationType = EventConfirmationType::find()->all();
+        $eventConfimationType = EventConfirmationType::getEventConfirmationTypes();
         $eventConfimationTypeList = [];
         if (!empty($eventConfimationType)) {
             foreach ($eventConfimationType as $info) {
@@ -195,20 +195,13 @@ class Event extends ActiveRecord {
         }
         
         //get remind by owner id
-        $remind = Remind::findOne(['owner_id' => $eventId, 'owner_table' => Event::tableName(), 'company_id' => $companyId]);
+        $remind = Remind::getRemindByOwnerIdAndOwnerTable($eventId, Event::tableName());
         $attend = EventConfirmationType::getInfoAttend($eventId);
-        $confirmedEmployeeIds = [];
-        foreach ($attend['attendListEmployeeId'] as $item) {
-            foreach ($item as $val) {
-                $confirmedEmployeeIds[] = $val;
-            }
-        }
         
         //Department: inner join Invitation with department where event_id
-        $invitations = Invitation::getListByEventId($eventId, $confirmedEmployeeIds);
+        $invitations = Invitation::getListByEventId($eventId);
         $countEmployee = empty($invitations) ? 0 : $invitations['departmentAndEmployee']['count'];
-        $attend[EventConfirmationType::NO_CONFIRM] = $countEmployee - $attend['countConfirm'];
-        
+        $attend[EventConfirmationType::NO_CONFIRM] = EventConfirmation::getNumberConfirmedEmployee($eventId);
         $fileList = File::getFileByOwnerIdAndTable($eventId, Event::tableName());
         
         $result = [
@@ -239,6 +232,7 @@ class Event extends ActiveRecord {
                 'attent'        => $attend,
                 'file_info'     => $fileList,
         ];
+        
         return $result;
     }
    

@@ -74,6 +74,7 @@
             members: 'Thành viên',
             name : "Tên",
             redmind : "Nhắc nhở",
+            update_post_success:'Bài đăng cập nhật thành công',
             //-----------------------------------------End of common language.----------------------------------
             
             //project
@@ -183,7 +184,8 @@
             no_attent : 'Không tham dự',
             no_confirm : 'Chưa xác nhận',
             recent_post : 'Bài gần đây',
-            show_attend : 'Thông tin tham dự sự kiện'
+            show_attend : 'Thông tin tham dự sự kiện',
+            update_event_post: "Cập nhật bài đăng"
         };
     });
 })(window.angular);

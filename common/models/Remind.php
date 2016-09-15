@@ -88,4 +88,13 @@ class Remind extends \common\components\db\ActiveRecord {
     	'60' => '60',
     	];
     }
+    
+     /**
+     * Get remind by owner id and owner table
+     * 
+     * @return string
+     */
+    public static function getRemindByOwnerIdAndOwnerTable($ownerId, $ownerTable) {
+    	return Remind::findOne(['owner_id' => $ownerId, 'owner_table' => $ownerTable, 'company_id' => \Yii::$app->user->getCompanyId()]);
+    }
 }

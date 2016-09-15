@@ -860,7 +860,7 @@ appRoot.controller('editEventPostCtrl', ['$scope', 'EventPostService', '$uibModa
                 var params = {'id': eventPost.id, 'content': $scope.eventpost.description};
                 EventPostService.updateEventPost(params, function (data) {
                     eventPost.content = $scope.eventpost.description;
-                    alertify.success($rootScope.$lang.project_post_update_success);
+                    alertify.success($rootScope.$lang.update_post_success);
                     $uibModalInstance.dismiss('save');
                 });
             }

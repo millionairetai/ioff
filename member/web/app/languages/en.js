@@ -74,6 +74,7 @@
             members: 'Members',
             name : "Name",
             redmind : "Redmind me",
+            update_post_success:'Update post successfully',
             //-----------------------------------------End of common language.----------------------------------
             
             //project
@@ -183,7 +184,8 @@
             no_attent : 'Not Attent',
             no_confirm : 'No confirm',
             recent_post : 'Recent post',
-            show_attend : "Information of event's participation"
-        };
+            show_attend : "Information of event's participation",
+            update_event_post: "Update event post"
+        };edit_event_post
     });
 })(window.angular);
