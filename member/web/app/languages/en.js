@@ -152,6 +152,7 @@
             calendar_title : "Calendar",
             calendar_add_event : "Add event",
             calendar_event_name : "Name",
+            calendar_event_all_date : "All day",
             calendar_calendar_id : "Calendar",
             calendar_infomation : 'Calendar information',
             create_by : "create by",
@@ -185,7 +186,8 @@
             no_confirm : 'No confirm',
             recent_post : 'Recent post',
             show_attend : "Information of event's participation",
-            update_event_post: "Update event post"
-        };edit_event_post
+            update_event_post: "Update event post",
+            all_day : 'Nguyên ngày'
+        };
     });
 })(window.angular);

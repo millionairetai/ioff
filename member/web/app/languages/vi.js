@@ -153,6 +153,7 @@
             calendar_infomation : 'Thông tin sự kiện',
             calendar_add_event : "Thêm sự kiện",
             calendar_event_name : "Tên sự kiện",
+            calendar_event_all_date : "All day",
             create_by : "tạo bởi",
             calendar_calendar_id : "Lịch",
             calendar_event_address : "Địa chỉ",
@@ -185,7 +186,8 @@
             no_confirm : 'Chưa xác nhận',
             recent_post : 'Bài gần đây',
             show_attend : 'Thông tin tham dự sự kiện',
-            update_event_post: "Cập nhật bài đăng"
+            update_event_post: "Cập nhật bài đăng",
+            all_day : 'Sự kiện nguyên ngày'
         };
     });
 })(window.angular);

@@ -68,6 +68,7 @@ return [
     'address' => 'address',
     'color' => 'color',
     'remind' => 'remind',
+    'is_all_day' => 'All Day',
     'event name' => 'event name',
     'calendar_event_redmine_0' => 'No redmind',
     'calendar_event_redmine_30' => '30 minutes',

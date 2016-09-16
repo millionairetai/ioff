@@ -35,7 +35,10 @@
                     </dl>
                 </div><!--box body-->
                 <div class="box-body">
-                    <dl>
+                    <dl  ng-if="collection.event.is_all_day == true">
+                        <dt>{{$root.$lang.all_day}}</dt>
+                    </dl>
+                    <dl  ng-if="collection.event.is_all_day == false">
                         <dt ng-if="collection.event.count_date < 1">
                         {{$root.$lang.project_start_date}} {{collection.event.start_datetime| date : "fullDate"}} 
                         {{collection.event.start_time}}

@@ -921,6 +921,7 @@ appRoot.controller('editEventCtrl', ['$rootScope', 'data', 'listCalendar', '$sco
             start_datetime: '',
             end_datetime: '',
             name: data.calendars.event.name,
+            is_all_day: data.calendars.event.is_all_day,
             address: data.calendars.event.address,
             calendar_id: data.calendars.event.calendar_id,
             is_public: data.calendars.event.is_public,
@@ -969,6 +970,12 @@ appRoot.controller('editEventCtrl', ['$rootScope', 'data', 'listCalendar', '$sco
             $scope.findEmployeeForCalendar('');
         };
 
+        //check all
+        $scope.redmindsDay = calendarService.redmindDay();
+        $scope.checkAllDay = function () {
+            $scope.event.redmind = 30;
+        };
+
         //clickCheckAll
         $scope.clickCheckAll = function () {
             $timeout(function () {
@@ -1013,13 +1020,13 @@ appRoot.controller('editEventCtrl', ['$rootScope', 'data', 'listCalendar', '$sco
             if ($scope.step < 3) {
                 //check validate when go to step 2
                 if ($scope.step == 1) {
-                    if (calendarService.validate_step1($scope.event)) {
+                    if ($scope.event.is_all_day || calendarService.validate_step1($scope.event)) {
                         $scope.step++;
                     }
                 } else {
                     if ($scope.step == 2) {
                         //check validate when go to step 3
-                        if (calendarService.validate_step2($scope.event)) {
+                        if ($scope.event.is_all_day || calendarService.validate_step2($scope.event)) {
                             $scope.event.start_datetime = moment($scope.event.var_start_datetime).format('YYYY-MM-DD HH:mm:ss');
                             $scope.event.end_datetime = moment($scope.event.var_end_datetime).format('YYYY-MM-DD HH:mm:ss');
                             var fd = new FormData();

@@ -43,11 +43,10 @@ class Event extends ActiveRecord {
     public function rules() {
         return [
             [['company_id', 'calendar_id', 'employee_id', 'datetime_created', 'lastup_datetime', 'lastup_employee_id'], 'integer', 'message' => Yii::t('member', 'validate_integer')],
-            [['employee_id', 'name', 'start_datetime', 'end_datetime'], 'required', 'message' => Yii::t('member', 'validate_required')],
+            [['employee_id', 'name'], 'required', 'message' => Yii::t('member', 'validate_required')],
             [['description', 'description_parse'], 'string', 'message' => Yii::t('member', 'validate_string')],
-            [['is_public', 'disabled'], 'boolean', 'message' => Yii::t('member', 'validate_boolean')],
+            [['is_public', 'is_all_day', 'disabled'], 'boolean', 'message' => Yii::t('member', 'validate_boolean')],
             [['start_datetime', 'end_datetime', 'address', 'description', 'description_parse', 'sms', 'color'], 'safe'],
-            ['end_datetime', 'compare', 'compareAttribute' => 'start_datetime', 'operator' => '>','message' => Yii::t('member', 'validate_time')],
             [['name', 'address'], 'string', 'max' => 255, 'tooLong' => Yii::t('member', 'validate_max_length')]
         ];
     }
@@ -62,6 +61,7 @@ class Event extends ActiveRecord {
             'calendar_id' => Yii::t('common', 'event_calendar_id'),
             'employee_id' => Yii::t('common', 'event_employee_id'),
             'name' => Yii::t('common', 'event_name'),
+            'is_all_day' => Yii::t('common', 'is_all_day'),
             'description' => Yii::t('common', 'event_description'),
             'description_parse' => Yii::t('common', 'event_description_parse'),
             'address' => Yii::t('common', 'event_address'),
@@ -212,6 +212,7 @@ class Event extends ActiveRecord {
                         'address'           => $event->address,
                         'count_date'        => $event->getDiffBetweenDate(),
                         'is_public'         => $event->is_public,
+                        'is_all_day'        => $event->is_all_day,
                         'calendar_id'       => $event->calendar_id,
                         'is_public_name'    => $event->getIsPublic(),
                         'description'       => $event->description,

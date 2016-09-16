@@ -70,6 +70,7 @@ return [
     'address' => 'địa chỉ',
     'color' => 'color',
     'remind' => 'nhắc nhở',
+    'is_all_day' => 'Sự kiện nguyên ngày',
     'event name' => 'tên sự kiện',
     'calendar_event_redmine_0' => 'Không nhắc nhở',
     'calendar_event_redmine_30' => '30 phút',
