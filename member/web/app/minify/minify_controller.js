@@ -551,7 +551,26 @@ appRoot.controller('addEventCtrl', ['$rootScope', 'data', '$scope', 'calendarSer
 
 //Display info detail of calendar
 var $dataEditEvent = [];
-appRoot.controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService', 'EventPostService', '$uibModal', '$rootScope', 'dialogMessage', '$routeParams', 'alertify', '$sce', 'PER_PAGE_VIEW_MORE',
+appRoot.directive('eventFixed', function ($window) {
+    var $win = angular.element($window); // wrap window object as jQuery object
+
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            var topClass = 'sidebarfixed', // get CSS class
+                offsetTop = element.offset().top; // get element's top relative to the document
+            $win.on('scroll', function (e) {
+                if ($win.scrollTop() >= offsetTop) {
+                    element.addClass(topClass);
+                    element.css('top',$win.scrollTop()-50);
+                } else {
+                    element.removeClass(topClass);
+                    element.css('top','0');
+                }
+            });
+        }
+    };
+}).controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService', 'EventPostService', '$uibModal', '$rootScope', 'dialogMessage', '$routeParams', 'alertify', '$sce', 'PER_PAGE_VIEW_MORE',
     function ($scope, calendarService, fileService, EventPostService, $uibModal, $rootScope, dialogMessage, $routeParams, alertify, $sce, PER_PAGE_VIEW_MORE) {
         var calendarId = $routeParams.eventId;
         //set paramter for layout

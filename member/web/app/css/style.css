@@ -842,5 +842,10 @@ header.main-header{
 }
 
 .color-black{
-	color: black;
+    color: black;
+}
+.sidebarfixed {
+    position: absolute;
+    width: calc(100% - 15px);
+    left: 0;
 }

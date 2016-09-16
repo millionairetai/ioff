@@ -7,7 +7,7 @@
         <div class="col-md-9">
             <!-- Default box -->
             <div class="box box-solid top-event">
-                <div class="box-body" >
+                <div class="box-header with-border" >
                     <div class="image">
                         <!-- the icon as a time element -->
                         <time datetime="2014-09-20" class="icon">
@@ -34,8 +34,6 @@
                         </dd>
                     </dl>
                 </div><!--box body-->
-            </div>
-            <div class="box box-solid header-event">
                 <div class="box-body">
                     <dl>
                         <dt ng-if="collection.event.count_date < 1">
@@ -97,7 +95,7 @@
                         <textarea class="form-control"  data-ui-tinymce ng-model="eventPostData.description" rows="5"></textarea>
                         <br/>
                         <input id="fileImage" type="file" class="form-control input-file-upload" name="file" onchange="angular.element(this).scope().addFile(this.files);
-                                $('#fileImage').replaceWith($('#fileImage').clone());" />
+                                        $('#fileImage').replaceWith($('#fileImage').clone());" />
                         <br/>
                         <div class="show-file-name" ng-repeat="file in files">
                             <strong>{{file.name}}</strong> <i class="fa fa-remove" ng-click="removeFile($index)"></i>
@@ -190,7 +188,7 @@
                 </div>
             </div>
 
-            <div class="box box-solid event-member">
+            <div class="box box-solid event-member" event-fixed>
                 <div class="box-header with-border">
                     <h4 class="box-title">{{$root.$lang.members}}</h4>
                     <div class="box-tools pull-right">

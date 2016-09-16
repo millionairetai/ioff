@@ -309,7 +309,26 @@ appRoot.controller('addEventCtrl', ['$rootScope', 'data', '$scope', 'calendarSer
 
 //Display info detail of calendar
 var $dataEditEvent = [];
-appRoot.controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService', 'EventPostService', '$uibModal', '$rootScope', 'dialogMessage', '$routeParams', 'alertify', '$sce', 'PER_PAGE_VIEW_MORE',
+appRoot.directive('eventFixed', function ($window) {
+    var $win = angular.element($window); // wrap window object as jQuery object
+
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            var topClass = 'sidebarfixed', // get CSS class
+                    offsetTop = element.offset().top; // get element's top relative to the document
+            $win.on('scroll', function (e) {
+                if ($win.scrollTop() >= offsetTop) {
+                    element.addClass(topClass);
+                    element.css('top', $win.scrollTop() - 50);
+                } else {
+                    element.removeClass(topClass);
+                    element.css('top', '0');
+                }
+            });
+        }
+    };
+}).controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService', 'EventPostService', '$uibModal', '$rootScope', 'dialogMessage', '$routeParams', 'alertify', '$sce', 'PER_PAGE_VIEW_MORE',
     function ($scope, calendarService, fileService, EventPostService, $uibModal, $rootScope, dialogMessage, $routeParams, alertify, $sce, PER_PAGE_VIEW_MORE) {
         var calendarId = $routeParams.eventId;
         //set paramter for layout
@@ -360,7 +379,7 @@ appRoot.controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService',
                 });
             }
         }
-        
+
         $scope.files = [];
         //add file post
         $scope.addFile = function (files) {
@@ -464,7 +483,7 @@ appRoot.controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService',
             $scope.filter.offset = $scope.eventPost.length;
             $scope.getEventPosts();
         }
-        
+
         $scope.getLastEventPost = function () {
             EventPostService.getLastEventPost({eventId: calendarId}, function (response) {
                 if ($scope.eventPost.length > 0 && response.objects.collection) {
@@ -630,7 +649,7 @@ appRoot.controller('editEventPostCtrl', ['$scope', 'EventPostService', '$uibModa
     }]);
 
 //edit event to calendar
-appRoot.controller('editEventCtrl', ['$rootScope', 'data', 'listCalendar', '$scope', 'calendarService', 'alertify', '$uibModalInstance', 'departmentService', 'employeeService', '$timeout', 'socketService', 
+appRoot.controller('editEventCtrl', ['$rootScope', 'data', 'listCalendar', '$scope', 'calendarService', 'alertify', '$uibModalInstance', 'departmentService', 'employeeService', '$timeout', 'socketService',
     function ($rootScope, data, listCalendar, $scope, calendarService, alertify, $uibModalInstance, departmentService, employeeService, $timeout, socketService) {
         //step
         $scope.step = 1;
