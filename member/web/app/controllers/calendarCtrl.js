@@ -778,15 +778,23 @@ appRoot.controller('editEventCtrl', ['$rootScope', 'data', 'listCalendar', '$sco
             if ($scope.step < 3) {
                 //check validate when go to step 2
                 if ($scope.step == 1) {
-                    if ($scope.event.is_all_day || calendarService.validate_step1($scope.event)) {
+                    if (calendarService.validate_step1($scope.event)) {
                         $scope.step++;
                     }
                 } else {
                     if ($scope.step == 2) {
-                        //check validate when go to step 3
-                        if ($scope.event.is_all_day || calendarService.validate_step2($scope.event)) {
-                            $scope.event.start_datetime = moment($scope.event.var_start_datetime).format('YYYY-MM-DD HH:mm:ss');
-                            $scope.event.end_datetime = moment($scope.event.var_end_datetime).format('YYYY-MM-DD HH:mm:ss');
+                      //check validate when go to step 3
+                        var flg = false;
+                        if ($scope.event.is_all_day) {
+                            $scope.event.start_datetime = moment($scope.event.var_start_datetime).format('YYYY-MM-DD');
+                            $scope.event.end_datetime = moment($scope.event.var_end_datetime).format('YYYY-MM-DD');
+                            flg = true;
+                        } else if (calendarService.validate_step2($scope.event)) {
+                            $scope.event.start_datetime = moment($scope.event.var_start_datetime).format('YYYY-MM-DD  HH:mm:ss');
+                            $scope.event.end_datetime = moment($scope.event.var_end_datetime).format('YYYY-MM-DD  HH:mm:ss');
+                            flg = true;
+                        }
+                        if (flg) {
                             var fd = new FormData();
                             for (var i in $scope.files) {
                                 fd.append("file_" + i, $scope.files[i]);

@@ -219,6 +219,7 @@ class CalendarController extends ApiController {
                     }
                 }
                 
+
                 if (!empty($remind)) {
                     if (!Yii::$app->db->createCommand()->batchInsert(
                                     Remind::tableName(), ['employee_id', 'owner_id', 'owner_table', 'content', 'remind_datetime', 'minute_before', 'repeated_time', 'is_snoozing'], $remind)->execute()) {
@@ -760,6 +761,13 @@ class CalendarController extends ApiController {
         $redmindNew = empty($dataPost['redmind']) ? 0 : $dataPost['redmind'];
         $redmindOd = empty($dataPost['data_old']['remind']) ? 0 : $dataPost['data_old']['remind'];
         
+        $is_all_day_old     = $dataPost['data_old']['event']['is_all_day'] == true ? \Yii::t('member', 'is_all_day') : \Yii::t('member', 'no setting');
+        $is_all_day_old_new = $dataPost['is_all_day']                      == true ? \Yii::t('member', 'is_all_day') : \Yii::t('member', 'no setting');
+        if ($dataPost['is_all_day']) {
+            $dataPost['start_datetime'] = $dataPost['start_datetime'] . ' 00:00:00';
+            $dataPost['end_datetime']   = $dataPost['end_datetime'] . ' 00:00:00';
+        }
+        
         $dataReplace = array(
                 \Yii::t('member', 'start datetime') => array($dataPost['data_old']['event']['start_datetime'].' '. $dataPost['data_old']['event']['start_time'].':00' => $dataPost['start_datetime']),
                 \Yii::t('member', 'end datetime')   => array($dataPost['data_old']['event']['end_datetime']  .' '. $dataPost['data_old']['event']['end_time']  .':00' => $dataPost['end_datetime']),
@@ -768,6 +776,7 @@ class CalendarController extends ApiController {
                 \Yii::t('member', 'address')        => array($dataPost['data_old']['event']['address'] => $dataPost['address']),
                 \Yii::t('member', 'color')          => array($dataPost['data_old']['event']['color'] => $dataPost['color']),
                 \Yii::t('member', 'remind')         => array(\Yii::t('member', 'calendar_event_redmine_'.$redmindOd)=> \Yii::t('member', 'calendar_event_redmine_'.$redmindNew)),
+                \Yii::t('member', 'is_all_day')     => array($is_all_day_old => $is_all_day_old_new),
         );
         
         //Create log project history text.
