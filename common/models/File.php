@@ -231,8 +231,8 @@ class File extends \common\components\db\ActiveRecord {
     public static function getFiles($ids = array(), $table = null) {
         if (!empty($ids)) {
             return File::findAll([
-                                'owner_id' => $ids,
-                                'owner_object' => $table,
+                        'owner_id' => $ids,
+                        'owner_object' => $table,
                         'company_id' => \Yii::$app->user->getCompanyId()
             ]);
         }
@@ -305,27 +305,37 @@ class File extends \common\components\db\ActiveRecord {
     }
 
     /**
-     * get list file by owner id and table name
-     * @param string $owner_id
-     * @param string $table_name
+     * Get list file by owner id and table name
+     * 
+     * @param string $ownerId
+     * @param string $tableName
      * @param string $object
      * @return array|null
      */
-    public static function getFileByOwnerIdAndTable($owner_id = null, $table_name = null, $object = false) {
-        if (($owner_id == null) || ($table_name == null)) {
+    public static function getFileByOwnerIdAndTable($ownerId = null, $tableName = null, $object = false) {
+        if (($ownerId == null) || ($tableName == null)) {
             return null;
         }
-        $table_injoin = $table_name . '_post';
-        $files = File::find()
-                ->select(['file.id', 'file.name', 'file.path', 'file.datetime_created'])
-                ->distinct()
-                ->innerJoin($table_injoin, $table_injoin . '.id = file.owner_id OR file.owner_id = ' . $owner_id)
-                ->where([
-                    'file.company_id' => \Yii::$app->user->getCompanyId(),
-                    'file.owner_object' => [$table_name, $table_injoin],
-                    $table_injoin . '.' . $table_name . '_id' => $owner_id,
-                ])
-                ->all();
+
+        $query = (new \yii\db\Query())
+                        ->select(['file.id', 'file.name', 'file.path', 'file.datetime_created'])
+                        ->from(File::tableName())
+                        ->where([
+                            'file.company_id' => \Yii::$app->user->getCompanyId(),
+                            'file.owner_object' => $tableName,
+                            'file.owner_id' => $ownerId,
+                        ])->union((new \yii\db\Query())
+                        ->select(['file.id', 'file.name', 'file.path', 'file.datetime_created'])
+                        ->from(File::tableName())
+                        ->where([
+                            'file.company_id' => \Yii::$app->user->getCompanyId(),
+                            'file.owner_object' => $tableName . '_post',
+                            'file.owner_id' => $ownerId,
+                        ]), false);
+
+        $sql = $query->createCommand()->getRawSql();
+        $sql .= ' ORDER BY datetime_created DESC';
+        $files = File::findBySql($sql)->all();
 
         if (empty($files)) {
             return null;
