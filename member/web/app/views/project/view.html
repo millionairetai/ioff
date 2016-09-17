@@ -15,7 +15,7 @@
             </div>
         </div>
         <div class="box-body" >
-            <div class="col-md-6">
+            <div class="col-md-7">
                 <table class="table">
                     <tr>
                         <th width="20%" class="border-top-none">{{$root.$lang.project_name}}</th>
@@ -75,14 +75,13 @@
                         <td></td>
                     </tr>
                     <tr>
-                        <th>{{$root.$lang.project_infomation}}</th>
-                        <td colspan="2">
+                        <td colspan="3">
+                            <b>{{$root.$lang.project_infomation}}</b>
                             <p ng-text-truncate="collection.project_info.description" ng-tt-chars-threshold="250"></p>
                         </td>
                     </tr>
                     <tr>
-                        <th></th>
-                        <td colspan="2">
+                        <td colspan="3">
                             <div  ng-if="collection.file_info != ''" ng-repeat="files in collection.file_info| limitTo:limitFile">
                                 <div>
                                     <a href="{{files.path}}"><span class="glyphicon glyphicon-file" aria-hidden="true"></span>{{files.name}}</a>
@@ -98,7 +97,7 @@
                     </tr>
                 </table>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-5">
                 <table class="table">
                     <tr>
                         <th width="20%" class="border-top-none">{{$root.$lang.project_manage}}</th>
