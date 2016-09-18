@@ -1,6 +1,7 @@
 <?php
 
 return [
+    //----------------------------------Common language--------------------------------------------------//    
     'I forgot my password' => 'Quên mật khẩu?',
     'Username' => 'Tên đăng nhập',
     'Password' => 'Mật khẩu',
@@ -9,6 +10,7 @@ return [
     'Incorrect email or password' => 'Email hoặc mật khẩu không hợp lệ',
     'Can not get project info' => 'Không thể lấy dữ liệu cho dự án này',
     'error_system' => 'Hệ thống đang gặp vấn đề, Mong bạn báo lại với ban quản trị',
+    'Can not get data' => 'Không thể lấy dữ liệu',
     //project
     'project manager' => 'Quản lý dự án',
     'project priority' => 'Ưu tiên',

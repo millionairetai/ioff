@@ -732,15 +732,16 @@ class CalendarController extends ApiController {
      */
     public function actionViewAttend() {
         try {
-            if ($eventId = \Yii::$app->request->get('eventId')) {
+            if ($eventId = \Yii::$app->request->get('eventId')) {               
                 if ($event = Event::getInfoAttend($eventId)) {
                     return $this->sendResponse(false, "", $event);
                 }
             }
-            throw new \Exception(\Yii::t('member', 'Can not get event info'));
         } catch (\Exception $e) {
-            return $this->sendResponse(true, $e->getMessage(), []);
+            return $this->sendResponse(true, Yii::t('member', 'Can not get data'), []);
         }
+        
+        return $this->sendResponse(false, "", []);
     }
     
     /**
