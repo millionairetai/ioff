@@ -558,14 +558,14 @@ appRoot.directive('eventFixed', function ($window) {
         restrict: 'A',
         link: function (scope, element, attrs) {
             var topClass = 'sidebarfixed', // get CSS class
-                offsetTop = element.offset().top; // get element's top relative to the document
+                    offsetTop = element.offset().top; // get element's top relative to the document
             $win.on('scroll', function (e) {
                 if ($win.scrollTop() >= offsetTop) {
                     element.addClass(topClass);
-                    element.css('top',$win.scrollTop()-50);
+                    element.css('top', $win.scrollTop() - 50);
                 } else {
                     element.removeClass(topClass);
-                    element.css('top','0');
+                    element.css('top', '0');
                 }
             });
         }
@@ -612,7 +612,17 @@ appRoot.directive('eventFixed', function ($window) {
 
                     $scope.files = [];
                     $scope.releases = response.objects.collection;
-                    $scope.collection.file_info = $scope.collection.file_info.concat(response.objects.files[Object.keys(response.objects.files)[0]]);
+                    if (!_.isNull($scope.collection.file_info)) {
+                        var newFiles = response.objects.files[Object.keys(response.objects.files)[0]];
+                        //Revert files because json files returned which is inverted with the order uploaded.
+                        newFiles.reverse();
+                        angular.forEach(newFiles, function(val, key) {
+                            $scope.collection.file_info.unshift(val);
+                        });
+                    } else {
+                        $scope.collection.file_info = response.objects.files[Object.keys(response.objects.files)[0]];
+                    }
+                    
 
                     var temp = [];
                     temp = temp.concat($scope.releases);
@@ -621,7 +631,7 @@ appRoot.directive('eventFixed', function ($window) {
                 });
             }
         }
-        
+
         $scope.files = [];
         //add file post
         $scope.addFile = function (files) {
@@ -725,7 +735,7 @@ appRoot.directive('eventFixed', function ($window) {
             $scope.filter.offset = $scope.eventPost.length;
             $scope.getEventPosts();
         }
-        
+
         $scope.getLastEventPost = function () {
             EventPostService.getLastEventPost({eventId: calendarId}, function (response) {
                 if ($scope.eventPost.length > 0 && response.objects.collection) {
@@ -891,7 +901,7 @@ appRoot.controller('editEventPostCtrl', ['$scope', 'EventPostService', '$uibModa
     }]);
 
 //edit event to calendar
-appRoot.controller('editEventCtrl', ['$rootScope', 'data', 'listCalendar', '$scope', 'calendarService', 'alertify', '$uibModalInstance', 'departmentService', 'employeeService', '$timeout', 'socketService', 
+appRoot.controller('editEventCtrl', ['$rootScope', 'data', 'listCalendar', '$scope', 'calendarService', 'alertify', '$uibModalInstance', 'departmentService', 'employeeService', '$timeout', 'socketService',
     function ($rootScope, data, listCalendar, $scope, calendarService, alertify, $uibModalInstance, departmentService, employeeService, $timeout, socketService) {
         //step
         $scope.step = 1;
@@ -970,12 +980,12 @@ appRoot.controller('editEventCtrl', ['$rootScope', 'data', 'listCalendar', '$sco
             $scope.findEmployeeForCalendar('');
         };
 
-        //check all
+      //check all
         $scope.redmindsDay = calendarService.redmindDay();
         $scope.checkAllDay = function () {
             $scope.event.redmind = 30;
         };
-
+        
         //clickCheckAll
         $scope.clickCheckAll = function () {
             $timeout(function () {
@@ -1025,7 +1035,7 @@ appRoot.controller('editEventCtrl', ['$rootScope', 'data', 'listCalendar', '$sco
                     }
                 } else {
                     if ($scope.step == 2) {
-                        //check validate when go to step 3
+                      //check validate when go to step 3
                         var flg = false;
                         if ($scope.event.is_all_day) {
                             $scope.event.start_datetime = moment($scope.event.var_start_datetime).format('YYYY-MM-DD');

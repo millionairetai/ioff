@@ -317,6 +317,7 @@ class File extends \common\components\db\ActiveRecord {
             return null;
         }
 
+        $innerJoinTable = $tableName . '_post';
         $query = (new \yii\db\Query())
                         ->select(['file.id', 'file.name', 'file.path', 'file.datetime_created'])
                         ->from(File::tableName())
@@ -327,10 +328,10 @@ class File extends \common\components\db\ActiveRecord {
                         ])->union((new \yii\db\Query())
                         ->select(['file.id', 'file.name', 'file.path', 'file.datetime_created'])
                         ->from(File::tableName())
+                        ->innerJoin($innerJoinTable, "{$innerJoinTable}.id = file.owner_id AND {$innerJoinTable}.{$tableName}_id={$ownerId}")
                         ->where([
                             'file.company_id' => \Yii::$app->user->getCompanyId(),
                             'file.owner_object' => $tableName . '_post',
-                            'file.owner_id' => $ownerId,
                         ]), false);
 
         $sql = $query->createCommand()->getRawSql();

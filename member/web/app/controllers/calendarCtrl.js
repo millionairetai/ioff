@@ -370,7 +370,17 @@ appRoot.directive('eventFixed', function ($window) {
 
                     $scope.files = [];
                     $scope.releases = response.objects.collection;
-                    $scope.collection.file_info = $scope.collection.file_info.concat(response.objects.files[Object.keys(response.objects.files)[0]]);
+                    if (!_.isNull($scope.collection.file_info)) {
+                        var newFiles = response.objects.files[Object.keys(response.objects.files)[0]];
+                        //Revert files because json files returned which is inverted with the order uploaded.
+                        newFiles.reverse();
+                        angular.forEach(newFiles, function(val, key) {
+                            $scope.collection.file_info.unshift(val);
+                        });
+                    } else {
+                        $scope.collection.file_info = response.objects.files[Object.keys(response.objects.files)[0]];
+                    }
+                    
 
                     var temp = [];
                     temp = temp.concat($scope.releases);

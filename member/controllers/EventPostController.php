@@ -114,9 +114,10 @@ class EventPostController extends ApiController {
             $eventson = \Yii::$app->request->post('event', '');
             if (strlen($eventson)) {
                 $dataPost = json_decode($eventson, true);
-            }
-            if (empty($dataPost['employeeList']))
-                return true;
+            } 
+//            if (empty($dataPost['employeeList'])) {
+//                return true;
+//            }
 
             $eventInfo = [];
             if (isset($dataPost['eventId'])) {
@@ -165,7 +166,7 @@ class EventPostController extends ApiController {
                 throw new \Exception('Save record to table Activity fail');
             }
 
-            $arrayEmployees = $dataPost['employeeList'];
+            $arrayEmployees = !empty($dataPost['employeeList']) ? $dataPost['employeeList'] : [];
             $dataInsert = [];
             foreach ($arrayEmployees as $item) {
                 $dataInsert['notification'][] = [
@@ -214,7 +215,9 @@ class EventPostController extends ApiController {
             ];
 
             $transaction->commit();
-            return $this->sendResponse(false, [], ['collection' => $collection, 'files' => [$eventPost->id => $fileList]]);
+            return $this->sendResponse(false, [], ['collection' => $collection, 'files' => [
+                $eventPost->id => $fileList]
+                    ]);
         } catch (Exception $e) {
             $transaction->rollBack();
             return $this->sendResponse(true, \Yii::t('member', 'error_system'), []);

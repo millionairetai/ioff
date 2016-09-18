@@ -222,7 +222,7 @@ class Event extends ActiveRecord {
                         'end_datetime'      => isset($event->end_datetime) ? date('Y-m-d', $event->end_datetime) : null,
                         'end_time'          => isset($event->end_datetime) ? date('H:i', $event->end_datetime) : null,
                         'created_employee_id' => $event->employee->getFullName(),
-                        'manager_event_id' => $event->created_employee_id,
+                        'creator_event_id' => $event->created_employee_id,
                         'active_attend'     => $attend['activeAttendByEmployee'],
                         'employee_id'       => \Yii::$app->user->getId(),
                 ],

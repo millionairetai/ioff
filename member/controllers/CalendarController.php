@@ -421,15 +421,12 @@ class CalendarController extends ApiController {
         try {
             if ($eventId = \Yii::$app->request->get('eventId')) {
                 if ($event = Event::getInfoEvent($eventId)) {
-                    //check authentication
-                    //**check case is public
-                    if (($event['event']['is_public'] == true) 
-                            || (\Yii::$app->user->identity->is_admin == true)
-                            || ($event['event']['manager_event_id'] == Yii::$app->user->identity->id)
-                        ) {
+                    //check authentication to view event
+                    if (($event['event']['is_public'] == true) || Employee::isAdmin()
+                            || ($event['event']['creator_event_id'] == Yii::$app->user->identity->id)) {
                         return $this->sendResponse(false, "", $event);
                     } else {
-                        $EmployeesInEvent = EventConfirmation::find()
+                        $employeesInEvent = EventConfirmation::find()
                                                 ->select(['id'])
                                                 ->where([
                                                             'company_id'  => $this->_companyId,
@@ -437,7 +434,7 @@ class CalendarController extends ApiController {
                                                             'employee_id' => Yii::$app->user->identity->id,
                                                         ])
                                                 ->one();
-                        if (!empty($EmployeesInEvent)) {
+                        if (!empty($employeesInEvent)) {
                             return $this->sendResponse(false, "", $event);
                         }else {
                             Yii::$app->session->setFlash('errorViewProject', \Yii::t('member', "you do not have authoirity"));
