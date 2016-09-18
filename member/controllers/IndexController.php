@@ -17,7 +17,7 @@ class IndexController extends Controller {
         if (!\Yii::$app->user->isGuest) {
             return $this->redirect('/');
         }
-        
+
         $this->layout = "login";
         $model = new LoginForm();
         if ($model->load(Yii::$app->request->post()) && $model->login()) {
@@ -32,6 +32,18 @@ class IndexController extends Controller {
 
     public function actionLogout() {
         Yii::$app->user->logout();
+
+        return $this->redirect('/');
+    }
+
+    /*
+     * Register account
+     */
+    public function actionRegister() {
+        if (\Yii::$app->user->isGuest) {
+            $this->layout = "registration";
+            return $this->render('registration', []);
+        }
 
         return $this->redirect('/');
     }
@@ -62,6 +74,7 @@ class IndexController extends Controller {
     /*
      * 
      */
+
     protected function actionMinifyServices() {
         $dir = dirname(dirname(__FILE__)) . "/web/app/services";
         $file_js = $this->getAllFIlejs($dir);
@@ -75,6 +88,7 @@ class IndexController extends Controller {
     /*
      * 
      */
+
     protected function actionMinifyDirectives() {
         $dir = dirname(dirname(__FILE__)) . "/web/app/directives";
         $file_js = $this->getAllFIlejs($dir);
@@ -88,6 +102,7 @@ class IndexController extends Controller {
     /*
      * 
      */
+
     protected function actionMinifyFilters() {
         $dir = dirname(dirname(__FILE__)) . "/web/app/filters";
         $file_js = $this->getAllFIlejs($dir);
@@ -101,6 +116,7 @@ class IndexController extends Controller {
     /*
      * 
      */
+
     protected function getAllFIlejs($dir) {
         $file_js = [];
         $files = scandir($dir);

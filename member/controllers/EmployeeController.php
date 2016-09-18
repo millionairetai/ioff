@@ -17,8 +17,8 @@ class EmployeeController extends ApiController {
         $manager = Yii::$app->request->post('manager', []);
 
         $query = Employee::find()
-                    ->select(['id', 'email', 'firstname', 'lastname', 'profile_image_path'])
-                    ->andCompanyId()->andWhere(['like', 'firstname', $keyword]);
+                        ->select(['id', 'email', 'firstname', 'lastname', 'profile_image_path'])
+                        ->andCompanyId()->andWhere(['like', 'firstname', $keyword]);
 
         //check department
         if (!empty($departments)) {
