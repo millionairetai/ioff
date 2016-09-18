@@ -114,15 +114,12 @@ class EventPostController extends ApiController {
             $eventson = \Yii::$app->request->post('event', '');
             if (strlen($eventson)) {
                 $dataPost = json_decode($eventson, true);
-            } 
-//            if (empty($dataPost['employeeList'])) {
-//                return true;
-//            }
+            }
 
             $eventInfo = [];
             if (isset($dataPost['eventId'])) {
-                if (!$eventInfo = Event::find()->select(['id', 'name'])->where(['id' => $dataPost['eventId']])->one()) {
-                    throw new \Exception('Get Event info fail');
+                if (!$eventInfo = Event::getEvent($dataPost['eventId'])) {
+                    throw new \Exception('Get event info fail');
                 }
             }
 
@@ -136,25 +133,25 @@ class EventPostController extends ApiController {
             $eventPost->content = $dataPost['description'];
             $eventPost->content_parse = strip_tags($dataPost['description']);
             $eventPost->is_log_history = 0;
-
             if (!$eventPost->save()) {
                 throw new \Exception('Save record to table project post fail');
             }
 
             //move file
-            $files = File::addFiles($_FILES, \Yii::$app->params['PathUpload'], $eventPost->id, EventPost::tableName());
-            $fileList = [];
-            if (!empty($files)) {
-                foreach ($files as $key => $val) {
-                    $fileList[] = [
-                        'name' => $val['name'],
-                        'path' => \Yii::$app->params['PathUpload'] . DIRECTORY_SEPARATOR . $val['path']
-                    ];
-                }
+            File::addFiles($_FILES, \Yii::$app->params['PathUpload'], $eventPost->id, EventPost::tableName());
+            $files = File::getFiles($eventPost->id, EventPost::tableName());
+            $fileData = [];
+            foreach ($files as $val) {
+                $fileData[] = [
+                    'id' => $val->id,
+                    'datetime_created' => $val->datetime_created,
+                    'name' => $val->name,
+                    'path' => \Yii::$app->params['PathUpload'] . DIRECTORY_SEPARATOR . $val->path
+                ];
             }
 
             //activity
-            $content = \Yii::$app->user->identity->firstname . " " . \Yii::t('common', 'created') . " " . $eventInfo->name;
+            $content = Activity::makeContent(\Yii::t('common', 'created'), $eventPost->content_parse);
             $activity = new Activity();
             $activity->owner_id = $eventPost->id;
             $activity->owner_table = EventPost::tableName();
@@ -167,9 +164,9 @@ class EventPostController extends ApiController {
             }
 
             $arrayEmployees = !empty($dataPost['employeeList']) ? $dataPost['employeeList'] : [];
-            $dataInsert = [];
+            $notifications = [];
             foreach ($arrayEmployees as $item) {
-                $dataInsert['notification'][] = [
+                $notifications[] = [
                     'owner_id' => $eventPost->id,
                     'owner_table' => EventPost::tableName(),
                     'employee_id' => $item['id'],
@@ -178,22 +175,11 @@ class EventPostController extends ApiController {
                     'content' => $content,
                 ];
             }
-            if (!empty($dataInsert['notification'])) {
-                if (!\Yii::$app->db->createCommand()->batchInsert(Notification::tableName(), array_keys($dataInsert['notification'][0]), $dataInsert['notification'])->execute()) {
-                    throw new \Exception('Save record to table Notification fail');
-                }
-            }
-
-            if (!empty($dataInsert['sms'])) {
-                if (!\Yii::$app->db->createCommand()->batchInsert(Sms::tableName(), array_keys($dataInsert['sms'][0]), $dataInsert['sms'])->execute()) {
-                    throw new \Exception('Save record to table Sms fail');
-                }
-            }
-
+            
+            Notification::add($notifications);
             $themeEmail = \common\models\EmailTemplate::getThemeCreateEventPost();
-            $themeSms = \common\models\SmsTemplate::getThemeCreateEventPost();
             //send email and sms
-            if (!empty($arrayEmployees) && ($eventInfo->sms)) {
+            if (!empty($arrayEmployees)) {
                 $dataSend = [
                     '{creator name}' => \Yii::$app->user->identity->firstname,
                     '{event name}' => $eventInfo->name
@@ -201,7 +187,6 @@ class EventPostController extends ApiController {
                 $employees = new Employee();
                 foreach ($arrayEmployees as $item) {
                     $employees->sendMail($dataSend, $themeEmail);
-                    $employees->sendSms($dataSend, $themeSms);
                 }
             }
 
@@ -209,15 +194,13 @@ class EventPostController extends ApiController {
                 'id' => $eventPost->id,
                 'time' => date('H:i d-m-Y ', $eventPost->datetime_created),
                 'content' => $dataPost['description'],
-                'employee_name' => \Yii::$app->user->identity->FullName,
-                'profile_image_path' => \Yii::$app->user->identity->Image,
+                'employee_name' => \Yii::$app->user->identity->fullName,
+                'profile_image_path' => \Yii::$app->user->identity->image,
                 'actionDelete' => true,
             ];
 
             $transaction->commit();
-            return $this->sendResponse(false, [], ['collection' => $collection, 'files' => [
-                $eventPost->id => $fileList]
-                    ]);
+            return $this->sendResponse(false, [], ['collection' => $collection, 'files' => [$eventPost->id => $fileData]]);
         } catch (Exception $e) {
             $transaction->rollBack();
             return $this->sendResponse(true, \Yii::t('member', 'error_system'), []);

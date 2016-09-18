@@ -21,23 +21,22 @@ use Yii;
  * @property string $lastup_employee_id
  * @property boolean $disabled
  */
-class Sms extends \common\components\db\ActiveRecord
-{
+class Sms extends \common\components\db\ActiveRecord {
+
     const TABLE_PROJECT = "project";
     const TABLE_EVENT = "event";
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'sms';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['company_id', 'owner_id', 'employee_id', 'fee', 'datetime_created', 'lastup_datetime', 'lastup_employee_id'], 'integer'],
             [['owner_table', 'content'], 'required'],
@@ -50,8 +49,7 @@ class Sms extends \common\components\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => 'ID',
             'company_id' => 'Company id',
@@ -68,6 +66,21 @@ class Sms extends \common\components\db\ActiveRecord
             'disabled' => 'Disabled',
         ];
     }
-    
-    
+
+    /**
+     * Add sms
+     * 
+     * @param array $dataInsert
+     * @return boolean
+     */
+    public static function add($dataInsert) {
+        if (!empty($dataInsert)) {
+            if (!\Yii::$app->db->createCommand()->batchInsert(self::tableName(), array_keys($dataInsert[0]), $dataInsert)->execute()) {
+                throw new \Exception('Save record to table sms fail');
+            }
+        }
+
+        return true;
+    }
+
 }

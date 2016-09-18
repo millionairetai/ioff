@@ -82,4 +82,14 @@ class Activity extends \common\components\db\ActiveRecord
             'disabled' => 'Disabled',
         ];
     }
+    
+    /**
+     * Make content for activity
+     * 
+     * @param string $info
+     * @return string
+     */
+    public static function makeContent($type, $info) {
+        return \Yii::$app->user->identity->firstname . " " .$type . " " . $info;
+    }
 }

@@ -20,26 +20,25 @@ use Yii;
  * @property string $lastup_employee_id
  * @property boolean $disabled
  */
-class Notification extends \common\components\db\ActiveRecord
-{
+class Notification extends \common\components\db\ActiveRecord {
+
     const TABLE_PROJECT = "project";
     const TABLE_EVENT = "event";
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'notification';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['owner_id', 'owner_table', 'employee_id', 'type'], 'required'],
-            [['company_id','owner_id', 'employee_id', 'owner_employee_id', 'datetime_created', 'lastup_datetime', 'lastup_employee_id'], 'integer'],
+            [['company_id', 'owner_id', 'employee_id', 'owner_employee_id', 'datetime_created', 'lastup_datetime', 'lastup_employee_id'], 'integer'],
             [['content'], 'string'],
             [['disabled'], 'boolean'],
             [['owner_table'], 'string', 'max' => 50],
@@ -50,8 +49,7 @@ class Notification extends \common\components\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => 'ID',
             'company_id' => 'Company ID',
@@ -67,4 +65,21 @@ class Notification extends \common\components\db\ActiveRecord
             'disabled' => 'Disabled',
         ];
     }
+
+    /**
+     * Add notification
+     * 
+     * @param array $dataInsert
+     * @return boolean
+     */
+    public static function add($dataInsert) {
+        if (!empty($dataInsert)) {
+            if (!\Yii::$app->db->createCommand()->batchInsert(self::tableName(), array_keys($dataInsert[0]), $dataInsert)->execute()) {
+                throw new \Exception('Save record to table notification fail');
+            }
+        }
+        
+        return true;
+    }
+
 }

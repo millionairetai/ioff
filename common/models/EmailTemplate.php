@@ -28,6 +28,7 @@ class EmailTemplate extends \common\components\db\ActiveRecord
     const EDIT_EVENT = 'edit_event';
     const CREATE_PROJECT = 'create_project';
     const CREATE_PROJECT_POST = 'create_project_post';
+    const CREATE_EVENT_POST = 'create_event_post';
     
     /**
      * @inheritdoc

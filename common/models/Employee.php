@@ -338,7 +338,7 @@ class Employee extends ActiveRecord implements IdentityInterface
     /**
      * send email to employee
      */
-    public function sendMail($dataSend,$themeEmail){
+    public function sendMail($dataSend, $themeEmail){
         if(!$themeEmail){
             return false;
         }
@@ -356,7 +356,7 @@ class Employee extends ActiveRecord implements IdentityInterface
         ->send();*/
         
     }
-    
+
     /**
      * send sms to employee
      */

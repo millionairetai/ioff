@@ -241,7 +241,6 @@ class Event extends ActiveRecord {
      * Get number of each event confirmation type.
      *
      * @param integer $eventId
-     * 
      * @return array
      */
     public static function getInfoAttend($eventId = null) {
@@ -273,5 +272,15 @@ class Event extends ActiveRecord {
         }
         
         return $listEmployeeAttend;
+    }
+       
+    /**
+     * Get Event information
+     *
+     * @param integer $eventId
+     * @return array
+     */
+    public static function getEvent($eventId) {
+        return Event::find()->select(['id', 'name'])->where(['id' => $eventId])->one();
     }
 }

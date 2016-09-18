@@ -357,11 +357,7 @@ class CalendarController extends ApiController {
                     throw new \Exception('Save record to table Project Participant fail');
                 }
                 
-                if (!empty($dataInsertSms)) {
-                    if (!\Yii::$app->db->createCommand()->batchInsert(SMS::tableName(), array_keys($dataInsertSms[0]), $dataInsertSms)->execute()) {
-                        throw new \Exception('Save record to table Project Participant fail');
-                    }
-                }
+                Sms::add($dataInsertSms);
             }
             
             //Write log history for editing this project.
