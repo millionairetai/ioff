@@ -849,8 +849,14 @@ appRoot.directive('eventFixed', function ($window) {
         //removeFile
         $scope.deleteFile = function (index, id) {
             dialogMessage.open('confirm', $rootScope.$lang.confirm_delete_file, function () {
-                fileService.removeFile({fileId: id}, function (data) {
+                fileService.removeFile({fileId: id}, function (reponse) {
                     $scope.collection.file_info.splice(index, 1);
+                    angular.forEach($scope.eventPostFile[reponse.objects.onwer_id], function(val, key){
+                        if (val.name == reponse.objects.name) {
+                            $scope.eventPostFile[reponse.objects.onwer_id].splice(key, 1);
+                        }
+                    });
+
                     $scope.getLastEventPost();
                     alertify.success($rootScope.$lang.remove_file_success);
                 })
@@ -924,9 +930,9 @@ appRoot.controller('editEventCtrl', ['$rootScope', 'data', 'listCalendar', '$sco
         }
         $scope.event = {
             id: data.calendars.event.id,
-            var_start_datetime: data.calendars.event.start_datetime,
+            var_start_datetime: new Date(data.calendars.event.start_datetime),
             var_start_time: data.calendars.event.start_time,
-            var_end_datetime: data.calendars.event.end_datetime,
+            var_end_datetime: new Date(data.calendars.event.end_datetime),
             var_end_time: data.calendars.event.end_time,
             start_datetime: '',
             end_datetime: '',
@@ -1675,8 +1681,8 @@ appRoot.controller('editProjectCtrl', ['$scope', 'projectService', '$location', 
             parent_id: 0,
             manager: {id: $dataEditProject.project_info.manager_project_id, firstname: $dataEditProject.project_info.project_manager, image: $dataEditProject.project_info.image},
             name: $dataEditProject.project_info.project_name,
-            start_datetime: $dataEditProject.project_info.start_datetime,
-            duedatetime: $dataEditProject.project_info.duedatetime,
+            start_datetime: new Date($dataEditProject.project_info.start_datetime),
+            duedatetime: new Date($dataEditProject.project_info.duedatetime),
             priority_id: parseInt($dataEditProject.project_info.priority_id),
             completed_percent: $dataEditProject.project_info.completed_percent,
             is_public: $dataEditProject.project_info.is_public,

@@ -218,7 +218,7 @@ class File extends \common\components\db\ActiveRecord {
 
         $this->_updateStorageAndLogHistory($file);
 
-        return true;
+        return $file;
     }
 
     /**

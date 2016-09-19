@@ -15,16 +15,28 @@ class FileController extends ApiController {
         $transaction = \Yii::$app->db->beginTransaction();
         //create object and validate data
         try {
-            (new File())->removeFile(\Yii::$app->request->get('fileId'));
+            $object = [];
+            if ($result = (new File())->removeFile(\Yii::$app->request->get('fileId'))) {
+                $object = [
+                    'onwer_id' => $result->owner_id,
+                    'owner_object'=> $result->owner_object, 
+                    'name' => $result->name,
+                    'encoded_name' => $result->encoded_name,
+                    'path' => $result->path,
+                    'file_type' => $result->file_type,
+                    'file_size' => $result->file_size,
+                ];
+            }
+            
             $transaction->commit();
         } catch (\Exception $e) {
-            $this->_error = true;
             var_dump($e->getMessage());die;
+            $this->_error = true;
             $this->_message = \Yii::t('member', 'remove file error');
             $transaction->rollBack();
             return $this->sendResponse($this->_error, $this->_message, []);
         }
 
-        return $this->sendResponse($this->_error, $this->_message, []);
+        return $this->sendResponse($this->_error, $this->_message, $object);
     }
 }

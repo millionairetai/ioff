@@ -607,8 +607,14 @@ appRoot.directive('eventFixed', function ($window) {
         //removeFile
         $scope.deleteFile = function (index, id) {
             dialogMessage.open('confirm', $rootScope.$lang.confirm_delete_file, function () {
-                fileService.removeFile({fileId: id}, function (data) {
+                fileService.removeFile({fileId: id}, function (reponse) {
                     $scope.collection.file_info.splice(index, 1);
+                    angular.forEach($scope.eventPostFile[reponse.objects.onwer_id], function(val, key){
+                        if (val.name == reponse.objects.name) {
+                            $scope.eventPostFile[reponse.objects.onwer_id].splice(key, 1);
+                        }
+                    });
+
                     $scope.getLastEventPost();
                     alertify.success($rootScope.$lang.remove_file_success);
                 })
@@ -682,9 +688,9 @@ appRoot.controller('editEventCtrl', ['$rootScope', 'data', 'listCalendar', '$sco
         }
         $scope.event = {
             id: data.calendars.event.id,
-            var_start_datetime: data.calendars.event.start_datetime,
+            var_start_datetime: new Date(data.calendars.event.start_datetime),
             var_start_time: data.calendars.event.start_time,
-            var_end_datetime: data.calendars.event.end_datetime,
+            var_end_datetime: new Date(data.calendars.event.end_datetime),
             var_end_time: data.calendars.event.end_time,
             start_datetime: '',
             end_datetime: '',
