@@ -328,16 +328,17 @@ appRoot.directive('eventFixed', function ($window) {
             });
         }
     };
-}).controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService', 'EventPostService', '$uibModal', '$rootScope', 'dialogMessage', '$routeParams', 'alertify', '$sce', 'PER_PAGE_VIEW_MORE',
-    function ($scope, calendarService, fileService, EventPostService, $uibModal, $rootScope, dialogMessage, $routeParams, alertify, $sce, PER_PAGE_VIEW_MORE) {
+}).controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService', 'EventPostService', '$uibModal', '$rootScope', 'dialogMessage', '$routeParams', 'alertify', '$sce', 'PER_PAGE_VIEW_MORE','$location',
+    function ($scope, calendarService, fileService, EventPostService, $uibModal, $rootScope, dialogMessage, $routeParams, alertify, $sce, PER_PAGE_VIEW_MORE, $location) {
         var calendarId = $routeParams.eventId;
         //set paramter for layout
         $scope.collection = [];
         $scope.getInfoEvent = function () {
             calendarService.viewEvent({eventId: calendarId}, function (response) {
-                if (response.error) {
+                if (response.objects.error) {
                     $location.path('/calendar');
                 }
+                
                 $scope.collection = response.objects;
             });
         };
