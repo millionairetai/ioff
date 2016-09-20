@@ -882,3 +882,11 @@ header.main-header{
 .list-employee .item-employee dl dd p{
     margin-bottom: 0;
 }
+/**/
+.register-box{
+    width: 600px;
+    background: #fff;
+    padding: 30px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
