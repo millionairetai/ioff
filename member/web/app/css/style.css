@@ -854,7 +854,7 @@ header.main-header{
     margin: 0;
     background-color: #fcfcfc;
     transition: background-color 200ms ease-in-out, opacity 200ms ease-in-out;
-    border-radius: 4px;
+    /*border-radius: 4px;*/
 }
 .list-employee .item-employee dl:hover{
     background-color: #e6eef1;
@@ -882,11 +882,11 @@ header.main-header{
 .list-employee .item-employee dl dd p{
     margin-bottom: 0;
 }
-/**/
+/*Registration box*/
 .register-box{
     width: 600px;
     background: #fff;
     padding: 30px;
     border: 1px solid #ddd;
-    border-radius: 4px;
+    /*border-radius: 4px;*/
 }
