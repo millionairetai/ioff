@@ -568,8 +568,22 @@ class CalendarController extends ApiController {
         if (empty($dataPost['id'])) return false;
         if (empty($dataMegre)) return true;
         if (empty($object)) return true;
-        
         $event_id = $dataPost['id'];
+        
+        //check update remind time
+        $dataUpdate = [];
+        if ($dataPost['redmind'] != $dataPost['data_old']['remind']) {
+            
+           
+            if (!\Yii::$app->db->createCommand()->update(Remind::tableName(), [
+                    'remind_datetime' => $object->start_datetime - ($dataPost['redmind'] * 60),
+                    'minute_before' => isset($dataPost['redmind']) ? $dataPost['redmind'] : 0],
+                    ['owner_id' => $event_id, 'company_id' => $this->_companyId, 'owner_table' => Event::tableName()])->execute()
+            ) {
+                throw new \Exception('Save record to table Project Participant fail');
+            }
+        }
+        
         //Delete employee
         if (!empty($dataMegre['employeeOld'])) {
             Remind::deleteAll([
@@ -595,6 +609,7 @@ class CalendarController extends ApiController {
                 ];
             }
         }
+        
         if (!empty($dataInsertInvitation)) {
             if (!\Yii::$app->db->createCommand()->batchInsert(Remind::tableName(), array_keys($dataInsertInvitation[0]), $dataInsertInvitation)->execute()) {
                 throw new \Exception('Save record to table Project Participant fail');
@@ -739,31 +754,32 @@ class CalendarController extends ApiController {
         if (empty($dataPost)) {
             return $content;
         }
-        
+
         $noSetting = \Yii::t('member', 'no setting');
         
         $caledarname = empty($dataPost['calendar_id']) ? '' : Calendar::find()->select("name")->where(['id' => $dataPost['calendar_id']])->one();
         $redmindNew = empty($dataPost['redmind']) ? 0 : $dataPost['redmind'];
         $redmindOd = empty($dataPost['data_old']['remind']) ? 0 : $dataPost['data_old']['remind'];
-        
+
         $is_all_day_old     = $dataPost['data_old']['event']['is_all_day'] == true ? \Yii::t('member', 'is_all_day') : \Yii::t('member', 'no setting');
         $is_all_day_old_new = $dataPost['is_all_day']                      == true ? \Yii::t('member', 'is_all_day') : \Yii::t('member', 'no setting');
         if ($dataPost['is_all_day']) {
-            $dataPost['start_datetime'] = $dataPost['start_datetime'] . ' 00:00:00';
-            $dataPost['end_datetime']   = $dataPost['end_datetime'] . ' 00:00:00';
+            $dataPost['start_datetime'] = $dataPost['start_datetime'] . '  00:00';
+            $dataPost['end_datetime']   = $dataPost['end_datetime'] . '  00:00';
         }
-        
+
         $dataReplace = array(
-                \Yii::t('member', 'start datetime') => array($dataPost['data_old']['event']['start_datetime'].' '. $dataPost['data_old']['event']['start_time'].':00' => $dataPost['start_datetime']),
-                \Yii::t('member', 'end datetime')   => array($dataPost['data_old']['event']['end_datetime']  .' '. $dataPost['data_old']['event']['end_time']  .':00' => $dataPost['end_datetime']),
+                \Yii::t('member', 'start datetime') => array($dataPost['data_old']['event']['start_datetime'].' '. $dataPost['data_old']['event']['start_time'] => $dataPost['start_datetime']),
+                \Yii::t('member', 'end datetime')   => array($dataPost['data_old']['event']['end_datetime']  .' '. $dataPost['data_old']['event']['end_time'] => $dataPost['end_datetime']),
                 \Yii::t('member', 'event name')     => array($dataPost['data_old']['event']['name'] => $dataPost['name']),
                 \Yii::t('member', 'calendar name')  => array($dataPost['data_old']['calendar']['name'] => empty($dataPost['calendar_id']) ? '' : $caledarname->name),
                 \Yii::t('member', 'address')        => array($dataPost['data_old']['event']['address'] => $dataPost['address']),
                 \Yii::t('member', 'color')          => array($dataPost['data_old']['event']['color'] => $dataPost['color']),
+                \Yii::t('member', 'event description op') => array($dataPost['data_old']['event']['description'] => $dataPost['description']),
                 \Yii::t('member', 'remind')         => array(\Yii::t('member', 'calendar_event_redmine_'.$redmindOd)=> \Yii::t('member', 'calendar_event_redmine_'.$redmindNew)),
                 \Yii::t('member', 'is_all_day')     => array($is_all_day_old => $is_all_day_old_new),
         );
-        
+
         //Create log project history text.
         foreach ($dataReplace as $key => $value) {
             if (!empty($value)) {
@@ -771,19 +787,27 @@ class CalendarController extends ApiController {
                     if ($after != $befor) {
                         $after = empty($after) ? \Yii::t('member', 'no setting') : $after;
                         $befor = empty($befor) ? \Yii::t('member', 'no setting') : $befor;
-                        $content .= '<li>'.str_replace(array('{{title}}', '{{after}}', '{{befor}}'), array($key, $after, $befor), \Yii::t('member', 'message info content')) .'</li>';
+                        switch ($key) {
+                            case \Yii::t('member', 'event description op'):
+                                $description = !empty($befor) ? \Yii::t('member', 'event description op'). ' '. \Yii::t('member', 'comment update after'). ' ' .$befor : $noSetting;
+                                $content .= '<li>'. $description .'</li>';
+                                break;
+                            default:
+                                $content .= '<li>'.str_replace(array('{{title}}', '{{after}}', '{{befor}}'), array($key, $after, $befor), \Yii::t('member', 'message info content')) .'</li>';
+                                break;
+                        }
                     }
                 }
             }
         }
-        
+
         if (!empty($dataPost['fileList'])) {
             $content .= '<li>'.\Yii::t('member', 'add file').'</li>';
             foreach ($dataPost['fileList'] as $key => $file) {
                 $content .= '<div class="padding-left-20"><i><a href="' . \Yii::$app->params['PathUpload'] . DIRECTORY_SEPARATOR . $file['path'] . '">' . $file['name'] . '</a></i></div>';
             }
         }
-        
+
         $tplEmployess = $tmpDepartment = '';
         if (!empty($dataPost['employeeMegre'])) {
             if (!empty($dataPost['employeeMegre']['employeeNew']) || !empty($dataPost['employeeMegre']['employeeOld'])) {
@@ -802,7 +826,7 @@ class CalendarController extends ApiController {
                     }
                 }
             }
-            
+
             if (!empty($dataPost['employeeMegre']['departmentOld']) || !empty($dataPost['employeeMegre']['departmentNew'])) {
                 $content .= '<li>'.\Yii::t('member', 'change department').'</li>';
                 
@@ -812,7 +836,7 @@ class CalendarController extends ApiController {
                         $content .='<div class="padding-left-20"><i>' . $val . '</i></div>';
                     }
                 }
-                
+
                 if (!empty($dataPost['employeeMegre']['departmentNew'])) {
                     $content .= '<div class="padding-left-20">'.\Yii::t('member', 'add new').'</div>';
                     foreach ($dataPost['employeeMegre']['departmentNew'] as $departmentId) {

@@ -921,7 +921,8 @@ appRoot.controller('editEventCtrl', ['$rootScope', 'data', 'listCalendar', '$sco
         $scope.departments = [];
         $scope.allDepartment = 0;
         $scope.calendars = listCalendar;
-        var departmentsData = membersData = [];
+        departmentsData = [];
+        membersData = [];
         if (data.calendars.invitations.department != null) {
             departmentsData = Object.keys(data.calendars.invitations.department);
         }
@@ -1048,8 +1049,8 @@ appRoot.controller('editEventCtrl', ['$rootScope', 'data', 'listCalendar', '$sco
                             $scope.event.end_datetime = moment($scope.event.var_end_datetime).format('YYYY-MM-DD');
                             flg = true;
                         } else if (calendarService.validate_step2($scope.event)) {
-                            $scope.event.start_datetime = moment($scope.event.var_start_datetime).format('YYYY-MM-DD  HH:mm:ss');
-                            $scope.event.end_datetime = moment($scope.event.var_end_datetime).format('YYYY-MM-DD  HH:mm:ss');
+                            $scope.event.start_datetime = moment($scope.event.var_start_datetime).format('YYYY-MM-DD HH:mm');
+                            $scope.event.end_datetime = moment($scope.event.var_end_datetime).format('YYYY-MM-DD HH:mm');
                             flg = true;
                         }
                         if (flg) {
