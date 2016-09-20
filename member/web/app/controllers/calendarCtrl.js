@@ -335,8 +335,9 @@ appRoot.directive('eventFixed', function ($window) {
         $scope.collection = [];
         $scope.getInfoEvent = function () {
             calendarService.viewEvent({eventId: calendarId}, function (response) {
-                if (response.error)
+                if (response.error) {
                     $location.path('/calendar');
+                }
                 $scope.collection = response.objects;
             });
         };

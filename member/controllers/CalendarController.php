@@ -409,7 +409,6 @@ class CalendarController extends ApiController {
         return $this->sendResponse($this->_error, $this->_message, $objects);
     }
 
-
     /**
      * Fuction display detail of Event by id
      */
@@ -422,26 +421,18 @@ class CalendarController extends ApiController {
                             || ($event['event']['creator_event_id'] == Yii::$app->user->identity->id)) {
                         return $this->sendResponse(false, "", $event);
                     } else {
-                        $employeesInEvent = EventConfirmation::find()
-                                                ->select(['id'])
-                                                ->where([
-                                                            'company_id'  => $this->_companyId,
-                                                            'event_id'    => $eventId,
-                                                            'employee_id' => Yii::$app->user->identity->id,
-                                                        ])
-                                                ->one();
-                        if (!empty($employeesInEvent)) {
+                        if (EventConfirmation::isInivtee($eventId)) {
                             return $this->sendResponse(false, "", $event);
-                        }else {
+                        } else {
                             Yii::$app->session->setFlash('errorViewProject', \Yii::t('member', "you do not have authoirity"));
                             $objects['collection']['error'] = true;
-                            return $this->sendResponse(false, $eventId, $event);
+                            return $this->sendResponse(false, $eventId, []);
                         }
                     }
                 }
             }
             
-            throw new \Exception(\Yii::t('member', 'Can not get event info'));
+            throw new \Exception(\Yii::t('member', 'Can not get data'));
         } catch (\Exception $e) {
             return $this->sendResponse(true, $e->getMessage(), []);
         }

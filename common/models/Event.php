@@ -175,11 +175,12 @@ class Event extends ActiveRecord {
      * @return array
      */
     public static function getInfoEvent($eventId = null) {
-        if (empty($eventId)) return false;
         //get Id company of user login
         $companyId = \Yii::$app->user->getCompanyId();
         $event = Event::findOne(['id' => $eventId, 'company_id' => $companyId]);
-        if (empty($event)) return false;
+        if (empty($event)) {
+            return false;
+        }
        
         //Get all info event_confirmation_type 
         $eventConfimationType = EventConfirmationType::getEventConfirmationTypes();

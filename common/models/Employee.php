@@ -323,7 +323,7 @@ class Employee extends ActiveRecord implements IdentityInterface
     /**
      * Check if user is admin
      */
-    public function isAdmin() {
+    public static function isAdmin() {
         return \Yii::$app->user->identity->is_admin == true;
     }
     

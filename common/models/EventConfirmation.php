@@ -18,21 +18,19 @@ use Yii;
  * @property string $lastup_employee_id
  * @property boolean $disabled
  */
-class EventConfirmation extends \common\components\db\ActiveRecord 
-{
+class EventConfirmation extends \common\components\db\ActiveRecord {
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'event_confirmation';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['company_id', 'employee_id', 'event_id', 'event_confirmation_type_id', 'datetime_created', 'lastup_datetime', 'created_employee_id', 'lastup_employee_id'], 'integer'],
             [['disabled'], 'boolean']
@@ -42,8 +40,7 @@ class EventConfirmation extends \common\components\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => Yii::t('member', 'ID'),
             'company_id' => Yii::t('member', 'Company ID'),
@@ -57,7 +54,7 @@ class EventConfirmation extends \common\components\db\ActiveRecord
             'disabled' => Yii::t('member', 'Disabled'),
         ];
     }
-    
+
     /**
      * Get number of confirmed employee
      * 
@@ -65,6 +62,26 @@ class EventConfirmation extends \common\components\db\ActiveRecord
      * @return integer
      */
     public static function getNumberConfirmedEmployee($eventId) {
-    	return EventConfirmation::find()->where(['event_confirmation_type_id' => EventConfirmationType::VAL_NO_CONFIRM, 'event_id' => $eventId])->count();
+        return EventConfirmation::find()->where(['event_confirmation_type_id' => EventConfirmationType::VAL_NO_CONFIRM, 'event_id' => $eventId])->count();
     }
+
+    /**
+     * Check if user is invitee.
+     * 
+     * @param integer $eventId
+     * @return integer
+     */
+    public static function isInivtee($eventId) {
+        $invitee = self::find()->select(['id'])->where([
+                    'event_id' => $eventId,
+                    'employee_id' => Yii::$app->user->identity->id,
+                ])->one();
+
+        if ($invitee) {
+            return true;
+        }
+        
+        return false;
+    }
+
 }
