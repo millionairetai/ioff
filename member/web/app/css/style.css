@@ -838,3 +838,47 @@ header.main-header{
 .detail-event .content-event.viewall .readmore{
     display: none;
 }
+/* List employee */
+.list-employee{
+    margin: 0 -5px;
+}
+.list-employee .item-employee{
+    margin-bottom: 10px;
+    padding: 0 5px;
+    width: 33.33333333%;
+    float: left;
+}
+.list-employee .item-employee dl{
+    padding: 10px;
+    border: 1px solid #f4f4f4;
+    margin: 0;
+    background-color: #fcfcfc;
+    transition: background-color 200ms ease-in-out, opacity 200ms ease-in-out;
+    border-radius: 4px;
+}
+.list-employee .item-employee dl:hover{
+    background-color: #e6eef1;
+}
+.list-employee .item-employee dl dt{
+    font-weight: bold;
+    color: #428bca;
+    margin-bottom: 10px;
+}
+.list-employee .item-employee dl dd .image{
+    width: 80px;
+    display: table-cell;
+    vertical-align: middle;
+    float: none;
+    padding-right: 10px;
+    text-align: center;
+}
+.list-employee .item-employee dl dd .info{
+    display: table-cell;
+}
+.list-employee .item-employee dl dd .image img{
+    max-width: 100%;
+    height: auto;
+}
+.list-employee .item-employee dl dd p{
+    margin-bottom: 0;
+}
