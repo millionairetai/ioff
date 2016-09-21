@@ -402,9 +402,10 @@ class Employee extends ActiveRecord implements IdentityInterface
         $employees = Employee::find()
                         ->select(['id', 'firstname', 'lastname', 'profile_image_path', 'department_id', 'birthdate'])
                         ->andWhere(['id' => $employeeIds])
-                        ->orWhere(['department_id' => $departmentIds, 'company_id' => \Yii::$app->user->getCompanyId()])
+                        ->orWhere(['department_id' => $departmentIds])
+                        ->andCompanyId()
                         ->all();
-
+        
         if (!empty($employees)) {
             $count = 0;
             foreach ($employees as $employee) {

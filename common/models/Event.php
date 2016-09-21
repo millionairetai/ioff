@@ -181,28 +181,13 @@ class Event extends ActiveRecord {
         if (empty($event)) {
             return false;
         }
-       
-        //Get all info event_confirmation_type 
-        $eventConfimationType = EventConfirmationType::getEventConfirmationTypes();
-        $eventConfimationTypeList = [];
-        if (!empty($eventConfimationType)) {
-            foreach ($eventConfimationType as $info) {
-                $eventConfimationTypeList[] = [
-                        'id'   => $info->id,
-                        'name' => $info->name,
-                        'column_name' => $info->column_name,
-                ];
-            }
-        }
         
         //get remind by owner id
         $remind = Remind::getRemindByOwnerIdAndOwnerTable($eventId, Event::tableName());
         $attend = EventConfirmationType::getInfoAttend($eventId);
-        
-        //Department: inner join Invitation with department where event_id
+        //Get department and invitee of this event.
         $invitations = Invitation::getListByEventId($eventId);
         $countEmployee = empty($invitations) ? 0 : $invitations['departmentAndEmployee']['count'];
-        $attend[EventConfirmationType::NO_CONFIRM] = EventConfirmation::getNumberConfirmedEmployee($eventId);
         $fileList = File::getFileByOwnerIdAndTable($eventId, Event::tableName());
         
         $result = [
@@ -229,10 +214,10 @@ class Event extends ActiveRecord {
                 ],
                 'calendar'      => ['name' => $event->calendar->getName()],
                 'remind'        => isset($remind->minute_before) ? $remind->minute_before : null,
-                'eventConfirmationType' => $eventConfimationTypeList,
                 'invitations'   => $invitations,
                 'attent'        => $attend,
                 'file_info'     => $fileList,
+                'eventConfirmationType' => EventConfirmationType::getEventConfirmationTypes(),
         ];
         
         return $result;

@@ -111,9 +111,9 @@ class EventPostController extends ApiController {
         try {
             $transaction = \Yii::$app->db->beginTransaction();
             $dataPost = [];
-            $eventson = \Yii::$app->request->post('event', '');
-            if (strlen($eventson)) {
-                $dataPost = json_decode($eventson, true);
+            $eventJson = \Yii::$app->request->post('event', '');
+            if (strlen($eventJson)) {
+                $dataPost = json_decode($eventJson, true);
             }
 
             $eventInfo = [];

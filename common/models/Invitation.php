@@ -87,17 +87,19 @@ class Invitation extends ActiveRecord
      * @return boolean|array
      */
     public static function getListByEventId($eventId = null, $confirmedEmployeeIds = []) {
-        if ($eventId == null)  return false;
+        if ($eventId == null)  { 
+            return false;
+        }
         
-        $invitatinons = Invitation::findAll(['company_id' => \Yii::$app->user->getCompanyId(), 'event_id' => $eventId]);
-        if (!empty($invitatinons)) {
+        $invitations = Invitation::findAll(['company_id' => \Yii::$app->user->getCompanyId(), 'event_id' => $eventId]);
+        if (!empty($invitations)) {
             $result = [];
-            foreach ($invitatinons as $invitatinon) {
-                if ($invitatinon->owner_table == Department::tableName()) {
-                    $result[$invitatinon->owner_table][$invitatinon->owner_id] = $invitatinon->department->name;
+            foreach ($invitations as $invitation) {
+                if ($invitation->owner_table == Department::tableName()) {
+                    $result[$invitation->owner_table][$invitation->owner_id] = $invitation->department->name;
                 }
-                if ($invitatinon->owner_table == Employee::tableName()) {
-                    $result[$invitatinon->owner_table][$invitatinon->owner_id] = $invitatinon->employee->fullname;
+                if ($invitation->owner_table == Employee::tableName()) {
+                    $result[$invitation->owner_table][$invitation->owner_id] = $invitation->employee->fullname;
                 }
             }
             
@@ -110,13 +112,12 @@ class Invitation extends ActiveRecord
             }
             
             //Check if employees is null, we avoid error null with function of array_unique.
-            if ($employees) {
-                $employees = array_unique($employees);
-            }
+            $employees = !empty($employees) ? array_unique($employees) : $employees;
             
             $result['departmentAndEmployee'] = Employee::getlistByepartmentIdsAndEmployeeIds($departments, $employees);
             return $result;
         }
+        
         return false;
     }
 }

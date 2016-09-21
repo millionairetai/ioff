@@ -97,7 +97,7 @@ class File extends \common\components\db\ActiveRecord {
         if (!$employeeSpace) {
             $employeeSpace = new EmployeeSpace();
             $employeeSpace->employee_id = $employeeId;
-            $employeeSpace->space_project = $employeeSpace->space_total = 0;
+            $employeeSpace->space_project = $employeeSpace->space_calendar = $employeeSpace->space_total = 0;
         }
 
         $company = Company::find(['total_storage'])->where(Yii::$app->user->identity->company_id)->one();
@@ -136,7 +136,7 @@ class File extends \common\components\db\ActiveRecord {
                     $employeeSpace->space_project += $size;
                 }
 
-                if ($table == self::TABLE_EVENT) {
+                if ($table == self::TABLE_EVENT || $table == self::TABLE_EVENT_POST) {
                     $employeeSpace->space_calendar += $size;
                 }
 
@@ -198,7 +198,6 @@ class File extends \common\components\db\ActiveRecord {
         }
 
         $file = File::findOne($fileId);
-
         if (empty($file)) {
             throw new \Exception('Can not get file');
         }
@@ -270,7 +269,6 @@ class File extends \common\components\db\ActiveRecord {
                 if (!$projectPost->save(false)) {
                     throw new \Exception('Save record to table project post fail');
                 }
-
                 break;
 
             case 'task':
@@ -278,7 +276,13 @@ class File extends \common\components\db\ActiveRecord {
                 break;
 
             case 'event':
-            case 'event_post':
+            case 'event_post':              
+                //subtract space_calendar in employe_space.
+                $employeeSpace->space_calendar = $employeeSpace->space_calendar - $file->file_size;
+                $employeeSpace->space_calendar = $employeeSpace->space_calendar >= 0 ? $employeeSpace->space_calendar : 0;
+                $employeeSpace->space_total = $employeeSpace->space_total - $file->file_size;
+                $employeeSpace->space_total = $employeeSpace->space_total >= 0 ? $employeeSpace->space_project : 0;
+                
                 //write logs event post
                 $eventPost = new EventPost();
                 $eventPost->event_id = $file->owner_id;

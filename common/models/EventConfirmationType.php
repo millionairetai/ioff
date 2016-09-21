@@ -17,53 +17,50 @@ use Yii;
  * @property string $lastup_employee_id
  * @property boolean $disabled
  */
-class EventConfirmationType extends \common\components\db\ActiveRecord 
-{
+class EventConfirmationType extends \common\components\db\ActiveRecord {
+
     const NO_ATTEND = "no_attend";
-    const MAYBE     = "maybe";
-    const ATTEND    = 'attend';
-    const NO_CONFIRM= 'no_confirm';
-    
+    const MAYBE = "maybe";
+    const ATTEND = 'attend';
+    const NO_CONFIRM = 'no_confirm';
     //Value no confirm
     const VAL_NO_CONFIRM = 0;
 
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'event_confirmation_type';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['name', 'column_name', 'description', 'datetime_created', 'lastup_datetime', 'created_employee_id', 'lastup_employee_id'], 'integer'],
             [['disabled'], 'boolean']
         ];
     }
-    
+
     /**
-     * Get count of status evetn attend
+     * Get count of status event attend
      * 
      * @param string $eventId
-     * @param number $countDefault
+     * @return array
      */
     public static function getInfoAttend($eventId = null) {
         $attent = EventConfirmation::find()->select([
-                    EventConfirmation::tableName().'.employee_id',
-                    EventConfirmation::tableName().'.event_confirmation_type_id',
-                    EventConfirmationType::tableName().'.name',
-                    EventConfirmationType::tableName().'.column_name'
+                    EventConfirmation::tableName() . '.employee_id',
+                    EventConfirmation::tableName() . '.event_confirmation_type_id',
+                    EventConfirmationType::tableName() . '.name',
+                    EventConfirmationType::tableName() . '.column_name'
                 ])
                 ->innerJoin('event_confirmation_type', ' event_confirmation_type.id = event_confirmation.event_confirmation_type_id')
                 ->where(['event_confirmation.event_id' => $eventId, 'event_confirmation.company_id' => \Yii::$app->user->getCompanyId()])
                 ->asArray()
                 ->all();
-        
+
         $result = [];
         $attendActive = '';
         foreach ($attent as $key => $val) {
@@ -72,7 +69,7 @@ class EventConfirmationType extends \common\components\db\ActiveRecord
                 $attendActive = $val['column_name'];
             }
         }
-        
+
         $noAttend = $maybe = $attend = 0;
         if (!empty($result)) {
             if (isset($result[EventConfirmationType::ATTEND])) {
@@ -85,22 +82,35 @@ class EventConfirmationType extends \common\components\db\ActiveRecord
                 $noAttend = count($result[EventConfirmationType::NO_ATTEND]);
             }
         }
-        return  [
-                    'activeAttendByEmployee'         => $attendActive,
-                    'attendListEmployeeId'           => $result,
-                    EventConfirmationType::ATTEND    => $attend,
-                    EventConfirmationType::MAYBE     => $maybe,
-                    EventConfirmationType::NO_ATTEND => $noAttend,
-                ];
-    }
         
+        return [
+            'activeAttendByEmployee' => $attendActive,
+            'attendListEmployeeId' => $result,
+            self::ATTEND => $attend,
+            self::MAYBE => $maybe,
+            self::NO_ATTEND => $noAttend,
+            self::NO_CONFIRM => EventConfirmation::getNumberConfirmedEmployee($eventId),
+        ];
+    }
+
     /**
-     * Get number of confirmed employee
+     * Get event confirmation type
      * 
-     * @param integer $eventId
      * @return integer
      */
     public static function getEventConfirmationTypes() {
-    	return EventConfirmationType::find()->select(['id', 'name', 'column_name'])->all();;
+        $eventConfimationTypeList = [];
+        if ($eventConfimationTypes = EventConfirmationType::find()->select(['id', 'name', 'column_name'])->all()) {
+            foreach ($eventConfimationTypes as $info) {
+                $eventConfimationTypeList[] = [
+                        'id'   => $info->id,
+                        'name' => $info->name,
+                        'column_name' => $info->column_name,
+                ];
+            }
+        }
+        
+        return $eventConfimationTypeList;
     }
+
 }

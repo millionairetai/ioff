@@ -71,7 +71,7 @@ class EventConfirmation extends \common\components\db\ActiveRecord {
      * @param integer $eventId
      * @return integer
      */
-    public static function isInivtee($eventId) {
+    public static function isInvited($eventId) {
         $invitee = self::find()->select(['id'])->where([
                     'event_id' => $eventId,
                     'employee_id' => Yii::$app->user->identity->id,

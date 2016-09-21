@@ -82,4 +82,5 @@ return [
     'calendar_event_redmine_240' => '4 giờ',
     'calendar_event_redmine_1440' => '1 ngày',
     'calendar_event_redmine_2880' => '2 ngày',
+    'event description op' 	=> 'Mô tả',
 ];

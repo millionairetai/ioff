@@ -421,7 +421,7 @@ class CalendarController extends ApiController {
                             || ($event['event']['creator_event_id'] == Yii::$app->user->identity->id)) {
                         return $this->sendResponse(false, "", $event);
                     } else {
-                        if (EventConfirmation::isInivtee($eventId)) {
+                        if (EventConfirmation::isInvited($eventId)) {
                             return $this->sendResponse(false, "", $event);
                         } else {
                             $objects['collection']['error'] = true;

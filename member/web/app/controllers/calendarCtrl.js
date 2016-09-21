@@ -372,6 +372,7 @@ appRoot.directive('eventFixed', function ($window) {
 
                     $scope.files = [];
                     $scope.releases = response.objects.collection;
+                    //check if file is null, we will have errror with unshift function.
                     if (!_.isNull($scope.collection.file_info)) {
                         var newFiles = response.objects.files[Object.keys(response.objects.files)[0]];
                         //Revert files because json files returned which is inverted with the order uploaded.
@@ -610,13 +611,17 @@ appRoot.directive('eventFixed', function ($window) {
         $scope.deleteFile = function (index, id) {
             dialogMessage.open('confirm', $rootScope.$lang.confirm_delete_file, function () {
                 fileService.removeFile({fileId: id}, function (reponse) {
+                    //Remove file in file list in description.
                     $scope.collection.file_info.splice(index, 1);
+                    //Remove file in event post.
                     angular.forEach($scope.eventPostFile[reponse.objects.onwer_id], function(val, key){
+                        //Traverse array of file in event post, and check the file we want to delete by name.
                         if (val.name == reponse.objects.name) {
                             $scope.eventPostFile[reponse.objects.onwer_id].splice(key, 1);
                         }
                     });
-
+                    
+                    //Get the last event post, to prepend to the first event post list.
                     $scope.getLastEventPost();
                     alertify.success($rootScope.$lang.remove_file_success);
                 })

@@ -80,4 +80,5 @@ return [
     'calendar_event_redmine_240' => '4 giờ',
     'calendar_event_redmine_1440' => '1 day',
     'calendar_event_redmine_2880' => '2 days',
+    'event description op' 	=> 'Description',
 ];
