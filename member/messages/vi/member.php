@@ -11,7 +11,10 @@ return [
     'Can not get project info' => 'Không thể lấy dữ liệu cho dự án này',
     'error_system' => 'Hệ thống đang gặp vấn đề, Mong bạn báo lại với ban quản trị',
     'Can not get data' => 'Không thể lấy dữ liệu',
+    'Can not save data' => 'Không thể lưu dữ liệu',
     'you do not have authoirity for this action' => 'Bạn không có quyền cho hành động này',
+    
+    //----------------------------------Common language--------------------------------------------------//    
     //project
     'project manager' => 'Quản lý dự án',
     'project priority' => 'Ưu tiên',

@@ -331,6 +331,7 @@ appRoot.directive('eventFixed', function ($window) {
 }).controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService', 'EventPostService', '$uibModal', '$rootScope', 'dialogMessage', '$routeParams', 'alertify', '$sce', 'PER_PAGE_VIEW_MORE','$location',
     function ($scope, calendarService, fileService, EventPostService, $uibModal, $rootScope, dialogMessage, $routeParams, alertify, $sce, PER_PAGE_VIEW_MORE, $location) {
         var calendarId = $routeParams.eventId;
+        var eventId = $routeParams.eventId;
         //set paramter for layout
         $scope.collection = [];
         $scope.getInfoEvent = function () {
@@ -544,7 +545,7 @@ appRoot.directive('eventFixed', function ($window) {
         //action click attend
         $scope.objectEmployee = {};
         $scope.attend = function (attend) {
-            calendarService.attend({attend_type: attend, calendarId: calendarId}, function (response) {
+            calendarService.attend({attend_type: attend, eventId: eventId}, function (response) {
                 $scope.message = '';
                 switch ($scope.collection.event.active_attend) {
                     case 'attend':
@@ -591,7 +592,7 @@ appRoot.directive('eventFixed', function ($window) {
                         return eventPost;
                     },
                     calendarId: function () {
-                        return calendarId;
+                        return eventId;
                     }
                 }
             });
@@ -632,9 +633,9 @@ appRoot.directive('eventFixed', function ($window) {
 
 //show attend 
 appRoot.controller('showAttendCtrl', ['$scope', 'eventPost', 'calendarId', 'calendarService', '$uibModalInstance',
-    function ($scope, eventPost, calendarId, calendarService, $uibModalInstance) {
+    function ($scope, eventPost, eventId, calendarService, $uibModalInstance) {
         $scope.tabsName = eventPost;
-        calendarService.viewAttend({eventId: calendarId}, function (response) {
+        calendarService.viewAttend({eventId: eventId}, function (response) {
             $scope.attendList = response.objects;
         });
 

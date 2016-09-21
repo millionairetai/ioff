@@ -692,31 +692,23 @@ class CalendarController extends ApiController {
      */
     public function actionAttend() {
         $attendType = \Yii::$app->request->post('attend_type');
-        $eventId = \Yii::$app->request->post('calendarId');
+        $eventId = \Yii::$app->request->post('eventId');
         if (empty($attendType) || empty($eventId)) {
-            return $this->sendResponse(true, "", 'Save record to table event_confirmation_type fail');
+            return $this->sendResponse(true, Yii::t('member', 'Can not get data'), []);
         }
-        $EventConfirmationType = EventConfirmationType::find()->select(['id', 'name'])->where(['column_name' => $attendType])->one();
         
-        if (!empty($EventConfirmationType)) {
-            $eventConfirmation = EventConfirmation::find()
-                ->where(['employee_id' => \Yii::$app->user->getId(), 'event_id' => $eventId])
-                ->one();
-            
-//            if (empty($eventConfirmation)) {
-//                return $this->sendResponse(true, "Get EventConfirmation info fail", []);
-//            }
-//            var_dump($eventConfirmation);die;
-            
+        $eventConfirmationType = EventConfirmationType::getByColumnName($attendType);
+        if (!empty($eventConfirmationType)) {
+            $eventConfirmation = EventConfirmation::getByEmployeeIdAndEventId(\Yii::$app->user->getId(), $eventId);   
             if (empty($eventConfirmation)) {
                 $eventConfirmation = new EventConfirmation();
                 $eventConfirmation->event_id = $eventId;
                 $eventConfirmation->employee_id = \Yii::$app->user->getId();
             }
             
-            $eventConfirmation->event_confirmation_type_id = $EventConfirmationType->id;
+            $eventConfirmation->event_confirmation_type_id = $eventConfirmationType->id;
             if (!$eventConfirmation->save()) {
-                throw new \Exception('Save record to table eventConfirmation fail');
+                return $this->sendResponse(true, Yii::t('member', 'Can not save data'), []);
             }
         }
         

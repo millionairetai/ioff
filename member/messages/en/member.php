@@ -10,7 +10,9 @@ return [
     'Incorrect email or password' => 'Email hoặc mật khẩu không hợp lệ',
     'error_system' => 'System is error, Please contact to admin',
     'Can not get data' => 'Can not get data',
+    'Can not save data'=> 'Can not save data',
     'you do not have authoirity for this action' => 'you do not have authoirity for this action',
+    //----------------------------------Common language--------------------------------------------------//        
     //project
     'project manager' => 'Manager',
     'project priority' => 'Priority',

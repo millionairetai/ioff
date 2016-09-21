@@ -113,4 +113,12 @@ class EventConfirmationType extends \common\components\db\ActiveRecord {
         return $eventConfimationTypeList;
     }
 
+    /**
+     * Get event confirmation type by column name
+     * 
+     * @return integer
+     */
+    public static function getByColumnName($columnName) {
+        return self::find()->select(['id', 'name'])->where(['column_name' => $columnName])->one();
+    }
 }

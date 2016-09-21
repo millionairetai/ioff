@@ -230,17 +230,20 @@ class Event extends ActiveRecord {
      * @return array
      */
     public static function getInfoAttend($eventId = null) {
-        if (empty($eventId)) return false;
-        $attend = EventConfirmationType::getInfoAttend($eventId);
-        $confirmedEmployeeIds = [];
+        if (empty($eventId)) { 
+            return false;
+        }
         
+        $attend = EventConfirmationType::getInfoAttend($eventId);
+        //Get confirmed employees to get exact number of employee which confirmed in case event is public
+        //    and user isn't invited, they want to join event.
+        $confirmedEmployeeIds = [];
         foreach ($attend['attendListEmployeeId'] as $item) {
             foreach ($item as $val) {
                 $confirmedEmployeeIds[] = $val;
             }
         }
         
-        //Department: inner join Invitation with department where event_id
         $invitations = Invitation::getListByEventId($eventId, $confirmedEmployeeIds);
         $listEmployeeAttend = [];
         if (isset($invitations['departmentAndEmployee']['employeeList']) && isset($attend['attendListEmployeeId'])) {

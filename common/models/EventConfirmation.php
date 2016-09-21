@@ -84,4 +84,15 @@ class EventConfirmation extends \common\components\db\ActiveRecord {
         return false;
     }
 
+    
+    /**
+     * Get event confirmation by employee id and event id.
+     *
+     * @param integer $employeeId
+     * @param integer $eventId
+     * @return integer
+     */
+    public static function getByEmployeeIdAndEventId($employeeId, $eventId) {
+        return EventConfirmation::find()->where(['employee_id' => $employeeId, 'event_id' => $eventId])->one();
+    }
 }
