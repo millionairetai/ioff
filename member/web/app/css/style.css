@@ -882,6 +882,27 @@ header.main-header{
 .list-employee .item-employee dl dd p{
     margin-bottom: 0;
 }
+/* Reponsive list employee*/
+@media (max-width: 1200px){
+    .list-employee .item-employee{
+        width: 50%;
+    }
+}
+@media (max-width: 992px){
+    body:not(.sidebar-collapse) .list-employee .item-employee{
+        width: 100%;
+    }
+}
+@media (max-width: 768px){
+    body:not(.sidebar-collapse) .list-employee .item-employee{
+        width: 50%;
+    }
+}
+@media (max-width: 560px){
+    body:not(.sidebar-collapse) .list-employee .item-employee,.list-employee .item-employee{
+        width: 100%;
+    }
+}
 /* Registration box */
 .register-box{
     width: 600px;
