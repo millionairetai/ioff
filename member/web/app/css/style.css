@@ -882,11 +882,17 @@ header.main-header{
 .list-employee .item-employee dl dd p{
     margin-bottom: 0;
 }
-/*Registration box*/
+/* Registration box */
 .register-box{
     width: 600px;
     background: #fff;
     padding: 30px;
     border: 1px solid #ddd;
     /*border-radius: 4px;*/
+}
+/* Reponsive registration*/
+@media (max-width:768px){
+    .register-box{
+        width: 90%;
+    }
 }
