@@ -42,7 +42,7 @@ use yii\widgets\ActiveForm;
                     </div>
                     <!-- /.col -->
                 </div>
-                <a href="login.html" class="text-center">I already have a membership</a>
+                <a href="login" class="text-center">I already have a membership</a>
             </form>
         </div>
     </div>
