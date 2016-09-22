@@ -32,9 +32,9 @@
                                 </td>
                                 <td>
                                     <p class="input-group">
-                                        <input type="text" class="form-control" datetime-picker="HH:mm" ng-model="event.var_start_datetime"  is-open="open_start_time" enable-date="false"  enable-time="true" button-bar="buttonBar" ng-focus="open_start_time = true" timepicker-options="timepickerOptions"/>
+                                        <input type="text" class="form-control" datetime-picker="HH:mm" ng-model="event.var_start_datetime" ng-disabled="event.is_all_day" is-open="open_start_time" enable-date="false"  enable-time="true" button-bar="buttonBar" ng-focus="open_start_time = true" timepicker-options="timepickerOptions"/>
                                         <span class="input-group-btn">
-                                            <button type="button" class="btn btn-default" ng-click="open_start_time = true"><i class="fa fa-clock-o"></i></button>
+                                            <button type="button" class="btn btn-default" ng-click="open_start_time = true" ng-disabled="event.is_all_day"><i class="fa fa-clock-o"></i></button>
                                         </span>
                                     </p>
                                 </td>
@@ -49,15 +49,24 @@
                                 </td>
                                 <td>
                                     <p class="input-group">
-                                        <input type="text" class="form-control" datetime-picker="HH:mm" ng-model="event.var_end_datetime"  is-open="open_end_time" enable-date="false"  enable-time="true" button-bar="buttonBar" ng-focus="open_end_time = true" timepicker-options="timepickerOptions"/>
+                                        <input type="text" class="form-control" datetime-picker="HH:mm" ng-model="event.var_end_datetime" ng-disabled="event.is_all_day" is-open="open_end_time" enable-date="false"  enable-time="true" button-bar="buttonBar" ng-focus="open_end_time = true" timepicker-options="timepickerOptions"/>
                                         <span class="input-group-btn">
-                                            <button type="button" class="btn btn-default" ng-click="open_end_time = true"><i class="fa fa-clock-o"></i></button>
+                                            <button type="button" class="btn btn-default" ng-click="open_end_time = true" ng-disabled="event.is_all_day"><i class="fa fa-clock-o"></i></button>
                                         </span>
                                     </p>
                                 </td>
                             </tr>
                         </table>
                     </div>
+                </div>
+                
+                <div class="form-group">
+                        <label for="inputPassword3" class="col-sm-3 control-label" style="padding-left: 0px;width: 100px">{{$root.$lang.calendar_event_all_date}}</label>
+                        <div class='col-sm-9s'>
+                            <div class="checkbox">
+                                <input type="checkbox" ng-model="event.is_all_day" ng-change="checkAllDay()" icheck ><br/>
+                            </div>
+                        </div>
                 </div>
                 <div class="form-group">
                     <label for="inputEmail3" class=" control-label">{{$root.$lang.calendar_event_name}}</label>
