@@ -102,7 +102,7 @@ class Event extends ActiveRecord {
      */
     public static function getEvents($calendars, $companyId, $employeeId, $start, $end) {
 
-        $sql = " SELECT event.id,event.name,event.start_datetime,event.end_datetime,event.color "
+        $sql = " SELECT event.id,event.name,event.start_datetime,event.end_datetime,event.color,is_all_day "
                 . " FROM event "
                 . "        INNER JOIN calendar	"
                 . "                ON event.calendar_id= calendar.id "

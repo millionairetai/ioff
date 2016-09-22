@@ -74,12 +74,14 @@ appRoot.controller('calendarCtrl', ['$scope', '$uibModal', 'calendarService', '$
             calendarService.listEvents({start: start.format('YYYY-MM-DD'), end: end.format('YYYY-MM-DD'), calendars: $scope.chooseCalendar}, function (respone) {
                 $scope.events.length = 0;
                 for ($i = 0; $i < respone.objects.length; $i++) {
+                    allDay = respone.objects[$i].is_all_day == 1 ? true : false;
                     var newEvent = {
                         title: respone.objects[$i].title,
                         start: moment(respone.objects[$i].start).toDate(),
                         end: moment(respone.objects[$i].end).toDate(),
                         color: respone.objects[$i].color,
-                        url: '#/viewEvent/' + respone.objects[$i].id
+                        url: '#/viewEvent/' + respone.objects[$i].id,
+                        allDay : allDay
                     };
                     $scope.events.push(newEvent);
                 }

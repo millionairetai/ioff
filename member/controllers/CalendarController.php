@@ -51,7 +51,8 @@ class CalendarController extends ApiController {
                     'title' => $value['name'],
                     'start' => date('Y-m-d H:i:s', $value['start_datetime']),
                     'end' => date('Y-m-d H:i:s', $value['end_datetime']),
-                    'color' => "#" . $value['color']
+                    'color' => "#" . $value['color'],
+                    'is_all_day' => $value['is_all_day'],
                 ];
             }
         }
