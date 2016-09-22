@@ -63,7 +63,7 @@ return [
     'project manager op' 		=> 'quản lý dự án',
     'no setting' 	            => 'không có thiết lặp',
     'project completed percent' => 'Thực tế',
-    'comment update after'      => 'đã được thay đổi thành',
+    'comment update after'      => 'đã được thay đổi',
     'project share'             => 'chia sẻ',
     'you do not have authoirity'=> 'Bạn không có quyền để xem dự án này',
     'no_attend' => 'No Attend',

@@ -473,7 +473,7 @@ class ProjectController extends ApiController {
                     if ($after != $befor) {
                         switch ($key) {
                             case \Yii::t('member', 'project description op'):
-                            $description = !empty($befor) ? \Yii::t('member', 'project description op'). ' '. \Yii::t('member', 'comment update after'). ' ' .$befor : $noSetting;
+                            $description = !empty($befor) ? \Yii::t('member', 'project description op'). ' '. \Yii::t('member', 'comment update after') : $noSetting;
                             $content .= '<li>'. $description .'</li>';
                             break;
                             case \Yii::t('member', 'project status op'):

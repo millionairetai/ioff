@@ -60,7 +60,7 @@ return [
     'project manager op' 		=> 'manager',
     'no setting' 	            => 'No setting',
     'project completed percent' => 'Project completed percent',
-    'comment update after'      => 'has been changed',
+    'comment update after'      => 'been changed',
     'project share'             => 'share',
     'you do not have authoirity'=> 'you do not have authoirity to view this project',
     'no_attend' => 'No Attend',

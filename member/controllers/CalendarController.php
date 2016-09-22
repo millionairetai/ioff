@@ -782,7 +782,7 @@ class CalendarController extends ApiController {
                         $befor = empty($befor) ? \Yii::t('member', 'no setting') : $befor;
                         switch ($key) {
                             case \Yii::t('member', 'event description op'):
-                                $description = !empty($befor) ? \Yii::t('member', 'event description op') . ' ' . \Yii::t('member', 'comment update after') . ' ' . $befor : $noSetting;
+                                $description = !empty($befor) ? \Yii::t('member', 'event description op') . ' ' . \Yii::t('member', 'comment update after') : $noSetting;
                                 $content .= '<li>' . $description . '</li>';
                                 break;
                             default:
