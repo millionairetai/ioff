@@ -885,14 +885,8 @@ header.main-header{
 /**/
 .register-box{
     width: 600px;
-    max-width: 100%;
     background: #fff;
     padding: 30px;
     border: 1px solid #ddd;
     border-radius: 4px;
-}
-@media (max-width:768px){
-    .register-box{
-        width: 90%;
-    }
 }
