@@ -309,26 +309,7 @@ appRoot.controller('addEventCtrl', ['$rootScope', 'data', '$scope', 'calendarSer
 
 //Display info detail of calendar
 var $dataEditEvent = [];
-appRoot.directive('eventFixed', function ($window) {
-    var $win = angular.element($window); // wrap window object as jQuery object
-
-    return {
-        restrict: 'A',
-        link: function (scope, element, attrs) {
-            var topClass = 'sidebarfixed', // get CSS class
-                    offsetTop = element.offset().top; // get element's top relative to the document
-            $win.on('scroll', function (e) {
-                if ($win.scrollTop() >= offsetTop) {
-                    element.addClass(topClass);
-                    element.css('top', $win.scrollTop() - 50);
-                } else {
-                    element.removeClass(topClass);
-                    element.css('top', '0');
-                }
-            });
-        }
-    };
-}).controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService', 'EventPostService', '$uibModal', '$rootScope', 'dialogMessage', '$routeParams', 'alertify', '$sce', 'PER_PAGE_VIEW_MORE','$location',
+appRoot.controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService', 'EventPostService', '$uibModal', '$rootScope', 'dialogMessage', '$routeParams', 'alertify', '$sce', 'PER_PAGE_VIEW_MORE','$location',
     function ($scope, calendarService, fileService, EventPostService, $uibModal, $rootScope, dialogMessage, $routeParams, alertify, $sce, PER_PAGE_VIEW_MORE, $location) {
         var calendarId = $routeParams.eventId;
         var eventId = $routeParams.eventId;
@@ -468,7 +449,7 @@ appRoot.directive('eventFixed', function ($window) {
             itemPerPage: PER_PAGE_VIEW_MORE,
             totalItems: 0,
             offset: 0,
-            eventId: calendarId
+            eventId: eventId
         };
 
         $scope.eventPost = [];
@@ -499,7 +480,7 @@ appRoot.directive('eventFixed', function ($window) {
         }
 
         $scope.getLastEventPost = function () {
-            EventPostService.getLastEventPost({eventId: calendarId}, function (response) {
+            EventPostService.getLastEventPost({eventId: eventId}, function (response) {
                 if ($scope.eventPost.length > 0 && response.objects.collection) {
                     $scope.eventPost = response.objects.collection.concat($scope.eventPost);
                 } else {
@@ -519,7 +500,7 @@ appRoot.directive('eventFixed', function ($window) {
         //Delete event post
         $scope.deleteEventPost = function (index, id) {
             dialogMessage.open('confirm', $rootScope.$lang.confirm_delete_file, function () {
-                EventPostService.removeEventPost({calendarId: id}, function (data) {
+                EventPostService.removeEventPost({eventId: id}, function (data) {
                     $scope.eventPost.splice(index, 1);
                     alertify.success($rootScope.$lang.remove_event_post_success);
                 });

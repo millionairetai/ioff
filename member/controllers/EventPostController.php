@@ -118,7 +118,7 @@ class EventPostController extends ApiController {
 
             $eventInfo = [];
             if (isset($dataPost['eventId'])) {
-                if (!$eventInfo = Event::getEvent($dataPost['eventId'])) {
+                if (!$eventInfo = Event::getById($dataPost['eventId'])) {
                     throw new \Exception('Get event info fail');
                 }
             }
@@ -214,7 +214,7 @@ class EventPostController extends ApiController {
         $this->_message = \Yii::t('member', 'remove Event post success');
         $transaction = \Yii::$app->db->beginTransaction();
         try {
-            if (!EventPost::deleteAll(['id' => \Yii::$app->request->get('calendarId')])) {
+            if (!EventPost::deleteAll(['id' => \Yii::$app->request->get('eventId')])) {
                 throw new \Exception('remove event post error');
             }
             $transaction->commit();

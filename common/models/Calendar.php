@@ -125,5 +125,15 @@ class Calendar extends ActiveRecord {
     public function getName() {
         return $this->name;
     }
+    
+    /**
+     * Get celendar by id
+     * 
+     * @param integer $eventId
+     * @return string
+     */
+    public static function getById($eventId) {
+        return self::find()->select("name")->where(['id' => $eventId])->one();
+    }
 
 }

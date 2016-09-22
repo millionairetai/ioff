@@ -81,5 +81,15 @@ class Notification extends \common\components\db\ActiveRecord {
         
         return true;
     }
-
+    
+    /**
+     * Make content for notfication
+     * 
+     * @param string $type
+     * @param string $info
+     * @return string
+     */
+    public static function makeContent($type, $info) {
+        return \Yii::$app->user->identity->firstname . " " .$type . " " . $info;
+    }
 }

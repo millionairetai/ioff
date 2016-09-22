@@ -16,6 +16,7 @@ return [
     'or try using the search form'=>'hoặc sử dụng trình tìm kiếm',
     'Email' => 'Email',
     'created' => ' đã tạo ',
+    'edited' => ' đã chỉnh sửa ',
     'Search'=>'Tìm kiếm',
     
     //Calendar

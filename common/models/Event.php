@@ -264,12 +264,12 @@ class Event extends ActiveRecord {
     }
        
     /**
-     * Get Event information
+     * Get Event information by id
      *
      * @param integer $eventId
      * @return array
      */
-    public static function getEvent($eventId) {
+    public static function getById($eventId) {
         return Event::find()->select(['id', 'name'])->where(['id' => $eventId])->one();
     }
 }

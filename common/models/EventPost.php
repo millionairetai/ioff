@@ -100,7 +100,7 @@ class EventPost extends ActiveRecord
     }
     
     /**
-     * Get last event post by event id
+     * Get last event post
      *
      * @return array|boolean
      */
