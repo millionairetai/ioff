@@ -313,12 +313,12 @@ appRoot.controller('addEventCtrl', ['$rootScope', 'data', '$scope', 'calendarSer
 var $dataEditEvent = [];
 appRoot.controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService', 'EventPostService', '$uibModal', '$rootScope', 'dialogMessage', '$routeParams', 'alertify', '$sce', 'PER_PAGE_VIEW_MORE','$location',
     function ($scope, calendarService, fileService, EventPostService, $uibModal, $rootScope, dialogMessage, $routeParams, alertify, $sce, PER_PAGE_VIEW_MORE, $location) {
-        var calendarId = $routeParams.eventId;
+//        var calendarId = $routeParams.eventId;
         var eventId = $routeParams.eventId;
         //set paramter for layout
         $scope.collection = [];
         $scope.getInfoEvent = function () {
-            calendarService.viewEvent({eventId: calendarId}, function (response) {
+            calendarService.viewEvent({eventId: eventId}, function (response) {
                 if (response.objects.error) {
                     $location.path('/calendar');
                 }
@@ -331,7 +331,7 @@ appRoot.controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService',
         //function add event post
         $scope.eventPostData = {
             description: '',
-            eventId: calendarId,
+            eventId: eventId,
         };
         $scope.addEventPost = function () {
             if (($scope.collection.invitations != null)
@@ -351,7 +351,7 @@ appRoot.controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService',
                     alertify.success($rootScope.$lang.event_post_add_success);
                     $scope.eventPostData = {
                         description: '',
-                        eventId: calendarId,
+                        eventId: eventId,
                     };
 
                     $scope.files = [];
@@ -574,7 +574,7 @@ appRoot.controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService',
                     eventPost: function () {
                         return eventPost;
                     },
-                    calendarId: function () {
+                    eventId: function () {
                         return eventId;
                     }
                 }
@@ -615,7 +615,7 @@ appRoot.controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService',
 
 
 //show attend 
-appRoot.controller('showAttendCtrl', ['$scope', 'eventPost', 'calendarId', 'calendarService', '$uibModalInstance',
+appRoot.controller('showAttendCtrl', ['$scope', 'eventPost', 'eventId', 'calendarService', '$uibModalInstance',
     function ($scope, eventPost, eventId, calendarService, $uibModalInstance) {
         $scope.tabsName = eventPost;
         calendarService.viewAttend({eventId: eventId}, function (response) {
