@@ -176,7 +176,7 @@ class EventPostController extends ApiController {
                 ];
             }
             
-            Notification::add($notifications);
+            Notification::batchInsert($notifications);
             $themeEmail = \common\models\EmailTemplate::getThemeCreateEventPost();
             //send email and sms
             if (!empty($arrayEmployees)) {

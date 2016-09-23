@@ -95,4 +95,20 @@ class EventConfirmation extends \common\components\db\ActiveRecord {
     public static function getByEmployeeIdAndEventId($employeeId, $eventId) {
         return EventConfirmation::find()->where(['employee_id' => $employeeId, 'event_id' => $eventId])->one();
     }
+    
+    /**
+     * Add batch records of 
+     * 
+     * @param array $dataInsert
+     * @return boolean
+     */
+    public static function batchInsert($dataInsert) {
+        if (!empty($dataInsert)) {
+            if (!\Yii::$app->db->createCommand()->batchInsert(self::tableName(), array_keys($dataInsert[0]), $dataInsert)->execute()) {
+                throw new \Exception('Save record to table event confirmation fail');
+            }
+        }
+        
+        return true;
+    }
 }

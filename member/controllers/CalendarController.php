@@ -289,16 +289,15 @@ class CalendarController extends ApiController {
                 throw new \Exception($this->_message);
             }
 
-            $megreDataDeparmentAndEmployee = $this->_megreDataDeparmentAndEmployee($dataPost);
+            $mergeDataDeparmentAndEmployee = $this->_mergeDataDeparmentAndEmployee($dataPost);
             //update table invitation
-            $this->_updataInvitation($dataPost['id'], $megreDataDeparmentAndEmployee);
-
-            $megreEmployee = $this->_megreDataEmployee($dataPost);
+            $this->_updataInvitation($dataPost['id'], $mergeDataDeparmentAndEmployee);
+            $mergeEmployee = $this->_mergeDataEmployee($dataPost);
             //update table Event_confirmation
-            $this->_updataEventConfirmation($dataPost['id'], $megreEmployee);
+            $this->_updataEventConfirmation($dataPost['id'], $mergeEmployee);
 
             //update table Remind
-            $this->_updataRemind($dataPost, $megreEmployee, $ob);
+            $this->_updataRemind($dataPost, $mergeEmployee, $ob);
             //move file
             $dataPost['fileList'] = File::addFiles($_FILES, \Yii::$app->params['PathUpload'], $ob->id, File::TABLE_EVENT);
 
@@ -315,17 +314,16 @@ class CalendarController extends ApiController {
             }
 
             //update table Notification
-            if (!empty($megreEmployee['employees'])) {
+            if (!empty($mergeEmployee['employees'])) {
                 //save sms
                 $dataInsertSms = $dataInsertNotification = [];
-                foreach ($megreEmployee['employees'] AS $key => $val) {
+                foreach ($mergeEmployee['employees'] AS $key => $val) {
                     $dataInsertNotification[] = [
                         'owner_id' => $ob->id,
                         'owner_table' => Event::tableName(),
                         'employee_id' => $val,
                         'type' => Activity::TYPE_EDIT_EVENT,
                         'content' => Notification::makeContent(\Yii::t('common', 'edited'), $ob->name),
-//                        'content' => \Yii::$app->user->identity->firstname . " " . \Yii::t('common', 'created') . " " . $ob->name,
                         'owner_employee_id' => 0
                     ];
 
@@ -340,7 +338,6 @@ class CalendarController extends ApiController {
                             'employee_id' => $val,
                             'owner_table' => Event::tableName(),
                             'content' => Sms::makeContent(\Yii::t('common', 'edited'), $ob->name),
-//                            'content' => \Yii::$app->user->identity->firstname . " " . \Yii::t('common', 'created') . " " . $ob->name,
                             'is_success' => true,
                             'fee' => 0,
                             'agency_gateway' => 'esms'
@@ -348,14 +345,13 @@ class CalendarController extends ApiController {
                     }
                 }
 
-                Invitee::add($dataInsertInvitee);
-                Notification::add($dataInsertNotification);
-                Sms::add($dataInsertSms);
+                Invitee::batchInsert($dataInsertInvitee);
+                Notification::batchInsert($dataInsertNotification);
+                Sms::batchInsert($dataInsertSms);
             }
 
             //Write log history for editing this project.
-
-            $dataPost['employeeMegre'] = $megreDataDeparmentAndEmployee;
+            $dataPost['employeeMegre'] = $mergeDataDeparmentAndEmployee;
             if (($eventHistory = $this->_makeEventHistory($dataPost)) && !empty($eventHistory)) {
                 //insert project_post table:
                 $eventPost = new EventPost();
@@ -375,17 +371,15 @@ class CalendarController extends ApiController {
             $themeEmail = \common\models\EmailTemplate::getThemeEditEvent();
             $themeSms = \common\models\SmsTemplate::getThemeEditEvent();
             //send email and sms
-//            if (!empty($megreEmployee['employees']) && ($ob->sms)) {
-            if (!empty($megreEmployee['employees'])) {
+//            if (!empty($mergeEmployee['employees']) && ($ob->sms)) {
+            if (!empty($mergeEmployee['employees'])) {
                 $dataSend = [
                     '{creator name}' => \Yii::$app->user->identity->fullname,
                     '{event name}' => $ob->name
                 ];
                 
-                var_dump($dataSend);die;
-                
                 $employees = new Employee();
-                foreach ($megreEmployee['employees'] as $item) {
+                foreach ($mergeEmployee['employees'] as $item) {
                     $employees->sendMail($dataSend, $themeEmail);
                     if ($ob->sms) {
                         $employees->sendSms($dataSend, $themeSms);
@@ -450,7 +444,7 @@ class CalendarController extends ApiController {
      * @param array $dataPost data get from employee.
      * @return array
      */
-    private function _megreDataEmployee($dataPost = []) {
+    private function _mergeDataEmployee($dataPost = []) {
         if (empty($dataPost))
             return false;
 
@@ -481,7 +475,7 @@ class CalendarController extends ApiController {
      * @param array $dataPost data get from employee.
      * @return array
      */
-    private function _megreDataDeparmentAndEmployee($dataPost = []) {
+    private function _mergeDataDeparmentAndEmployee($dataPost = []) {
         if (empty($dataPost))
             return false;
 
@@ -550,11 +544,8 @@ class CalendarController extends ApiController {
             }
         }
 
-        if (!empty($dataInsertInvitation)) {
-            if (!\Yii::$app->db->createCommand()->batchInsert(EventConfirmation::tableName(), array_keys($dataInsertInvitation[0]), $dataInsertInvitation)->execute()) {
-                throw new \Exception('Save record to table Project Participant fail');
-            }
-        }
+        EventConfirmation::batchInsert($dataInsertInvitation);
+        
         return true;
     }
 
@@ -610,11 +601,7 @@ class CalendarController extends ApiController {
             }
         }
 
-        if (!empty($dataInsertInvitation)) {
-            if (!\Yii::$app->db->createCommand()->batchInsert(Remind::tableName(), array_keys($dataInsertInvitation[0]), $dataInsertInvitation)->execute()) {
-                throw new \Exception('Save record to table Project Participant fail');
-            }
-        }
+        Remind::batchInsert($dataInsertInvitation);
         return true;
     }
 
@@ -683,11 +670,8 @@ class CalendarController extends ApiController {
                 ];
             }
         }
-        if (!empty($dataInsertInvitation)) {
-            if (!\Yii::$app->db->createCommand()->batchInsert(Invitation::tableName(), array_keys($dataInsertInvitation[0]), $dataInsertInvitation)->execute()) {
-                throw new \Exception('Save record to table Project Participant fail');
-            }
-        }
+        
+        Invitation::batchInsert($dataInsertInvitation);
         return true;
     }
 
