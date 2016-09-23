@@ -20,7 +20,17 @@
             </div>
             <div class="box-body">
                 <div class="row">
-                    <div class="col-sm-9">
+                    <div class="col-sm-3 pull-right">
+                        <form class="form-group sidebar-form1" ng-submit="search()">
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Name"/>
+                                <span class="input-group-btn">
+                                    <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
+                                </span>                     
+                            </div>
+                        </form>
+                    </div> 
+                    <div class="col-sm-9 pull-left">
                         <div class="nav-tabs-custom">
                             <ul class="nav nav-tabs">
                                 <li class="active"><a href="/employee#employee" data-toggle="tab" aria-expanded="true">Employee</a></li>
@@ -258,17 +268,7 @@
                             </div>
                             <!-- /.tab-content -->
                         </div>
-                    </div>
-                    <div class="col-sm-3">
-                        <form class="form-group sidebar-form1" ng-submit="search()">
-                            <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Name"/>
-                                <span class="input-group-btn">
-                                    <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
-                                </span>                     
-                            </div>
-                        </form>
-                    </div>              
+                    </div>             
                 </div>
                 <div class="clear"></div>  
                 <div class="box-footer text-center" ></div><!-- /.box-footer-->
