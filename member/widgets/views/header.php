@@ -50,7 +50,7 @@
                     <ul class="dropdown-menu">
                         <li class="header">Bạn có {{$root.sum_notify}} thông báo</li>
                         <li>
-                            <div infinite-scroll="getNotifications()" infinite-scroll-distance="3">
+                            <div infinite-scroll-distance="3">
                             <!-- inner menu: contains the actual data -->
                             <ul class="menu">
                                 <li ng-repeat="notification in notifications"><!-- start message -->
