@@ -569,7 +569,10 @@ appRoot.controller('dialogMessage', [ '$rootScope','$scope', '$uibModalInstance'
         
     }]);
 
-//
+appRoot.controller('EmployeeCtrl', ['$scope', '$uibModal', 'authorityService', '$rootScope', 'alertify', 'PER_PAGE', 'MAX_PAGE_SIZE',
+    function ($scope, $uibModal, authorityService, $rootScope, alertify, PER_PAGE, MAX_PAGE_SIZE) {
+
+    }]);//
 appRoot.controller('homeCtrl', ['$scope','dialogMessage','alertify',function($scope,dialogMessage,alertify) {
     
     $scope.errorDialog = function(){

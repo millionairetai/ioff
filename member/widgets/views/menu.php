@@ -27,6 +27,11 @@ use yii\helpers\Url;
               </a>
             </li>
             <li>
+              <a href="#employee">
+                <i class="fa fa-calendar"></i> <span>Employee</span> 
+              </a>
+            </li>
+            <li>
               <a href="#authority">
                 <i class="fa fa-group"></i> <span>Authorities</span> 
               </a>

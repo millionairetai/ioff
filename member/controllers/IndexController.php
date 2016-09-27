@@ -36,6 +36,18 @@ class IndexController extends Controller {
         return $this->redirect('/');
     }
 
+    /*
+     * Register account
+     */
+    public function actionRegister() {
+        if (\Yii::$app->user->isGuest) {
+            $this->layout = "registration";
+            return $this->render('registration', []);
+        }
+
+        return $this->redirect('/');
+    }
+
     /* ------------------ minify js ------------------------------- */
 
     public function actionMinify() {
