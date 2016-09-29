@@ -20,7 +20,9 @@
             </div>
             <div class="box-body">
                 <div class="row">
-                    <div class="col-sm-3 pull-right">
+                    <div class="row">
+                    <div class="col-sm-9"></div>
+                    <div class="col-sm-3">
                         <form class="form-group sidebar-form1" ng-submit="search()">
                             <div class="input-group">
                                 <input type="text" class="form-control" placeholder="Name"/>
@@ -29,7 +31,9 @@
                                 </span>                     
                             </div>
                         </form>
-                    </div> 
+                    </div>              
+                </div>
+                <div class="clear"></div>  
                     <div class="col-sm-9 pull-left">
                         <div class="nav-tabs-custom">
                             <ul class="nav nav-tabs">
@@ -37,202 +41,29 @@
                                 <li class=""><a href="/employee#invited" data-toggle="tab" aria-expanded="false">Invited</a></li>
                                 <li class=""><a href="/employee#all" data-toggle="tab" aria-expanded="false">All</a></li>
                                 <li class=""><a href="/employee#inactive" data-toggle="tab" aria-expanded="false">Inactive</a></li>
-                                <li class="pull-right"><a href="#" class="text-muted"><i class="fa fa-gear"></i></a></li>
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane active" id="employee">
                                     <div class="list-employee clearfix">
-                                        <div class="item-employee">
+                                        <div ng-repeat="employee in employees" class="item-employee">
                                             <dl>
-                                                <dt>Dương Hoàng Tuấn</dt>
+                                                <dt>{{employee.fullname}}</dt>
                                                 <dd class="imgleft">
                                                     <div class="image">
-                                                        <img src="/flies/employee/8.jpg" class="img-circle user-image" alt="User Image">
+                                                        <img src="{{employee.image}}" class="img-circle user-image" alt="User Image">
                                                         <a href="#">Edit</a>
                                                     </div>
-
                                                     <div class="info">
-                                                        <p><a href="#" class="btn btn-info btn-xs">Admin</a></p>
-                                                        <p>Department: Digital marketing</p>
-                                                        <p>Email: hoang_tuan@gmail.com</p>
-                                                        <p>Status: <a href="#" class="btn btn-success btn-xs">Active</a></p>
+                                                        <p ng-show="employee.is_admin"><a href="#" class="btn btn-info btn-xs">Admin</a></p>
+                                                        <p>Department: {{employee.department}}</p>
+                                                        <p>Email: {{employee.email}}</p>
+                                                        <p>Status: <a href="#" class="btn btn-success btn-xs">{{employee.status}}</a></p>
 
                                                     </div>
                                                 </dd>
                                             </dl>
-                                        </div><!-- End item employee-->
-                                        <div class="item-employee">
-                                            <dl>
-                                                <dt>Dương Hoàng Tuấn</dt>
-                                                <dd class="imgleft">
-                                                    <div class="image">
-                                                        <img src="/flies/employee/8.jpg" class="img-circle user-image" alt="User Image">
-                                                        <a href="#">Edit</a>
-                                                    </div>
-
-                                                    <div class="info">
-                                                        <p><a href="#" class="btn btn-info btn-xs">Admin</a></p>
-                                                        <p>Department: Digital marketing</p>
-                                                        <p>Email: hoang_tuan@gmail.com</p>
-                                                        <p>Status: <a href="#" class="btn btn-success btn-xs">Active</a></p>
-
-                                                    </div>
-                                                </dd>
-                                            </dl>
-                                        </div><!-- End item employee-->
-                                        <div class="item-employee">
-                                            <dl>
-                                                <dt>Dương Hoàng Tuấn</dt>
-                                                <dd class="imgleft">
-                                                    <div class="image">
-                                                        <img src="/flies/employee/8.jpg" class="img-circle user-image" alt="User Image">
-                                                        <a href="#">Edit</a>
-                                                    </div>
-
-                                                    <div class="info">
-                                                        <p><a href="#" class="btn btn-info btn-xs">Admin</a></p>
-                                                        <p>Department: Digital marketing</p>
-                                                        <p>Email: hoang_tuan@gmail.com</p>
-                                                        <p>Status: <a href="#" class="btn btn-success btn-xs">Active</a></p>
-
-                                                    </div>
-                                                </dd>
-                                            </dl>
-                                        </div><!-- End item employee-->
-                                        <div class="item-employee">
-                                            <dl>
-                                                <dt>Dương Hoàng Tuấn</dt>
-                                                <dd class="imgleft">
-                                                    <div class="image">
-                                                        <img src="/flies/employee/8.jpg" class="img-circle user-image" alt="User Image">
-                                                        <a href="#">Edit</a>
-                                                    </div>
-
-                                                    <div class="info">
-                                                        <p><a href="#" class="btn btn-info btn-xs">Admin</a></p>
-                                                        <p>Department: Digital marketing</p>
-                                                        <p>Email: hoang_tuan@gmail.com</p>
-                                                        <p>Status: <a href="#" class="btn btn-success btn-xs">Active</a></p>
-
-                                                    </div>
-                                                </dd>
-                                            </dl>
-                                        </div><!-- End item employee-->
-                                        <div class="item-employee">
-                                            <dl>
-                                                <dt>Dương Hoàng Tuấn</dt>
-                                                <dd class="imgleft">
-                                                    <div class="image">
-                                                        <img src="/flies/employee/8.jpg" class="img-circle user-image" alt="User Image">
-                                                        <a href="#">Edit</a>
-                                                    </div>
-
-                                                    <div class="info">
-                                                        <p><a href="#" class="btn btn-info btn-xs">Admin</a></p>
-                                                        <p>Department: Digital marketing</p>
-                                                        <p>Email: hoang_tuan@gmail.com</p>
-                                                        <p>Status: <a href="#" class="btn btn-success btn-xs">Active</a></p>
-
-                                                    </div>
-                                                </dd>
-                                            </dl>
-                                        </div><!-- End item employee-->
-                                        <div class="item-employee">
-                                            <dl>
-                                                <dt>Dương Hoàng Tuấn</dt>
-                                                <dd class="imgleft">
-                                                    <div class="image">
-                                                        <img src="/flies/employee/8.jpg" class="img-circle user-image" alt="User Image">
-                                                        <a href="#">Edit</a>
-                                                    </div>
-
-                                                    <div class="info">
-                                                        <p><a href="#" class="btn btn-info btn-xs">Admin</a></p>
-                                                        <p>Department: Digital marketing</p>
-                                                        <p>Email: hoang_tuan@gmail.com</p>
-                                                        <p>Status: <a href="#" class="btn btn-success btn-xs">Active</a></p>
-
-                                                    </div>
-                                                </dd>
-                                            </dl>
-                                        </div><!-- End item employee-->
-                                        <div class="item-employee">
-                                            <dl>
-                                                <dt>Dương Hoàng Tuấn</dt>
-                                                <dd class="imgleft">
-                                                    <div class="image">
-                                                        <img src="/flies/employee/8.jpg" class="img-circle user-image" alt="User Image">
-                                                        <a href="#">Edit</a>
-                                                    </div>
-
-                                                    <div class="info">
-                                                        <p><a href="#" class="btn btn-info btn-xs">Admin</a></p>
-                                                        <p>Department: Digital marketing</p>
-                                                        <p>Email: hoang_tuan@gmail.com</p>
-                                                        <p>Status: <a href="#" class="btn btn-success btn-xs">Active</a></p>
-
-                                                    </div>
-                                                </dd>
-                                            </dl>
-                                        </div><!-- End item employee-->
-                                        <div class="item-employee">
-                                            <dl>
-                                                <dt>Dương Hoàng Tuấn</dt>
-                                                <dd class="imgleft">
-                                                    <div class="image">
-                                                        <img src="/flies/employee/8.jpg" class="img-circle user-image" alt="User Image">
-                                                        <a href="#">Edit</a>
-                                                    </div>
-
-                                                    <div class="info">
-                                                        <p><a href="#" class="btn btn-info btn-xs">Admin</a></p>
-                                                        <p>Department: Digital marketing</p>
-                                                        <p>Email: hoang_tuan@gmail.com</p>
-                                                        <p>Status: <a href="#" class="btn btn-success btn-xs">Active</a></p>
-
-                                                    </div>
-                                                </dd>
-                                            </dl>
-                                        </div><!-- End item employee-->
-                                        <div class="item-employee">
-                                            <dl>
-                                                <dt>Dương Hoàng Tuấn</dt>
-                                                <dd class="imgleft">
-                                                    <div class="image">
-                                                        <img src="/flies/employee/8.jpg" class="img-circle user-image" alt="User Image">
-                                                        <a href="#">Edit</a>
-                                                    </div>
-
-                                                    <div class="info">
-                                                        <p><a href="#" class="btn btn-info btn-xs">Admin</a></p>
-                                                        <p>Department: Digital marketing</p>
-                                                        <p>Email: hoang_tuan@gmail.com</p>
-                                                        <p>Status: <a href="#" class="btn btn-success btn-xs">Active</a></p>
-
-                                                    </div>
-                                                </dd>
-                                            </dl>
-                                        </div><!-- End item employee-->
-                                        <div class="item-employee">
-                                            <dl>
-                                                <dt>Dương Hoàng Tuấn</dt>
-                                                <dd class="imgleft">
-                                                    <div class="image">
-                                                        <img src="/flies/employee/8.jpg" class="img-circle user-image" alt="User Image">
-                                                        <a href="#">Edit</a>
-                                                    </div>
-
-                                                    <div class="info">
-                                                        <p><a href="#" class="btn btn-info btn-xs">Admin</a></p>
-                                                        <p>Department: Digital marketing</p>
-                                                        <p>Email: hoang_tuan@gmail.com</p>
-                                                        <p>Status: <a href="#" class="btn btn-success btn-xs">Active</a></p>
-
-                                                    </div>
-                                                </dd>
-                                            </dl>
-                                        </div><!-- End item employee-->
-                                        
+                                        </div>
+                                        <!-- End item employee-->
                                     </div>
                                 </div>
                                 <!-- /.tab-pane -->

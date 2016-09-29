@@ -105,6 +105,13 @@ class Employee extends ActiveRecord implements IdentityInterface
             [['status_id'], 'default', 'value' => self::STATUS_ACTIVE],
             [['status_id'], 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
         ];
+        
+        // username, email and password are all required in "register" scenario
+//        [['username', 'email', 'password'], 'required', 'on' => self::SCENARIO_REGISTER],
+
+        // username and password are required in "login" scenario
+//        [['username', 'password'], 'required', 'on' => self::SCENARIO_LOGIN],
+//    ];
     }
 
     /**
@@ -385,8 +392,47 @@ class Employee extends ActiveRecord implements IdentityInterface
             $query->onCondition(Company::tableName().'.id ='.\Yii::$app->user->getCompanyId());
         }]);
     }
-                    
+       
+    /**
+     * Get status
+     * 
+     * @return object
+     */
+    public function getStatus() {
+    	return $this->hasOne(Status::className(), ['id'=>'status_id']);        
+    }
+
+    /**
+     * Get department
+     * 
+     * @return object
+     */
+    public function getDepartment() {
+    	return $this->hasOne(Department::className(), ['id'=>'department_id']);        
+    }
+
+    /**
+     * Get company
+     * 
+     * @return object
+     */
     public function getCompany(){
         return $this->hasOne(Company::className(), ['id'=>'company_id']);        
+    }
+    
+    /**
+     * Get employee by status name
+     *
+     * @param string $statusName
+     * @return boolean|array
+     */
+    public static function getEmployeesByStatusName($statusName) {
+        $employee = Employee::find()
+                    ->select(['id', 'email', 'firstname', 'lastname', 'profile_image_path', 'status_id', 'department_id'])
+                    ->with('status', 'department')
+                    ->andCompanyId()
+                    ->all();
+        
+        return $employee;
     }
 }

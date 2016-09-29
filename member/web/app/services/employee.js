@@ -9,6 +9,9 @@ appRoot.factory('employeeService', ['apiService', function (apiService) {
             },
             searchEmployeeByKeyword : function (data,success,error){
                 return apiService.post('employee/search-by-keyword',data,success,error);
+            },
+            getEmployeesByStatus: function (data, success, error){
+                return apiService.get('employee/get-employees',data,success,error);
             }
         };
     }]);

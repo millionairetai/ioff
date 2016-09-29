@@ -109,5 +109,26 @@ class EmployeeController extends ApiController {
                                 
         return $this->sendResponse($error, $message, $objects);
     }    
+    
+    // Get all employees by status
+    public function actionGetEmployees() {
+        $objects = [];
+        $statusName = Yii::$app->request->get('statusName', []);
+        if ($employees = Employee::getEmployeesByStatusName($statusName)) {
+            foreach ($employees as $employee) {
+                $objects[] = [
+                    'id' => $employee->id,
+                    'fullname' => $employee->fullname,
+                    'email' => $employee->email,
+                    'image' => $employee->image,
+                    'is_admin' => $employee->is_admin,
+                    'department' => $employee->department->name,
+                    'status' => $employee->status->name,
+                ];
+            }
+        }
+
+        return $this->sendResponse(false, "", ['employees' => $objects]);
+    }
 
 }

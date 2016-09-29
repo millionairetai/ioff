@@ -26,4 +26,12 @@ class FileController extends ApiController {
 
         return $this->sendResponse($this->_error, $this->_message, []);
     }
+
+    /*
+     * Function remove file screen view project when click button delete
+     */    
+    public function actionDownload()
+    {
+        return \Yii::$app->response->sendFile('path/to/file.txt');
+    }
 }
