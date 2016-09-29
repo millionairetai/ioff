@@ -917,3 +917,23 @@ header.main-header{
         width: 90%;
     }
 }
+
+/* Event */
+#activity .image img{width: 40px;}
+#activity .imgleft dl{
+    margin-left: 50px;
+}
+#activity .calendar-event,#activity .task-event,#activity .photo-event{
+    margin-right: 10px;
+    float: left;
+}
+#activity .task-event{
+    padding: 15px 10px;
+    background: #eee;
+}
+#activity .description{
+    margin: 0 0 10px;
+}
+#activity .event-infomation{
+    float: left;
+}
