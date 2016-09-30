@@ -4,7 +4,7 @@
             Employee manage
         </h1>
         <div class="tool-right">
-            <a class="btn btn-info" ng-click="add()"><i class="fa fa-plus-square"></i> Add</a>
+            <a class="btn btn-info" ng-click="invite()"><i class="fa fa-plus-square"></i> Invite</a>
         </div>
     </section>
     <section class="content">
@@ -51,7 +51,7 @@
                                                 <dd class="imgleft">
                                                     <div class="image">
                                                         <img src="{{employee.image}}" class="img-circle user-image" alt="User Image">
-                                                        <a href="#">Edit</a>
+                                                        <a ng-click="edit()">Edit</a>
                                                     </div>
                                                     <div class="info">
                                                         <p ng-show="employee.is_admin"><a href="#" class="btn btn-info btn-xs">Admin</a></p>

@@ -421,7 +421,7 @@ class Employee extends ActiveRecord implements IdentityInterface
     }
     
     /**
-     * Get employee by status name
+     * Get employees by status name
      *
      * @param string $statusName
      * @return boolean|array
