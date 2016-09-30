@@ -919,12 +919,40 @@ header.main-header{
 }
 
 /* Event */
+.option_-h{
+    list-style: none;
+    padding: 0;
+}
+.option_-h li:first-child{
+    border-left: none;
+}
+.option_-h li a:hover {
+    background-color: #f6f7f9;
+    border-radius: 2px;
+}
+.option_-h li a span{
+    color: #333;
+    font-weight: bold;
+}
+.option_-h li{
+    border-left: 1px solid #e5e5e5;
+    display: inline-block;
+    padding: 0 6px 0 8px;
+}
 #activity .image img{width: 40px;}
 #activity .imgleft dl{
     margin-left: 50px;
+    margin-bottom: 0;
 }
-#activity .calendar-event,#activity .task-event,#activity .photo-event{
+#activity .imgleft dl dd{
+    margin-bottom: 10px;
+}
+#activity .imgleft dl dd:last-child{
+    margin-bottom: 0;
+}
+.item-event .calendar-event,#activity .calendar-event,#activity .task-event,#activity .photo-event{
     margin-right: 10px;
+    width: 100px;
     float: left;
 }
 #activity .task-event{
@@ -936,4 +964,41 @@ header.main-header{
 }
 #activity .event-infomation{
     float: left;
+}
+#activity dl.content-event dd{
+    margin-top: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+}
+#activity .box-comments .comment-text{
+    margin-bottom: 10px;
+}
+#activity .like-contain{
+    background: #fff;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+    margin-top: 10px;
+}
+#activity .like-contain .like-button{
+    margin-right: 10px;
+}
+
+.item-event{
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+}
+.item-event:last-child{
+    padding-bottom: 0;
+    margin-bottom: 0;
+    border-bottom: none;
+}
+.item-event span{
+    display: table-cell;width: 40px;
+    text-align: center;
+    vertical-align: middle;
+    color: #666;
+}
+.item-event dl{
+    display: table-cell;
 }
