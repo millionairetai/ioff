@@ -575,16 +575,19 @@ appRoot.controller('EmployeeCtrl', ['$scope', '$uibModal', 'employeeService', '$
         $scope.params = {
             page: 1,
             limit: 2,
+            statusName: '',
             employeeName: '',
             orderBy: '',
             orderType: ''
         };
 
         $scope.employee = {
-            pageFollow: 1,
-            pageAssigned: 1
+            pageEmployee: 1,
+            pageInvited: 1,
+            pageInactive: 1
         };
 
+        $scope.commonTemplate = '';
         $scope.totalItems = 0;
         $scope.employees = [];
         $scope.maxPageSize = MAX_PAGE_SIZE;
@@ -592,6 +595,7 @@ appRoot.controller('EmployeeCtrl', ['$scope', '$uibModal', 'employeeService', '$
             switch (type) {
                 case 'employee':
                     {
+                        $scope.params.statusName = 'active';
                         $scope.params.page = $scope.employee.pageEmployee;
                         employeeService.getEmployeesByStatus($scope.params, function (response) {
                             $scope.employees = response.objects.employees;
@@ -601,6 +605,7 @@ appRoot.controller('EmployeeCtrl', ['$scope', '$uibModal', 'employeeService', '$
                     break;
                 case 'invited':
                     {
+                        $scope.params.statusName = 'invited';
                         $scope.params.page = $scope.employee.pageInvited;
                         employeeService.getEmployeesByStatus($scope.params, function (response) {
                             $scope.employees = response.objects.employees;
@@ -610,7 +615,8 @@ appRoot.controller('EmployeeCtrl', ['$scope', '$uibModal', 'employeeService', '$
                     break;
                 case 'inactive':
                     {
-                        $scope.params.page = $scope.employee.pageInactived;
+                        $scope.params.statusName = 'inactive';
+                        $scope.params.page = $scope.employee.pageInactive;
                         employeeService.getEmployeesByStatus($scope.params, function (response) {
                             $scope.employees = response.objects.employees;
                             $scope.totalItems = response.objects.totalItems;

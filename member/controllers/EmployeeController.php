@@ -115,6 +115,7 @@ class EmployeeController extends ApiController {
         $objects = [];
         $itemPerPage = \Yii::$app->request->get('limit');
         $currentPage = \Yii::$app->request->get('page');
+        $currentPage = \Yii::$app->request->get('page');
 //        $search_text = \Yii::$app->request->get('searchText');
         
         $statusName = Yii::$app->request->get('statusName', []);

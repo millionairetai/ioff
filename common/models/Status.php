@@ -12,6 +12,7 @@ use Yii;
  * @property string $name
  * @property string $description
  * @property string $column_name
+ * @property string $owner_table
  * @property string $datetime_created
  * @property string $lastup_datetime
  * @property string $lastup_employee_id
@@ -33,12 +34,12 @@ class Status extends \common\components\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'column_name'], 'required'],
+            [['name', 'column_name', 'owner_table'], 'required'],
             [['description'], 'string'],
             [['company_id', 'datetime_created', 'lastup_datetime', 'lastup_employee_id'], 'integer'],
             [['disabled'], 'boolean'],
             [['name'], 'string', 'max' => 255],
-            [['column_name'], 'string', 'max' => 99]
+            [['column_name', 'owner_table'], 'string', 'max' => 50]
         ];
     }
 
@@ -53,6 +54,7 @@ class Status extends \common\components\db\ActiveRecord
             'name' => 'Name',
             'description' => 'Description',
             'column_name' => 'Column Name',
+            'owner_table' => 'Owner table',
             'datetime_created' => 'Datetime Created',
             'lastup_datetime' => 'Lastup Datetime',
             'lastup_employee_id' => 'Lastup Employee ID',

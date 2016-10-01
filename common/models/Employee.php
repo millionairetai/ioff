@@ -69,8 +69,15 @@ use common\components\db\ActiveRecord;
  */
 class Employee extends ActiveRecord implements IdentityInterface
 {
-    const STATUS_DELETED = 0;
+    const STATUS_DELETED = 20;
+    //Change with database.
     const STATUS_ACTIVE = 10;
+    
+    //Column_name
+    const COLUNM_NAME_ACTIVE = 'employee.active';
+    const COLUNM_NAME_INACTIVE = 'employee.inactive';
+    const COLUNM_NAME_INVITE = 'employee.invite';
+    const COLUNM_NAME_DISABLED = 'employee.disabled';
     
     /**
      * @inheritdoc
@@ -429,13 +436,15 @@ class Employee extends ActiveRecord implements IdentityInterface
     public static function getEmployeesByStatusName($statusName, $itemPerPage, $currentPage, $orderBy = 'datetime_created',
             $orderType = 'DESC') {
         $employee = Employee::find()
-                    ->select(['id', 'email', 'firstname', 'lastname', 'profile_image_path', 'status_id', 'department_id'])
-                    ->with('status', 'department')
-                    ->andCompanyId()
-                    ->limit($itemPerPage)->offset(($currentPage - 1) * $itemPerPage);
+                    ->select(['employee.id', 'email', 'firstname', 'lastname', 'profile_image_path', 'status_id', 'department_id'])
+                    ->joinWith('status', 'department')
+                    ->where(["status.column_name" => 'employee.' . $statusName])
+                    ->andCompanyId(false, 'employee')
+                    ->limit($itemPerPage)
+                    ->offset(($currentPage - 1) * $itemPerPage);
         
         return [
-            'employee' => $employee->orderBy($orderBy . ' ' . $orderType)->all(), 
+            'employee' => $employee->orderBy("employee.$orderBy $orderType")->all(), 
             'totalCount' => (int)$employee->count(),
         ];
     }

@@ -14,12 +14,17 @@ class ActiveQuery extends \yii\db\ActiveQuery
      * @see where()
      * @see orWhere()
      */
-    public function andCompanyId($companyId = false)
+    public function andCompanyId($companyId = false, $table ='')
     {
-        if (!$companyId) {
-            return $this->andWhere(['company_id' => \Yii::$app->user->getCompanyId()]);
+        $column = 'company_id';
+        if ($table) {
+            $column = $table . '.company_id';
         }
         
-        return $this->andWhere(['company_id' => $companyId]);
+        if (!$companyId) {
+            return $this->andWhere([$column => \Yii::$app->user->getCompanyId()]);
+        }
+        
+        return $this->andWhere([$column => $companyId]);
     }
 }
