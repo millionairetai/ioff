@@ -113,9 +113,14 @@ class EmployeeController extends ApiController {
     // Get all employees by status
     public function actionGetEmployees() {
         $objects = [];
+        $itemPerPage = \Yii::$app->request->get('limit');
+        $currentPage = \Yii::$app->request->get('page');
+//        $search_text = \Yii::$app->request->get('searchText');
+        
         $statusName = Yii::$app->request->get('statusName', []);
-        if ($employees = Employee::getEmployeesByStatusName($statusName)) {
-            foreach ($employees as $employee) {
+        $employees = Employee::getEmployeesByStatusName($statusName, $itemPerPage, $currentPage);
+        if ($employees['employee']) {
+            foreach ($employees['employee'] as $employee) {
                 $objects[] = [
                     'id' => $employee->id,
                     'fullname' => $employee->fullname,
@@ -128,7 +133,9 @@ class EmployeeController extends ApiController {
             }
         }
 
-        return $this->sendResponse(false, "", ['employees' => $objects]);
+        $objects['employees'] = $objects;
+        $objects['totalItems'] = (int) $employees['totalCount'];
+        return $this->sendResponse(false, "", $objects);
     }
 
 }

@@ -3,19 +3,50 @@ appRoot.controller('EmployeeCtrl', ['$scope', '$uibModal', 'employeeService', '$
 
         $scope.params = {
             page: 1,
-            limit: PER_PAGE,
+            limit: 2,
             employeeName: '',
             orderBy: '',
             orderType: ''
         };
 
+        $scope.employee = {
+            pageFollow: 1,
+            pageAssigned: 1
+        };
+
         $scope.totalItems = 0;
         $scope.employees = [];
         $scope.maxPageSize = MAX_PAGE_SIZE;
-        $scope.getEmployees = function () {
-            employeeService.getEmployeesByStatus($scope.params, function (res) {
-                $scope.employees = res.objects.employees;
-            });
+        $scope.getEmployees = function (type, $event) {
+            switch (type) {
+                case 'employee':
+                    {
+                        $scope.params.page = $scope.employee.pageEmployee;
+                        employeeService.getEmployeesByStatus($scope.params, function (response) {
+                            $scope.employees = response.objects.employees;
+                            $scope.totalItems = response.objects.totalItems;
+                        });
+                    }
+                    break;
+                case 'invited':
+                    {
+                        $scope.params.page = $scope.employee.pageInvited;
+                        employeeService.getEmployeesByStatus($scope.params, function (response) {
+                            $scope.employees = response.objects.employees;
+                            $scope.totalItems = response.objects.totalItems;
+                        });
+                    }
+                    break;
+                case 'inactive':
+                    {
+                        $scope.params.page = $scope.employee.pageInactived;
+                        employeeService.getEmployeesByStatus($scope.params, function (response) {
+                            $scope.employees = response.objects.employees;
+                            $scope.totalItems = response.objects.totalItems;
+                        });
+                    }
+                    break;
+            }
         };
 
         $scope.invite = function (authority, $index) {
@@ -43,7 +74,7 @@ appRoot.controller('EmployeeCtrl', ['$scope', '$uibModal', 'employeeService', '$
             });
         };
 
-        $scope.getEmployees();
+        $scope.getEmployees('employee', '');
 
     }]);
 

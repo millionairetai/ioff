@@ -426,13 +426,17 @@ class Employee extends ActiveRecord implements IdentityInterface
      * @param string $statusName
      * @return boolean|array
      */
-    public static function getEmployeesByStatusName($statusName) {
+    public static function getEmployeesByStatusName($statusName, $itemPerPage, $currentPage, $orderBy = 'datetime_created',
+            $orderType = 'DESC') {
         $employee = Employee::find()
                     ->select(['id', 'email', 'firstname', 'lastname', 'profile_image_path', 'status_id', 'department_id'])
                     ->with('status', 'department')
                     ->andCompanyId()
-                    ->all();
+                    ->limit($itemPerPage)->offset(($currentPage - 1) * $itemPerPage);
         
-        return $employee;
+        return [
+            'employee' => $employee->orderBy($orderBy . ' ' . $orderType)->all(), 
+            'totalCount' => (int)$employee->count(),
+        ];
     }
 }
