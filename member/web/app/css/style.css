@@ -918,7 +918,8 @@ header.main-header{
     }
 }
 
-/* Event */
+/* Activity-wall */
+/* File, Task option */
 .option_-h{
     list-style: none;
     padding: 0;
@@ -938,7 +939,8 @@ header.main-header{
     border-left: 1px solid #e5e5e5;
     display: inline-block;
     padding: 0 6px 0 8px;
-}
+}/* End File, Task option */
+
 #activity .image img{width: 40px;}
 #activity .imgleft dl{
     margin-left: 50px;
@@ -950,7 +952,7 @@ header.main-header{
 #activity .imgleft dl dd:last-child{
     margin-bottom: 0;
 }
-.item-event .calendar-event,#activity .calendar-event,#activity .task-event,#activity .photo-event{
+#activity .item-event .calendar-event,#activity .calendar-event,#activity .task-event,#activity .photo-event{
     margin-right: 10px;
     width: 100px;
     float: left;
@@ -1001,4 +1003,49 @@ header.main-header{
 }
 .item-event dl{
     display: table-cell;
+}
+
+/* Employee wall */
+#employee-wall .image img{width: 40px;}
+#employee-wall .imgleft dl{
+    margin-left: 50px;
+    margin-bottom: 0;
+}
+#employee-wall .imgleft dl dd{
+    margin-bottom: 10px;
+}
+#employee-wall .imgleft dl dd:last-child{
+    margin-bottom: 0;
+}
+#employee-wall .item-event .calendar-event,#employee-wall .calendar-event,#employee-wall .task-event,#employee-wall .photo-event{
+    margin-right: 10px;
+    width: 100px;
+    float: left;
+}
+#employee-wall .task-event{
+    padding: 15px 10px;
+    background: #eee;
+}
+#employee-wall .description{
+    margin: 0 0 10px;
+}
+#employee-wall .event-infomation{
+    float: left;
+}
+#employee-wall dl.content-event dd{
+    margin-top: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+}
+#employee-wall .box-comments .comment-text{
+    margin-bottom: 10px;
+}
+#employee-wall .like-contain{
+    background: #fff;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+    margin-top: 10px;
+}
+#employee-wall .like-contain .like-button{
+    margin-right: 10px;
 }
