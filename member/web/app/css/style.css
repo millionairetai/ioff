@@ -17,6 +17,10 @@ a:focus{
     float: left;
     margin-right: 10px;
 }
+/* */
+.content .box{
+    margin-bottom: 10px;
+}
 /* Custom dialog/modal headers */
 .dialog-header-warning { background-color: #EA9F0D; }
 .dialog-header-primary { background-color: #1AB394; }
@@ -940,7 +944,6 @@ header.main-header{
     display: inline-block;
     padding: 0 6px 0 8px;
 }/* End File, Task option */
-
 #activity .image img{width: 40px;}
 #activity .imgleft dl{
     margin-left: 50px;
