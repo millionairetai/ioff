@@ -55,6 +55,9 @@ appRoot.controller('addProjectCtrl', ['socketService','$scope', 'projectService'
         $scope.files = [];
         $scope.people = [];
         $scope.employees = [];
+        $scope.open_start_datetime = false;
+        $scope.open_end_datetime = false;
+        
         $scope.project = {
             parent_id: 0,
             manager: null,
