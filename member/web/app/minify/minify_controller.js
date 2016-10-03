@@ -570,21 +570,22 @@ appRoot.controller('dialogMessage', [ '$rootScope','$scope', '$uibModalInstance'
     }]);
 
 appRoot.controller('EmployeeCtrl', ['$scope', '$uibModal', 'employeeService', '$rootScope', 'alertify', 'PER_PAGE', 'MAX_PAGE_SIZE',
-    function ($scope, $uibModal, employeeService, $rootScope, alertify, PER_PAGE, MAX_PAGE_SIZE) {
+    function ($scope, $uibModal, employeeService, alertify, PER_PAGE, MAX_PAGE_SIZE) {
 
         $scope.params = {
             page: 1,
             limit: 2,
             statusName: '',
-            employeeName: '',
             orderBy: '',
-            orderType: ''
+            orderType: '',
+            searchName: ''
         };
 
         $scope.employee = {
             pageEmployee: 1,
             pageInvited: 1,
-            pageInactive: 1
+            pageInactive: 1,
+            pageAll: 1
         };
 
         $scope.commonTemplate = '';
@@ -592,39 +593,57 @@ appRoot.controller('EmployeeCtrl', ['$scope', '$uibModal', 'employeeService', '$
         $scope.employees = [];
         $scope.maxPageSize = MAX_PAGE_SIZE;
         $scope.getEmployees = function (type, $event) {
+            if ($event != '') {
+                $event.preventDefault();
+            }
+            
+            //check if this tab is checked, we don't get ajax again.
+            if ($($event.target).parent().hasClass('active')) {
+                return true;
+            }
+            
+            if ($scope.params.searchName) {
+                angular.element('.nav-item').removeClass('active');
+                angular.element('#all_search').addClass('active');
+            }
+            
             switch (type) {
                 case 'employee':
                     {
                         $scope.params.statusName = 'active';
                         $scope.params.page = $scope.employee.pageEmployee;
-                        employeeService.getEmployeesByStatus($scope.params, function (response) {
-                            $scope.employees = response.objects.employees;
-                            $scope.totalItems = response.objects.totalItems;
-                        });
                     }
                     break;
                 case 'invited':
                     {
                         $scope.params.statusName = 'invited';
                         $scope.params.page = $scope.employee.pageInvited;
-                        employeeService.getEmployeesByStatus($scope.params, function (response) {
-                            $scope.employees = response.objects.employees;
-                            $scope.totalItems = response.objects.totalItems;
-                        });
                     }
                     break;
                 case 'inactive':
                     {
                         $scope.params.statusName = 'inactive';
                         $scope.params.page = $scope.employee.pageInactive;
-                        employeeService.getEmployeesByStatus($scope.params, function (response) {
-                            $scope.employees = response.objects.employees;
-                            $scope.totalItems = response.objects.totalItems;
-                        });
+                    }
+                    break;
+                case 'all':
+                    {
+                        $scope.params.statusName = '';
+                        $scope.params.page = $scope.employee.pageAll;
                     }
                     break;
             }
+
+            employeeService.getEmployeesByStatus($scope.params, function (response) {
+                $scope.employees = response.objects.employees;
+                $scope.totalItems = response.objects.totalItems;
+            });
         };
+        
+        //search by task name
+        $scope.search = function (type) {
+            $scope.getEmployees(type, '');
+        }
 
         $scope.invite = function (authority, $index) {
             var modalInstance = $uibModal.open({
@@ -655,8 +674,24 @@ appRoot.controller('EmployeeCtrl', ['$scope', '$uibModal', 'employeeService', '$
 
     }]);
 
-appRoot.controller('InvitationCtrl', ['$scope', '$uibModalInstance', '$rootScope', 'alertify', 'dialogMessage',
-    function ($scope, $uibModalInstance, $rootScope, alertify, dialogMessage) {
+appRoot.controller('InvitationCtrl', ['$scope', '$uibModalInstance', 'employeeService', '$rootScope', 'alertify', 'dialogMessage',
+    function ($scope, $uibModalInstance, employeeService, $rootScope, alertify, dialogMessage) {
+        $scope.invitation = {
+            message: '     Please join me in our new intranet. This is a place where everyone can collaborate on projects, coordinate tasks and schedules, and build our knowledge base, ',
+            emails: ''
+        };
+        
+        $scope.invite = function () {
+            //Check validation email.
+            //Check validation message.
+            if (employeeService.validateInvitation($scope.invitation)) {
+                employeeService.invite($scope.invitation, function (response) {
+                    $scope.employees = response.objects.employees;
+                    $scope.totalItems = response.objects.totalItems;
+                });
+            }
+        }
+        
         $scope.cancel = function () {
             $uibModalInstance.dismiss();
         };

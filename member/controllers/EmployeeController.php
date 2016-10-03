@@ -115,14 +115,13 @@ class EmployeeController extends ApiController {
         $objects = [];
         $itemPerPage = \Yii::$app->request->get('limit');
         $currentPage = \Yii::$app->request->get('page');
-        $currentPage = \Yii::$app->request->get('page');
-//        $search_text = \Yii::$app->request->get('searchText');
-        
+        $searchName = \Yii::$app->request->get('searchName');
         $statusName = Yii::$app->request->get('statusName', []);
-        $employees = Employee::getEmployeesByStatusName($statusName, $itemPerPage, $currentPage);
+        $employees = Employee::getEmployeesByStatusName($statusName, $searchName, $itemPerPage, $currentPage);
+        
         if ($employees['employee']) {
             foreach ($employees['employee'] as $employee) {
-                $objects[] = [
+                $objects['employees'][] = [
                     'id' => $employee->id,
                     'fullname' => $employee->fullname,
                     'email' => $employee->email,
@@ -134,7 +133,31 @@ class EmployeeController extends ApiController {
             }
         }
 
-        $objects['employees'] = $objects;
+        $objects['totalItems'] = (int) $employees['totalCount'];
+        return $this->sendResponse(false, "", $objects);
+    }
+    
+    // Get all employees by status
+    public function actionInvite() {
+        $objects = [];
+        $message = \Yii::$app->request->post('message');
+        $emails = \Yii::$app->request->get('emails');
+        $employees = Employee::getEmployeesByStatusName();
+        
+        if ($employees['employee']) {
+            foreach ($employees['employee'] as $employee) {
+                $objects['employees'][] = [
+                    'id' => $employee->id,
+                    'fullname' => $employee->fullname,
+                    'email' => $employee->email,
+                    'image' => $employee->image,
+                    'is_admin' => $employee->is_admin,
+                    'department' => $employee->department->name,
+                    'status' => $employee->status->name,
+                ];
+            }
+        }
+
         $objects['totalItems'] = (int) $employees['totalCount'];
         return $this->sendResponse(false, "", $objects);
     }

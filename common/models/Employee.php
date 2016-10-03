@@ -67,38 +67,35 @@ use common\components\db\ActiveRecord;
  * @property string $lastup_employee_id
  * @property integer $disabled
  */
-class Employee extends ActiveRecord implements IdentityInterface
-{
+class Employee extends ActiveRecord implements IdentityInterface {
+
     const STATUS_DELETED = 20;
     //Change with database.
     const STATUS_ACTIVE = 10;
-    
     //Column_name
     const COLUNM_NAME_ACTIVE = 'employee.active';
     const COLUNM_NAME_INACTIVE = 'employee.inactive';
     const COLUNM_NAME_INVITE = 'employee.invite';
     const COLUNM_NAME_DISABLED = 'employee.disabled';
-    
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return '{{%employee}}';
     }
 
-    public static function primaryKey()
-    {
+    public static function primaryKey() {
         return ['id'];
     }
+
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['company_id', 'manager_employee_id', 'authority_id', 'position_id', 'department_id', 'bank_id', 'religion_id', 'marriage_status_id', 'nation_id', 'province_id', 'country_id', 'status_id', 'language_id', 'is_admin', 'birthdate', 'card_issue_id', 'passport_expire', 'passport_issue', 'tax_date_issue', 'start_working_date', 'stop_working_date', 'is_visible', 'last_activity_datetime', 'last_login_datetime', 'datetime_created', 'lastup_datetime', 'lastup_employee_id'], 'integer'],
-            [['authority_id', 'position_id', 'department_id', 'bank_id', 'religion_id', 'marriage_status_id', 'nation_id', 'province_id', 'country_id', 'status_id', 'firstname', 'password','lastname', 'email', 'birthdate'], 'required'],
+            [['authority_id', 'position_id', 'department_id', 'bank_id', 'religion_id', 'marriage_status_id', 'nation_id', 'province_id', 'country_id', 'status_id', 'firstname', 'password', 'lastname', 'email', 'birthdate'], 'required'],
             [['city_code', 'firstname', 'lastname', 'email', 'work_email'], 'string', 'max' => 99],
             [['password'], 'string', 'max' => 64],
             [['code', 'telephone', 'mobile_phone', 'work_phone', 'card_place_id'], 'string', 'max' => 50],
@@ -112,10 +109,9 @@ class Employee extends ActiveRecord implements IdentityInterface
             [['status_id'], 'default', 'value' => self::STATUS_ACTIVE],
             [['status_id'], 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
         ];
-        
+
         // username, email and password are all required in "register" scenario
 //        [['username', 'email', 'password'], 'required', 'on' => self::SCENARIO_REGISTER],
-
         // username and password are required in "login" scenario
 //        [['username', 'password'], 'required', 'on' => self::SCENARIO_LOGIN],
 //    ];
@@ -124,8 +120,7 @@ class Employee extends ActiveRecord implements IdentityInterface
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => Yii::t('app', 'ID'),
             'company_id' => 'company_id',
@@ -170,7 +165,7 @@ class Employee extends ActiveRecord implements IdentityInterface
             'tax_code' => Yii::t('app', 'Tax Code'),
             'tax_department' => Yii::t('app', 'Tax Department'),
             'start_working_date' => Yii::t('app', 'Start Working Date'),
-            'stop_working_date'  => Yii::t('app', 'Stop Working Date'),
+            'stop_working_date' => Yii::t('app', 'Stop Working Date'),
             'is_visible' => Yii::t('app', 'Is Visible'),
             'profile_image_path' => Yii::t('app', 'Profile Image Path'),
             'language_code' => Yii::t('app', 'Language code'),
@@ -185,20 +180,18 @@ class Employee extends ActiveRecord implements IdentityInterface
             'disabled' => Yii::t('app', 'Disabled'),
         ];
     }
-    
+
     /**
      * @inheritdoc
      */
-    public static function findIdentity($id)
-    {
+    public static function findIdentity($id) {
         return static::findOne(['id' => $id, 'status_id' => self::STATUS_ACTIVE]);
     }
 
     /**
      * @inheritdoc
      */
-    public static function findIdentityByAccessToken($token, $type = null)
-    {
+    public static function findIdentityByAccessToken($token, $type = null) {
         throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
     }
 
@@ -208,25 +201,24 @@ class Employee extends ActiveRecord implements IdentityInterface
      * @param string $email
      * @return static|null
      */
-    public static function findByEmail($email)
-    {
+    public static function findByEmail($email) {
         return static::findOne(['email' => $email, 'status_id' => self::STATUS_ACTIVE]);
     }
+
     /**
      * Finds user by password reset token
      *
      * @param string $token password reset token
      * @return static|null
      */
-    public static function findByPasswordResetToken($token)
-    {
+    public static function findByPasswordResetToken($token) {
         if (!static::isPasswordResetTokenValid($token)) {
             return null;
         }
 
         return static::findOne([
-            'password_reset_token' => $token,
-            'status_id' => self::STATUS_ACTIVE,
+                    'password_reset_token' => $token,
+                    'status_id' => self::STATUS_ACTIVE,
         ]);
     }
 
@@ -236,8 +228,7 @@ class Employee extends ActiveRecord implements IdentityInterface
      * @param string $token password reset token
      * @return boolean
      */
-    public static function isPasswordResetTokenValid($token)
-    {
+    public static function isPasswordResetTokenValid($token) {
         if (empty($token)) {
             return false;
         }
@@ -250,29 +241,25 @@ class Employee extends ActiveRecord implements IdentityInterface
     /**
      * @inheritdoc
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->getPrimaryKey();
     }
-    
-    public function getCompanyId()
-    {
+
+    public function getCompanyId() {
         return $this->company_id;
     }
-    
+
     /**
      * @inheritdoc
      */
-    public function getAuthKey()
-    {
+    public function getAuthKey() {
         return $this->auth_key;
     }
 
     /**
      * @inheritdoc
      */
-    public function validateAuthKey($authKey)
-    {
+    public function validateAuthKey($authKey) {
         return $this->getAuthKey() === $authKey;
     }
 
@@ -282,8 +269,7 @@ class Employee extends ActiveRecord implements IdentityInterface
      * @param string $password password to validate
      * @return boolean if password provided is valid for current user
      */
-    public function validatePassword($password)
-    {
+    public function validatePassword($password) {
         return Yii::$app->security->validatePassword($password, $this->password);
     }
 
@@ -292,35 +278,31 @@ class Employee extends ActiveRecord implements IdentityInterface
      *
      * @param string $password
      */
-    public function setPassword($password)
-    {
+    public function setPassword($password) {
         $this->password = Yii::$app->security->generatePasswordHash($password);
     }
 
     /**
      * Generates "remember me" authentication key
      */
-    public function generateAuthKey()
-    {
+    public function generateAuthKey() {
         $this->auth_key = Yii::$app->security->generateRandomString();
     }
 
     /**
      * Generates new password reset token
      */
-    public function generatePasswordResetToken()
-    {
+    public function generatePasswordResetToken() {
         $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
     }
 
     /**
      * Removes password reset token
      */
-    public function removePasswordResetToken()
-    {
+    public function removePasswordResetToken() {
         $this->password_reset_token = null;
     }
-    
+
     /**
      * Get image profile
      * 
@@ -330,10 +312,10 @@ class Employee extends ActiveRecord implements IdentityInterface
         if ($this->profile_image_path) {
             return Yii::$app->urlManager->baseUrl . "/flies/employee/" . $this->profile_image_path;
         }
-        
+
         return Yii::$app->urlManager->baseUrl . "/flies/employee/" . 'profileImageDefault.jpg';
     }
-    
+
     /**
      * Get full name
      * @return string
@@ -341,41 +323,41 @@ class Employee extends ActiveRecord implements IdentityInterface
 //    public function getFullName(){
 //        return Yii::$app->user->identity->firstname .' '. Yii::$app->user->identity->lastname;
 //    }
-    
+
     /**
      * send email to employee
      */
-    public function sendMail($dataSend,$themeEmail){
-        if(!$themeEmail){
+    public function sendMail($dataSend, $themeEmail) {
+        if (!$themeEmail) {
             return false;
         }
         $body = $themeEmail->body;
         $subject = $themeEmail->subject;
-        foreach($dataSend as $key => $value){
+        foreach ($dataSend as $key => $value) {
             $body = str_replace($key, $value, $body);
         }
-        /*\Yii::$app->mailer->compose()
-        ->setFrom('from@domain.com')
-        ->setTo($this->email)
-        ->setSubject($subject)
-        ->setTextBody($body)
-        ->setHtmlBody($body)
-        ->send();*/
-        
+        /* \Yii::$app->mailer->compose()
+          ->setFrom('from@domain.com')
+          ->setTo($this->email)
+          ->setSubject($subject)
+          ->setTextBody($body)
+          ->setHtmlBody($body)
+          ->send(); */
     }
-    
+
     /**
      * send sms to employee
      */
-    public function sendSms($dataSend,$themeSms){
-        if(!$themeSms){
+    public function sendSms($dataSend, $themeSms) {
+        if (!$themeSms) {
             return false;
         }
         $body = $themeSms->body;
-        foreach($dataSend as $key => $value){
+        foreach ($dataSend as $key => $value) {
             $body = str_replace($key, $value, $body);
         }
     }
+
     /**
      * Update last_ip_address,last_login_datetime after login
      */
@@ -383,30 +365,30 @@ class Employee extends ActiveRecord implements IdentityInterface
         Yii::$app->user->identity->last_ip_address = Yii::$app->request->getUserIP();
         Yii::$app->user->identity->last_login_datetime = time();
         return Yii::$app->user->identity->update();
-    }   
-    
+    }
+
     /**
      * Get employee fullName
      * 
      * @return string
      */
     public function getFullName() {
-    	return $this->firstname . ' ' . $this->lastname;
+        return $this->firstname . ' ' . $this->lastname;
     }
-    
-    public function getAssignedTasks(){
-        return $this->hasMany(Task::className(), ['id'=>'task_id'])->viaTable('task_assignment', ['employee_id' => 'id'])->joinWith(['company'=>function($query){            
-            $query->onCondition(Company::tableName().'.id ='.\Yii::$app->user->getCompanyId());
-        }]);
+
+    public function getAssignedTasks() {
+        return $this->hasMany(Task::className(), ['id' => 'task_id'])->viaTable('task_assignment', ['employee_id' => 'id'])->joinWith(['company' => function($query) {
+                        $query->onCondition(Company::tableName() . '.id =' . \Yii::$app->user->getCompanyId());
+                    }]);
     }
-       
+
     /**
      * Get status
      * 
      * @return object
      */
     public function getStatus() {
-    	return $this->hasOne(Status::className(), ['id'=>'status_id']);        
+        return $this->hasOne(Status::className(), ['id' => 'status_id']);
     }
 
     /**
@@ -415,7 +397,7 @@ class Employee extends ActiveRecord implements IdentityInterface
      * @return object
      */
     public function getDepartment() {
-    	return $this->hasOne(Department::className(), ['id'=>'department_id']);        
+        return $this->hasOne(Department::className(), ['id' => 'department_id']);
     }
 
     /**
@@ -423,29 +405,34 @@ class Employee extends ActiveRecord implements IdentityInterface
      * 
      * @return object
      */
-    public function getCompany(){
-        return $this->hasOne(Company::className(), ['id'=>'company_id']);        
+    public function getCompany() {
+        return $this->hasOne(Company::className(), ['id' => 'company_id']);
     }
-    
+
     /**
      * Get employees by status name
      *
      * @param string $statusName
      * @return boolean|array
      */
-    public static function getEmployeesByStatusName($statusName, $itemPerPage, $currentPage, $orderBy = 'datetime_created',
-            $orderType = 'DESC') {
+    public static function getEmployeesByStatusName($statusName, $searchName, $itemPerPage, $currentPage = 1, $orderBy = 'datetime_created', $orderType = 'DESC') {
         $employee = Employee::find()
-                    ->select(['employee.id', 'email', 'firstname', 'lastname', 'profile_image_path', 'status_id', 'department_id'])
-                    ->joinWith('status', 'department')
-                    ->where(["status.column_name" => 'employee.' . $statusName])
-                    ->andCompanyId(false, 'employee')
-                    ->limit($itemPerPage)
-                    ->offset(($currentPage - 1) * $itemPerPage);
+                ->select(['employee.id', 'email', 'firstname', 'lastname', 'profile_image_path', 'status_id', 'department_id'])
+                ->joinWith('status', 'department');
+
+        if ($statusName) {
+            $employee = $employee->where(["status.column_name" => 'employee.' . $statusName]);
+        }
         
+        if ($searchName) {
+            $employee = $employee->andWhere('employee.firstname LIKE :name', [':name' => '%' . $searchName . '%']);
+        }
+        
+        $employee = $employee->andCompanyId(false, 'employee')->limit($itemPerPage)->offset(($currentPage - 1) * $itemPerPage);
         return [
-            'employee' => $employee->orderBy("employee.$orderBy $orderType")->all(), 
-            'totalCount' => (int)$employee->count(),
+            'employee' => $employee->orderBy("employee.$orderBy $orderType")->all(),
+            'totalCount' => (int) $employee->count(),
         ];
     }
+
 }
