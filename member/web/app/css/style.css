@@ -21,6 +21,11 @@ a:focus{
 .content .box{
     margin-bottom: 10px;
 }
+.sidebarfixed {
+    position: absolute;
+    width: calc(100% - 15px);
+    left: 0;
+}
 /* Custom dialog/modal headers */
 .dialog-header-warning { background-color: #EA9F0D; }
 .dialog-header-primary { background-color: #1AB394; }
