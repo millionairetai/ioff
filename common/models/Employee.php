@@ -423,16 +423,32 @@ class Employee extends ActiveRecord implements IdentityInterface {
         if ($statusName) {
             $employee = $employee->where(["status.column_name" => 'employee.' . $statusName]);
         }
-        
+
         if ($searchName) {
             $employee = $employee->andWhere('employee.firstname LIKE :name', [':name' => '%' . $searchName . '%']);
         }
-        
+
         $employee = $employee->andCompanyId(false, 'employee')->limit($itemPerPage)->offset(($currentPage - 1) * $itemPerPage);
         return [
             'employee' => $employee->orderBy("employee.$orderBy $orderType")->all(),
             'totalCount' => (int) $employee->count(),
         ];
+    }
+
+    /**
+     * Add notification batchInsert
+     * 
+     * @param array $dataInsert
+     * @return boolean
+     */
+    public static function batchInsert($dataInsert) {
+        if (!empty($dataInsert)) {
+            if (!\Yii::$app->db->createCommand()->batchInsert(self::tableName(), array_keys($dataInsert[0]), $dataInsert)->execute()) {
+                throw new \Exception('Save record to table notification fail');
+            }
+        }
+
+        return true;
     }
 
 }
