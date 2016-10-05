@@ -26,20 +26,15 @@
             <br/>
             <table class="table table-vertical" ng-show="collection.length">
                 <tr>
-                    <th>#</th>
                     <th width="40%">{{$root.$lang.project_name}}</th>
-                    <th>{{$root.$lang.project_status}}</th>
-                    <th>Chưa biết là gì</th>
-                    <th width="10"></th>
-                    <th>Chưa biết là gì</th>
-                    <th width="10"></th>
                 </tr>
                 <tr ng-repeat="ob in collection">
-                    <td>{{$index + 1}}</td>
                     <td>
                         <a href="#/viewProject/{{ob.id}}"><strong>{{ob.name}}</strong></a><br/>
                         <i>{{ob.description}}</i>
 
+                        <span class="label label-status label-{{ob.status_id}}">{{ob.status}}</span>
+                        
                         <div class="progress-group">
                             <span class="progress-text">{{$root.$lang.project_theory}}</span>
                             <span class="progress-number"><span class="label label-success">{{ob.completed_percent}}%</span></span>
@@ -62,21 +57,7 @@
                             </div>
                         </div>
                     </td>
-                    <td>
-                        <span class="label label-status label-{{ob.status_id}}">{{ob.status}}</span>
-                    </td>
-                    <td>
 
-                    </td>
-                    <td> 
-
-                    </td>
-                    <td>
-
-                    </td>
-                    <td> 
-
-                    </td>
                 </tr>
             </table>
         </div>

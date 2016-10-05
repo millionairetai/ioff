@@ -992,6 +992,37 @@ header.main-header{
 #activity .like-contain .like-button{
     margin-right: 10px;
 }
+#activity .employee-card {
+    transition: background-color 200ms ease-in-out, opacity 200ms ease-in-out;
+    border-radius: 5px;
+    background-color: #f6f9fa;
+    display: block;
+    height: 100px;
+    margin-bottom: 30px;
+    padding: 28px 20px;
+    max-width: 400px;
+    position: relative;
+}
+#activity .employee-card-name {
+    display: block;
+    width: 80%;
+    margin: 0;
+}
+#activity .employee-card-location {
+    color: #717f86;
+    display: block;
+    font-size: 12px;
+    width: 80%;
+}
+#activity .employee-card-avatar {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    width: 64px;
+    height: 64px;
+    border-radius: 128px;
+    margin-top: -32px;
+}
 
 .item-event{
     border-bottom: 1px solid #ccc;
@@ -1056,4 +1087,36 @@ header.main-header{
 }
 #employee-wall .like-contain .like-button{
     margin-right: 10px;
+}
+
+#employee-wall .employee-card {
+    transition: background-color 200ms ease-in-out, opacity 200ms ease-in-out;
+    border-radius: 5px;
+    background-color: #f6f9fa;
+    display: block;
+    height: 100px;
+    margin-bottom: 30px;
+    padding: 28px 20px;
+    max-width: 400px;
+    position: relative;
+}
+#employee-wall .employee-card-name {
+    display: block;
+    width: 80%;
+    margin: 0;
+}
+#employee-wall .employee-card-location {
+    color: #717f86;
+    display: block;
+    font-size: 12px;
+    width: 80%;
+}
+#employee-wall .employee-card-avatar {
+    position: absolute;
+    top: 50%;
+    right: 20px;
+    width: 64px;
+    height: 64px;
+    border-radius: 128px;
+    margin-top: -32px;
 }
