@@ -65,4 +65,20 @@ class Status extends \common\components\db\ActiveRecord
     public static function getStatusName($id){
     	return Status::findOne($id);
     }
+
+    /**
+     * Get status by owner table and column name
+     * 
+     * @param string $ownerTable
+     * @param string $columnName
+     * 
+     * @return boolean
+     */
+    public static function getByOwnerTableAndColumnName($ownerTable, $columnName) {
+        return self::find()
+                    ->select(['id', 'name', 'owner_table', 'column_name'])
+                    ->where(['owner_table' => $ownerTable, 'column_name' => $columnName])
+                    ->asArray()
+                    ->one();
+    }
 }

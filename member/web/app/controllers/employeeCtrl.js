@@ -80,7 +80,7 @@ appRoot.controller('EmployeeCtrl', ['$scope', '$uibModal', 'employeeService', '$
                 controller: 'InvitationCtrl',
                 size: 'lg',
                 keyboard: true,
-                backdrop: 'static',
+                backdrop: 'static'
 //                resolve: {
 //                    authority: function () {
 //                        return authority;
@@ -95,7 +95,7 @@ appRoot.controller('EmployeeCtrl', ['$scope', '$uibModal', 'employeeService', '$
                 controller: 'editEmployeeCtrl',
                 size: 'lg',
                 keyboard: true,
-                backdrop: 'static',
+                backdrop: 'static'
             });
         };
 
@@ -111,12 +111,11 @@ appRoot.controller('InvitationCtrl', ['$scope', '$uibModalInstance', 'employeeSe
         };
         
         $scope.invite = function () {
-            //Check validation email.
-            //Check validation message.
+            //Check validation email & Check validation message.
             if (employeeService.validateInvitation($scope.invitation)) {
                 employeeService.invite($scope.invitation, function (response) {
-                    $scope.employees = response.objects.employees;
-                    $scope.totalItems = response.objects.totalItems;
+                    alertify.success('Invite employees successfully');
+                    $uibModalInstance.close(response.objects);
                 });
             }
         }

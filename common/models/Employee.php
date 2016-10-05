@@ -75,7 +75,7 @@ class Employee extends ActiveRecord implements IdentityInterface {
     //Column_name
     const COLUNM_NAME_ACTIVE = 'employee.active';
     const COLUNM_NAME_INACTIVE = 'employee.inactive';
-    const COLUNM_NAME_INVITE = 'employee.invite';
+    const COLUNM_NAME_INVITED = 'employee.invited';
     const COLUNM_NAME_DISABLED = 'employee.disabled';
 
     /**
@@ -326,6 +326,11 @@ class Employee extends ActiveRecord implements IdentityInterface {
 
     /**
      * send email to employee
+     * 
+     * @param array $dataSend
+     * @param array $themeEmail
+     * 
+     * @return boolen
      */
     public function sendMail($dataSend, $themeEmail) {
         if (!$themeEmail) {
@@ -343,6 +348,8 @@ class Employee extends ActiveRecord implements IdentityInterface {
           ->setTextBody($body)
           ->setHtmlBody($body)
           ->send(); */
+        
+        return true;
     }
 
     /**
@@ -435,20 +442,26 @@ class Employee extends ActiveRecord implements IdentityInterface {
         ];
     }
 
+    
     /**
-     * Add notification batchInsert
-     * 
-     * @param array $dataInsert
-     * @return boolean
+     * Get employees by emails
+     *
+     * @param array $emails
+     * @return boolean|array
      */
-    public static function batchInsert($dataInsert) {
-        if (!empty($dataInsert)) {
-            if (!\Yii::$app->db->createCommand()->batchInsert(self::tableName(), array_keys($dataInsert[0]), $dataInsert)->execute()) {
-                throw new \Exception('Save record to table notification fail');
-            }
-        }
-
-        return true;
+    public static function getExistedEmailByEmails($emails) {
+         $employees = self::find()
+                ->select(['email'])
+                ->where('email IN("' . implode('", "', $emails) . '")')
+                ->asArray()
+                ->all();
+         
+         $return = [];
+         //Traverse
+         foreach ($employees as $employee) {
+             $return[] = $employee['email'];
+         }
+         
+         return $return;
     }
-
 }

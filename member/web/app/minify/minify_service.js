@@ -322,6 +322,7 @@ appRoot.factory('employeeService', ['apiService', '$rootScope', 'alertify',
                 return apiService.get('employee/get-employees', data, success, error);
             },
             invite: function (data, success, error) {
+                data.emails = data.emails.split(';');
                 return apiService.post('employee/invite', data, success, error);
             },
             isValidEmail: function (email) {
@@ -346,7 +347,6 @@ appRoot.factory('employeeService', ['apiService', '$rootScope', 'alertify',
                     }
 
                     //Check validation each email.
-
                     var emails = object.emails.split(';');
                     for (var n = 0; n < emails.length; n++) {
                         if (this.isValidEmail(emails[n].trim()) === false) {

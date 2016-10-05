@@ -197,7 +197,7 @@ appRoot.controller('addProjectCtrl', ['socketService','$scope', 'projectService'
                                 alertify.success($rootScope.$lang.project_notify_success);
                                 $rootScope.$emit('create_project_success', {message: 'hung'});
                                 socketService.emit('notify', 'ok');
-        
+    
                                 $scope.step++;
                             });
                             

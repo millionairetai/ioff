@@ -40,7 +40,6 @@ appRoot.factory('employeeService', ['apiService', '$rootScope', 'alertify',
                     }
 
                     //Check validation each email.
-
                     var emails = object.emails.split(';');
                     for (var n = 0; n < emails.length; n++) {
                         if (this.isValidEmail(emails[n].trim()) === false) {
