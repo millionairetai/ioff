@@ -112,10 +112,11 @@ appRoot.controller('InvitationCtrl', ['$scope', '$uibModalInstance', 'employeeSe
         
         $scope.invite = function () {
             //Remove null or empty email.
-            $scope.invitation.emails = _.compact($scope.invitation.emails.split(','));
+            var emails = $scope.invitation.emails;
+            emails = _.compact(emails.split(','));
             //Check validation email & Check validation message.
-            if (employeeService.validateInvitation($scope.invitation)) {
-                employeeService.invite($scope.invitation, function (response) {
+            if (employeeService.validateInvitation(emails, $scope.invitation.message)) {
+                employeeService.invite({emails: emails, message: $scope.invitation.message}, function (response) {
                     alertify.success('Invite employees successfully');
                     $uibModalInstance.close(response.objects);
                 });

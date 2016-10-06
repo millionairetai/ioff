@@ -130,7 +130,7 @@ class EmployeeController extends ApiController {
                     'email' => $employee->email,
                     'image' => $employee->image,
                     'is_admin' => $employee->is_admin,
-                    'department' => $employee->department->name,
+                    'department' => !empty($employee->department->name) ? $employee->department->name : '',
                     'status' => $employee->status->name,
                 ];
             }
@@ -184,7 +184,15 @@ class EmployeeController extends ApiController {
             foreach ($emails as $email) {
                 $dataSend['{urlConfirm}'] = SITE_URL . '/index/register?email=' . $email;
                 $employee->email = $email;
-                $employees[] = ['email' => $email, 'firstname' => '', 'lastname' => '', 'password' => '', 'status_id' => $status['id']];
+                $employees[] = [
+                    'email' => $email, 
+                    'firstname' => '', 
+                    'lastname' => '', 
+                    'password' => '', 
+                    'status_id' => $status['id'], 
+                    'password_reset_token' => md5(uniqid() . $email)
+                ];
+                
                 if (!$employee->sendMail($dataSend, $themeEmail)) {
                     $this->_message = 'Can not send email to ' . $email;
                     throw new \Exception($this->_message);

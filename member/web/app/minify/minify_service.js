@@ -333,31 +333,31 @@ appRoot.factory('employeeService', ['apiService', '$rootScope', 'alertify',
                 
                 return true;
             },
-            validateInvitation: function (object) {
-                var message = "";
+            validateInvitation: function (emails, message) {
+                var errorMessage = "";
                 try {
-                    if (object.message.length == 0) {
-                        message += $rootScope.$lang.project_name_error_empty + "<br/>";
-                        throw message;
+                    if (message.length == 0) {
+                        errorMessage += $rootScope.$lang.project_name_error_empty + "<br/>";
+                        throw errorMessage;
                     }
 
-                    if (object.emails.length == 0) {
-                        message += $rootScope.$lang.project_description_error_empty + "<br/>";
-                        throw message;
+                    if (emails.length == 0) {
+                        errorMessage += $rootScope.$lang.project_description_error_empty + "<br/>";
+                        throw errorMessage;
                     }
 
                     //Check validation each email.
 //                    var emails = object.emails.split(';');
                     for (var n = 0; n < emails.length; n++) {
                         if (this.isValidEmail(emails[n].trim()) === false) {
-                            message += 'Email ' + emails[n].trim() + ' is invalid';
-                            throw message;
+                            errorMessage += 'Email ' + emails[n].trim() + ' is invalid';
+                            throw errorMessage;
                         }
                     }
                 }
                 catch (err) {
-                    if (message.length > 0) {
-                        alertify.error(message);
+                    if (errorMessage.length > 0) {
+                        alertify.error(errorMessage);
                         return false;
                     }
                 }

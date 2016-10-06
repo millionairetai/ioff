@@ -9,10 +9,9 @@
                 </div>
                 <div class="info">
                     <p ng-show="employee.is_admin"><a href="#" class="btn btn-info btn-xs">Admin</a></p>
-                    <p>Department: {{employee.department}}</p>
+                    <p ng-show="employee.department">Department: {{employee.department}}</p>
                     <p>Email: {{employee.email}}</p>
                     <p>Status: <a href="#" class="btn btn-success btn-xs">{{employee.status}}</a></p>
-
                 </div>
             </dd>
         </dl>

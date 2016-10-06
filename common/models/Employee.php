@@ -436,6 +436,7 @@ class Employee extends ActiveRecord implements IdentityInterface {
         }
 
         $employee = $employee->andCompanyId(false, 'employee')->limit($itemPerPage)->offset(($currentPage - 1) * $itemPerPage);
+//        echo($employee->createCommand()->sql);
         return [
             'employee' => $employee->orderBy("employee.$orderBy $orderType")->all(),
             'totalCount' => (int) $employee->count(),
