@@ -67,6 +67,10 @@ appRoot.config(function ($routeProvider, $httpProvider) {
                 templateUrl: 'app/views/employee/profile.html',
                 controller: 'ProfileCtrl'
             })
+            .when('/changePassword/:employeeId', {
+                templateUrl: 'app/views/employee/change_password.html',
+                controller: 'ChangePasswordCtrl'
+            })
             .when('/activity', {
                 templateUrl: 'app/views/activity/index.html',
                 controller: 'ActivityCtrl'

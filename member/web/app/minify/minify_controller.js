@@ -554,7 +554,10 @@ appRoot.controller('viewCalendarCtrl', ['$scope', 'projectService', 'fileService
     function ($scope, projectService, fileService, projectPostService, $uibModal, $rootScope, dialogMessage, $routeParams, alertify, $sce, PER_PAGE_VIEW_MORE) {
         
     }]);
-// show dialog
+appRoot.controller('ChangePasswordCtrl', ['$scope', '$uibModal', 'authorityService', '$rootScope', 'alertify', 'PER_PAGE', 'MAX_PAGE_SIZE',
+    function ($scope, $uibModal, authorityService, $rootScope, alertify, PER_PAGE, MAX_PAGE_SIZE) {
+
+    }]);// show dialog
 appRoot.controller('dialogMessage', [ '$rootScope','$scope', '$uibModalInstance','data','$sce', function ( $rootScope,$scope, $uibModalInstance,data,$sce) {
         $scope.class_header = "dialog-header-error";
         $scope.show_save = false;
