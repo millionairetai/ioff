@@ -12,6 +12,11 @@ use yii\helpers\Url;
               </a>
             </li>
             <li>
+              <a href="#activity">
+                <i class="fa fa-th"></i> <span>Activity</span> 
+              </a>
+            </li>
+            <li>
               <a href="#project">
                 <i class="fa fa-th"></i> <span>Project</span> 
               </a>
