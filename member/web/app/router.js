@@ -75,6 +75,10 @@ appRoot.config(function ($routeProvider, $httpProvider) {
                 templateUrl: 'app/views/activity/index.html',
                 controller: 'ActivityCtrl'
             })
+            .when('/company', {
+                templateUrl: 'app/views/company/index.html',
+                controller: 'CompanyCtrl'
+            })
             .otherwise({redirectTo: '/home'});
 
 });

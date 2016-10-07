@@ -37,6 +37,11 @@ use yii\helpers\Url;
               </a>
             </li>
             <li>
+              <a href="#company">
+                <i class="fa fa-group"></i> <span>Company</span> 
+              </a>
+            </li>
+            <li>
                 <a href="<?php echo Url::to('index/logout')?>">
                 <i class="fa fa-sign-out"></i> <span> Logout</span> 
               </a>
