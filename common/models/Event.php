@@ -177,11 +177,11 @@ class Event extends ActiveRecord {
     public static function getInfoEvent($eventId = null) {
         //get Id company of user login
         $companyId = \Yii::$app->user->getCompanyId();
+       
         $event = Event::findOne(['id' => $eventId, 'company_id' => $companyId]);
         if (empty($event)) {
             return false;
         }
-        
         //get remind by owner id
         $remind = Remind::getRemindByOwnerIdAndOwnerTable($eventId, Event::tableName());
         $attend = EventConfirmationType::getInfoAttend($eventId);
@@ -189,6 +189,28 @@ class Event extends ActiveRecord {
         $invitations = Invitation::getListByEventId($eventId);
         $countEmployee = empty($invitations) ? 0 : $invitations['departmentAndEmployee']['count'];
         $fileList = File::getFileByOwnerIdAndTable($eventId, Event::tableName());
+        $checkAttent = false;
+        
+        if ($event->is_public || ($event->created_employee_id == \Yii::$app->user->getId())) {
+            $checkAttent = true;
+        }else if (isset($invitations['departmentAndEmployee']['employeeList'])) {
+            foreach ($invitations['departmentAndEmployee']['employeeList'] AS $var) {
+                if ($var['id'] == \Yii::$app->user->getId()) {
+                     $checkAttent = true;
+                     break;
+                }
+            }
+        }
+        
+        $checkAttentCountDown = true;
+        if (isset($invitations['departmentAndEmployee']['employeeList'])) {
+            foreach ($invitations['departmentAndEmployee']['employeeList'] AS $var) {
+                if ($var['id'] == \Yii::$app->user->getId()) {
+                    $checkAttentCountDown = false;
+                    break;
+                }
+            }
+        }
         
         $result = [
                 'event' => [
@@ -218,6 +240,8 @@ class Event extends ActiveRecord {
                 'attent'        => $attend,
                 'file_info'     => $fileList,
                 'eventConfirmationType' => EventConfirmationType::getEventConfirmationTypes(),
+                'checkAttent'   => $checkAttent,
+                'checkAttentCountDown'   => $checkAttentCountDown,
         ];
         
         return $result;

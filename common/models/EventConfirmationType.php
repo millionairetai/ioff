@@ -63,8 +63,10 @@ class EventConfirmationType extends \common\components\db\ActiveRecord {
 
         $result = [];
         $attendActive = '';
+        $eventConfirmList = [];
         foreach ($attent as $key => $val) {
             $result[$val['column_name']][] = $val['employee_id'];
+            $eventConfirmList[$val['employee_id']] = $val['employee_id'];
             if ($val['employee_id'] == \Yii::$app->user->getId()) {
                 $attendActive = $val['column_name'];
             }
@@ -86,6 +88,7 @@ class EventConfirmationType extends \common\components\db\ActiveRecord {
         return [
             'activeAttendByEmployee' => $attendActive,
             'attendListEmployeeId' => $result,
+            'eventConfirmList' => $eventConfirmList,
             self::ATTEND => $attend,
             self::MAYBE => $maybe,
             self::NO_ATTEND => $noAttend,

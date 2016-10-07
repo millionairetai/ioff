@@ -559,6 +559,7 @@ appRoot.controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService',
         var eventId = $routeParams.eventId;
         //set paramter for layout
         $scope.collection = [];
+        var employee_id =null;
         $scope.getInfoEvent = function () {
             calendarService.viewEvent({eventId: eventId}, function (response) {
                 if (response.objects.error) {
@@ -566,6 +567,8 @@ appRoot.controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService',
                 }
                 
                 $scope.collection = response.objects;
+                employee_id = $scope.collection.event.employee_id;
+                console.log($scope.collection.attent.eventConfirmList);
             });
         };
         $scope.getInfoEvent();
@@ -797,11 +800,17 @@ appRoot.controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService',
                         $scope.message = $rootScope.$lang.confirm_success;
                         break;
                 }
+                
                 if ($scope.collection.event.active_attend == '') {
-                    $scope.collection.attent.no_confirm--;
+                    if ($scope.collection.checkAttentCountDown != true) {
+                        $scope.collection.attent.no_confirm--;
+                    }
                 }
                 alertify.success($scope.message);
                 $scope.collection.event.active_attend = attend;
+                $scope.employessnew = {};
+                $scope.employessnew[employee_id] = employee_id;
+                $scope.collection.attent.eventConfirmList = angular.merge($scope.collection.attent.eventConfirmList, $scope.employessnew);
             });
         }
 

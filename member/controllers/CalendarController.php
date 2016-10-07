@@ -447,22 +447,38 @@ class CalendarController extends ApiController {
     private function _mergeDataEmployee($dataPost = []) {
         if (empty($dataPost))
             return false;
+        
 
         $employeeOld = !empty($dataPost['data_old']['invitations']['departmentAndEmployee']['employeeList']) ? $dataPost['data_old']['invitations']['departmentAndEmployee']['employeeList'] : null;
         $employeeNew = Employee::getlistByepartmentIdsAndEmployeeIds($dataPost['departments'], $dataPost['members']);
+        $employeeAttend = isset($dataPost['data_old']['attent']['eventConfirmList']) ? $dataPost['data_old']['attent']['eventConfirmList'] : [];
         $result = [];
+
         if (!empty($employeeOld) && !empty($employeeNew['employeeList'])) {
             foreach ($employeeOld as $keyEmployessOld => $valEmployeeOld) {
                 $result['employeeOld'][$keyEmployessOld] = $valEmployeeOld['id'];
                 foreach ($employeeNew['employeeList'] as $keyMemberNew => $valMemberNew) {
-                    $result['employeeNew'][$keyMemberNew] = $valMemberNew['id'];
-                    $result['employees'][$keyMemberNew] = $valMemberNew['id'];
+                    if (!in_array($valMemberNew['id'], array_values($employeeAttend))) {
+                        $result['employeeNew'][$keyMemberNew] = $valMemberNew['id'];
+                        $result['employees'][$keyMemberNew] = $valMemberNew['id'];
+                    }
                     if ($valEmployeeOld['id'] == $valMemberNew['id']) {
                         unset($employeeOld[$keyEmployessOld]);
                         unset($employeeNew['employeeList'][$keyMemberNew]);
                         unset($result['employeeOld'][$keyEmployessOld]);
                         unset($result['employeeNew'][$keyMemberNew]);
                     }
+                }
+            }
+        } else if (!empty($employeeOld) && empty($employeeNew['employeeList'])) {
+            foreach ($employeeOld as $keyEmployessOld => $valEmployeeOld) {
+                $result['employeeOld'][$keyEmployessOld] = $valEmployeeOld['id'];
+            }
+        } else if (empty($employeeOld) && !empty($employeeNew['employeeList'])) {
+            foreach ($employeeNew['employeeList'] as $keyMemberNew => $valMemberNew) {
+                if (!in_array($valMemberNew['id'], array_values($employeeAttend))) {
+                    $result['employeeNew'][$keyMemberNew] = $valMemberNew['id'];
+                    $result['employees'][$keyMemberNew] = $valMemberNew['id'];
                 }
             }
         }
