@@ -918,7 +918,6 @@ header.main-header{
     background: #fff;
     padding: 30px;
     border: 1px solid #ddd;
-    /*border-radius: 4px;*/
 }
 /* Reponsive registration*/
 @media (max-width:768px){
@@ -1119,4 +1118,20 @@ header.main-header{
     height: 64px;
     border-radius: 128px;
     margin-top: -32px;
+}
+/* Forget password */
+.forget-password{
+    max-width: 650px;
+    margin: 0 auto;
+    margin-top: 10%;
+}
+.forget-password h3{
+    margin: 10px 0;
+}
+/* Reset pass word */
+.box.reset-password{
+    width: 600px;
+    background: #fff;
+    border: 1px solid #ddd;
+    margin: 7% auto;
 }
