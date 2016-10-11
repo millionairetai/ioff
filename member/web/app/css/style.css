@@ -1135,3 +1135,16 @@ header.main-header{
     border: 1px solid #ddd;
     margin: 7% auto;
 }
+/**/
+#detail-company .cl_green{
+    color: green;
+}
+#detail-company table th,#detail-company table td{
+    
+}
+#detail-company table th{
+   width: 180px;
+}
+#detail-company table table th{
+    width: 100px;
+}
