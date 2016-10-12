@@ -857,6 +857,9 @@ header.main-header{
     width: 33.33333333%;
     float: left;
 }
+.list-employee .item-employee:nth-child(3n+1){
+    clear: both;
+}
 .list-employee .item-employee dl{
     padding: 10px;
     border: 1px solid #f4f4f4;
@@ -896,6 +899,12 @@ header.main-header{
     .list-employee .item-employee{
         width: 50%;
     }
+    .list-employee .item-employee:nth-child(2n+1){
+        clear: both;
+    }
+    .list-employee .item-employee:nth-child(3n+1){
+        clear: none;
+    }
 }
 @media (max-width: 992px){
     body:not(.sidebar-collapse) .list-employee .item-employee{
@@ -905,6 +914,12 @@ header.main-header{
 @media (max-width: 768px){
     body:not(.sidebar-collapse) .list-employee .item-employee{
         width: 50%;
+    }
+    .list-employee .item-employee:nth-child(2n+1){
+        clear: both;
+    }
+    .list-employee .item-employee:nth-child(3n+1){
+        clear: none;
     }
 }
 @media (max-width: 560px){
@@ -1140,10 +1155,10 @@ header.main-header{
     color: green;
 }
 #detail-company table th,#detail-company table td{
-    
+
 }
 #detail-company table th{
-   width: 180px;
+    width: 180px;
 }
 #detail-company table table th{
     width: 100px;
