@@ -23,8 +23,8 @@ use yii\widgets\ActiveForm;
                     </div>
                     <div class="box-footer">
                         <div class="pull-right">
-                            <button type="submit" class="btn btn-primary">Tìm kiếm</button>
-                            <button type="submit" class="btn btn-danger">Hủy</button>
+                            <button type="submit" class="btn btn-primary btn-flat">Tìm kiếm</button>
+                            <button type="submit" class="btn btn-danger btn-flat">Hủy</button>
                         </div>
                     </div>
                 </div>

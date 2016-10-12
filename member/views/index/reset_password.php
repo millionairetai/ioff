@@ -15,16 +15,18 @@ use yii\widgets\ActiveForm;
                 </div>
             </div>
             <div class="col-md-8">
-                <form class="form-horizontal" role="form">
-                    <div class="form-group">
+                <form role="form">
+                    <div class="form-group has-feedback">
                         <input type="password" class="form-control" id="inputNewpassword" placeholder="Mật khẩu mới">
+                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group has-feedback">
                         <input type="password" class="form-control" id="inputRenewPassword" placeholder="Nhập lại mật khẩu mới">
+                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                     </div>
                     <div class="form-group">
                         <div class="pull-right">
-                            <button type="submit" class="btn btn-primary">Thay đổi</button>
+                            <button type="submit" class="btn btn-primary btn-flat">Thay đổi</button>
                         </div>
                     </div>
                 </form><!-- End form-->

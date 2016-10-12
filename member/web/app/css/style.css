@@ -1140,6 +1140,9 @@ header.main-header{
     margin: 0 auto;
     margin-top: 10%;
 }
+.forget-password .box{
+    border-radius: 0;
+}
 .forget-password h3{
     margin: 10px 0;
 }
@@ -1149,6 +1152,10 @@ header.main-header{
     background: #fff;
     border: 1px solid #ddd;
     margin: 7% auto;
+    border-radius: 0;
+}
+.reset-password .form-control-feedback{
+    color: #777;
 }
 /**/
 #detail-company .cl_green{
