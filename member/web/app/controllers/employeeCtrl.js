@@ -3,7 +3,7 @@ appRoot.controller('EmployeeCtrl', ['$scope', '$uibModal', 'employeeService', '$
 
         $scope.params = {
             page: 1,
-            limit: 2,
+            limit: 20,
             statusName: '',
             orderBy: '',
             orderType: '',
