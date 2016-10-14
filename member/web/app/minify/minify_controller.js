@@ -1386,17 +1386,24 @@ appRoot.controller('searchCtrl', ['$scope', 'taskService', '$uibModal', '$rootSc
         $scope.task = {
             searchFollow: '',
             searchAssigned: '',
+            searchAll: '',
             pageFollow: 1,
-            pageAssigned: 1
+            pageAssigned: 1,
+            pageAll: 1
         };
 
         //array store task collection response from server
-        $scope.collection = [];
-        $scope.totalItems = 0;
+        $scope.collectionAssigned = [];
+        $scope.collectionFollow = [];
+        $scope.collectionAll = [];
+        
+        $scope.totalItemsAssigned = 0;
+        $scope.totalItemsFollow = 0;
+        $scope.totalItemsAll = 0;
         $scope.maxPageSize = MAX_PAGE_SIZE;
 
         //get list with pagination
-        $scope.getList = function (type, $event) {
+        $scope.getList = function (type, $event) {           
             if ($event != '') {
                 $event.preventDefault();
             }
@@ -1412,11 +1419,8 @@ appRoot.controller('searchCtrl', ['$scope', 'taskService', '$uibModal', '$rootSc
                         $scope.params.searchText = $scope.task.searchAssigned;
                         $scope.params.page = $scope.task.pageAssigned;
                         taskService.getAssingedTasks($scope.params, function (response) {
-                            $scope.collection = response.objects.collection;
-                            $scope.totalItems = response.objects.totalItems;
-                            if (!$scope.$$phase) {
-                                $scope.$apply();
-                            }
+                            $scope.collectionAssigned = response.objects.collection;
+                            $scope.totalItemsAssigned = response.objects.totalItems;
                         });
                     }
                     break;
@@ -1425,24 +1429,18 @@ appRoot.controller('searchCtrl', ['$scope', 'taskService', '$uibModal', '$rootSc
                         $scope.params.searchText = $scope.task.searchFollow;
                         $scope.params.page = $scope.task.pageFollow;
                         taskService.getFollowTasks($scope.params, function (response) {
-                            $scope.collection = response.objects.collection;
-                            $scope.totalItems = response.objects.totalItems;
-                            if (!$scope.$$phase) {
-                                $scope.$apply();
-                            }
+                            $scope.collectionFollow = response.objects.collection;
+                            $scope.totalItemsFollow = response.objects.totalItems;
                         });
                     }
                     break;
                 case 'all_task':
                     {
-                        $scope.params.searchText = $scope.task.searchTasks;
-                        $scope.params.page = $scope.task.pageTasks;
+                        $scope.params.searchText = $scope.task.searchAll;
+                        $scope.params.page = $scope.task.pageAll;
                         taskService.getTasks($scope.params, function (response) {
-                            $scope.collection = response.objects.collection;
-                            $scope.totalItems = response.objects.totalItems;
-                            if (!$scope.$$phase) {
-                                $scope.$apply();
-                            }
+                            $scope.collectionAll = response.objects.collection;
+                            $scope.totalItemsAll = response.objects.totalItems;
                         });
                     }
                     break;

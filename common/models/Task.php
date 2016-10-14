@@ -114,7 +114,7 @@ class Task extends \common\components\db\ActiveRecord {
     }
 
     /**
-     * Get all that employee can be able to see.
+     * Get all of tasks that employee who can be able to see.
      * @param interger $itemPerPage
      * @param interger $currentPage
      * @param string $searchText

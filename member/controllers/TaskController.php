@@ -254,7 +254,7 @@ class TaskController extends ApiController {
             }
 
             $totalCount = $tasks->count();
-            $tasks = $tasks->limit($itemPerPage)->offset(($currentPage - 1) * $itemPerPage)->all();
+            $tasks = $tasks->orderBy('datetime_created DESC')->limit($itemPerPage)->offset(($currentPage - 1) * $itemPerPage)->all();
             if (empty($tasks)) {
                 throw new \Exception('Get task empty');
             }
