@@ -1136,9 +1136,14 @@ header.main-header{
 }
 /* Forget password */
 .forget-password{
-    max-width: 650px;
-    margin: 0 auto;
-    margin-top: 10%;
+    width: 650px;
+    margin: 7% auto;
+}
+/* Reponsive */
+@media(max-width: 750px){
+    .forget-password{
+        width: 100%;
+    }
 }
 .forget-password .box{
     border-radius: 0;
@@ -1156,6 +1161,12 @@ header.main-header{
 }
 .reset-password .form-control-feedback{
     color: #777;
+}
+/* Reponsive */
+@media(max-width: 750px){
+    .box.reset-password{
+        width: 100%;
+    }
 }
 /**/
 #detail-company .cl_green{
