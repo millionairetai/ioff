@@ -241,3 +241,8 @@ appRoot.controller('AddAuthorityCtrl', ['$scope', '$uibModalInstance', 'controll
             });
         };
     }]);
+
+appRoot.controller('AuthorityDetailCtrl', ['$scope', '$uibModal', 'authorityService', '$rootScope', 'alertify', 'PER_PAGE', 'MAX_PAGE_SIZE', 
+    function ($scope, $uibModal, authorityService, $rootScope, alertify, PER_PAGE, MAX_PAGE_SIZE) {
+        
+    }]);

@@ -243,6 +243,11 @@ appRoot.controller('AddAuthorityCtrl', ['$scope', '$uibModalInstance', 'controll
                 });
             });
         };
+    }]);
+
+appRoot.controller('AuthorityDetailCtrl', ['$scope', '$uibModal', 'authorityService', '$rootScope', 'alertify', 'PER_PAGE', 'MAX_PAGE_SIZE', 
+    function ($scope, $uibModal, authorityService, $rootScope, alertify, PER_PAGE, MAX_PAGE_SIZE) {
+        
     }]);//show calendar
 appRoot.controller('calendarCtrl', ['$scope', '$uibModal', 'calendarService', '$timeout', 'settingSystem', 'uiCalendarConfig', 'listCalendar', '$rootScope', function ($scope, $uibModal, calendarService, $timeout, settingSystem, uiCalendarConfig, listCalendar, $rootScope) {
         var date = new Date();
