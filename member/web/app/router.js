@@ -83,6 +83,10 @@ appRoot.config(function ($routeProvider, $httpProvider) {
                 templateUrl: 'app/views/company/changePackage.html',
                 controller: 'ChangePackageCtrl'
             })
+            .when('/authority/:authorityId', {
+                templateUrl: 'app/views/authority/detail.html',
+                controller: 'AuthorityDetailCtrl'
+            })
             .otherwise({redirectTo: '/home'});
 
 });
