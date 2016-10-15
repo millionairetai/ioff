@@ -347,6 +347,11 @@ search-product .dropdown-menu{
     padding: 4px 10px;
     margin: 1px;
 }
+
+.containbox-search .autocomplete input{
+    padding-left: 95px;
+}
+
 .skin-blue-light .main-header .navbar .sidebar-toggle{
     position: absolute;
     top: 0;
