@@ -568,7 +568,6 @@ appRoot.controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService',
                 
                 $scope.collection = response.objects;
                 employee_id = $scope.collection.event.employee_id;
-                console.log($scope.collection.attent.eventConfirmList);
             });
         };
         $scope.getInfoEvent();
@@ -800,7 +799,6 @@ appRoot.controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService',
                         $scope.message = $rootScope.$lang.confirm_success;
                         break;
                 }
-                
                 if ($scope.collection.event.active_attend == '') {
                     if ($scope.collection.checkAttentCountDown != true) {
                         $scope.collection.attent.no_confirm--;
@@ -929,11 +927,13 @@ appRoot.controller('editEventCtrl', ['$rootScope', 'data', 'listCalendar', '$sco
         if ((data.calendars.invitations.departmentAndEmployee != null) && (data.calendars.invitations.departmentAndEmployee.employeeEditList != null)) {
             membersData = data.calendars.invitations.departmentAndEmployee.employeeEditList;
         }
+        
+        console.log(data.calendars.event.start_time);
         $scope.event = {
             id: data.calendars.event.id,
-            var_start_datetime: new Date(data.calendars.event.start_datetime),
+            var_start_datetime: new Date(data.calendars.event.start_datetime + ' ' + data.calendars.event.start_time),
             var_start_time: data.calendars.event.start_time,
-            var_end_datetime: new Date(data.calendars.event.end_datetime),
+            var_end_datetime: new Date(data.calendars.event.end_datetime + ' ' + data.calendars.event.end_time),
             var_end_time: data.calendars.event.end_time,
             start_datetime: '',
             end_datetime: '',
