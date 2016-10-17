@@ -33,7 +33,7 @@
                             <div class="col-sm-3">
                                 <form class="form-group sidebar-form1" ng-submit="searchByName('my_task')">
                                     <div class="input-group">
-                                        <input type="text" ng-model="task.searchAssigned" class="form-control" placeholder="Name task"/>
+                                        <input type="text" ng-model="task.search.assigned" class="form-control" placeholder="Name task"/>
                                         <span class="input-group-btn">
                                             <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
                                         </span>                     
@@ -42,7 +42,10 @@
                             </div>              
                         </div>
                         <div class="clear"></div>  
-                        <div class ="row task-row" ng-repeat="ob in collectionAssigned">
+                        <div ng-hide="collection.assigned.length > 0">
+                            {{$root.$lang.no_data}}
+                        </div>
+                        <div class ="row task-row" ng-repeat="ob in collection.assigned">
                             <div class = "col-lg-12 container">
                                 <div class="row">
                                     <div class="pull-left" id="name-desc">
@@ -68,8 +71,8 @@
                             </div>
                         </div>
 
-                        <div class="text-right" ng-show="totalItemsAssigned > params.limit">
-                            <uib-pagination total-items="totalItemsAssigned" ng-model="task.pageAssigned" max-size="maxPageSize" class="pagination-sm"
+                        <div class="text-right" ng-show="totalItems.assigned > params.limit">
+                            <uib-pagination total-items="totalItems.assigned" ng-model="task.pageAssigned" max-size="maxPageSize" class="pagination-sm"
                                             boundary-links="true" first-text="&lsaquo;&lsaquo;" previous-text="&lsaquo;" next-text="&rsaquo;" last-text="&rsaquo;&rsaquo;" items-per-page="params.limit"
                                             ng-change="getList('my_task', '')" num-pages="numPages" rotate="false"></uib-pagination>                                  
                         </div>
@@ -83,7 +86,7 @@
                             <div class="col-sm-3">
                                 <form class="form-group sidebar-form1" ng-submit="searchByName('follow_task')">
                                     <div class="input-group">
-                                        <input type="text" ng-model="task.searchFollow" class="form-control" placeholder="Name task"/>
+                                        <input type="text" ng-model="task.search.follow" class="form-control" placeholder="Name task"/>
                                         <span class="input-group-btn">
                                             <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
                                         </span>                     
@@ -92,7 +95,10 @@
                             </div>              
                         </div>
                         <div class="clear"></div>  
-                        <div class ="row task-row" ng-repeat="ob in collectionFollow">
+                        <div ng-hide="collection.follow.length > 0">
+                            {{$root.$lang.no_data}}
+                        </div>
+                        <div class ="row task-row" ng-repeat="ob in collection.follow">
                             <div class = "col-lg-12 container">
                                 <div class="row">
                                     <div class="pull-left" id="name-desc">
@@ -118,8 +124,8 @@
                             </div>
                         </div>
 
-                        <div class="text-right" ng-show="totalItemsFollow > params.limit">
-                            <uib-pagination total-items="totalItemsFollow" ng-model="task.pageFollow" max-size="maxPageSize" class="pagination-sm"
+                        <div class="text-right" ng-show="totalItems.follow > params.limit">
+                            <uib-pagination total-items="totalItems.follow" ng-model="task.page.follow" max-size="maxPageSize" class="pagination-sm"
                                             boundary-links="true" first-text="&lsaquo;&lsaquo;" previous-text="&lsaquo;" next-text="&rsaquo;" last-text="&rsaquo;&rsaquo;" items-per-page="params.limit"
                                             ng-change="getList('follow_task', '')" num-pages="numPages" rotate="false"></uib-pagination>                                  
                         </div>
@@ -131,7 +137,7 @@
                             <div class="col-sm-3">
                                 <form class="form-group sidebar-form1" ng-submit="searchByName('all_task')">
                                     <div class="input-group">
-                                        <input type="text" ng-model="task.searchAll" class="form-control" placeholder="Name task"/>
+                                        <input type="text" ng-model="task.search.all" class="form-control" placeholder="Name task"/>
                                         <span class="input-group-btn">
                                             <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
                                         </span>                     
@@ -140,7 +146,10 @@
                             </div>              
                         </div>
                         <div class="clear"></div>  
-                        <div class ="row task-row" ng-repeat="ob in collectionAll">
+                        <div ng-hide="collection.all.length > 0">
+                            {{$root.$lang.no_data}}
+                        </div>
+                        <div class ="row task-row" ng-repeat="ob in collection.all">
                             <div class = "col-lg-12 container">
                                 <div class="row">
                                     <div class="pull-left" id="name-desc">
@@ -166,15 +175,12 @@
                             </div>
                         </div>
 
-                        <div class="text-right" ng-show="totalItemsAll > params.limit">
-                            <uib-pagination total-items="totalItemsAll" ng-model="task.pageAll" max-size="maxPageSize" class="pagination-sm"
+                        <div class="text-right" ng-show="totalItems.all > params.limit">
+                            <uib-pagination total-items="totalItems.all" ng-model="task.page.all" max-size="maxPageSize" class="pagination-sm"
                                             boundary-links="true" first-text="&lsaquo;&lsaquo;" previous-text="&lsaquo;" next-text="&rsaquo;" last-text="&rsaquo;&rsaquo;" items-per-page="params.limit"
                                             ng-change="getList('all_task', '')" num-pages="numPages" rotate="false"></uib-pagination>                                  
                         </div>
                     </div>
-                </div>
-                <div ng-show="!collection.length">
-                    {{$root.$lang.no_data}}
                 </div>
             </div>
         </div>

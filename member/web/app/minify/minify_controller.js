@@ -1383,23 +1383,35 @@ appRoot.controller('searchCtrl', ['$scope', 'taskService', '$uibModal', '$rootSc
             orderType: ''
         };
 
-        $scope.task = {
-            searchFollow: '',
-            searchAssigned: '',
-            searchAll: '',
-            pageFollow: 1,
-            pageAssigned: 1,
-            pageAll: 1
-        };
+         $scope.task = {
+             search: {
+                 follow: '',
+                 assigned: '',
+                 all: ''
+             },
+             page: {
+                 follow: 1,
+                 assigned: 1,
+                 all: 1
+             }
+         };
 
         //array store task collection response from server
-        $scope.collectionAssigned = [];
-        $scope.collectionFollow = [];
-        $scope.collectionAll = [];
+        $scope.collection = {
+            assigned: [],
+            follow: [],
+            all: []
+        };
         
-        $scope.totalItemsAssigned = 0;
-        $scope.totalItemsFollow = 0;
-        $scope.totalItemsAll = 0;
+        $scope.totalItems = {
+            assigned: 0,
+            follow: 0,
+            all: 0
+        };
+        
+//        $scope.totalItemsAssigned = 0;
+//        $scope.totalItemsFollow = 0;
+//        $scope.totalItemsAll = 0;
         $scope.maxPageSize = MAX_PAGE_SIZE;
 
         //get list with pagination
@@ -1416,31 +1428,31 @@ appRoot.controller('searchCtrl', ['$scope', 'taskService', '$uibModal', '$rootSc
             switch (type) {
                 case 'my_task':
                     {
-                        $scope.params.searchText = $scope.task.searchAssigned;
-                        $scope.params.page = $scope.task.pageAssigned;
+                        $scope.params.searchText = $scope.task.search.assigned;
+                        $scope.params.page = $scope.task.page.assigned;
                         taskService.getAssingedTasks($scope.params, function (response) {
-                            $scope.collectionAssigned = response.objects.collection;
-                            $scope.totalItemsAssigned = response.objects.totalItems;
+                            $scope.collection.assigned = response.objects.collection;
+                            $scope.totalItems.assigned = response.objects.totalItems;
                         });
                     }
                     break;
                 case 'follow_task':
                     {
-                        $scope.params.searchText = $scope.task.searchFollow;
-                        $scope.params.page = $scope.task.pageFollow;
+                        $scope.params.searchText = $scope.task.search.follow;
+                        $scope.params.page = $scope.task.page.follow;
                         taskService.getFollowTasks($scope.params, function (response) {
-                            $scope.collectionFollow = response.objects.collection;
-                            $scope.totalItemsFollow = response.objects.totalItems;
+                            $scope.collection.follow = response.objects.collection;
+                            $scope.totalItems.follow = response.objects.totalItems;
                         });
                     }
                     break;
                 case 'all_task':
                     {
-                        $scope.params.searchText = $scope.task.searchAll;
-                        $scope.params.page = $scope.task.pageAll;
+                        $scope.params.searchText = $scope.task.search.all;
+                        $scope.params.page = $scope.task.page.all;
                         taskService.getTasks($scope.params, function (response) {
-                            $scope.collectionAll = response.objects.collection;
-                            $scope.totalItemsAll = response.objects.totalItems;
+                            $scope.collection.all = response.objects.collection;
+                            $scope.totalItems.all = response.objects.totalItems;
                         });
                     }
                     break;

@@ -114,6 +114,40 @@ class Task extends \common\components\db\ActiveRecord {
     }
 
     /**
+     * Get all of tasks that employee is assigned.
+     * @param interger $itemPerPage
+     * @param interger $currentPage
+     * @param string $searchText
+     * @return array|null
+     */
+    public static function getMyTasks($itemPerPage, $currentPage, $searchText) {
+        $taskAss = TaskAssignment::find()
+                        ->select(['task_id'])
+                        ->where(['employee_id' => \Yii::$app->user->identity->id])
+                        ->andCompanyId()->asArray()->all();
+        
+        if (empty($taskAss)) {
+            throw new \Exception('Get task_assigment empty');
+        }
+
+        $tasks = Task::find()->andWhere(['id' => array_map('current', $taskAss)])->andCompanyId();
+        if ($searchText) {
+            $tasks->andFilterWhere(['like', 'name', $searchText]);
+        }
+
+        $totalCount = $tasks->count();
+        $tasks = $tasks->orderBy('datetime_created DESC')->limit($itemPerPage)->offset(($currentPage - 1) * $itemPerPage)->asArray()->all();
+        if (empty($tasks)) {
+            throw new \Exception('Get task empty');
+        }
+        
+        return [
+            'collection' => $collection,
+            'totalCount' => $totalCount,
+        ];
+    }
+
+    /**
      * Get all of tasks that employee who can be able to see.
      * @param interger $itemPerPage
      * @param interger $currentPage
@@ -166,7 +200,7 @@ class Task extends \common\components\db\ActiveRecord {
             foreach ($task->followers as $follower) {
                 $followers[] = ['fullname' => $follower->fullname, 'email' => $follower->email, 'image' => $follower->getImage()];
             }
-            
+
             $collection[] = [
                 'id' => $task->id,
                 'name' => $task->name,
