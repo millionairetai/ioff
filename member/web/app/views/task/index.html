@@ -72,7 +72,7 @@
                         </div>
 
                         <div class="text-right" ng-show="totalItems.assigned > params.limit">
-                            <uib-pagination total-items="totalItems.assigned" ng-model="task.pageAssigned" max-size="maxPageSize" class="pagination-sm"
+                            <uib-pagination total-items="totalItems.assigned" ng-model="task.page.assigned" max-size="maxPageSize" class="pagination-sm"
                                             boundary-links="true" first-text="&lsaquo;&lsaquo;" previous-text="&lsaquo;" next-text="&rsaquo;" last-text="&rsaquo;&rsaquo;" items-per-page="params.limit"
                                             ng-change="getList('my_task', '')" num-pages="numPages" rotate="false"></uib-pagination>                                  
                         </div>

@@ -59,5 +59,16 @@ class TaskGroup extends \common\components\db\ActiveRecord
             'lastup_employee_id' => 'Lastup Employee ID',
             'disabled' => 'Disabled',
         ];
-    }             
+    }  
+    
+    /**
+     * Get all of follow tasks that employee follow.
+     * @param interger $itemPerPage
+     * @param interger $currentPage
+     * @param string $searchText
+     * @return array|null
+     */
+    public static function getTaskGroups($projectId) {
+       return self::find()->select(['id', 'name'])->where(['project_id' => $projectId])->andCompanyId()->asArray()->all();
+    }
 }

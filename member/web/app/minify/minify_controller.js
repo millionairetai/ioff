@@ -1383,18 +1383,18 @@ appRoot.controller('searchCtrl', ['$scope', 'taskService', '$uibModal', '$rootSc
             orderType: ''
         };
 
-         $scope.task = {
-             search: {
-                 follow: '',
-                 assigned: '',
-                 all: ''
-             },
-             page: {
-                 follow: 1,
-                 assigned: 1,
-                 all: 1
-             }
-         };
+        $scope.task = {
+            search: {
+                follow: '',
+                assigned: '',
+                all: ''
+            },
+            page: {
+                follow: 1,
+                assigned: 1,
+                all: 1
+            }
+        };
 
         //array store task collection response from server
         $scope.collection = {
@@ -1402,20 +1402,16 @@ appRoot.controller('searchCtrl', ['$scope', 'taskService', '$uibModal', '$rootSc
             follow: [],
             all: []
         };
-        
+
         $scope.totalItems = {
             assigned: 0,
             follow: 0,
             all: 0
         };
-        
-//        $scope.totalItemsAssigned = 0;
-//        $scope.totalItemsFollow = 0;
-//        $scope.totalItemsAll = 0;
         $scope.maxPageSize = MAX_PAGE_SIZE;
 
         //get list with pagination
-        $scope.getList = function (type, $event) {           
+        $scope.getList = function (type, $event) {
             if ($event != '') {
                 $event.preventDefault();
             }
@@ -1430,7 +1426,7 @@ appRoot.controller('searchCtrl', ['$scope', 'taskService', '$uibModal', '$rootSc
                     {
                         $scope.params.searchText = $scope.task.search.assigned;
                         $scope.params.page = $scope.task.page.assigned;
-                        taskService.getAssingedTasks($scope.params, function (response) {
+                        taskService.getMyTasks($scope.params, function (response) {
                             $scope.collection.assigned = response.objects.collection;
                             $scope.totalItems.assigned = response.objects.totalItems;
                         });

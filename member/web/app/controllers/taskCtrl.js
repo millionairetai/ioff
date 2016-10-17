@@ -51,7 +51,7 @@ appRoot.controller('taskCtrl', ['$scope', 'taskService', '$uibModal', '$rootScop
                     {
                         $scope.params.searchText = $scope.task.search.assigned;
                         $scope.params.page = $scope.task.page.assigned;
-                        taskService.getAssingedTasks($scope.params, function (response) {
+                        taskService.getMyTasks($scope.params, function (response) {
                             $scope.collection.assigned = response.objects.collection;
                             $scope.totalItems.assigned = response.objects.totalItems;
                         });

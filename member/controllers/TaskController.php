@@ -215,16 +215,17 @@ class TaskController extends ApiController {
         return $this->sendResponse(false, '', $objects);
     }
 
+    /**
+     * Get task group list
+     */
     public function actionGetTaskGroup() {
-        $projectId = Yii::$app->request->get('project_id');
         $objects = [];
         $collection = [];
-
-        $taskGroups = TaskGroup::find()->select(['id', 'name'])->where(['project_id' => $projectId])->andCompanyId()->all();
+        $taskGroups = TaskGroup::getTaskGroups(Yii::$app->request->get('project_id'));
         foreach ($taskGroups as $taskGroup) {
             $collection[] = [
-                'id' => $taskGroup->id,
-                'name' => $taskGroup->name
+                'id' => $taskGroup['id'],
+                'name' => $taskGroup['name']
             ];
         }
 
@@ -235,33 +236,19 @@ class TaskController extends ApiController {
     /**
      * Get task list assigned for currrent login employee.
      */
-    public function actionGetAssignedTasks() {
+    public function actionGetMyTasks() {
         $itemPerPage = \Yii::$app->request->get('limit');
         $currentPage = \Yii::$app->request->get('page');
-        $search_text = \Yii::$app->request->get('searchText');
+        $searchText = \Yii::$app->request->get('searchText');
         try {
-            $taskAss = TaskAssignment::find()
-                            ->select(['task_id'])
-                            ->where(['employee_id' => \Yii::$app->user->identity->id])
-                            ->andCompanyId()->asArray()->all();
-            if (empty($taskAss)) {
-                throw new \Exception('Get task_assigment empty');
-            }
-
-            $tasks = Task::find()->andWhere(['id' => array_map('current', $taskAss)])->andCompanyId();
-            if ($search_text) {
-                $tasks->andFilterWhere(['like', 'name', $search_text]);
-            }
-
-            $totalCount = $tasks->count();
-            $tasks = $tasks->orderBy('datetime_created DESC')->limit($itemPerPage)->offset(($currentPage - 1) * $itemPerPage)->all();
-            if (empty($tasks)) {
-                throw new \Exception('Get task empty');
-            }
-
+            $collection = [];
+            $totalCount = 0;
             $assignees = [];
             $followers = [];
-            $collection = [];
+
+            $tasks = Task::getMyTasks($itemPerPage, $currentPage, $searchText);
+            $totalCount = $tasks['totalCount'];
+            $tasks = $tasks['collection'];
             foreach ($tasks as $task) {
                 $assignees = [];
                 $followers = [];
@@ -300,30 +287,17 @@ class TaskController extends ApiController {
     public function actionGetFollowTasks() {
         $itemPerPage = \Yii::$app->request->get('limit');
         $currentPage = \Yii::$app->request->get('page');
-        $search_text = \Yii::$app->request->get('searchText');
+        $searchText = \Yii::$app->request->get('searchText');
         try {
-            $taskAss = Follower::find()
-                            ->select(['task_id'])
-                            ->where(['employee_id' => \Yii::$app->user->identity->id])
-                            ->andCompanyId()->asArray()->all();
-            if (empty($taskAss)) {
-                throw new \Exception('Get task_assigment empty');
-            }
-
-            $tasks = Task::find()->andWhere(['id' => array_map('current', $taskAss)])->andCompanyId();
-            if ($search_text) {
-                $tasks->andFilterWhere(['like', 'name', $search_text]);
-            }
-
-            $totalCount = $tasks->count();
-            $tasks = $tasks->limit($itemPerPage)->offset(($currentPage - 1) * $itemPerPage)->all();
-            if (empty($tasks)) {
-                throw new \Exception('Get task empty');
-            }
-
+            $collection = [];
+            $totalCount = 0;
             $assignees = [];
             $followers = [];
             $collection = [];
+
+            $tasks = Task::getFollowTasks($itemPerPage, $currentPage, $searchText);
+            $totalCount = $tasks['totalCount'];
+            $tasks = $tasks['collection'];
             foreach ($tasks as $task) {
                 $assignees = [];
                 $followers = [];
@@ -363,18 +337,47 @@ class TaskController extends ApiController {
         $itemPerPage = \Yii::$app->request->get('limit');
         $currentPage = \Yii::$app->request->get('page');
         $searchText = \Yii::$app->request->get('searchText');
+        
         try {
-            $result = Task::getTasks($itemPerPage, $currentPage, $searchText);
+            $collection = [];
+            $totalCount = 0;
+            $assignees = [];
+            $followers = [];
+            $collection = [];
+            
+            $tasks = Task::getTasks($itemPerPage, $currentPage, $searchText);
+            $totalCount = $tasks['totalCount'];
+            $tasks = $tasks['collection'];
+            foreach ($tasks as $task) {
+                $assignees = [];
+                $followers = [];
+                $creator = $task->creator;
+                foreach ($task->assignees as $assignee) {
+                    $assignees[] = ['fullname' => $assignee->fullname, 'email' => $assignee->email, 'image' => $assignee->getImage()];
+                }
+
+                foreach ($task->followers as $follower) {
+                    $followers[] = ['fullname' => $follower->fullname, 'email' => $follower->email, 'image' => $follower->getImage()];
+                }
+
+                $collection[] = [
+                    'id' => $task->id,
+                    'name' => $task->name,
+                    'description' => strlen($task->description) > 400 ? (substr($task->description, 0, 400) . "...") : $task->description,
+                    'creator' => ['fullname' => $creator->fullname, 'email' => $creator->email, 'image' => $creator->getImage()],
+                    'followers' => $followers,
+                    'assignees' => $assignees,
+                    'completed_percent' => $task->completed_percent,
+                ];
+            }
         } catch (\Exception $e) {
-            $result = [
-                'collection' => [],
-                'totalCount' => 0,
-            ];
+            $collection = [];
+            $totalCount = 0;
         }
 
         $objects = [];
-        $objects['collection'] = $result['collection'];
-        $objects['totalItems'] = (int) $result['totalCount'];
+        $objects['collection'] = $collection;
+        $objects['totalItems'] = (int)$totalCount;
         return $this->sendResponse(false, '', $objects);
     }
 
