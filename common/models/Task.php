@@ -201,8 +201,8 @@ class Task extends \common\components\db\ActiveRecord {
         $tasks = self::find()
                         ->select(['task.id', 'task.name', 'task.description', 'completed_percent', 'task.created_employee_id'])
                         ->distinct()
-                        ->innerJoin('task_assignment', 'task.id = task_assignment.task_id')
-                        ->innerJoin('follower', 'task.id = follower.task_id')
+                        ->leftJoin('task_assignment', 'task.id = task_assignment.task_id')
+                        ->leftJoin('follower', 'task.id = follower.task_id')
                         ->orWhere([
                             'task.is_public' => self::VAL_TRUE,
                         ])->orWhere([
@@ -211,7 +211,7 @@ class Task extends \common\components\db\ActiveRecord {
                     'task_assignment.employee_id' => \Yii::$app->user->identity->id,
                 ])->orWhere([
             'follower.employee_id' => \Yii::$app->user->identity->id,
-        ]);
+        ])->andCompanyId(false, 'task');
 
         if ($searchText) {
             $tasks->andFilterWhere(['like', 'name', $searchText]);

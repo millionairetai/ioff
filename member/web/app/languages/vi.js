@@ -182,7 +182,7 @@
             task_choose_emplyees: 'Chọn thành viên',
             task_final: 'Hoàn thành',
             task_name : "Tên công việc",
-            task_project : "dự án",
+            task_project : "Dự án",
             task_project_choose:'Chọn project',
             task_time : "Thời gian",
             task_start_date : 'Bắt đầu',

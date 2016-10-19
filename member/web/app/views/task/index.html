@@ -33,7 +33,7 @@
                             <div class="col-sm-3">
                                 <form class="form-group sidebar-form1" ng-submit="searchByName('my_task')">
                                     <div class="input-group">
-                                        <input type="text" ng-model="task.search.assigned" class="form-control" placeholder="Name task"/>
+                                        <input type="text" ng-model="task.search.assigned" class="form-control" placeholder="{{$root.$lang.name}}"/>
                                         <span class="input-group-btn">
                                             <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
                                         </span>                     
@@ -86,7 +86,7 @@
                             <div class="col-sm-3">
                                 <form class="form-group sidebar-form1" ng-submit="searchByName('follow_task')">
                                     <div class="input-group">
-                                        <input type="text" ng-model="task.search.follow" class="form-control" placeholder="Name task"/>
+                                        <input type="text" ng-model="task.search.follow" class="form-control" placeholder="{{$root.$lang.name}}"/>
                                         <span class="input-group-btn">
                                             <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
                                         </span>                     
@@ -106,7 +106,7 @@
                                     </div>
                                     <div class="pull-left task-creator">
                                         <span class="padding-img">{{$root.$lang.task_creator}}:</span>
-                                        <span><img class="img-circle" height = "30" width = "30" src="{{ob.creator.image}}" title="{{ob.creator.fullname}}" /><label class="users-list-name">{{ob.creator.fullname}}</span>                                
+                                        <span><img class="img-circle" height = "30" width = "30" src="{{ob.creator.image}}" title="{{ob.creator.fullname}}" />                               
                                     </div>
                                 </div>
                                 <div class="row"><i>{{ob.description}}</i></div>
@@ -137,7 +137,7 @@
                             <div class="col-sm-3">
                                 <form class="form-group sidebar-form1" ng-submit="searchByName('all_task')">
                                     <div class="input-group">
-                                        <input type="text" ng-model="task.search.all" class="form-control" placeholder="Name task"/>
+                                        <input type="text" ng-model="task.search.all" class="form-control" placeholder="{{$root.$lang.name}}"/>
                                         <span class="input-group-btn">
                                             <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
                                         </span>                     
@@ -157,7 +157,7 @@
                                     </div>
                                     <div class="pull-left task-creator">
                                         <span class="padding-img">{{$root.$lang.task_creator}}:</span>
-                                        <span><img class="img-circle" height = "30" width = "30" src="{{ob.creator.image}}" title="{{ob.creator.fullname}}" /><label class="users-list-name">{{ob.creator.fullname}}</span>                                
+                                        <span><img class="img-circle" height = "30" width = "30" src="{{ob.creator.image}}" title="{{ob.creator.fullname}}" />                            
                                     </div>
                                 </div>
                                 <div class="row"><i>{{ob.description}}</i></div>
