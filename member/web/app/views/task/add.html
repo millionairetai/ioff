@@ -2,8 +2,8 @@
     <button type="button" class="close" ng-click="cancel()">×</button>
     <h4 class="modal-title text-danger"> <strong><i class="fa fa-cubes"></i>{{$root.$lang.task_add}}</strong></h4>
 </div>
-<div class="modal-body text-dangers">
-    <div ng-show="step == 1">
+<div class="modal-body text-dangers"> 
+   <div ng-show="step == 1">
         <h3 class="text-center">{{$root.$lang.task_infomation}}</h3>
         <form class="form-horizontal">
             <div class="box-body">
@@ -15,7 +15,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="col-sm-3 control-label">{{$root.$lang.task_project}}</label>
+                    <label class="col-sm-3 control-label">{{$root.$lang.project}}</label>
                     <div class="col-sm-9" >
                         <ui-select theme="bootstrap" ng-model="task.project_id" ng-change="updateAfterProjectChanged()" >
                             <ui-select-match allow-clear="true" placeholder="{{$root.$lang.task_project_choose}}">{{$select.selected.name}}</ui-select-match>
@@ -202,7 +202,7 @@
                     <label class="col-sm-3 control-label">{{$root.$lang.task_group}}</label>
                     <div class="col-sm-9">
                         <ui-select multiple tagging="taskGroupTagTransform" tagging-tokens="SPACE|,|/" ng-model="task.taskGroupIds">
-                            <ui-select-match placeholder="{{$root.$lang.task_group_choose}}">{{$item.name}}</ui-select-match>
+                            <ui-select-match placeholder="...">{{$item.name}}</ui-select-match>
                             <ui-select-choices refresh-delay="1000" repeat="x.id as x in taskGroups | filter: {name: $select.search}">
                                 <div>
                                     {{x.name}}
@@ -215,7 +215,7 @@
                 <div class="form-group">
                     <label class="col-sm-3 control-label">{{$root.$lang.calendar_event_redmind}}</label>
                     <div class="col-sm-9">
-                        <select class="form-control" ng-model="task.redmind" ng-options="redmind.id as redmind.name  for redmind in redminds" ></select>
+                        <select class="form-control" ng-model="task.redmind" ng-options="redmind.id as redmind.name for redmind in redminds"></select>
                     </div>
                 </div>   
 

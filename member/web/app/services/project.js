@@ -4,8 +4,8 @@ appRoot.factory('projectService', ['apiService','$rootScope','alertify', functio
             listProject : function (data,success,error){
                 apiService.post('project/index',data,success,error);
             },
-            getProjectList : function (data,success,error) {
-                apiService.post('project/get-all-project-id-and-names',data,success,error);
+            getProjects : function (data,success,error) {
+                apiService.post('project/get-projects',data,success,error);
             },
             addProject : function (data,success,error){
                 apiService.upload('project/add',data,success,error);

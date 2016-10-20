@@ -62,13 +62,15 @@ class TaskGroup extends \common\components\db\ActiveRecord
     }  
     
     /**
-     * Get all of follow tasks that employee follow.
-     * @param interger $itemPerPage
-     * @param interger $currentPage
-     * @param string $searchText
-     * @return array|null
+     * Get task groups by project id
+     * @param interger $projectId
+     * @return array|boolean
      */
-    public static function getTaskGroups($projectId) {
-       return self::find()->select(['id', 'name'])->where(['project_id' => $projectId])->andCompanyId()->asArray()->all();
+    public static function getByProjectId($projectId) {
+       return self::find()->select(['id', 'name'])
+               ->andWhere(['project_id' => $projectId])
+               ->andCompanyId()
+               ->asArray()
+               ->all();
     }
 }

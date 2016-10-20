@@ -56,4 +56,20 @@ class ProjectEmployee extends \common\components\db\ActiveRecord
             'disabled' => Yii::t('common', 'Disabled'),
         ];
     }
+    
+    /**
+     * Get employees by project id
+     * 
+     * @param int $projectId 
+     * @return boolean|array
+     */
+    public static function getEmployeesByProjectId($projectId) {        
+        return Employee::find()->select(['id', 'firstname', 'lastname', 'email', 'profile_image_path'])
+                ->andWhere(['id' => self::find()->select(['employee_id'])
+                    ->andWhere(['project_id' => $projectId])
+                    ->andCompanyId()
+                ])
+                ->andCompanyId()
+                ->all();
+    }
 }

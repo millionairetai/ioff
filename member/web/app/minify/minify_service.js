@@ -254,12 +254,23 @@ appRoot.factory('calendarService', ['apiService','$rootScope','alertify', functi
             }
         };
     }]);
-appRoot.factory('commonService', ['apiService', 'taskService', 'projectService', 'calendarService',
-    function (apiService, taskService, projectService, calendarService) {
+appRoot.factory('commonService', ['apiService', 'taskService', 'projectService', 'calendarService', '$rootScope',
+    function (apiService, taskService, projectService, calendarService, $rootScope) {
 
         return {
             getSearchGlobalSuggest: function (params, success, error) {
                 return apiService.post('task/get-search-global-suggestion', params, success, error, 0);
+            },
+            redmind: function () {
+                return [
+                    {id: 0, name: $rootScope.$lang.calendar_event_redmine_0},
+                    {id: 30, name: $rootScope.$lang.calendar_event_redmine_30},
+                    {id: 60, name: $rootScope.$lang.calendar_event_redmine_60},
+                    {id: 120, name: $rootScope.$lang.calendar_event_redmine_120},
+                    {id: 240, name: $rootScope.$lang.calendar_event_redmine_240},
+                    {id: 1440, name: $rootScope.$lang.calendar_event_redmine_1440},
+                    {id: 2880, name: $rootScope.$lang.calendar_event_redmine_2880},
+                ];
             }
         };
     }]);
@@ -395,8 +406,8 @@ appRoot.factory('projectService', ['apiService','$rootScope','alertify', functio
             listProject : function (data,success,error){
                 apiService.post('project/index',data,success,error);
             },
-            getProjectList : function (data,success,error) {
-                apiService.post('project/get-all-project-id-and-names',data,success,error);
+            getProjects : function (data,success,error) {
+                apiService.post('project/get-projects',data,success,error);
             },
             addProject : function (data,success,error){
                 apiService.upload('project/add',data,success,error);
@@ -518,14 +529,11 @@ appRoot.factory('taskService', ['apiService','$rootScope','alertify', function (
             getStatusList : function (data,success,error) {
                 apiService.get('status/get-task-status-list',data,success,error);
             },                        
-            getTaskGroupList : function (data,success,error) {
-                apiService.get('task/get-task-group',data,success,error);
-            },
             getRemindBeforeList : function (data,success,error) {
                 apiService.get('task/get-task-remind-before-list',data,success,error);
             },
-            getParentTaskList : function (data,success,error) {
-                apiService.get('task/get-tasks-by-project',data,success,error);
+            getParentTasks : function (data,success,error) {
+                apiService.get('task/get-parent-tasks',data,success,error);
             },
             validate_step1 : function(object) {
                 var message = "";
@@ -595,18 +603,15 @@ appRoot.factory('taskService', ['apiService','$rootScope','alertify', function (
             },
             getSearchGlobalTasks:  function(data,success,error) {
                 apiService.post('task/get-search-global-tasks',data,success,error);
-            },
-            redmind : function(){
-                return [
-                    {id:0,name:$rootScope.$lang.calendar_event_redmine_0},
-                    {id:30,name:$rootScope.$lang.calendar_event_redmine_30},
-                    {id:60,name:$rootScope.$lang.calendar_event_redmine_60},
-                    {id:120,name:$rootScope.$lang.calendar_event_redmine_120},
-                    {id:240,name:$rootScope.$lang.calendar_event_redmine_240},
-                    {id:1440,name:$rootScope.$lang.calendar_event_redmine_1440},
-                    {id:2880,name:$rootScope.$lang.calendar_event_redmine_2880},
-                ];
-            }            
+            }         
+        };
+    }]);
+appRoot.factory('taskGroupService', ['apiService', '$rootScope', 'alertify', function (apiService, $rootScope, alertify) {
+
+        return {
+            getTaskGroups: function (data, success, error) {
+                apiService.get('task-group/get-task-groups', data, success, error);
+            }
         };
     }]);
 appRoot.factory( "ValidationServices", function() {

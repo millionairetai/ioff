@@ -67,4 +67,6 @@ return [
     'create project post' => 'Thêm bài đăng dự án',
     'create task' => 'Thêm task',
     'edit event' => 'Chỉnh sửa sự kiện',
+    //task
+    'Do not has any employees in this project' => 'Không có bất kỳ nhân viên nào trong dự án này',
 ];

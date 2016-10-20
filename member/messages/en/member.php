@@ -65,4 +65,6 @@ return [
     'create project post' => 'Add project post',
     'create task' => 'Add task',
     'edit event' => 'Edit event',
+    //task
+    'Do not has any employees in this project' => 'Do not has any employees in this project',
 ];

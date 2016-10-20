@@ -348,7 +348,7 @@ class Employee extends ActiveRecord implements IdentityInterface {
           ->setTextBody($body)
           ->setHtmlBody($body)
           ->send(); */
-        
+
         return true;
     }
 
@@ -443,7 +443,23 @@ class Employee extends ActiveRecord implements IdentityInterface {
         ];
     }
 
-    
+    /**
+     * Get employees by emails
+     *
+     * @param array $emails
+     * @return boolean|array
+     */
+    public static function getByIds($ids = []) {
+        if (!is_array($ids)) {
+            $ids = [$ids];
+        }
+
+        return self::find()->select([self::tableName() . '.id', self::tableName() . '.email', 'firstname', 'lastname'])
+                ->where([self::tableName() . '.id' => $ids])
+                ->andCompanyId()
+                ->all();
+    }
+
     /**
      * Get employees by emails
      *
@@ -451,18 +467,19 @@ class Employee extends ActiveRecord implements IdentityInterface {
      * @return boolean|array
      */
     public static function getExistedEmailByEmails($emails) {
-         $employees = self::find()
+        $employees = self::find()
                 ->select(['email'])
                 ->where('email IN("' . implode('", "', $emails) . '")')
                 ->asArray()
                 ->all();
-         
-         $return = [];
-         //Traverse
-         foreach ($employees as $employee) {
-             $return[] = $employee['email'];
-         }
-         
-         return $return;
+
+        $return = [];
+        //Traverse
+        foreach ($employees as $employee) {
+            $return[] = $employee['email'];
+        }
+
+        return $return;
     }
+
 }

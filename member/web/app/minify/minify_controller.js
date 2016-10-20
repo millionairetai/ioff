@@ -1491,8 +1491,8 @@ appRoot.controller('searchCtrl', ['$scope', 'taskService', '$uibModal', '$rootSc
     }]);
 
 /*add Task Popup Controller*/
-appRoot.controller('addTaskCtrl', ['socketService', '$scope', 'taskService', '$location', '$uibModalInstance', '$rootScope', 'departmentService', 'alertify', '$timeout', 'employeeService', 'projectService', '$cacheFactory',
-    function (socketService, $scope, taskService, $location, $uibModalInstance, $rootScope, departmentService, alertify, $timeout, employeeService, projectService, $cacheFactory) {
+appRoot.controller('addTaskCtrl', ['socketService', '$scope', 'taskService', '$location', '$uibModalInstance', '$rootScope', 'departmentService', 'alertify', '$timeout', 'employeeService', 'projectService', '$cacheFactory', 'commonService', 'taskGroupService',
+    function (socketService, $scope, taskService, $location, $uibModalInstance, $rootScope, departmentService, alertify, $timeout, employeeService, projectService, $cacheFactory, commonService, taskGroupService) {
         //init
         $scope.step = 1;
         $scope.more = 0;
@@ -1505,7 +1505,7 @@ appRoot.controller('addTaskCtrl', ['socketService', '$scope', 'taskService', '$l
         $scope.files = [];
         $scope.taskGroups = [];
         $scope.parentTasks = [];
-        $scope.redminds = taskService.redmind();
+        $scope.redminds = commonService.redmind();
 
         //task object init
         $scope.task = {
@@ -1523,7 +1523,7 @@ appRoot.controller('addTaskCtrl', ['socketService', '$scope', 'taskService', '$l
             followingEmployees: [],
             is_public: 0,
             taskGroupIds: [],
-            sms: 0,
+            sms: 0
         };
 
         /*Helpers*/
@@ -1644,11 +1644,11 @@ appRoot.controller('addTaskCtrl', ['socketService', '$scope', 'taskService', '$l
             $scope.task.followingEmployees = [];
 
             //status
-            taskService.getParentTaskList({project_id: $scope.task.project_id}, function (data) {
+            taskService.getParentTasks({project_id: $scope.task.project_id}, function (data) {
                 $scope.parentTasks = data.objects.collection;
             });
 
-            taskService.getTaskGroupList({project_id: $scope.task.project_id}, function (data) {
+            taskGroupService.getTaskGroups({project_id: $scope.task.project_id}, function (data) {
                 $scope.taskGroups = data.objects.collection;
             });
 
@@ -1665,7 +1665,7 @@ appRoot.controller('addTaskCtrl', ['socketService', '$scope', 'taskService', '$l
         }
         /*Call services*/
         //project 
-        projectService.getProjectList({}, function (data) {
+        projectService.getProjects({}, function (data) {
             $scope.projects = data.objects.collection;
         });
 

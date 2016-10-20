@@ -205,7 +205,6 @@
             task_choose_all: 'Tất cả',
             task_employee_assigners: 'Người làm',
             task_employee_followers: 'Người theo dõi',
-            
             task_estimate_error : 'Thời gian ước lượng phải là con số',
             task_estimate_error_0 : 'Thời gian ước lượng phải lớn hơn -1',
             task_name_error_empty : 'Tên công việc không thể bỏ trống',
@@ -228,7 +227,6 @@
             task_remind_before:'Báo trước',
             task_remind_repeat:'Lặp lại sau',
             minute:'phút',
-            task_group_choose:'Chọn loại công việc',
             parent_task_choose:'Chọn Công việc cha',            
             parent_task:'Công việc cha',
             task_project_empty:'Vui lòng chọn dự án của công việc này trước',

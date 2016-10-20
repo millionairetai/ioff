@@ -263,12 +263,12 @@ class Project extends \common\components\db\ActiveRecord {
         ];
     }
 
-   public function getEmployees() {
-        $projectParticipantModel = new ProjectParticipant();
-        $employees = $projectParticipantModel->getEmployeesByProjectId($this->id);        
-                
-        return $employees;
-    }
+//   public function getEmployees() {
+//        $projectParticipantModel = new ProjectParticipant();
+//        $employees = $projectParticipantModel->getEmployeesByProjectId($this->id);        
+//                
+//        return $employees;
+//    }
 
     public function getTasks() {
         return $this->hasMany(Task::className(), ['project_id'=>'id']);
@@ -276,5 +276,18 @@ class Project extends \common\components\db\ActiveRecord {
         
     public function getCompany() {
         return $this->hasOne(Company::className(), ['id'=>'company_id']);        
+    }
+
+    /**
+     * Get id and name projects
+     * @return boolean|array
+     */
+    public static function getIdAndNameProjects() {
+        return self::find()
+                ->select(['id','name'])
+                ->andCompanyId()
+                ->orderBy('datetime_created DESC')
+                ->asArray()
+                ->all();
     }
 }

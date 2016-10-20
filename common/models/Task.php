@@ -231,4 +231,19 @@ class Task extends \common\components\db\ActiveRecord {
         ];
     }
 
+    
+    /**
+     * Get tasks by project id.
+     * @param interger $projectId
+     * @return array|null
+     */
+    public static function getByProjectId($projectId) {
+        return self::find()
+                ->select(['id', 'name'])
+                ->where(['project_id' => \Yii::$app->request->get('project_id')])
+                ->andCompanyId()
+                ->orderBy('datetime_created DESC')
+                ->asArray()
+                ->all();
+    }
 }

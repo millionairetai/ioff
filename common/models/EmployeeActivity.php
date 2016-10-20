@@ -74,4 +74,17 @@ class EmployeeActivity extends \common\components\db\ActiveRecord
             'disabled' => 'Disabled',
         ];
     }
+         
+    /**
+     * Get employee activity by employee id
+     *
+     * @param integer $employeeId
+     * @return object
+     */
+    public static function getByEmployeeId($employeeId) {
+        return self::find()
+                ->andWhere(['employee_id' => $employeeId])
+                ->andCompanyId()
+                ->one();
+    }
 }
