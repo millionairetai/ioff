@@ -92,8 +92,7 @@ class File extends \common\components\db\ActiveRecord {
         $allow = array('image/jpeg', 'image/pjpeg', 'image/gif', 'image/png');
         $group = self::getPath($pathFolder);
         $path = $pathFolder . DIRECTORY_SEPARATOR . $group . DIRECTORY_SEPARATOR;
-        $employeeSpace = EmployeeSpace::find()->andCompanyId()->andWhere(['employee_id' => $employeeId])->one();
-
+        $employeeSpace = EmployeeSpace::find()->andWhere(['employee_id' => $employeeId])->andCompanyId()->one();
         if (!$employeeSpace) {
             $employeeSpace = new EmployeeSpace();
             $employeeSpace->employee_id = $employeeId;

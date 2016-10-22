@@ -27,6 +27,8 @@
             //Lang for expand and remove contaner in each page.
             expand: 'Expand',
             remove: 'Remove',
+            name_less_than_255_character: 'Name must less than 255 characters',
+            
             //date picker
             datepicker_close : "Close",
             datepicker_clear : "Clear",
@@ -178,7 +180,7 @@
             task_empty : 'There is not task',
             task_manage : 'Managing task',
             task_list : 'List task',
-            task_infomation : 'Project information',
+            task_infomation : 'Task information',
             task_choose_member: 'Choose Members',
             task_final: 'Final',
             task_name : "Project Name",
@@ -204,10 +206,13 @@
             task_employee_assigners: 'Assignees',
             task_employee_followers: 'Followers',
             task_members: 'Members',
+            task_check_valid_redmind: 'Startdatetime with current time must be greater than remind time 30 minutes',
             
             task_estimate_error : 'Estimate time is must numberic',
             task_estimate_error_0 : 'Estimate time is greater than -1',
             task_name_error_empty : 'Project name is not empty',
+            task_duedatetime_error_empty: 'Duedatetime is empty',
+            task_project_name_error_empty : 'Project is required',
             task_description_error_empty : 'Description is not empty',
             task_start_date_error_empty : 'Start date is must format dd-mm-yyyy',
             task_end_date_error_empty : 'End date is must format dd-mm-yyyy',

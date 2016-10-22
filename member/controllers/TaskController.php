@@ -15,6 +15,7 @@ use common\models\TaskAssignment;
 use common\models\Follower;
 use common\models\Notification;
 use common\models\Remind;
+use common\models\Sms;
 
 class TaskController extends ApiController {
     /*
@@ -24,7 +25,6 @@ class TaskController extends ApiController {
      */
     public function actionAdd() {
         $objects = [];
-        $postData = [];
         $postData = \Yii::$app->request->post('task', '');
         if (!empty($postData)) {
             $postData = json_decode($postData, true);
@@ -34,11 +34,11 @@ class TaskController extends ApiController {
         try {
             $task = new Task();
             $task->attributes = $postData;
-            $task->description_parse = $task->description;
+            $task->description_parse = strip_tags($task->description);
             $task->duedatetime = $task->duedatetime ? strtotime($task->duedatetime) : null;
             
             if (!$task->save()) {
-                $this->_message = $this->parserMessage($ob->getErrors());
+                $this->_message = $this->parserMessage($task->getErrors());
                 $this->_error = true;
                 throw new \Exception($this->_message);
             }
@@ -76,16 +76,9 @@ class TaskController extends ApiController {
             $employeeActivity = EmployeeActivity::getByEmployeeId(Yii::$app->user->getId());
             if (!$employeeActivity) {
                 $employeeActivity = new EmployeeActivity();
-                $employeeActivity->employee_id = \Yii::$app->user->getId();
-                $employeeActivity->activity_task = $employeeActivity->activity_total = 0;
             }
-
-            $employeeActivity->activity_task += 1;
-            $employeeActivity->activity_total += 1;
-            if (!$employeeActivity->save()) {
-                throw new \Exception('Save record to employee_activity table fail');
-            }
-
+            
+            $employeeActivity->increase('activity_task');
             $taskGroupAllocation = [];
             if (!empty($postData['taskGroupIds'])) {
                 foreach ($postData['taskGroupIds'] as $taskGroupId) {
@@ -97,22 +90,22 @@ class TaskController extends ApiController {
             $remind = [];
             $notifications = [];
             $employees = Employee::getByIds(array_merge($aAssignedEmployeeIds, $aFollowedEmployeeIds));
-            $noContent = \Yii::$app->user->identity->firstname . " " . \Yii::t('common', 'created') . " " . $task->name;
+            $noContent = Notification::makeContent(\Yii::t('common', 'created'), $task->name);
             foreach ($employees as $employee) {
                 //notification
                 $notifications[] = [$task->id, Notification::TABLE_TASK, $employee->id, \Yii::$app->user->getId(), "create_task", $noContent];
                 $dataSend = [
-                    '{creator name}' => \Yii::$app->user->identity->firstname,
+                    '{creator name}' => \Yii::$app->user->identity->fullname,
                     '{project name}' => '', //need to get
                     '{task name}' => $task->name
                 ];
                 //prepare data and template email, sms
                 if (in_array($employee->id, $aAssignedEmployeeIds)) {
-                    $themeEmail = \common\models\EmailTemplate::getThemeCreateTaskForAssigner(); //
-                    $themeSms = \common\models\SmsTemplate::getThemeCreateTaskForAssigner(); //
+                    $themeEmail = \common\models\EmailTemplate::getThemeCreateTaskForAssigner();
+                    $themeSms = \common\models\SmsTemplate::getThemeCreateTaskForAssigner();
                 } else if (in_array($employee->id, $aFollowedEmployeeIds)) {
-                    $themeEmail = \common\models\EmailTemplate::getThemeCreateTaskForFollower(); //
-                    $themeSms = \common\models\SmsTemplate::getThemeCreateTaskForFollower(); //
+                    $themeEmail = \common\models\EmailTemplate::getThemeCreateTaskForFollower();
+                    $themeSms = \common\models\SmsTemplate::getThemeCreateTaskForFollower();
                 }
 
                 //send mail
@@ -120,7 +113,6 @@ class TaskController extends ApiController {
                 //sms
                 if ($task->sms) {
                     $sms[] = [$task->id, $employee->id, \common\models\Sms::TABLE_TASK, $noContent, 1, 0];
-                    //send sms
                     $employee->sendSms($dataSend, $themeSms);
                 }
 
@@ -128,50 +120,14 @@ class TaskController extends ApiController {
                 if (!empty($postData['redmind'])) {
                     $remind[] = [$employee->id, $task->id, Remind::TABLE_TASK, $task->name, $task->duedatetime - ($postData['redmind'] * 60), $postData['redmind'], 0, 0];
                 }
-            }//end foreach employees
-
-            if (!empty($taskAss)) {
-                if (!Yii::$app->db->createCommand()->batchInsert(
-                                TaskAssignment::tableName(), ['task_id', 'employee_id'], $taskAss)->execute()) {
-                    throw new \Exception('BatchInsert to task_assignment table fail');
-                }
             }
 
-            if (!empty($taskFollow)) {
-                if (!Yii::$app->db->createCommand()->batchInsert(
-                                Follower::tableName(), ['task_id', 'employee_id'], $taskFollow)->execute()) {
-                    throw new \Exception('BatchInsert to follower table fail');
-                }
-            }
-
-            if (!empty($taskGroupAllocation)) {
-                if (!Yii::$app->db->createCommand()->batchInsert(
-                                TaskGroupAllocation::tableName(), ['task_group_id', 'task_id'], $taskGroupAllocation)->execute()) {
-                    throw new \Exception('BatchInsert to task_group_allocation table fail');
-                }
-            }
-
-            if (!empty($notifications)) {
-                if (!Yii::$app->db->createCommand()->batchInsert(
-                                Notification::tableName(), ['owner_id', 'owner_table', 'employee_id', 'owner_employee_id', 'type', 'content'], $notifications)->execute()) {
-                    throw new \Exception('BatchInsert to notification table fail');
-                }
-            }
-
-            if (!empty($remind)) {
-                if (!Yii::$app->db->createCommand()->batchInsert(
-                                Remind::tableName(), ['employee_id', 'owner_id', 'owner_table', 'content', 'remind_datetime', 'minute_before', 'repeated_time', 'is_snoozing'], $remind)->execute()) {
-                    throw new \Exception('BatchInsert to remind table fail');
-                }
-            }
-
-            if (!empty($sms)) {
-                if (!Yii::$app->db->createCommand()->batchInsert(
-                                Sms::tableName(), ['owner_id', 'employee_id', 'owner_table', 'content', 'is_success', 'fee'], $sms)->execute()) {
-                    throw new \Exception('BatchInsert to sms table fail');
-                }
-            }
-
+            TaskAssignment::batchInsert($taskAss, ['task_id', 'employee_id']);
+            Follower::batchInsert($taskFollow, ['task_id', 'employee_id']);
+            TaskGroupAllocation::batchInsert($taskGroupAllocation, ['task_group_id', 'task_id']);
+            Notification::batchInsert($notifications, ['owner_id', 'owner_table', 'employee_id', 'owner_employee_id', 'type', 'content']);
+            Remind::batchInsert($remind, ['employee_id', 'owner_id', 'owner_table', 'content', 'remind_datetime', 'minute_before', 'repeated_time', 'is_snoozing']);
+            Sms::batchInsert($sms, ['owner_id', 'employee_id', 'owner_table', 'content', 'is_success', 'fee']);
             $transaction->commit();
         } catch (\Exception $e) {
             $this->_message = $e->getMessage();

@@ -27,6 +27,7 @@
             //Lang for expand and remove contaner in each page.
             expand: 'Đóng',
             remove: 'Xóa',
+            name_less_than_255_character: 'Tên phải nhỏ hơn 255 kí tự', 
             
             //date picker
             datepicker_close : "Đóng",
@@ -205,10 +206,13 @@
             task_choose_all: 'Tất cả',
             task_employee_assigners: 'Người làm',
             task_employee_followers: 'Người theo dõi',
+            task_check_valid_redmind: 'Thời gian hết hạn của công việc so với thời gian hiện tại phải lớn hơn thời gian nhắc nhở 30 phút', 
+            
             task_estimate_error : 'Thời gian ước lượng phải là con số',
             task_estimate_error_0 : 'Thời gian ước lượng phải lớn hơn -1',
             task_name_error_empty : 'Tên công việc không thể bỏ trống',
-            task_project_name_error_empty : 'Công việc thuộc dự án nào, không thể bỏ trống',
+            task_duedatetime_error_empty: 'Ngày hết hạn bị rỗng',
+            task_project_name_error_empty : 'Bắt buộc chọn dự án cho công việc',
             task_description_error_empty : 'Mô tả công việc không thể bỏ trống',
             task_start_date_error_empty : 'Ngày bắt đầu phải có định dạng dd-mm-yyyy',
             task_end_date_error_empty : 'Ngày kết thúc phải có định dạng dd-mm-yyyy',

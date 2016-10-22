@@ -17,6 +17,8 @@ return [
     'Email' => 'Email',
     'created' => ' đã tạo ',
     'Search'=>'Tìm kiếm',
+    'Name'=>'Tên',
+    'Description' => 'Miêu tả',
     
     //Calendar
     'event_id' => 'Mã sự kiện',

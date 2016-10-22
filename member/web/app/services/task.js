@@ -21,7 +21,11 @@ appRoot.factory('taskService', ['apiService','$rootScope','alertify', function (
                     message += $rootScope.$lang.task_name_error_empty + "<br/>";
                 }
                 
-                if(object.project_id.length == 0){
+                if(object.name.length > 255){
+                    message += $rootScope.$lang.name_less_than_255_character + "<br/>";
+                }
+                
+                if(object.project_id.length == 0 || object.project_id.length == null){
                     message += $rootScope.$lang.task_project_name_error_empty + "<br/>";
                 }
                 
@@ -36,12 +40,7 @@ appRoot.factory('taskService', ['apiService','$rootScope','alertify', function (
                     
                 }else{
                     message += $rootScope.$lang.task_estimate_error + "<br/>";
-                }
-                                
-                //check enddate
-                if((typeof object.duedatetime) === 'undefined'){
-                    message += $rootScope.$lang.task_end_date_error_empty + "<br/>";
-                }                               
+                }                              
                 
                 if(message.length > 0){
                     alertify.error(message);
@@ -50,11 +49,20 @@ appRoot.factory('taskService', ['apiService','$rootScope','alertify', function (
                 return true;
                 
             },
-            validate_step2 : function(object){
-                var message = "";
-                                
-                if(object.taskGroupIds.length == 0){
-                    message += $rootScope.$lang.task_group_error_empty + "<br/>";
+            validate_step2 : function(object) {
+                var message = "";        
+                if(Object.prototype.toString.call(object.duedatetime) !== '[object Date]' && object.redmind > 0) {
+                    message += $rootScope.$lang.task_duedatetime_error_empty + "<br/>";
+                } else {
+                    if(object.redmind > 0){
+                        var sub = moment(object.duedatetime).subtract({ minutes: object.redmind});
+                        var now = moment();
+//                        console.log(sub.diff(now, 'minutes'));
+//                        console.log(sub.diff(now));
+                        if(sub.diff(now) < 0){
+                            message += $rootScope.$lang.task_check_valid_redmind + "<br/>";
+                        }
+                    }
                 }
                 
                 if(message.length > 0){

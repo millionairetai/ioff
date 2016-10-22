@@ -444,9 +444,9 @@ class Employee extends ActiveRecord implements IdentityInterface {
     }
 
     /**
-     * Get employees by emails
+     * Get employees by ids
      *
-     * @param array $emails
+     * @param array $ids
      * @return boolean|array
      */
     public static function getByIds($ids = []) {

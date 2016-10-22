@@ -7,7 +7,7 @@ return [
     'Remember me' => 'Ghi nhớ?',
     'Login' => 'Đăng nhập',
     'Incorrect email or password' => 'Email hoặc mật khẩu không hợp lệ',
-    'error_system' => 'System is error, Please contact to admin',
+    'error_system' => 'Function can not process your request because system is in data processing',
     //project
     'project manager' => 'Manager',
     'project priority' => 'Priority',

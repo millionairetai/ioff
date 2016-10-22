@@ -8,7 +8,7 @@ return [
     'Login' => 'Đăng nhập',
     'Incorrect email or password' => 'Email hoặc mật khẩu không hợp lệ',
     'Can not get project info' => 'Không thể lấy dữ liệu cho dự án này',
-    'error_system' => 'Hệ thống đang gặp vấn đề, Mong bạn báo lại với ban quản trị',
+    'error_system' => 'Hiện tại chức năng không thể thực hiện được vì hệ thống đang trong quá trình xử lý dữ liệu.',
     //project
     'project manager' => 'Quản lý dự án',
     'project priority' => 'Ưu tiên',

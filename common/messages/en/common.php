@@ -17,6 +17,8 @@ return [
     'Email' => 'Email',
     'created' => ' Created date ',
     'Search'=>'Search',
+    'Name'=>'Name',
+    'Description' => 'Description',
     
     //calendar
     'event_id' => 'Event id',

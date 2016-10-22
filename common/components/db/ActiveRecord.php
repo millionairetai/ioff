@@ -200,10 +200,14 @@ class ActiveRecord extends \yii\db\ActiveRecord
      * @param array $dataInsert
      * @return boolean
      */
-    public static function batchInsert($dataInsert) {
+    public static function batchInsert($dataInsert, $columns = []) {
         if (!empty($dataInsert)) {
-            if (!\Yii::$app->db->createCommand()->batchInsert(self::tableName(), array_keys($dataInsert[0]), $dataInsert)->execute()) {
-                throw new \Exception('Save record to table fail');
+            if (empty($columns)) {
+                $columns = array_keys($dataInsert[0]);
+            }
+            
+            if (!\Yii::$app->db->createCommand()->batchInsert(self::tableName(), $columns, $dataInsert)->execute()) {
+                throw new \Exception('Save record to' . self::tableName() . ' table fail');
             }
         }
         
