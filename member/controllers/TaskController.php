@@ -125,7 +125,7 @@ class TaskController extends ApiController {
 
             TaskAssignment::batchInsert($taskAss, ['task_id', 'employee_id']);
             Follower::batchInsert($taskFollow, ['task_id', 'employee_id']);
-            TaskGroupAllocation::batchInsert($taskGroupAllocation, ['task_group_id', 'task_id']);
+            TaskGroupAllocation::batchInsert($taskGroupAllocation, ['task_id', 'task_group_id',]);
             Notification::batchInsert($notifications, ['owner_id', 'owner_table', 'employee_id', 'owner_employee_id', 'type', 'content']);
             Remind::batchInsert($remind, ['employee_id', 'owner_id', 'owner_table', 'content', 'remind_datetime', 'minute_before', 'repeated_time', 'is_snoozing']);
             Sms::batchInsert($sms, ['owner_id', 'employee_id', 'owner_table', 'content', 'is_success', 'fee']);
