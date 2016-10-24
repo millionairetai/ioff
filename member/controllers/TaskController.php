@@ -36,6 +36,7 @@ class TaskController extends ApiController {
             $task->attributes = $postData;
             $task->description_parse = strip_tags($task->description);
             $task->duedatetime = $task->duedatetime ? strtotime($task->duedatetime) : null;
+            $task->employee_id = Yii::$app->user->getId();
             
             if (!$task->save()) {
                 $this->_message = $this->parserMessage($task->getErrors());
