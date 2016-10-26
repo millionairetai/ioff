@@ -43,7 +43,7 @@
             <ul class="nav navbar-nav">
                 <!-- Notifications: style can be found in dropdown.less -->
                 <li class="dropdown messages-menu">
-                    <a  class="dropdown-toggle cursor-pointer" data-toggle="dropdown">
+                    <a  class="dropdown-toggle cursor-pointer" data-toggle="dropdown" ng-click="getNotifications()">
                         <i class="fa fa-bell-o"></i>
                         <span class="label label-warning">{{$root.sum_notify}}</span>
                     </a>
