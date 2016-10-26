@@ -65,4 +65,5 @@ return [
     'create project post' => 'Add project post',
     'create task' => 'Add task',
     'edit event' => 'Edit event',
+    'create task post' => 'Thêm bài đăng',
 ];

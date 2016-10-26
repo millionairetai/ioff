@@ -64,6 +64,9 @@ class NotificationController extends ApiController {
             case 'edit_event';
                 return \Yii::t('member', 'edit event');
                 break;
+            case 'create_task_post';
+                return \Yii::t('member', 'create task post');
+                break;
             default :
                 return $typeActivity;
         }
