@@ -198,20 +198,19 @@ class Task extends \common\components\db\ActiveRecord {
      * @return array|null
      */
     public static function getTasks($itemPerPage, $currentPage, $searchText) {
+        $subFollowQuery = Follower::find()->select('task_id')->where(['employee_id' => \Yii::$app->user->identity->id]);
+        $subTaskAssiQuery = TaskAssignment::find()->select('task_id')->where(['employee_id' => \Yii::$app->user->identity->id]);
         $tasks = self::find()
                         ->select(['task.id', 'task.name', 'task.description', 'completed_percent', 'task.created_employee_id'])
-                        ->distinct()
-                        ->leftJoin('task_assignment', 'task.id = task_assignment.task_id')
-                        ->leftJoin('follower', 'task.id = follower.task_id')
                         ->orWhere([
                             'task.is_public' => self::VAL_TRUE,
                         ])->orWhere([
                     'task.created_employee_id' => \Yii::$app->user->identity->id,
                 ])->orWhere([
-                    'task_assignment.employee_id' => \Yii::$app->user->identity->id,
+                    'task.id' => $subFollowQuery,
                 ])->orWhere([
-            'follower.employee_id' => \Yii::$app->user->identity->id,
-        ])->andCompanyId(false, 'task');
+                    'task.id' => $subTaskAssiQuery,
+                ])->andCompanyId();
 
         if ($searchText) {
             $tasks->andFilterWhere(['like', 'name', $searchText]);
@@ -231,7 +230,6 @@ class Task extends \common\components\db\ActiveRecord {
         ];
     }
 
-    
     /**
      * Get tasks by project id.
      * @param interger $projectId
@@ -239,11 +237,12 @@ class Task extends \common\components\db\ActiveRecord {
      */
     public static function getByProjectId($projectId) {
         return self::find()
-                ->select(['id', 'name'])
-                ->where(['project_id' => \Yii::$app->request->get('project_id')])
-                ->andCompanyId()
-                ->orderBy('datetime_created DESC')
-                ->asArray()
-                ->all();
+                        ->select(['id', 'name'])
+                        ->where(['project_id' => \Yii::$app->request->get('project_id')])
+                        ->andCompanyId()
+                        ->orderBy('datetime_created DESC')
+                        ->asArray()
+                        ->all();
     }
+
 }
