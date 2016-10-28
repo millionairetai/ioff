@@ -115,25 +115,23 @@ class Task extends \common\components\db\ActiveRecord {
 
     /**
      * Get all of follow tasks that employee follow.
+     * 
      * @param interger $itemPerPage
      * @param interger $currentPage
      * @param string $searchText
      * @return array|null
      */
     public static function getFollowTasks($itemPerPage, $currentPage, $searchText) {
-        $follower = Follower::find()
-                        ->select(['task_id'])
-                        ->where(['employee_id' => \Yii::$app->user->identity->id])
-                        ->andCompanyId()->asArray()->all();
-        if (empty($follower)) {
-            throw new \Exception('Get task_assigment empty');
-        }
+        $subFollowQuery = Follower::find()
+                ->select('task_id')
+                ->where(['employee_id' => \Yii::$app->user->identity->id]);
 
         $tasks = Task::find(['id', 'company_id', 'company_id', 'priority_id', 'status_id', 'parent_id', 'employee_id',
                             'name', 'description', 'description_parse', 'start_datetime', 'duedatetime', 'estimate_hour', 'worked_hour',
                             'completed_percent', 'is_public'])
                         ->with('creator', 'assignees', 'followers')
-                        ->andWhere(['id' => array_map('current', $follower)])->andCompanyId();
+                        ->andWhere(['id' => $subFollowQuery])->andCompanyId();
+        
         if ($searchText) {
             $tasks->andFilterWhere(['like', 'name', $searchText]);
         }
@@ -153,26 +151,23 @@ class Task extends \common\components\db\ActiveRecord {
 
     /**
      * Get all of tasks that employee is assigned.
+     * 
      * @param interger $itemPerPage
      * @param interger $currentPage
      * @param string $searchText
      * @return array|null
      */
     public static function getMyTasks($itemPerPage, $currentPage, $searchText) {
-        $taskAss = TaskAssignment::find()
-                        ->select(['task_id'])
-                        ->where(['employee_id' => \Yii::$app->user->identity->id])
-                        ->andCompanyId()->asArray()->all();
-
-        if (empty($taskAss)) {
-            throw new \Exception('Get task_assigment empty');
-        }
+        $subTaskAssiQuery = TaskAssignment::find()
+                ->select('task_id')
+                ->where(['employee_id' => \Yii::$app->user->identity->id]);
 
         $tasks = Task::find(['id', 'company_id', 'company_id', 'priority_id', 'status_id', 'parent_id', 'employee_id',
                             'name', 'description', 'description_parse', 'start_datetime', 'duedatetime', 'estimate_hour', 'worked_hour',
                             'completed_percent', 'is_public'])
                         ->with('creator', 'assignees', 'followers')
-                        ->andWhere(['id' => array_map('current', $taskAss)])->andCompanyId();
+                        ->andWhere(['id' => $subTaskAssiQuery])->andCompanyId();
+
         if ($searchText) {
             $tasks->andFilterWhere(['like', 'name', $searchText]);
         }
