@@ -848,24 +848,5 @@ class CalendarController extends ApiController {
         
         return $content == '' ? false : "<ul>" . $content . "</ul>";
     }
-    
-    public function actionDownloadFile(){
-        $fileId = \Yii::$app->request->get('fileId',0);
-        $eventId = \Yii::$app->request->get('eventId',0);
-        
-        if($fileId && $eventId){
-            
-            if($file = File::getFileByFileIdAndOwnerIdAndTable($fileId, $eventId, Event::tableName())){
-                
-                 $path = \Yii::$app->params['EventFilePathUpload'].str_replace(["\/","\\"],DIRECTORY_SEPARATOR,$file->path);
-                 $name = $file->name;
-
-                if (file_exists($path)) {
-                    return Yii::$app->response->sendFile($path,$name);
-                }
-            }            
-        }        
-                
-    }
 
 }
