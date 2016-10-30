@@ -47,8 +47,7 @@ class FileController extends ApiController {
         $fileId = \Yii::$app->request->get('fileId',0);
                                         
         if($fileId){
-            
-           
+                       
             $file = File::find()->select(['id', 'name', 'path', 'datetime_created','owner_object','owner_id'])->where(['id'=>$fileId])->one();
             $path = \Yii::$app->params['PathUpload'].str_replace(["\/","\\"],DIRECTORY_SEPARATOR,$file->path);
             $name = $file->name;
@@ -60,32 +59,25 @@ class FileController extends ApiController {
             
             if($file){
                 
+                //check object
                 switch($file->owner_object){
                     
-                    case File::TABLE_EVENT || File::TABLE_EVENT_POST:
-                        
+                    case File::TABLE_EVENT || File::TABLE_EVENT_POST:                        
                         //check dowloading posibility
-                        try {
-                                if ($event = Event::getInfoEvent($file->owner_id)) {
-                                    //check authentication to view event
-                                    if (($event['event']['is_public'] == true) || Employee::isAdmin() || ($event['event']['creator_event_id'] == Yii::$app->user->identity->id)) {
-                                        return \Yii::$app->response->sendFile($path,$name);
-                                    } else {
-                                        if (EventConfirmation::isInvited($eventId)) {
-                                            return \Yii::$app->response->sendFile($path,$name);
-                                        } else {
-                                            $objects['collection']['error'] = true;
-                                            return $this->sendResponse(false, \Yii::t('member', "you do not have authoirity for this action"), $objects['collection']);
-                                        }
-                                    }
+                        if ($event = Event::getInfoEvent($file->owner_id)) {
+                            //check authentication to view event
+                            if (($event['event']['is_public'] == true) || Employee::isAdmin() || ($event['event']['creator_event_id'] == Yii::$app->user->identity->id)) {
+                                return \Yii::$app->response->sendFile($path,$name);
+                            } else {
+                                if (EventConfirmation::isInvited($eventId)) {
+                                    return \Yii::$app->response->sendFile($path,$name);
+                                } else {
+                                    $objects['collection']['error'] = true;
+                                    return $this->sendResponse(false, \Yii::t('member', "you do not have authoirity for this action"), $objects['collection']);
                                 }
-
-                                throw new \Exception(\Yii::t('member', 'Can not get data'));
-                        } catch (\Exception $e) {
-                            return $this->sendResponse(true, $e->getMessage(), []);
-                        }
-                        //end check
-                            
+                            }
+                        }                        
+                        //end check                            
                         break;
                         
                     case File::TABLE_PROJECT || File::TABLE_PROJECT_POST:
@@ -95,9 +87,8 @@ class FileController extends ApiController {
                         break;
                     
                     default:
-                }
-                 
-                
+                } //end switch  
+                               
             }            
         }        
                 
