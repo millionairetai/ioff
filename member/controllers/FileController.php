@@ -7,6 +7,7 @@ use common\models\ProjectPost;
 use common\models\Project;
 use common\models\Task;
 use common\models\Event;
+use common\models\Employee;
 
 class FileController extends ApiController {
     
@@ -47,17 +48,56 @@ class FileController extends ApiController {
                                         
         if($fileId){
             
-            $file = File::find()->select(['id', 'name', 'path', 'datetime_created'])->where(['id'=>$fileId,'company_id'=>\Yii::$app->user->getCompanyId()])->one();
+           
+            $file = File::find()->select(['id', 'name', 'path', 'datetime_created','owner_object','owner_id'])->where(['id'=>$fileId])->one();
+            $path = \Yii::$app->params['PathUpload'].str_replace(["\/","\\"],DIRECTORY_SEPARATOR,$file->path);
+            $name = $file->name;
+
+            if (!file_exists($path)) {
+                $objects['collection']['error'] = true;
+                return $this->sendResponse(false, \Yii::t('file', "File does not exist"), $objects['collection']);
+            }
             
             if($file){
                 
-                 $path = \Yii::$app->params['PathUpload'].str_replace(["\/","\\"],DIRECTORY_SEPARATOR,$file->path);
-                 echo $path;
-                 $name = $file->name;
+                switch($file->owner_object){
+                    
+                    case File::TABLE_EVENT || File::TABLE_EVENT_POST:
+                        
+                        //check dowloading posibility
+                        try {
+                                if ($event = Event::getInfoEvent($file->owner_id)) {
+                                    //check authentication to view event
+                                    if (($event['event']['is_public'] == true) || Employee::isAdmin() || ($event['event']['creator_event_id'] == Yii::$app->user->identity->id)) {
+                                        return \Yii::$app->response->sendFile($path,$name);
+                                    } else {
+                                        if (EventConfirmation::isInvited($eventId)) {
+                                            return \Yii::$app->response->sendFile($path,$name);
+                                        } else {
+                                            $objects['collection']['error'] = true;
+                                            return $this->sendResponse(false, \Yii::t('member', "you do not have authoirity for this action"), $objects['collection']);
+                                        }
+                                    }
+                                }
 
-                if (file_exists($path)) {
-                    return \Yii::$app->response->sendFile($path,$name);
+                                throw new \Exception(\Yii::t('member', 'Can not get data'));
+                        } catch (\Exception $e) {
+                            return $this->sendResponse(true, $e->getMessage(), []);
+                        }
+                        //end check
+                            
+                        break;
+                        
+                    case File::TABLE_PROJECT || File::TABLE_PROJECT_POST:
+                        break;
+                    
+                    case File::TABLE_TASK || File::TABLE_TASK_POST:
+                        break;
+                    
+                    default:
                 }
+                 
+                
             }            
         }        
                 
