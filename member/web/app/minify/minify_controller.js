@@ -645,6 +645,13 @@ appRoot.controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService',
                 $scope.files.splice($index, 1);
             }
         };
+        
+        //download file post
+        $scope.downloadFile = function (fileId) {
+            window.open('calendar/download-file?fileId='+ fileId +'&eventId='+eventId);
+//            calendarService.downloadFile({fileId:fileId,eventId: eventId}, function (response) {
+//            });
+        };
 
         //load move - close employee
         $scope.limit = 5;

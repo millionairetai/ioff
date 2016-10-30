@@ -73,7 +73,7 @@
                     <br/>
                     <div ng-if="collection.file_info != ''" ng-repeat="files in collection.file_info| limitTo:limitFile">
                         <div>
-                            <a href="{{files.path}}"><span class="glyphicon glyphicon-file" aria-hidden="true"></span>{{files.name}}</a>
+                            <a href="" ng-click="downloadFile(files.id)"><span class="glyphicon glyphicon-file" aria-hidden="true"></span>{{files.name}}</a>
                             <i ng-click="deleteFile($index, files.id)" class="fa fa-remove cursor-point"></i>
                         </div>
                     </div>

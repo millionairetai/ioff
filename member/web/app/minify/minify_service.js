@@ -273,6 +273,9 @@ appRoot.factory('calendarService', ['apiService','$rootScope','alertify', functi
                         {id:1440,name:$rootScope.$lang.calendar_event_redmine_1440},
                         {id:2880,name:$rootScope.$lang.calendar_event_redmine_2880},
                         ];
+            },
+            downloadFile:function (data,success,error){
+                apiService.get('calendar/download-file',data, success, error);
             }
         };
     }]);
