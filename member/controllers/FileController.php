@@ -44,31 +44,15 @@ class FileController extends ApiController {
     
     public function actionDownloadFile(){
         $fileId = \Yii::$app->request->get('fileId',0);
-        $objectId = \Yii::$app->request->get('objectId',0);
-        $type = \Yii::$app->request->get('type','');
-        
-        $tableName = '';
-        $path = '';
-        
-        switch ($type){
-            case File::TABLE_PROJECT:  $tableName = Project::tableName();
-                $path = \Yii::$app->params['ProjectPathUpload'];
-                break;            
-            case File::TABLE_TASK:  $tableName = Task::tableName();
-                $path = \Yii::$app->params['TaskPathUpload'];
-                break;
-            case File::TABLE_EVENT:  $tableName = Event::tableName();
-                $path = \Yii::$app->params['EventPathUpload'];
-                break;
-            default : $tableName = Project::tableName();
-                $path = \Yii::$app->params['PathUpload'];
-        }
-                        
-        if($fileId && $objectId){
+                                        
+        if($fileId){
             
-            if($file = File::getFileByFileIdAndOwnerIdAndTable($fileId, $objectId, $tableName)){
+            $file = File::find()->select(['id', 'name', 'path', 'datetime_created'])->where(['id'=>$fileId,'company_id'=>\Yii::$app->user->getCompanyId()])->one();
+            
+            if($file){
                 
-                 $path = $path.str_replace(["\/","\\"],DIRECTORY_SEPARATOR,$file->path);
+                 $path = \Yii::$app->params['PathUpload'].str_replace(["\/","\\"],DIRECTORY_SEPARATOR,$file->path);
+                 echo $path;
                  $name = $file->name;
 
                 if (file_exists($path)) {

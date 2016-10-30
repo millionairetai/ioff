@@ -648,7 +648,7 @@ appRoot.controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService',
         
         //download file post
         $scope.downloadFile = function (fileId) {
-            window.open('file/download-file?fileId='+ fileId +'&objectId='+eventId+'&type='+'event');
+            window.open('file/download-file?fileId='+ fileId);
         };
 
         //load move - close employee
