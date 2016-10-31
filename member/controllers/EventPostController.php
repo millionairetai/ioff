@@ -48,6 +48,7 @@ class EventPostController extends ApiController {
         $fileData = [];
         foreach ($files as $val) {
             $fileData[$val->owner_id][] = [
+                'id' => $val->id,
                 'name' => $val->name,
                 'path' => \Yii::$app->params['PathUpload'] . DIRECTORY_SEPARATOR . $val->path
             ];

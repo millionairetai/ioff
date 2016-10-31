@@ -7,6 +7,7 @@ use common\models\ProjectPost;
 use common\models\Project;
 use common\models\Task;
 use common\models\Event;
+use common\models\EventPost;
 use common\models\Employee;
 
 class FileController extends ApiController {
@@ -62,9 +63,18 @@ class FileController extends ApiController {
                 //check object
                 switch($file->owner_object){
                     
-                    case File::TABLE_EVENT || File::TABLE_EVENT_POST:                        
+                    case File::TABLE_EVENT || File::TABLE_EVENT_POST:
+                        $eventId = '';
+                        
+                        if($file->owner_object == File::TABLE_EVENT_POST){
+                            $eventPost = EventPost::find()->select('event_id')->where(['id'=>$file->owner_id])->one();                            
+                            $eventId = $eventPost ? $eventPost->event_id : '';
+                        }else{                                       
+                            $eventId = $file->owner_id;
+                        }
+                        
                         //check dowloading posibility
-                        if ($event = Event::getInfoEvent($file->owner_id)) {
+                        if ($eventId && $event = Event::getInfoEvent($eventId)) { 
                             //check authentication to view event
                             if (($event['event']['is_public'] == true) || Employee::isAdmin() || ($event['event']['creator_event_id'] == Yii::$app->user->identity->id)) {
                                 return \Yii::$app->response->sendFile($path,$name);

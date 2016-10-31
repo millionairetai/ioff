@@ -140,7 +140,7 @@
                         </div>
                         <div class="box-body">
                             <p ng-bind-html="getHtml(v.content)" ng-tt-chars-threshold="200"></p>
-                            <div class="padding-left-20" ng-repeat="file in eventPostFile[v.id]"><a href="{{file.path}}"><span class="glyphicon glyphicon-file" aria-hidden="true"></span> {{file.name}}</a></div>
+                            <div class="padding-left-20" ng-repeat="file in eventPostFile[v.id]"><a href="file/download-file?fileId={{file.id}}"><span class="glyphicon glyphicon-file" aria-hidden="true"></span> {{file.name}}</a></div>
                         </div>
                         <!--box body-->
                     </div><!-- Recent post item-->
