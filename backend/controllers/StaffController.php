@@ -37,11 +37,13 @@ class ControllerController extends \yii\web\Controller {
 
     public function actionUpdate($id) {
         $this->_model = \common\models\Controller::findOne($id);
+
         if (!$this->_model) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
         $controller = \Yii::$app->request->post('Controller');
+        
         if (isset($controller)) {
             $this->_model->attributes = $controller;
             $this->_model->package_name = \common\models\Package::findOne($controller['package_id'])->name;
