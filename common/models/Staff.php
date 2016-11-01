@@ -4,6 +4,7 @@ namespace common\models;
 
 use Yii;
 use yii\data\ActiveDataProvider;
+use common\models\Job;
 
 /**
  * This is the model class for table "staff".
@@ -26,6 +27,7 @@ use yii\data\ActiveDataProvider;
  */
 class Staff extends \backend\components\db\ActiveRecord
 {
+    public $re_password;
     /**
      * @inheritdoc
      */
@@ -47,7 +49,8 @@ class Staff extends \backend\components\db\ActiveRecord
             [['email'], 'string', 'max' => 99],
             [['phone_no'], 'string', 'max' => 20],
             [['username'], 'string', 'max' => 128],
-            [['password'], 'string', 'max' => 64]
+            [['password'], 'string', 'max' => 64],
+            [['re_password'], 'string', 'max' => 64]
         ];
     }
 
@@ -58,14 +61,15 @@ class Staff extends \backend\components\db\ActiveRecord
     {
         return [
             'id' => Yii::t('backend', 'ID'),
-            'authority_id' => Yii::t('backend', 'Authority ID'),
-            'job_id' => Yii::t('backend', 'Job ID'),
-            'name' => Yii::t('backend', 'Name'),
-            'email' => Yii::t('backend', 'Email'),
-            'phone_no' => Yii::t('backend', 'Phone No'),
-            'address' => Yii::t('backend', 'Address'),
-            'username' => Yii::t('backend', 'Username'),
-            'password' => Yii::t('backend', 'Password'),
+            'authority_id' => Yii::t('common', 'Authority'),
+            'job_id' => Yii::t('backend', 'Job'),
+            'name' => Yii::t('common', 'Name'),
+            'email' => Yii::t('common', 'Email'),
+            'phone_no' => Yii::t('common', 'Phone'),
+            'address' => Yii::t('common', 'Address'),
+            'username' => Yii::t('common', 'Username'),
+            'password' => Yii::t('common', 'Password'),
+            're_password' => Yii::t('common', 'Re-Password'),
             'leaving_date' => Yii::t('backend', 'Leaving Date'),
             'datetime_created' => Yii::t('backend', 'Datetime Created'),
             'lastup_datetime' => Yii::t('backend', 'Lastup Datetime'),
@@ -80,7 +84,10 @@ class Staff extends \backend\components\db\ActiveRecord
      * @return ActiveDataProvider
      */
     public function search($params) {
-        $query = static::find();
+        $query = static::find()
+//                ->select(['staff.*', 'job.name as job_name'])
+                ->joinWith(['job']);
+//                ->joinWith(['authority']);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => array('pageSize' => self::PAGE_SIZE)
@@ -89,11 +96,26 @@ class Staff extends \backend\components\db\ActiveRecord
             return $dataProvider;
         }
         
-        $query->andFilterWhere(['like', 'name', $this->name]);
+        $query->andFilterWhere(['like', 'staff.name', $this->name]);
         $query->andFilterWhere(['like', 'email', $this->email]);
         $query->andFilterWhere(['like', 'address', $this->address]);
         $query->andFilterWhere(['like', 'username', $this->username]);
+        $query->orFilterWhere(['like', 'job.name', $this->name]);
         
         return $dataProvider;
     }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getJob() {
+        return $this->hasOne(Job::className(), ['id' => 'job_id']);
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAuthority() {
+        return $this->hasOne(Authority::className(), ['id' => 'authority_id']);
+    }    
 }

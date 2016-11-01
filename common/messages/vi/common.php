@@ -19,6 +19,12 @@ return [
     'Search'=>'Tìm kiếm',
     'Name'=>'Tên',
     'Description' => 'Miêu tả',
+    'Address' => 'Địa chỉ',
+    'Phone' => 'Điện thoại',    
+    'Authority' => 'Quyền',
+    'Select' => 'Chọn lựa',    
+    'Save' => 'Lưu',
+    'Re-Password' => 'Nhập lại mật khẩu',
     
     //Calendar
     'event_id' => 'Mã sự kiện',

@@ -19,6 +19,12 @@ return [
     'Search'=>'Search',
     'Name'=>'Name',
     'Description' => 'Description',
+    'Address' => 'Address',
+    'Phone' => 'Phone',
+    'Authority' => 'Authority',    
+    'Select' => 'Select',
+    'Save' => 'Save',    
+    'Re-Password' => 'Re-Password',    
     
     //calendar
     'event_id' => 'Event id',
