@@ -11,7 +11,6 @@ use common\models\EventPost;
 use common\models\Employee;
 
 class FileController extends ApiController {
-    
     /*
      * Function remove file screen view project when click button delete
      */
@@ -24,7 +23,7 @@ class FileController extends ApiController {
             if ($result = (new File())->removeFile(\Yii::$app->request->get('fileId'))) {
                 $object = [
                     'onwer_id' => $result->owner_id,
-                    'owner_object'=> $result->owner_object, 
+                    'owner_object' => $result->owner_object,
                     'name' => $result->name,
                     'encoded_name' => $result->encoded_name,
                     'path' => $result->path,
@@ -32,7 +31,7 @@ class FileController extends ApiController {
                     'file_size' => $result->file_size,
                 ];
             }
-            
+
             $transaction->commit();
         } catch (\Exception $e) {
             $this->_error = true;
@@ -43,64 +42,62 @@ class FileController extends ApiController {
 
         return $this->sendResponse($this->_error, $this->_message, $object);
     }
-    
-    public function actionDownloadFile(){
-        $fileId = \Yii::$app->request->get('fileId',0);
-                                        
-        if($fileId){
-                       
-            $file = File::find()->select(['id', 'name', 'path', 'datetime_created','owner_object','owner_id'])->where(['id'=>$fileId])->one();
-            $path = \Yii::$app->params['PathUpload'].str_replace(["\/","\\"],DIRECTORY_SEPARATOR,$file->path);
-            $name = $file->name;
 
+    /*
+     * Action download file.
+     */
+    public function actionDownloadFile() {
+        $fileId = \Yii::$app->request->get('fileId', 0);
+
+        if ($fileId) {
+
+            $file = File::find()->select(['id', 'name', 'path', 'datetime_created', 'owner_object', 'owner_id'])->where(['id' => $fileId])->one();
+            $path = \Yii::$app->params['PathUpload'] .  DIRECTORY_SEPARATOR . $file->path;
+            $name = $file->name;
             if (!file_exists($path)) {
                 $objects['collection']['error'] = true;
                 return $this->sendResponse(false, \Yii::t('file', "File does not exist"), $objects['collection']);
             }
-            
-            if($file){
-                
+
+            if ($file) {
                 //check object
-                switch($file->owner_object){
-                    
+                switch ($file->owner_object) {
                     case File::TABLE_EVENT || File::TABLE_EVENT_POST:
                         $eventId = '';
-                        
-                        if($file->owner_object == File::TABLE_EVENT_POST){
-                            $eventPost = EventPost::find()->select('event_id')->where(['id'=>$file->owner_id])->one();                            
+                        if ($file->owner_object == File::TABLE_EVENT_POST) {
+                            $eventPost = EventPost::find()->select('event_id')->where(['id' => $file->owner_id])->one();
                             $eventId = $eventPost ? $eventPost->event_id : '';
-                        }else{                                       
+                        } else {
                             $eventId = $file->owner_id;
                         }
-                        
+
                         //check dowloading posibility
-                        if ($eventId && $event = Event::getInfoEvent($eventId)) { 
+                        if ($eventId && $event = Event::getInfoEvent($eventId)) {
                             //check authentication to view event
                             if (($event['event']['is_public'] == true) || Employee::isAdmin() || ($event['event']['creator_event_id'] == Yii::$app->user->identity->id)) {
-                                return \Yii::$app->response->sendFile($path,$name);
+                                return \Yii::$app->response->sendFile($path, $name);
                             } else {
                                 if (EventConfirmation::isInvited($eventId)) {
-                                    return \Yii::$app->response->sendFile($path,$name);
+                                    return \Yii::$app->response->sendFile($path, $name);
                                 } else {
                                     $objects['collection']['error'] = true;
                                     return $this->sendResponse(false, \Yii::t('member', "you do not have authoirity for this action"), $objects['collection']);
                                 }
                             }
-                        }                        
+                        }
                         //end check                            
                         break;
-                        
+
                     case File::TABLE_PROJECT || File::TABLE_PROJECT_POST:
                         break;
-                    
+
                     case File::TABLE_TASK || File::TABLE_TASK_POST:
                         break;
-                    
+
                     default:
                 } //end switch  
-                               
-            }            
-        }        
-                
+            }
+        }
     }
+
 }
