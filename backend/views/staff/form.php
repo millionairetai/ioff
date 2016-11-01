@@ -2,16 +2,16 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use common\models\Controller;
-use common\models\Package;
+use common\models\Staff;
+use common\models\Job;
 ?>
 <div class="box box-primary">
     <div class="box-header">
         <h3 class="box-title">
             <?php if ($model->isNewRecord) { ?>
-                Create new functionality group
+                Add staff
             <?php } else { ?>
-                Update functionality group
+                Update Staff
             <?php } ?>
         </h3>
     </div><!-- /.box-header -->
@@ -27,24 +27,21 @@ use common\models\Package;
 
     <div class="box-body">
         <?= $form->field($model, 'name')->textInput() ?>
+        <?= $form->field($model, 'username')->textInput() ?>
+        <?= $form->field($model, 'email')->textInput() ?>
+        <?= $form->field($model, 'password')->passwordInput() ?>
+        <?= $form->field($model, 'phone_no')->textInput() ?>
+        <?= $form->field($model, 'address')->textInput() ?>
         <?=
-            $form->field($model, 'package_id')->dropdownList(
-                    Package::find()->select(['name', 'id'])->indexBy('id')->column(), ['prompt' => 'Select package']
+            $form->field($model, 'job_id')->dropdownList(
+                    Job::find()->select(['name', 'id'])->indexBy('id')->column(), ['prompt' => 'Select job']
             );
-        ?>
-        <?=
-            $form->field($model, 'description')->textarea(
-                    [
-                        'id' => 'editor1',
-                        'class' => 'textarea',
-                        'style' => 'width: 100%; height: 150px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px'
-            ]);
         ?>
     </div>
 
     <div class="box-footer">
         <div class="form-group">
-<?= Html::submitButton('Save', ['class' => 'btn btn-primary']) ?>
+        <?= Html::submitButton('Save', ['class' => 'btn btn-primary']) ?>
         </div>
     </div>
 <?php ActiveForm::end() ?>

@@ -23,8 +23,10 @@ use yii\grid\GridView;
             'filterModel' => $model,
             'columns' => [
                 'name',
-                'package_name',
-                'description',
+                'email',
+                'address',
+                'phone_no',
+                'username',
                 [
 //                    'header' => 'Action',
                     'options' => ['style' => 'width:50px'],
