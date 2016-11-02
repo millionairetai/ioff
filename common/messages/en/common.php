@@ -25,6 +25,13 @@ return [
     'Select' => 'Select',
     'Save' => 'Save',    
     'Re-Password' => 'Re-Password',    
+    'Total Storage' => 'Total Storage',
+    'Total Employee' => 'Total Employee',
+    'Domain' => 'Domain',    
+    'Status' => 'Status',
+    'Language' => 'Language',
+    'Plan type' => 'Plan type',
+    'Title' => 'Title',
     
     //calendar
     'event_id' => 'Event id',

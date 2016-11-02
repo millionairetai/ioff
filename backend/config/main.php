@@ -15,10 +15,14 @@ return [
     'modules' => [],
     'components' => [
         'user' => [
-            'class' => 'common\components\web\User',
+            'class' => 'backend\components\web\User',
             'identityClass' => 'backend\models\Staff',
             'enableAutoLogin' => true,
             'loginUrl' => ['index/login'],
+        ],
+        'authManager' => [
+            'class' => 'backend\components\web\AuthorityManager',
+            'allowCache' => false,
         ],
         'log' => [
             'traceLevel' => YII_DEBUG ? 3 : 0,

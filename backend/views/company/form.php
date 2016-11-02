@@ -2,17 +2,19 @@
 
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
-use common\models\Controller;
-use common\models\Package;
+use common\models\Status;
+use common\models\Language;
+use common\models\PlanType;
 ?>
 <div class="box box-primary">
     <div class="box-header">
         <h3 class="box-title">
-            <?php if ($model->isNewRecord) { ?>
-                Create new functionality group
-            <?php } else { ?>
-                Update functionality group
-            <?php } ?>
+            <?php if ($model->isNewRecord) {
+                echo Yii::t('backend', 'Add company'); ?>
+            <?php } else {
+                echo Yii::t('backend', 'Update company'); ?>
+
+    <?php } ?>
         </h3>
     </div><!-- /.box-header -->
     <?php
@@ -27,24 +29,34 @@ use common\models\Package;
 
     <div class="box-body">
         <?= $form->field($model, 'name')->textInput() ?>
+        <?= $form->field($model, 'email')->textInput() ?>
+        <?= $form->field($model, 'phone_no')->textInput() ?>
+        <?= $form->field($model, 'address')->textInput() ?>
+        <?= $form->field($model, 'domain')->textInput() ?>
+        <?= $form->field($model, 'description_title')->textInput(); ?>
+        <?= $form->field($model, 'description')->textarea(); ?>        
+        <?= $form->field($model, 'total_storage')->textInput() ?>
+        <?= $form->field($model, 'total_employee')->textInput() ?>
         <?=
-            $form->field($model, 'package_id')->dropdownList(
-                    Package::find()->select(['name', 'id'])->indexBy('id')->column(), ['prompt' => 'Select package']
+            $form->field($model, 'plan_type_id')->dropdownList(
+                    PlanType::find()->select(['name', 'id'])->indexBy('id')->column(), ['prompt' => Yii::t('common', 'Select')]
             );
         ?>
         <?=
-            $form->field($model, 'description')->textarea(
-                    [
-                        'id' => 'editor1',
-                        'class' => 'textarea',
-                        'style' => 'width: 100%; height: 150px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px'
-            ]);
+            $form->field($model, 'status_id')->dropdownList(
+                    Status::find()->select(['name', 'id'])->indexBy('id')->column(), ['prompt' => Yii::t('common', 'Select')]
+            );
+        ?>
+        <?=
+        $form->field($model, 'language_id')->dropdownList(
+                Language::find()->select(['name', 'id'])->indexBy('id')->column(), ['prompt' => Yii::t('common', 'Select')]
+        );
         ?>
     </div>
 
     <div class="box-footer">
         <div class="form-group">
-<?= Html::submitButton('Save', ['class' => 'btn btn-primary']) ?>
+    <?= Html::submitButton(Yii::t('common', 'Save'), ['class' => 'btn btn-primary']) ?>
         </div>
     </div>
 <?php ActiveForm::end() ?>

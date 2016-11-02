@@ -25,6 +25,13 @@ return [
     'Select' => 'Chọn lựa',    
     'Save' => 'Lưu',
     'Re-Password' => 'Nhập lại mật khẩu',
+    'Total Storage' => 'Tổng dung lượng',
+    'Total Employee' => 'Số nhân viên',
+    'Domain' => 'Tên miền',
+    'Status' => 'Trạng thái',
+    'Language' => 'Ngôn ngữ',
+    'Plan type' => 'Gói sử dụng',    
+    'Title' => 'Tiêu đề',
     
     //Calendar
     'event_id' => 'Mã sự kiện',

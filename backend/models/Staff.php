@@ -5,7 +5,7 @@ namespace backend\models;
 use Yii;
 use yii\web\IdentityInterface;
 use yii\base\NotSupportedException;
-use common\components\db\ActiveRecord;
+use backend\components\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%staff}}".
@@ -26,7 +26,7 @@ use common\components\db\ActiveRecord;
  * @property string $lastup_employee_id
  * @property boolean $disabled
  */
-class Staff extends \yii\db\ActiveRecord implements IdentityInterface
+class Staff extends ActiveRecord implements IdentityInterface
 {
     const STATUS_DELETED = false;
     const STATUS_ACTIVE = true;

@@ -1,6 +1,7 @@
 <?php
 
 use yii\grid\GridView;
+use yii\grid\SerialColumn;
 ?>
 <style type="text/css">
     .tool-right {
@@ -11,7 +12,7 @@ use yii\grid\GridView;
 </style>
 <div class="box box-primary">
     <div class="box-header">
-        <h3 class="box-title">Functionoality group</h3>
+        <h3 class="box-title"><?= Yii::t('backend', 'Company list') ?></h3>
         <div class="tool-right">
             <a class="btn btn-info ng-binding" href="add"><i class="fa fa-plus-square"></i> Thêm</a>
         </div>
@@ -22,9 +23,26 @@ use yii\grid\GridView;
             'dataProvider' => $dataProvider,
             'filterModel' => $model,
             'columns' => [
+                ['class' => 'yii\grid\SerialColumn'],
                 'name',
-                'package_name',
-                'description',
+                'email',
+//                'address',
+                'phone_no',
+                'domain',                
+                'total_storage',                
+                'total_employee',              
+                [
+                    'label' => Yii::t('common', 'Plan type'),
+                    'value' => 'plan_type.name',
+                ],
+                [
+                    'label' => Yii::t('common', 'Status'),
+                    'value' => 'status.name',
+                ],
+                [
+                    'label' => Yii::t('common', 'Language'),
+                    'value' => 'language.name',
+                ],
                 [
 //                    'header' => 'Action',
                     'options' => ['style' => 'width:50px'],

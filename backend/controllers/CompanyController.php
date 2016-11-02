@@ -6,67 +6,73 @@ use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
-class ControllerController extends \yii\web\Controller {
+class CompanyController extends \yii\web\Controller {
 
     private $_model;
 
     public function __construct($id, $module, $config = array()) {
-        $this->_model = new \common\models\Controller();
+        $this->_model = new \common\models\Company();
         parent::__construct($id, $module, $config);
     }
 
+    /**
+     * Get list of company
+     */
     public function actionIndex() {
         $dataProvider = $this->_model->search(\Yii::$app->request->getQueryParams());
         return $this->render('index', ['model' => $this->_model, 'dataProvider' => $dataProvider]);
     }
 
+    /**
+     * Add company
+     */
     public function actionAdd() {
-        $controller = \Yii::$app->request->post('Controller');
-        
-        if (isset($controller)) {
-            $this->_model->attributes = $controller;
-            $this->_model->package_name = \common\models\Package::findOne($controller['package_id'])->name;
-            
-            if ($this->_model->save()) {
-                return $this->redirect(['controller/index']);
+        $company = \Yii::$app->request->post('Company');
+        if (isset($company)) {
+            $this->_model->attributes = $company;
+            if ($this->_model->save(false)) {
+                return $this->redirect(['company/index']);
             }
         }
 
         return $this->render('form', ['model' => $this->_model]);
     }
 
+    /**
+     * Update company
+     */
     public function actionUpdate($id) {
-        $this->_model = \common\models\Controller::findOne($id);
-
+        $this->_model = \common\models\Company::findOne($id);
         if (!$this->_model) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
-        $controller = \Yii::$app->request->post('Controller');
-        
-        if (isset($controller)) {
-            $this->_model->attributes = $controller;
-            $this->_model->package_name = \common\models\Package::findOne($controller['package_id'])->name;
-            
-            if ($this->_model->save()) {
-                return $this->redirect(['controller/index']);
+        $company = \Yii::$app->request->post('Company');
+        if (isset($company)) {
+            $this->_model->attributes = $company;
+            if ($this->_model->save(false)) {
+                return $this->redirect(['company/index']);
             }
         }
 
         return $this->render('form', ['model' => $this->_model]);
     }
 
+    /**
+     * Delete company
+     */
     public function actionDelete($id) {
-        $this->_model = \common\models\Controller::findOne($id);
+        $this->_model = \common\models\Company::findOne($id);
 
         if (!$this->_model) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
         if ($this->_model->delete()) {
-            return $this->redirect(['controller/index']);
+            return $this->redirect(['company/index']);
         }
-
-        throw new NotFoundHttpException('Can not delete controller');
+        
+        throw new NotFoundHttpException('Can not delete company');
     }
+
 }
