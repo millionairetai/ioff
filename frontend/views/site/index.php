@@ -52,7 +52,7 @@ $this->title = 'iofficez - Connect employee';
     <div class="container fixHeight">
         <div class="item-feature">
             <div class="nvntable">
-                <div class="image nvncell"><img src="image/icon/mang-xa-hoi.png" alt=""/></div>
+                <div class="image nvncell"><img src="/image/icon/mang-xa-hoi.png" alt=""/></div>
             </div>
             <dl>
                 <dt>MẠNG XÃ HỘI DN</dt>
@@ -61,7 +61,7 @@ $this->title = 'iofficez - Connect employee';
         </div><!--item feature-->
         <div class="item-feature">
             <div class="nvntable">
-                <div class="image nvncell"><img src="image/icon/thong-bao.png" alt=""/></div>
+                <div class="image nvncell"><img src="/image/icon/thong-bao.png" alt=""/></div>
             </div>
             <dl>
                 <dt>THÔNG BÁO</dt>
@@ -70,7 +70,7 @@ $this->title = 'iofficez - Connect employee';
         </div><!--item feature-->
         <div class="item-feature">
             <div class="nvntable">
-                <div class="image nvncell"><img src="image/icon/cong-viec.png" alt=""/></div>
+                <div class="image nvncell"><img src="/image/icon/cong-viec.png" alt=""/></div>
             </div>
             <dl>
                 <dt>CÔNG VIỆC</dt>
@@ -79,7 +79,7 @@ $this->title = 'iofficez - Connect employee';
         </div><!--item feature-->
         <div class="item-feature">
             <div class="nvntable">
-                <div class="image nvncell"><img src="image/icon/lich.png" alt=""/></div>
+                <div class="image nvncell"><img src="/image/icon/lich.png" alt=""/></div>
             </div>
             <dl>
                 <dt>LỊCH</dt>
@@ -88,7 +88,7 @@ $this->title = 'iofficez - Connect employee';
         </div><!--item feature-->
         <div class="item-feature">
             <div class="nvntable">
-                <div class="image nvncell"><img src="image/icon/yeu-cau.png" alt=""/></div>
+                <div class="image nvncell"><img src="/image/icon/yeu-cau.png" alt=""/></div>
             </div>
             <dl>
                 <dt>YÊU CẦU</dt>
@@ -97,7 +97,7 @@ $this->title = 'iofficez - Connect employee';
         </div><!--item feature-->
         <div class="item-feature">
             <div class="nvntable">
-                <div class="image nvncell"><img src="image/icon/thong-bao-dn.png" alt=""/></div>
+                <div class="image nvncell"><img src="/image/icon/thong-bao-dn.png" alt=""/></div>
             </div>
             <dl>
                 <dt>THÔNG BÁO DN</dt>
@@ -106,7 +106,7 @@ $this->title = 'iofficez - Connect employee';
         </div><!--item feature-->
         <div class="item-feature">
             <div class="nvntable">
-                <div class="image nvncell"><img src="image/icon/bao-cao.png" alt=""/></div>
+                <div class="image nvncell"><img src="/image/icon/bao-cao.png" alt=""/></div>
             </div>
             <dl>
                 <dt>BÁO CÁO</dt>
@@ -115,7 +115,7 @@ $this->title = 'iofficez - Connect employee';
         </div><!--item feature-->
         <div class="item-feature">
             <div class="nvntable">
-                <div class="image nvncell"><img src="image/icon/phan-quyen.png" alt=""/></div>
+                <div class="image nvncell"><img src="/image/icon/phan-quyen.png" alt=""/></div>
             </div>
             <dl>
                 <dt>PHÂN QUYỀN ĐỘNG</dt>
@@ -124,7 +124,7 @@ $this->title = 'iofficez - Connect employee';
         </div><!--item feature-->
         <div class="item-feature">
             <div class="nvntable">
-                <div class="image nvncell"><img src="image/icon/tat-ca-thiet-bi.png" alt=""/></div>
+                <div class="image nvncell"><img src="/image/icon/tat-ca-thiet-bi.png" alt=""/></div>
             </div>
             <dl>
                 <dt>TẤT CẢ THIẾT BỊ</dt>
@@ -133,7 +133,7 @@ $this->title = 'iofficez - Connect employee';
         </div><!--item feature-->
         <div class="item-feature">
             <div class="nvntable">
-                <div class="image nvncell"><img src="image/icon/sms.png" alt=""/></div>
+                <div class="image nvncell"><img src="/image/icon/sms.png" alt=""/></div>
             </div>
             <dl>
                 <dt>SMS</dt>
@@ -209,7 +209,7 @@ $this->title = 'iofficez - Connect employee';
 <section id="social" class="contain-box">
     <div class="container">
         <div class="imgright marg30 clearfix">
-            <div class="image"><img src="image/index01.jpg" alt=""/></div>
+            <div class="image"><img src="/image/index01.jpg" alt=""/></div>
             <dl>
                 <dt>Mạng xã hội doanh nghiệp</dt>
                 <dd>
@@ -218,7 +218,7 @@ $this->title = 'iofficez - Connect employee';
             </dl>
         </div>
         <div class="imgleft clearfix">
-            <div class="image"><img src="image/index02.jpg" alt=""/></div>
+            <div class="image"><img src="/image/index02.jpg" alt=""/></div>
             <dl>
                 <dt>Khả năng không giới hạn</dt>
                 <dd>
@@ -236,11 +236,11 @@ $this->title = 'iofficez - Connect employee';
             cho công ty rút ngắn thời gian và chi phí cho việc thực hiện công việc
         </p>
         <div class="listcustomer clearfix">
-            <div class="item-customer"><img src="image/customer01.jpg" alt=""/></div>
-            <div class="item-customer"><img src="image/customer02.jpg" alt=""/></div>
-            <div class="item-customer"><img src="image/customer03.jpg" alt=""/></div>
-            <div class="item-customer"><img src="image/customer04.jpg" alt=""/></div>
-            <div class="item-customer"><img src="image/customer05.jpg" alt=""/></div>
+            <div class="item-customer"><img src="/image/customer01.jpg" alt=""/></div>
+            <div class="item-customer"><img src="/image/customer02.jpg" alt=""/></div>
+            <div class="item-customer"><img src="/image/customer03.jpg" alt=""/></div>
+            <div class="item-customer"><img src="/image/customer04.jpg" alt=""/></div>
+            <div class="item-customer"><img src="/image/customer05.jpg" alt=""/></div>
         </div>
         <p class="text-center"><a href="javascript:void(0)" class="btn btn-primary noround">Đăng ký</a></p>
     </div>

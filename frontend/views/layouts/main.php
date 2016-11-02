@@ -46,7 +46,7 @@ AppAsset::register($this);
             </div>
             <div class="header">
                 <div class="container">
-                    <figure class="logo"><img src="image/logo.jpg" alt=""/></figure>
+                    <figure class="logo"><img src="/image/logo.jpg" alt=""/></figure>
                     <div id="mobile-login">
                         <a href="javascript:void(0)" class="btn btn-default">Đăng nhập</a>
                     </div>
@@ -92,7 +92,7 @@ AppAsset::register($this);
                         </dl>
                     </div>
                     <div class="clearfix"></div>
-                    <div class="flogo"><img src="image/f_logo.png" alt=""/></div>
+                    <div class="flogo"><img src="/image/f_logo.png" alt=""/></div>
                     <h1>CÔNG TY CỔ PHẦN I.P.L</h1>
                     <p>216 Hoàng Văn Thụ, P. 4,<br/>Q. Tân Bình, TP. HCM</p>
 
@@ -108,15 +108,15 @@ AppAsset::register($this);
                         <li><a href="">> Liên hệ</a></li>
                         <li><a href="">> Tuyển dụng</a></li>
                     </ul>
-                    <p><img src="image/f_banner03.png" alt=""/></p>
+                    <p><img src="/image/f_banner03.png" alt=""/></p>
                 </div>
                 <div id="fapp">
                     <p class="cllink">TRÊN TRÌNH DUYỆT WEB</p>
-                    <p><img src="image/f_link01.png" alt=""/></p>
+                    <p><img src="/image/f_link01.png" alt=""/></p>
                     <p class="marg0">iOFFICEZ DMS</p>
                     <p class="cllink marg60">TRÊN THIẾT BỊ DI ĐỘNG</p>
-                    <p class="marg40"><img src="image/f_banner01.png" alt=""/></p>
-                    <p><img src="image/f_banner02.png" alt=""/></p>
+                    <p class="marg40"><img src="/image/f_banner01.png" alt=""/></p>
+                    <p><img src="/image/f_banner02.png" alt=""/></p>
                 </div>
             </div>
         </div>
@@ -129,9 +129,9 @@ AppAsset::register($this);
             </ul>
 
             <ul class="fnav">
-                <li><a href=""><img src="image/f_nav01.png" alt=""/></a></li>
-                <li><a href=""><img src="image/f_nav02.png" alt=""/></a></li>
-                <li><a href=""><img src="image/f_nav03.png" alt=""/></a></li>
+                <li><a href=""><img src="/image/f_nav01.png" alt=""/></a></li>
+                <li><a href=""><img src="/image/f_nav02.png" alt=""/></a></li>
+                <li><a href=""><img src="/image/f_nav03.png" alt=""/></a></li>
             </ul>
         </div>
     </footer>
