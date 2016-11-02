@@ -6,65 +6,79 @@ use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 
-class ControllerController extends \yii\web\Controller {
+class StaffController extends \yii\web\Controller {
 
     private $_model;
 
     public function __construct($id, $module, $config = array()) {
-        $this->_model = new \common\models\Controller();
+        $this->_model = new \common\models\Staff();
         parent::__construct($id, $module, $config);
     }
 
+    /**
+     * Get list of staff
+     */
     public function actionIndex() {
         $dataProvider = $this->_model->search(\Yii::$app->request->getQueryParams());
         return $this->render('index', ['model' => $this->_model, 'dataProvider' => $dataProvider]);
     }
 
+    /**
+     * Add staff
+     */
     public function actionAdd() {
-        $controller = \Yii::$app->request->post('Controller');
-        
-        if (isset($controller)) {
-            $this->_model->attributes = $controller;
-            $this->_model->package_name = \common\models\Package::findOne($controller['package_id'])->name;
-            
+        $staff = \Yii::$app->request->post('Staff');
+
+        if (isset($staff)) {
+            $this->_model->attributes = $staff;
+
             if ($this->_model->save()) {
-                return $this->redirect(['controller/index']);
+                return $this->redirect(['staff/index']);
             }
         }
 
         return $this->render('form', ['model' => $this->_model]);
     }
 
+    /**
+     * Update staff
+     */
     public function actionUpdate($id) {
-        $this->_model = \common\models\Controller::findOne($id);
+        $this->_model = \common\models\Staff::findOne($id);
+
         if (!$this->_model) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
-        $controller = \Yii::$app->request->post('Controller');
-        if (isset($controller)) {
-            $this->_model->attributes = $controller;
-            $this->_model->package_name = \common\models\Package::findOne($controller['package_id'])->name;
-            
+        $staff = \Yii::$app->request->post('Staff');
+
+        if (isset($staff)) {
+            $this->_model->attributes = $staff;
+//            $this->_model->package_name = \common\models\Package::findOne($staff['package_id'])->name;
+
             if ($this->_model->save()) {
-                return $this->redirect(['controller/index']);
+                return $this->redirect(['staff/index']);
             }
         }
 
         return $this->render('form', ['model' => $this->_model]);
     }
 
+    /**
+     * Delete staff
+     */
     public function actionDelete($id) {
-        $this->_model = \common\models\Controller::findOne($id);
+        $this->_model = \common\models\Staff::findOne($id);
 
         if (!$this->_model) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
         if ($this->_model->delete()) {
-            return $this->redirect(['controller/index']);
+            return $this->redirect(['staff/index']);
         }
 
-        throw new NotFoundHttpException('Can not delete controller');
+        throw new NotFoundHttpException('Can not delete staff');
     }
+
 }

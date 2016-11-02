@@ -1,14 +1,14 @@
 <?php
 
-namespace backend\models;
+namespace common\models;
 
 use Yii;
+use yii\data\ActiveDataProvider;
 use yii\web\IdentityInterface;
-use yii\base\NotSupportedException;
-use backend\components\db\ActiveRecord;
+use common\models\Job;
 
 /**
- * This is the model class for table "{{%staff}}".
+ * This is the model class for table "staff".
  *
  * @property string $id
  * @property integer $authority_id
@@ -26,23 +26,21 @@ use backend\components\db\ActiveRecord;
  * @property string $lastup_employee_id
  * @property boolean $disabled
  */
-class Staff extends ActiveRecord implements IdentityInterface
-{
-    const STATUS_DELETED = false;
-    const STATUS_ACTIVE = true;
+class Staff extends \backend\components\db\ActiveRecord  implements IdentityInterface {
+
+    public $re_password;
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
-        return '{{%staff}}';
+    public static function tableName() {
+        return 'staff';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['authority_id', 'job_id', 'leaving_date', 'datetime_created', 'lastup_datetime', 'created_employee_id', 'lastup_employee_id'], 'integer'],
             [['name', 'email', 'username', 'password'], 'required'],
@@ -51,47 +49,86 @@ class Staff extends ActiveRecord implements IdentityInterface
             [['email'], 'string', 'max' => 99],
             [['phone_no'], 'string', 'max' => 20],
             [['username'], 'string', 'max' => 128],
-            [['password'], 'string', 'max' => 64]
+            [['password'], 'string', 'max' => 64],
+            [['re_password'], 'string', 'max' => 64]
         ];
     }
 
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
-            'id' => Yii::t('app', 'ID'),
-            'authority_id' => Yii::t('app', 'Authority ID'),
-            'job_id' => Yii::t('app', 'Job ID'),
-            'name' => Yii::t('app', 'Name'),
-            'email' => Yii::t('app', 'Email'),
-            'phone_no' => Yii::t('app', 'Phone No'),
-            'address' => Yii::t('app', 'Address'),
-            'username' => Yii::t('app', 'Username'),
-            'password' => Yii::t('app', 'Password'),
-            'leaving_date' => Yii::t('app', 'Leaving Date'),
-            'datetime_created' => Yii::t('app', 'Datetime Created'),
-            'lastup_datetime' => Yii::t('app', 'Lastup Datetime'),
-            'created_employee_id' => Yii::t('app', 'Created Employee ID'),
-            'lastup_employee_id' => Yii::t('app', 'Lastup Employee ID'),
-            'disabled' => Yii::t('app', 'Disabled'),
+            'id' => Yii::t('backend', 'ID'),
+            'authority_id' => Yii::t('common', 'Authority'),
+            'job_id' => Yii::t('backend', 'Job'),
+            'name' => Yii::t('common', 'Name'),
+            'email' => Yii::t('common', 'Email'),
+            'phone_no' => Yii::t('common', 'Phone'),
+            'address' => Yii::t('common', 'Address'),
+            'username' => Yii::t('common', 'Username'),
+            'password' => Yii::t('common', 'Password'),
+            're_password' => Yii::t('common', 'Re-Password'),
+            'leaving_date' => Yii::t('backend', 'Leaving Date'),
+            'datetime_created' => Yii::t('backend', 'Datetime Created'),
+            'lastup_datetime' => Yii::t('backend', 'Lastup Datetime'),
+            'created_employee_id' => Yii::t('backend', 'Created Employee ID'),
+            'lastup_employee_id' => Yii::t('backend', 'Lastup Employee ID'),
+            'disabled' => Yii::t('backend', 'Disabled'),
         ];
     }
-    
+
+    /**
+     * @param array $params
+     * @return ActiveDataProvider
+     */
+    public function search($params) {
+        $query = static::find()
+//                ->select(['staff.*', 'job.name as job_name'])
+                ->joinWith(['job']);
+//                ->joinWith(['authority']);
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => array('pageSize' => self::PAGE_SIZE)
+        ]);
+        if (!($this->load($params))) {
+            return $dataProvider;
+        }
+
+        $query->andFilterWhere(['like', 'staff.name', $this->name]);
+        $query->andFilterWhere(['like', 'email', $this->email]);
+        $query->andFilterWhere(['like', 'address', $this->address]);
+        $query->andFilterWhere(['like', 'username', $this->username]);
+        $query->orFilterWhere(['like', 'job.name', $this->name]);
+
+        return $dataProvider;
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getJob() {
+        return $this->hasOne(Job::className(), ['id' => 'job_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAuthority() {
+        return $this->hasOne(Authority::className(), ['id' => 'authority_id']);
+    }
+
     /**
      * @inheritdoc
      */
-    public static function findIdentity($id)
-    {
+    public static function findIdentity($id) {
         return static::findOne(['id' => $id]);
     }
 
     /**
      * @inheritdoc
      */
-    public static function findIdentityByAccessToken($token, $type = null)
-    {
+    public static function findIdentityByAccessToken($token, $type = null) {
         throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
     }
 
@@ -101,8 +138,7 @@ class Staff extends ActiveRecord implements IdentityInterface
      * @param string $username
      * @return static|null
      */
-    public static function findByUsername($username)
-    {
+    public static function findByUsername($username) {
         return static::findOne(['username' => $username]);
     }
 
@@ -112,14 +148,13 @@ class Staff extends ActiveRecord implements IdentityInterface
      * @param string $token password reset token
      * @return static|null
      */
-    public static function findByPasswordResetToken($token)
-    {
+    public static function findByPasswordResetToken($token) {
         if (!static::isPasswordResetTokenValid($token)) {
             return null;
         }
 
         return static::findOne([
-            'password_reset_token' => $token,
+                    'password_reset_token' => $token,
         ]);
     }
 
@@ -129,8 +164,7 @@ class Staff extends ActiveRecord implements IdentityInterface
      * @param string $token password reset token
      * @return boolean
      */
-    public static function isPasswordResetTokenValid($token)
-    {
+    public static function isPasswordResetTokenValid($token) {
         if (empty($token)) {
             return false;
         }
@@ -143,24 +177,21 @@ class Staff extends ActiveRecord implements IdentityInterface
     /**
      * @inheritdoc
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->getPrimaryKey();
     }
 
     /**
      * @inheritdoc
      */
-    public function getAuthKey()
-    {
+    public function getAuthKey() {
         return $this->auth_key;
     }
 
     /**
      * @inheritdoc
      */
-    public function validateAuthKey($authKey)
-    {
+    public function validateAuthKey($authKey) {
         return $this->getAuthKey() === $authKey;
     }
 
@@ -170,8 +201,7 @@ class Staff extends ActiveRecord implements IdentityInterface
      * @param string $password password to validate
      * @return boolean if password provided is valid for current user
      */
-    public function validatePassword($password)
-    {
+    public function validatePassword($password) {
         return Yii::$app->security->validatePassword($password, $this->password);
     }
 
@@ -180,34 +210,31 @@ class Staff extends ActiveRecord implements IdentityInterface
      *
      * @param string $password
      */
-    public function setPassword($password)
-    {
+    public function setPassword($password) {
         $this->password = Yii::$app->security->generatePasswordHash($password);
     }
 
     /**
      * Generates "remember me" authentication key
      */
-    public function generateAuthKey()
-    {
+    public function generateAuthKey() {
         $this->auth_key = Yii::$app->security->generateRandomString();
     }
 
     /**
      * Generates new password reset token
      */
-    public function generatePasswordResetToken()
-    {
+    public function generatePasswordResetToken() {
         $this->password_reset_token = Yii::$app->security->generateRandomString() . '_' . time();
     }
 
     /**
      * Removes password reset token
      */
-    public function removePasswordResetToken()
-    {
+    public function removePasswordResetToken() {
         $this->password_reset_token = null;
     }
+
     /**
      * get name profile
      * @return type
@@ -215,4 +242,5 @@ class Staff extends ActiveRecord implements IdentityInterface
     public function getFullname() {
         return Yii::$app->user->identity->name;
     }
+
 }
