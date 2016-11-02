@@ -33,12 +33,12 @@ AppAsset::register($this);
                         <a href="index.html"><i class="glyphicon glyphicon-home"></i></a>
                     </p>
                     <ul class="clearfix">
-                        <li><a href="javascript:void(0)">Trang chủ</a></li>
+                        <li><a href="/site/index">Trang chủ</a></li>
                         <li><a href="javascript:void(0)" onclick="jumpto('#feature');">Tính năng</a></li>
                         <li><a href="javascript:void(0)" onclick="jumpto('#pricelist');">Bảng giá</a></li>
                         <li><a href="javascript:void(0)">Hình ảnh</a></li>
                         <li><a href="javascript:void(0)" onclick="jumpto('#customer');">Khách hàng</a></li>
-                        <li><a href="javascript:void(0)">Hỗ trợ</a></li>
+                        <li><a href="/site/contact">Hỗ trợ</a></li>
                         <li><a href="javascript:void(0)">Tin tức</a></li>
                         <li><a href="javascript:void(0)">Về iOffice</a></li>
                     </ul>
