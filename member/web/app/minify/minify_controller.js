@@ -1629,7 +1629,7 @@ appRoot.controller('addTaskCtrl', ['socketService', '$scope', 'taskService', '$l
 
         $scope.taskGroupTagTransform = function (newTag) {
             var item = {
-                name: $rootScope.$lang.task_group + newTag,
+                name: newTag,
             };
 
             return item;

@@ -251,15 +251,7 @@ appRoot.controller('addTaskCtrl', ['socketService', '$scope', 'taskService', '$l
                 $scope.files.splice($index, 1);
             }
         };
-
-        $scope.taskGroupTagTransform = function (newTag) {
-            var item = {
-                name: $rootScope.$lang.task_group + newTag,
-            };
-
-            return item;
-        };
-
+        
         $scope.updateAfterProjectChanged = function () {
             var $httpDefaultCache = $cacheFactory.get('$http');
             $httpDefaultCache.removeAll();

@@ -201,7 +201,7 @@
                 <div class="form-group">
                     <label class="col-sm-3 control-label">{{$root.$lang.task_group}}</label>
                     <div class="col-sm-9">
-                        <ui-select multiple tagging="taskGroupTagTransform" tagging-tokens="SPACE|,|/" ng-model="task.taskGroupIds">
+                        <ui-select multiple tagging-tokens="SPACE|,|/" ng-model="task.taskGroupIds">
                             <ui-select-match placeholder="...">{{$item.name}}</ui-select-match>
                             <ui-select-choices refresh-delay="1000" repeat="x.id as x in taskGroups | filter: {name: $select.search}">
                                 <div>
