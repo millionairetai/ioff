@@ -1,45 +1,43 @@
 <?php
+
+use yii\helpers\Html;
+use yii\bootstrap\ActiveForm;
+
 $this->title = 'iofficez - Connect employee';
+
 ?>
 <section id="register" class="contain-box">
     <div  class="container clearfix">
         <div id="regform">
-            <form role="form">
+            <?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>
+            
                 <p>iOfficez kết nối nhân viên và công việc trong doanh nghiệp</p>
-                <div class="form-group">
-                    <input type="text" name="company" id="company" class="form-control noround" placeholder="Tên công ty" tabindex="3">
-                </div>
-                <div class="col-xs-12 col-sm-6 col-md-6 nopadd">
-                    <div class="form-group">
-                        <input type="text" name="first_name" id="first_name" class="form-control noround" placeholder="Tên" tabindex="1">
-                    </div>
-                </div>
-                <div class="col-xs-12 col-sm-6 col-md-6 nopadd">
-                    <div class="form-group">
-                        <input type="text" name="last_name" id="last_name" class="form-control noround" placeholder="Họ" tabindex="2">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <input type="email" name="email" id="email" class="form-control noround" placeholder="Email" tabindex="3">
-                </div>
-                <div class="form-group">
-                    <input type="password" name="password" id="password" class="form-control noround" placeholder="Mật khẩu" tabindex="3">
-                </div>
-                <div class="form-group">
-                    <input type="password" name="repassword" id="repassword" class="form-control noround" placeholder="Nhập lại mật khẩu" tabindex="3">
-                </div>
-                <div class="form-group">
-                    <input type="text" name="phone" id="phone" class="form-control noround" placeholder="Số điện thoại" tabindex="3">
-                </div>
+                
+                <?= $form->field($model, 'companyName')->label(false)->textInput(['placeholder' => Yii::t('common', 'Company name'), 'autofocus' => true, 'class' => 'form-control noround']) ?>
+                
+                <?= $form->field($model, 'firstname')->label(false)->textInput(['placeholder' => Yii::t('common', 'First name'), 'class' => 'form-control noround']) ?>
+                
+                <?= $form->field($model, 'lastname')->label(false)->textInput(['placeholder' => Yii::t('common', 'Last name'), 'class' => 'form-control noround']) ?>
+
+                <?= $form->field($model, 'email')->label(false)->textInput(['placeholder' => Yii::t('common', 'Email'), 'class' => 'form-control noround']) ?>
+
+                <?= $form->field($model, 'password')->label(false)->passwordInput(['placeholder' => Yii::t('common', 'Password'), 'class' => 'form-control noround']) ?>
+                
                 <div class="btn-group">
                     <button type="button" class="btn btn-primary noround">Miễn phí</button>
                     <button type="button" class="btn btn-primary">Standard</button>
                     <button type="button" class="btn btn-primary noround">Professional</button>
                 </div>
+                
                 <p><a href="#">Xem thông tin chi tiết các gói</a></p>
+                
                 <p>Bằng cách nhấp vào đăng ký, bạn đồng ý với các <a href="#">điều khoản của chúng tôi</a> và rằng bạn đã đọc <a href="#">chính sách dữ liệu</a>của chúng tôi, bao gồm sử dụng cookie.</p>
-                <button class="btn btn-primary noround" type="submit">Đăng ký</button>
-            </form><!-- Form -->
+                
+                <div class="form-group">
+                    <?= Html::submitButton(Yii::t('common', 'Register'), ['class' => 'btn btn-primary noround', 'name' => 'signup-button']) ?>
+                </div>
+
+            <?php ActiveForm::end(); ?>
         </div><!-- Regform -->
     </div><!-- Container -->
 </section>

@@ -32,6 +32,14 @@ return [
     'Language' => 'Ngôn ngữ',
     'Plan type' => 'Gói sử dụng',    
     'Title' => 'Tiêu đề',
+    'Subject' => 'Tiêu đề',
+    'Body' => 'Nội dung',
+    'Verification Code' => 'Mã xác nhận',
+    'Contact' => 'Liên hệ',
+    'Register' => 'Đăng ký',
+    'Company name' => 'Tên công ty',    
+    'First name' => 'Họ',
+    'Last name' => 'Tên',
     
     //Calendar
     'event_id' => 'Mã sự kiện',

@@ -32,6 +32,14 @@ return [
     'Language' => 'Language',
     'Plan type' => 'Plan type',
     'Title' => 'Title',
+    'Subject' => 'Subject',
+    'Body' => 'Body',
+    'Verification Code' => 'Verification Code',
+    'Contact' => 'Contact',
+    'Register' => 'Register',
+    'Company name' => 'Company name',
+    'First name' => 'First name',
+    'Last name' => 'Last name',
     
     //calendar
     'event_id' => 'Event id',
