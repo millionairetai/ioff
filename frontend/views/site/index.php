@@ -2,6 +2,8 @@
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
+use yii\helpers\ArrayHelper;
+use common\models\PlanType;
 
 $this->title = 'iofficez - Connect employee';
 
@@ -23,11 +25,11 @@ $this->title = 'iofficez - Connect employee';
 
                 <?= $form->field($model, 'password')->label(false)->passwordInput(['placeholder' => Yii::t('common', 'Password'), 'class' => 'form-control noround']) ?>
                 
-                <div class="btn-group">
-                    <button type="button" class="btn btn-primary noround">Miễn phí</button>
-                    <button type="button" class="btn btn-primary">Standard</button>
-                    <button type="button" class="btn btn-primary noround">Professional</button>
-                </div>
+                <?= $form->field($model, 'plan_type_id')->label(false)->dropDownList(
+                        ArrayHelper::map(PlanType::find()->select(['id', 'name'])->all(), 'id', 'name'),
+                        ['prompt'=> Yii::t('common', 'Select'),'class'=>'form-control noround']
+                    )
+                    ?>
                 
                 <p><a href="#">Xem thông tin chi tiết các gói</a></p>
                 

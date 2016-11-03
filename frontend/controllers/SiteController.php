@@ -71,11 +71,11 @@ class SiteController extends Controller {
     public function actionIndex() {
         $model = new SignupForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if (true) {
-//            if ($model->sendEmail(Yii::$app->params['adminEmail'])) {
-                Yii::$app->session->setFlash('success', 'Thank you for contacting us. We will respond to you as soon as possible.');
+            if ($model->signup()) {
+                return $this->redirect('http://company.iofficez.dev');
+                Yii::$app->session->setFlash('success', 'You sign up successfully.');
             } else {
-                Yii::$app->session->setFlash('error', 'There was an error sending email.');
+                Yii::$app->session->setFlash('error', 'There was an error registering account.');
             }
 
             return $this->refresh();
@@ -86,6 +86,7 @@ class SiteController extends Controller {
         }
 //        return $this->render('index');
     }
+    
 
     /**
      * Logs in a user.

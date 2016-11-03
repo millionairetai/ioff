@@ -18,6 +18,13 @@ use Yii;
  */
 class PlanType extends \backend\components\db\ActiveRecord
 {
+    ////////////////////////////////////
+    //Maybe change afterward
+    ////////////////////////////////////
+    const FREE = 'Free';
+    const STANDARD = 'Standard';
+    const PREMIUM = 'Premium';
+    
     /**
      * @inheritdoc
      */
@@ -56,4 +63,19 @@ class PlanType extends \backend\components\db\ActiveRecord
             'disabled' => Yii::t('common', 'Disabled'),
         ];
     }
+    
+    /**
+     * Get plan type by name
+     * 
+     * @param string $name
+     * @return id
+     */
+    public static function getByName($name) {
+        return self::find()
+                    ->select(['id', 'name',])
+                    ->where(['name' => $name])
+                    ->asArray()
+                    ->one();
+    }    
+    
 }
