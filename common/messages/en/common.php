@@ -40,6 +40,7 @@ return [
     'Company name' => 'Company name',
     'First name' => 'First name',
     'Last name' => 'Last name',
+    'Thank you for contacting us. We will respond to you as soon as possible' => 'Thank you for contacting us. We will respond to you as soon as possible.',
     
     //calendar
     'event_id' => 'Event id',

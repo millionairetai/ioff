@@ -4,6 +4,7 @@ namespace frontend\models;
 
 use Yii;
 use yii\base\Model;
+use common\models\Contact;
 
 /**
  * ContactForm is the model behind the contact form.
@@ -63,5 +64,26 @@ class ContactForm extends Model
             ->setSubject($this->subject)
             ->setTextBody($this->body)
             ->send();
+    }
+    
+    /**
+     * Add one contact to our system.
+     *
+     * @return boolean
+     */
+    public function add()
+    {      
+        $contact = new Contact();
+        $contact->name = $this->name;
+        $contact->email = $this->email;
+        $contact->subject = $this->subject;
+        $contact->body = $this->body;
+        $contact->phone = $this->phone;
+        if (!$contact->save(false)) {
+            //Send an email thankful.
+            return false;
+        }
+        
+        return true;
     }
 }

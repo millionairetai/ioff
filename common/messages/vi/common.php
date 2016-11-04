@@ -40,6 +40,7 @@ return [
     'Company name' => 'Tên công ty',    
     'First name' => 'Họ',
     'Last name' => 'Tên',
+    'Thank you for contacting us. We will respond to you as soon as possible' => 'Cảm ơn vì đã liên hệ với chúng tôi. Chúng tôi sẽ phản hồi bạn nhanh nhất có thể', 
     
     //Calendar
     'event_id' => 'Mã sự kiện',

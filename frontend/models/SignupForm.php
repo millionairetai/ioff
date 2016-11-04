@@ -117,6 +117,8 @@ class SignupForm extends Model {
                 throw new \Exception('Save employee id data to company table fail');
             }
             
+            //Send email to confirm.
+            
             $transaction->commit();
             return true;
         } catch (Exception $ex) {
