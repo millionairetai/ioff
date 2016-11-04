@@ -6,38 +6,37 @@ use yii\helpers\ArrayHelper;
 use common\models\PlanType;
 
 $this->title = 'iofficez - Connect employee';
-
 ?>
 <section id="register" class="contain-box">
     <div  class="container clearfix">
         <div id="regform">
             <?php $form = ActiveForm::begin(['id' => 'form-signup']); ?>
-            
-                <p>iOfficez kết nối nhân viên và công việc trong doanh nghiệp</p>
-                
-                <?= $form->field($model, 'companyName')->label(false)->textInput(['placeholder' => Yii::t('common', 'Company name'), 'autofocus' => true, 'class' => 'form-control noround']) ?>
-                
-                <?= $form->field($model, 'firstname')->label(false)->textInput(['placeholder' => Yii::t('common', 'First name'), 'class' => 'form-control noround']) ?>
-                
-                <?= $form->field($model, 'lastname')->label(false)->textInput(['placeholder' => Yii::t('common', 'Last name'), 'class' => 'form-control noround']) ?>
 
-                <?= $form->field($model, 'email')->label(false)->textInput(['placeholder' => Yii::t('common', 'Email'), 'class' => 'form-control noround']) ?>
+            <p>iOfficez kết nối nhân viên và công việc trong doanh nghiệp</p>
 
-                <?= $form->field($model, 'password')->label(false)->passwordInput(['placeholder' => Yii::t('common', 'Password'), 'class' => 'form-control noround']) ?>
-                
-                <?= $form->field($model, 'plan_type_id')->label(false)->dropDownList(
-                        ArrayHelper::map(PlanType::find()->select(['id', 'name'])->all(), 'id', 'name'),
-                        ['prompt'=> Yii::t('common', 'Select'),'class'=>'form-control noround']
-                    )
-                    ?>
-                
-                <p><a href="#">Xem thông tin chi tiết các gói</a></p>
-                
-                <p>Bằng cách nhấp vào đăng ký, bạn đồng ý với các <a href="#">điều khoản của chúng tôi</a> và rằng bạn đã đọc <a href="#">chính sách dữ liệu</a>của chúng tôi, bao gồm sử dụng cookie.</p>
-                
-                <div class="form-group">
-                    <?= Html::submitButton(Yii::t('common', 'Register'), ['class' => 'btn btn-primary noround', 'name' => 'signup-button']) ?>
-                </div>
+            <?= $form->field($model, 'companyName')->label(false)->textInput(['placeholder' => Yii::t('common', 'Company name'), 'autofocus' => true, 'class' => 'form-control noround']) ?>
+
+            <?= $form->field($model, 'firstname')->label(false)->textInput(['placeholder' => Yii::t('common', 'First name'), 'class' => 'form-control noround']) ?>
+
+            <?= $form->field($model, 'lastname')->label(false)->textInput(['placeholder' => Yii::t('common', 'Last name'), 'class' => 'form-control noround']) ?>
+
+            <?= $form->field($model, 'email')->label(false)->textInput(['placeholder' => Yii::t('common', 'Email'), 'class' => 'form-control noround']) ?>
+
+            <?= $form->field($model, 'password')->label(false)->passwordInput(['placeholder' => Yii::t('common', 'Password'), 'class' => 'form-control noround']) ?>
+
+            <?=
+            $form->field($model, 'plan_type_id')->label(false)->dropDownList(
+                    ArrayHelper::map(PlanType::find()->select(['id', 'name'])->all(), 'id', 'name'), ['prompt' => Yii::t('common', 'Select'), 'class' => 'form-control noround']
+            )
+            ?>
+
+            <p><a href="#">Xem thông tin chi tiết các gói</a></p>
+
+            <p>Bằng cách nhấp vào đăng ký, bạn đồng ý với các <a href="#">điều khoản của chúng tôi</a> và rằng bạn đã đọc <a href="#">chính sách dữ liệu</a>của chúng tôi, bao gồm sử dụng cookie.</p>
+
+            <div class="form-group">
+                <?= Html::submitButton(Yii::t('common', 'Register'), ['class' => 'btn btn-primary noround', 'name' => 'signup-button']) ?>
+            </div>
 
             <?php ActiveForm::end(); ?>
         </div><!-- Regform -->
@@ -149,16 +148,15 @@ $this->title = 'iofficez - Connect employee';
             <p>Để là <span class="regular">người đầu tiên</span> biết được <span>những chức năng mới</span></p>
         </div>
         <div class="col-md-6">
-            <form role="form">
-                <div class="row">
-                    <div class="col-xs-12 col-xs-8 col-sm-6">
-                        <div class="form-group">
-                            <input type="text" name="scri_email" id="scri_email" class="form-control noround" placeholder="your@email.com" tabindex="1">
-                        </div>
-                    </div>
-                    <div class="col-xs-12 col-xs-4 col-sm-6"><button class="btn btn-subcribe noround" type="submit">SUBCRIBE</button></div>
+            <?php $subscribeForm = ActiveForm::begin(['id' => 'form-subscribe']); ?>
+
+            <div class="row">
+                <div class="col-xs-12 col-xs-8 col-sm-6">
+                    <?= $subscribeForm->field($subscribeModel, 'email')->label(false)->textInput(['placeholder' => 'your@email.com', 'class' => 'form-control noround', 'tabindex' =>"1"]) ?>
                 </div>
-            </form>
+                <div class="col-xs-12 col-xs-4 col-sm-6"><?= Html::submitButton('SUBSCRIBE', ['class' => 'btn btn-subcribe noround', 'name' => 'subscribe-button']) ?></div>
+            </div>
+            <?php ActiveForm::end(); ?>
         </div>
     </div>
 </section>

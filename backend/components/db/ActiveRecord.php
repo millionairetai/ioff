@@ -67,8 +67,8 @@ class ActiveRecord extends \yii\db\ActiveRecord {
                 'value' => self::STATUS_ENABLE,
             ],
         ];
-
-        if (\Yii::$app->user->identity) {
+        
+        if (!empty(\Yii::$app->user->identity)) {
             $events[] = [
                 'class' => BlameableBehavior::className(),
                 'createdByAttribute' => 'created_employee_id',

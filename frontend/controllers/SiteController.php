@@ -2,16 +2,17 @@
 namespace frontend\controllers;
 
 use Yii;
-use common\models\LoginForm;
-use frontend\models\PasswordResetRequestForm;
-use frontend\models\ResetPasswordForm;
-use frontend\models\SignupForm;
-use frontend\models\ContactForm;
 use yii\base\InvalidParamException;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
+use frontend\models\SubscribeForm;
+use common\models\LoginForm;
+use frontend\models\PasswordResetRequestForm;
+use frontend\models\ResetPasswordForm;
+use frontend\models\SignupForm;
+use frontend\models\ContactForm;
 
 /**
  * Site controller
@@ -70,10 +71,19 @@ class SiteController extends Controller {
      */
     public function actionIndex() {
         $model = new SignupForm();
+        $subscribeModel = new SubscribeForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->signup()) {
-                return $this->redirect('http://company.iofficez.dev');
+//                return $this->redirect('http://company.iofficez.dev');
                 Yii::$app->session->setFlash('success', 'You sign up successfully.');
+            } else {
+                Yii::$app->session->setFlash('error', 'There was an error registering account.');
+            }
+
+            return $this->refresh();
+        } else if ($subscribeModel->load(Yii::$app->request->post()) && $subscribeModel->validate()) {
+            if ($subscribeModel->add()) {
+                Yii::$app->session->setFlash('success', 'You have just been subscribed successfully');
             } else {
                 Yii::$app->session->setFlash('error', 'There was an error registering account.');
             }
@@ -82,9 +92,11 @@ class SiteController extends Controller {
         } else {
             return $this->render('index', [
                         'model' => $model,
+                        'subscribeModel' => $subscribeModel,
             ]);
         }
-//        return $this->render('index');
+        
+        return $this->render('index');
     }
     
 
