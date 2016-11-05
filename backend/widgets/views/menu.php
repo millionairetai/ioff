@@ -4,17 +4,6 @@ use yii\helpers\Url;
 <aside class="main-sidebar">
         <!-- sidebar: style can be found in sidebar.less -->
         <section class="sidebar">
-          <!-- Sidebar user panel -->
-          <div class="user-panel">
-            <div class="pull-left image">
-              <img src="img/avatar5.png" class="img-circle" alt="User Image">
-            </div>
-            <div class="pull-left info">
-                <p><?php echo Yii::$app->user->identity->getFullname(); ?></p>
-              <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
-            </div>
-          </div>
-        
           <!-- sidebar menu: : style can be found in sidebar.less -->
           <ul class="sidebar-menu">
             <li class="header">MAIN NAVIGATION</li>
@@ -26,17 +15,27 @@ use yii\helpers\Url;
             </li>
             <li>
               <a href="/controller/index">
-                <i class="fa fa-th"></i> <span>Functionality group</span> 
+                <i class="fa fa-th"></i> <span>Nhóm chức năng</span> 
               </a>
             </li>
             <li>
               <a href="/action/index">
-                <i class="fa fa-calendar"></i> <span>Functionality</span> 
+                <i class="fa fa-calendar"></i> <span>Chức năng</span> 
+              </a>
+            </li>
+            <li>
+              <a href="/staff/index">
+                <i class="fa fa-users"></i> <span>Nhân viên</span> 
+              </a>
+            </li>
+            <li>
+              <a href="/company/index">
+                <i class="fa fa-empire"></i> <span>Công ty</span> 
               </a>
             </li>
             <li>
                 <a href="<?php echo Url::to('/index/logout')?>">
-                <i class="fa fa-sign-out"></i> <span> Logout</span> 
+                <i class="fa fa-sign-out"></i> <span>Đăng xuất</span> 
               </a>
             </li>
           </ul>

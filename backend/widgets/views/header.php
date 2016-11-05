@@ -7,7 +7,7 @@ use yii\helpers\Html;
     
     <a href="index2.html" class="logo">
         <!--<span class="logo-mini"><b>CENTER</b>OFFICE</span>-->
-        <span><b>CENTER</b>OFFICE</span>
+        <span><b>I</b>OFFICEZ</span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top" role="navigation">
