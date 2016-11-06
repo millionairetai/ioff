@@ -7,12 +7,14 @@
             title_error_dialog : 'Error',
             title_confirm_dialog : 'Confirm',
             ok : 'Ok',
+            at : 'at',
             more : 'View more',
             less : 'View less',
             cancel : 'Cancel',
             add_project : 'Add project',
             edit_project : 'Edit project',
             delete_project : 'Delete project',
+            edit_project_post : 'Edit project Post',
             save : 'Save',
             remove: 'Delete',
             post : 'Post',
@@ -45,6 +47,10 @@
             warning: 'Warning',
             confirm_delete_file:'Are you sure delete?',
             remove_file_success:'Delete File success.',
+            remove_project_post_success:'Delete Project Post success.',
+            remove_event_post_success:'Delete Event Post success.',
+            confirm_success: 'Confirm successfully',
+            update_attend_error:'Attend error.',
             remove_file_error:'Delete File Error.',
             last_modify: 'Last modified',
             modify_by: 'Modify by',
@@ -69,6 +75,7 @@
             name : "Name",
             redmind : "Redmind me",
             see_all: "See all",
+            update_post_success:'Update post successfully',
             //-----------------------------------------End of common language.----------------------------------
             
             //project
@@ -106,6 +113,7 @@
             project_progress: 'Project progress',
             work_time: 'Work time',
             file_name :'Name',
+            day_ago : 'day ago',
             time_update :'Time Add',
             
             project_estimate_error : 'Estimate time is must numberic',
@@ -122,6 +130,7 @@
             project_created_success:'Create project is successful',
             project_notify_success:'Project has created successfully.',
             project_update_success:'Project has update successfully.',
+            project_post_update_success:'Project Post has update successfully.',
             success_add_project : 'You add project successfully',
             //end project
             
@@ -143,9 +152,13 @@
             
             //calendar
             calendar_title : "Calendar",
+            calendar_update_event : "Update event",
             calendar_add_event : "Add event",
             calendar_event_name : "Name",
+            calendar_event_all_date : "All day",
             calendar_calendar_id : "Calendar",
+            calendar_infomation : 'Calendar information',
+            create_by : "create by",
             calendar_event_address : "Address",
             calendar_event_share : "Public",
             calendar_event_description : "Description",
@@ -166,10 +179,21 @@
             calendar_event_time_error : "Enddate is must greater than startdate",
             calendar_event_calendar_id_error_empty : "Calendar is required",
             calendar_notify_event_created_success : "Event has created successfully",
+            calendar_notify_event_edit_success : "Event has edit successfully",
             calendar_event_check_redmind : "Startdate time with current time must be greater than remind time",
                         
             //Event
             event: 'Event',
+            event_description_error_empty : 'Event description is not empty',
+            event_post_add_success : 'Event post add successfully',
+            attend : 'Attend',
+            maybe : 'Maybe',
+            no_attent : 'Not Attent',
+            no_confirm : 'No confirm',
+            recent_post : 'Recent post',
+            show_attend : "Information of event's participation",
+            update_event_post: "Update event post",
+            all_day : 'Nguyên ngày',
             
             //task
             task: 'Task',

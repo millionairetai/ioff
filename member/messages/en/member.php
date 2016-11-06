@@ -1,6 +1,7 @@
 <?php
 
 return [
+    //----------------------------------Common language--------------------------------------------------//
     'I forgot my password' => 'Quên mật khẩu?',
     'Username' => 'Tên đăng nhập',
     'Password' => 'Mật khẩu',
@@ -8,6 +9,10 @@ return [
     'Login' => 'Đăng nhập',
     'Incorrect email or password' => 'Email hoặc mật khẩu không hợp lệ',
     'error_system' => 'System is error, Please contact to admin',
+    'Can not get data' => 'Can not get data',
+    'Can not save data'=> 'Can not save data',
+    'you do not have authoirity for this action' => 'you do not have authoirity for this action',
+    //----------------------------------Common language--------------------------------------------------//        
     //project
     'project manager' => 'Manager',
     'project priority' => 'Priority',
@@ -66,4 +71,25 @@ return [
     'create task' => 'Add task',
     'edit event' => 'Edit event',
     'create task post' => 'Thêm bài đăng',
+    'you do not have authoirity'=> 'you do not have authoirity to view this project',
+    'no_attend' => 'No Attend',
+    'maybe'     => 'Maybe',
+    'attend'    => 'Attend',
+    'no_confirm'=> 'No confirm',
+    'start datetime' => 'start datetime',
+    'end datetime' => 'end datetime',
+    'calendar name' => 'calendar name',
+    'address' => 'address',
+    'color' => 'color',
+    'remind' => 'remind',
+    'is_all_day' => 'All Day',
+    'event name' => 'event name',
+    'calendar_event_redmine_0' => 'No redmind',
+    'calendar_event_redmine_30' => '30 minutes',
+    'calendar_event_redmine_60' => '1 hour',
+    'calendar_event_redmine_120' => '2 hour',
+    'calendar_event_redmine_240' => '4 giờ',
+    'calendar_event_redmine_1440' => '1 day',
+    'calendar_event_redmine_2880' => '2 days',
+    'event description op' 	=> 'Description',
 ];

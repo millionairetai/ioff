@@ -7,12 +7,14 @@
             title_error_dialog : 'Thông báo lỗi',
             title_confirm_dialog : 'Xác nhận',
             ok : 'Chấp nhận',
+            at : 'đến',
             more : 'Xem thêm',
             less : 'Đóng',
             cancel : 'Hủy',
             add_project : 'Thêm dự án',
             edit_project : 'Cập Nhật',
             delete_project : 'Xóa dự án',
+            edit_project_post : 'Cập nhật bài đăng',
             save : 'Lưu',
             remove: 'Xóa',
             post : 'Đăng',
@@ -47,6 +49,10 @@
             confirm_delete_file:'Bạn có chắc chắn xóa?.',
             remove_file_success:'File đã được xóa thành công.',
             remove_file_error:'File bạn cần xóa không thành công.',
+            remove_project_post_success:'Xóa dự án bài thành công.',
+            remove_event_post_success:'Xóa sự kiện thành công.',
+            confirm_success: 'Xác nhận thành công',
+            update_attend_error:'Attend Error.',
             last_modify: 'Ngày sửa',
             modify_by: 'Người tạo',
             search: 'Tìm kiếm',
@@ -69,6 +75,7 @@
             name : "Tên",
             redmind : "Nhắc nhở",
             see_all: "Xem tất cả",
+            update_post_success:'Bài đăng cập nhật thành công',
             //-----------------------------------------End of common language.----------------------------------
             
             //project
@@ -105,6 +112,7 @@
             project_parent: 'Dự án cha',
             project_progress: 'Tiến độ dự án',
             work_time: 'Thời gian làm việc',
+            day_ago : 'ngày',
             file_name :'Tên',
             time_update :'Ngày thêm vào',
             
@@ -122,6 +130,7 @@
             project_created_success:'Dự án đã được tạo thành công.',
             project_notify_success:'Dự án đã được tạo thành công.',
             project_update_success:'Dự án đã được cập nhật thành công.',
+            project_post_update_success:'Bài đăng dự án được cập nhật thành công.',
             success_add_project : 'Bạn đã tạo dự án thành công',
             //end project
             
@@ -143,8 +152,12 @@
             
             //calendar
             calendar_title : "Lịch",
+            calendar_infomation : 'Thông tin sự kiện',
             calendar_add_event : "Thêm sự kiện",
+            calendar_update_event : "Cập nhật sự kiện",
             calendar_event_name : "Tên sự kiện",
+            calendar_event_all_date : "All day",
+            create_by : "tạo bởi",
             calendar_calendar_id : "Lịch",
             calendar_event_address : "Địa chỉ",
             calendar_event_share : "Công khai",
@@ -166,10 +179,21 @@
             calendar_event_time_error : "Ngày kết thúc phải lớn hơn ngày bắt đầu",
             calendar_event_calendar_id_error_empty : "Lịch không được bỏ trống",
             calendar_notify_event_created_success : "Sự kiện của bạn đã được tạo thành công",
+            calendar_notify_event_edit_success : "Sự kiện của bạn đã được cập nhật thành công",
             calendar_event_check_redmind : "Thời gian bắt đầu sự kiện so với thời gian hiện tại phải lớn hơn thời gian nhắc nhở",
             
             //Event
             event: 'Sự kiện',
+            event_description_error_empty : 'Sự kiện mô tả không thể bỏ trống',
+            event_post_add_success : 'Bài đăng thêm thành công',
+            attend : 'Tham dự',
+            maybe : 'Có thể',
+            no_attent : 'Không tham dự',
+            no_confirm : 'Chưa xác nhận',
+            recent_post : 'Bài gần đây',
+            show_attend : 'Thông tin tham dự sự kiện',
+            update_event_post: "Cập nhật bài đăng",
+            all_day : 'Sự kiện nguyên ngày',
             
             //task
             task: 'Công việc',

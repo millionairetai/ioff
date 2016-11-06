@@ -236,10 +236,30 @@ class ProjectController extends ApiController {
             if ($projectId = \Yii::$app->request->post('projectId')) {
                 if ($data_project = Project::getInfoProject($projectId)) {
                     $objects['collection'] = $data_project;
+                    
+                    //check authentication
+                    //**check case is public
+                    if (($data_project['project_info']['is_public'] == true) 
+                         || (\Yii::$app->user->identity->is_admin == true)
+                         || ($data_project['project_info']['manager_project_id'] == Yii::$app->user->identity->id)
+                            ) {
                     return $this->sendResponse(false, $projectId, $objects);
+                    } else {
+                        $EmployeesInProject = ProjectEmployee::findOne([
+                                'project_id'  => $projectId,
+                                'company_id'  => $this->_companyId,
+                                'employee_id' => Yii::$app->user->identity->id
+                            ]);
+                        if (!empty($EmployeesInProject)) {
+                            return $this->sendResponse(false, $projectId, $objects);
+                        }else {
+                             Yii::$app->session->setFlash('errorViewProject', \Yii::t('member', "you do not have authoirity"));
+                             $objects['collection']['error'] = true;
+                             return $this->sendResponse(false, $projectId, $objects);
                 }
             }
-
+                }
+            }
             throw new \Exception(\Yii::t('member', 'Can not get project info'));
         } catch (\Exception $e) {
             return $this->sendResponse(true, $e->getMessage(), []);
@@ -347,6 +367,11 @@ class ProjectController extends ApiController {
                             'is_success'  => ActiveRecord::VAL_TRUE,
                         ];
                     }
+                    
+                    $dataUpdate['project_employess'][] = [
+                    	'project_id'  => $ob->id,
+                    	'employee_id' => $item->id,
+                    ];
                 }
             }
 
@@ -370,10 +395,17 @@ class ProjectController extends ApiController {
                 $projectPost->content       = $projectHistory;
                 $projectPost->content_parse = $projectPost->content;
                 $projectPost->parent_employee_id = 0;
+                $projectPost->is_log_history = true;
 
                 if (!$projectPost->save()) {
                     throw new \Exception('Save record to table project_post fail');
                 }
+            }
+
+            if (!empty($dataUpdate['project_employess'])) {
+	            if (!$this->_updateProjectEmployees($dataUpdate['project_employess'])) {
+	                    throw new \Exception('Save record to table Notification fail');
+	            }
             }
 
             if (!empty($dataUpdate['notification'])) {
@@ -430,7 +462,8 @@ class ProjectController extends ApiController {
             \Yii::t('member', 'project description op') => array($dataPost['projectInfo_old']['description'] => $dataPost['description']),
             \Yii::t('member', 'project completed percent') => array($dataPost['projectInfo_old']['completed_percent']."%" => $dataPost['completed_percent']."%"),
             \Yii::t('member', 'project estimate op')    => array($dataPost['projectInfo_old']['estimate_hour'] => $dataPost['estimate_hour']),
-            \Yii::t('member', 'project manager op')     => array('<a href="#/member/' . $dataPost['projectInfo_old']['manager_project_id'] . '">' . $dataPost['projectInfo_old']['project_manager'] . '</a>' => !empty($dataPost['manager']['id']) ?  '<a href="#/member/' . $dataPost['manager']['id'] . '">' . $dataPost['manager']['firstname'] . '</a>' : $noSetting),
+//            \Yii::t('member', 'project manager op')     => array('<a href="#/member/' . $dataPost['projectInfo_old']['manager_project_id'] . '">' . $dataPost['projectInfo_old']['project_manager'] . '</a>' => !empty($dataPost['manager']['id']) ?  '<a href="#/member/' . $dataPost['manager']['id'] . '">' . $dataPost['manager']['firstname'] . '</a>' : $noSetting),
+            \Yii::t('member', 'project manager op')     => array(empty($dataPost['projectInfo_old']['manager_project_id']) ? $noSetting : '<a href="#/member/' . $dataPost['projectInfo_old']['manager_project_id'] . '">' . $dataPost['projectInfo_old']['project_manager'] . '</a>' => !empty($dataPost['manager']['id']) ?  '<a href="#/member/' . $dataPost['manager']['id'] . '">' . $dataPost['manager']['firstname'] . '</a>' : $noSetting),
         );
 
         //Create log project history text.
@@ -630,6 +663,44 @@ class ProjectController extends ApiController {
         return $result;
     }
     
+    /**
+     * Update data inside table project employess
+     * @param unknown_type $data content list data employess of employee and lisf employee to department
+     * return boolean
+     */
+    private function _updateProjectEmployees($data = []) {
+    	$result = true;
+    	if (!empty($data)) {
+    		$projectEmployeeOld = ProjectEmployee::findAll(["project_id" => $data[0]['project_id'], "company_id" => $this->_companyId]);
+    		if (!empty($projectEmployeeOld)) {
+    			$dataDelete = [];
+    			foreach ($projectEmployeeOld AS $projectEmployeeOldKey => $projectEmployeeOldVal) {
+    				$dataDelete[$projectEmployeeOldKey] = $projectEmployeeOldVal->id;
+    				foreach ($data AS $datakey => $dataVal) {
+    					if ($projectEmployeeOldVal->employee_id == $dataVal['employee_id']) {
+    						unset($projectEmployeeOld[$datakey]);
+    						unset($data[$datakey]);
+    						unset($dataDelete[$projectEmployeeOldKey]);
+    					}
+    				}
+    			}
+    			
+    			if (!empty($dataDelete)) {
+    				if (!ProjectEmployee::deleteAll(['id' => $dataDelete])) {
+    					$result = false;
+    				}
+    			}
+    		}
+    		
+    		if (!empty($data)) {
+    			if (!\Yii::$app->db->createCommand()->batchInsert(ProjectEmployee::tableName(), array_keys($data[0]), $data)->execute()) {
+    				$result = false;
+    			}
+    		}
+    	}
+    	return $result;
+    }
+
     public function actionGetAllProjectIdAndNames() {
         $objects = [];
         $collection = [];
@@ -645,4 +716,5 @@ class ProjectController extends ApiController {
         $objects['collection'] = $collection;
         return $this->sendResponse(false, "", $objects);
     }
+    
 }

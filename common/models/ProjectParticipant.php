@@ -68,6 +68,28 @@ class ProjectParticipant extends \common\components\db\ActiveRecord
     	return $this->hasOne(Department::className(), ['id' => 'owner_id']);
     }
     
+    /**
+     * get list ProjectParticipant by $projectId
+     * @param string $projectId
+     * @return boolean|array
+     */
+    public static function getListByProjectId($projectId = null){
+        if ($projectId == null) {
+            return false;
+        }
+        $projectParticipants = ProjectParticipant::findAll(['company_id' => \Yii::$app->user->getCompanyId(), 'project_id' => $projectId]);
+        if (!empty($projectParticipants)) {
+            $result = [];
+            foreach ($projectParticipants as $projectParticipant) {
+                $result['owner_table'][$projectParticipant->owner_table][] = $projectParticipant->owner_id;
+                if ($projectParticipant->owner_table == 'department') {
+                    $result['department'][$projectParticipant->department->id] = $projectParticipant->department->name;
+                }
+            }
+            return $result;
+        }
+        return false;
+    }
     public function getEmployeesByProjectId($projectId){//
         $departmentProjectParticipants = self::find()->joinWith('company')->select('owner_id')->where(['owner_table'=>self::TABLE_DEPARTMENT,'project_id'=>$projectId])->all();
         $employeeProjectParticipants = self::find()->joinWith('company')->select('owner_id')->where(['owner_table'=>self::TABLE_EMPLOYEE,'project_id'=>$projectId])->all();

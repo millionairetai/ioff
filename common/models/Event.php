@@ -43,10 +43,11 @@ class Event extends ActiveRecord {
     public function rules() {
         return [
             [['company_id', 'calendar_id', 'employee_id', 'datetime_created', 'lastup_datetime', 'lastup_employee_id'], 'integer', 'message' => Yii::t('member', 'validate_integer')],
-            [['employee_id', 'name'], 'required', 'message' => Yii::t('member', 'validate_required')],
+            [['employee_id', 'start_datetime', 'end_datetime', 'name'], 'required', 'message' => Yii::t('member', 'validate_required')],
             [['description', 'description_parse'], 'string', 'message' => Yii::t('member', 'validate_string')],
             [['is_public', 'is_all_day', 'disabled'], 'boolean', 'message' => Yii::t('member', 'validate_boolean')],
             [['start_datetime', 'end_datetime', 'address', 'description', 'description_parse', 'sms', 'color'], 'safe'],
+            ['end_datetime', 'compare', 'compareAttribute' => 'start_datetime', 'operator' => '>','message' => Yii::t('member', 'validate_time')],
             [['name', 'address'], 'string', 'max' => 255, 'tooLong' => Yii::t('member', 'validate_max_length')]
         ];
     }
@@ -102,7 +103,7 @@ class Event extends ActiveRecord {
      */
     public static function getEvents($calendars, $companyId, $employeeId, $start, $end) {
 
-        $sql = " SELECT event.id,event.name,event.start_datetime,event.end_datetime,event.color,is_all_day "
+        $sql = " SELECT event.id, event.name,event.start_datetime,event.end_datetime,event.color,is_all_day "
                 . " FROM event "
                 . "        INNER JOIN calendar	"
                 . "                ON event.calendar_id= calendar.id "

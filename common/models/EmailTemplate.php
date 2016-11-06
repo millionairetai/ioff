@@ -28,6 +28,7 @@ class EmailTemplate extends \common\components\db\ActiveRecord
     const EDIT_EVENT = 'edit_event';
     const CREATE_PROJECT = 'create_project';
     const CREATE_PROJECT_POST = 'create_project_post';
+    const CREATE_EVENT_POST = 'create_event_post';
     
     /**
      * @inheritdoc
@@ -161,6 +162,46 @@ class EmailTemplate extends \common\components\db\ActiveRecord
                         'language_code' => \Yii::$app->language,
                         'disabled' => self::STATUS_ENABLE
                     ])->one();
+        
+        if($theme){
+            return $theme;
+        }
+        
+        return null;
+    }
+
+    /**
+     * Get theme email of add  event post
+     * 
+     * @return string|null
+     */
+    public static function getThemeCreateEventPost(){
+        
+        $theme = self::find([
+            'column_name' => Activity::TYPE_CREATE_EVENT_POST,
+            'language_code' => \Yii::$app->language,
+            'disabled' => self::STATUS_ENABLE
+        ])->one();
+        
+        if($theme){
+            return $theme;
+        }
+        
+        return null;
+    }
+
+    /**
+     * Get theme email of creating event 
+     * 
+     * @return string|null
+     */
+    public static function getThemeEditEvent(){
+        
+        $theme = self::find([
+            'column_name' => Activity::TYPE_EDIT_EVENT,
+            'language_code' => \Yii::$app->language,
+            'disabled' => self::STATUS_ENABLE
+        ])->one();
         
         if($theme){
             return $theme;

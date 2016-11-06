@@ -32,6 +32,8 @@ class Activity extends \common\components\db\ActiveRecord
     //const for type of activity
     const TYPE_CREATE_TASK = 'create_task';
     const TYPE_CREATE_EVENT = 'create_event';
+    const TYPE_EDIT_EVENT   = 'edit_event';
+    const TYPE_CREATE_EVENT_POST = 'create_event_post';
     const TYPE_CREATE_PROJECT = 'create_project';
     const TYPE_CREATE_EDIT_PROJECT = 'edit_project';
     const TYPE_CREATE_PROJECT_POST = 'create_project_post';
@@ -80,5 +82,15 @@ class Activity extends \common\components\db\ActiveRecord
             'lastup_employee_id' => 'Lastup Employee ID',
             'disabled' => 'Disabled',
         ];
+    }
+    
+    /**
+     * Make content for activity
+     * 
+     * @param string $info
+     * @return string
+     */
+    public static function makeContent($type, $info) {
+        return \Yii::$app->user->identity->firstname . " " .$type . " " . $info;
     }
 }

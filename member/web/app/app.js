@@ -13,13 +13,7 @@ appRoot.constant('MAX_FILE_UPLOAD', 20);
 
 //main controller
 appRoot.controller('iofficezCtrl', ['$scope', function ($scope) {
-        ///////////////////////////////////
-        $scope.clearCache = function () {
-//            $templateCache.removeAll();
-        }
 
-        $scope.clearCache();
-        ///////////////////////////
     }]);
 
 // run project

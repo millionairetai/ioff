@@ -97,6 +97,34 @@ class SmsTemplate extends \common\components\db\ActiveRecord
     }
     
     /**
+     * Get theme sms of create event post
+     * 
+     * @return string|null
+     */
+    public static function getThemeCreateEventPost() {
+        $theme = self::find()->andWhere(['column_name' => Activity::TYPE_CREATE_EVENT_POST,'language_code' => \Yii::$app->language])->one();
+        if($theme) {
+            return $theme;
+        }
+        
+        return null;
+    }
+
+    /**
+     * Get theme sms of edit event 
+     * 
+     * @return string|null
+     */
+    public static function getThemeEditEvent() {
+        $theme = self::find()->andWhere(['column_name' => Activity::TYPE_EDIT_EVENT,'language_code' => \Yii::$app->language])->one();
+        if($theme) {
+            return $theme;
+        }
+        
+        return null;
+    }
+    
+    /**
      * Get theme sms of edit project 
      */
     public static function getThemeEditProject(){

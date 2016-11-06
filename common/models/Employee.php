@@ -321,6 +321,13 @@ class Employee extends ActiveRecord implements IdentityInterface
     }
     
     /**
+     * Check if user is admin
+     */
+    public static function isAdmin() {
+        return \Yii::$app->user->identity->is_admin == true;
+    }
+    
+    /**
      * Get full name
      * @return string
      */
@@ -331,7 +338,7 @@ class Employee extends ActiveRecord implements IdentityInterface
     /**
      * send email to employee
      */
-    public function sendMail($dataSend,$themeEmail){
+    public function sendMail($dataSend, $themeEmail){
         if(!$themeEmail){
             return false;
         }
@@ -388,5 +395,49 @@ class Employee extends ActiveRecord implements IdentityInterface
                     
     public function getCompany(){
         return $this->hasOne(Company::className(), ['id'=>'company_id']);        
+    }
+    
+        /**
+     * Get info of list employee
+     * 
+     * @param array $departments
+     * @param array $employees
+     * 
+     * @return array
+     */
+    public static function getlistByepartmentIdsAndEmployeeIds($departments = [], $employees = []) {
+        $result = [];
+        $employeeIds   = empty($employees) ? null : $employees;
+        $departmentIds = empty($departments) ? null : $departments;
+        $employees = Employee::find()
+                        ->select(['id', 'firstname', 'lastname', 'profile_image_path', 'department_id', 'birthdate'])
+                        ->andWhere(['id' => $employeeIds])
+                        ->orWhere(['department_id' => $departmentIds])
+                        ->andCompanyId()
+                        ->all();
+        
+        if (!empty($employees)) {
+            $count = 0;
+            foreach ($employees as $employee) {
+                $result['employeeList'][] = [
+                    'id'        => $employee->id,
+                    'firstname' => $employee->getFullName(),
+                    'image'     => $employee->getImage(),
+                    'birthdate' => isset($employee->birthdate) ? date('Y-m-d', $employee->birthdate) : null,
+                ];
+                
+                if (!empty($employeeIds) && in_array($employee->id, $employeeIds)) {
+                    $result['employeeEditList'][] = [
+                            'id'        => $employee->id,
+                            'firstname' => $employee->getFullName(),
+                            'image'     => $employee->getImage(),
+                            'birthdate' =>  isset($employee->birthdate) ? date('Y-m-d', $employee->birthdate) : null,
+                    ];
+                }
+                $result['count'] = ++$count;
+            }
+        }
+        
+        return $result;
     }
 }

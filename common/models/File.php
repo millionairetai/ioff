@@ -28,7 +28,6 @@ class File extends \common\components\db\ActiveRecord {
     const TABLE_PROJECT = "project";
     const TABLE_TASK = "task";
     const TABLE_EVENT = "event";
-    const TABLE_TASK = "task";
     const TABLE_PROJECT_POST = 'project_post';
     const TABLE_EVENT_POST = 'event_post';
     const TABLE_TASK_POST = 'task_post';

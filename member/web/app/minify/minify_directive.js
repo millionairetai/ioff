@@ -220,6 +220,27 @@ angular.module('iofficez').directive('clickOnce', function ($timeout) {
 });
 //http://plnkr.co/edit/2aZWQSLS8s6EhO5rKnRh?p=preview
 //http://blog.codebrag.com/post/57412530001/preventing-duplicated-requests-in-angularjs
+appRoot.directive('eventFixed', function ($window) {
+    var $win = angular.element($window); // wrap window object as jQuery object
+
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            var topClass = 'sidebarfixed', // get CSS class
+                    offsetTop = element.offset().top, // get element's top relative to the document
+                    offsetparentTop = element.parent().offset().top;
+            $win.on('scroll', function (e) {
+                if ($win.scrollTop() >= offsetTop) {
+                    element.addClass(topClass);
+                    element.css('top', $win.scrollTop() - offsetparentTop + 70);
+                } else {
+                    element.removeClass(topClass);
+                    element.css('top', '0');
+                }
+            });
+        }
+    };
+});
 appRoot.directive('icheck', function($timeout, $parse) {
     return {
         require: 'ngModel',
@@ -364,4 +385,72 @@ appRoot.directive('radioColor', function($timeout, $parse) {
             } );
         }
     };
-}]);
+}]);angular.module('ui.tinymce', [])
+    .value('uiTinymceConfig', {})
+    .directive('uiTinymce', ['uiTinymceConfig', function(uiTinymceConfig) {
+    uiTinymceConfig = uiTinymceConfig || {};
+    var generatedIds = 0;
+    return {
+        require: 'ngModel',
+        link: function(scope, elm, attrs, ngModel) {
+            var expression, options, tinyInstance;
+            // generate an ID if not present
+            if (!attrs.id) {
+                attrs.$set('id', 'uiTinymce' + generatedIds++);
+            }
+            options = {
+                // Update model when calling setContent (such as from the source editor popup)
+                setup: function(ed) {
+                    ed.on('init', function(args) {
+                        ngModel.$render();
+                    });
+                    // Update model on button click
+                    ed.on('ExecCommand', function(e) {
+                        ed.save();
+                        ngModel.$setViewValue(elm.val());
+                        if (!scope.$$phase) {
+                            scope.$apply();
+                        }
+                    });
+                    // Update model on keypress
+                    ed.on('KeyUp', function(e) {
+//                        console.log(ed.isDirty());
+                        ed.save();
+                        ngModel.$setViewValue(elm.val());
+                        if (!scope.$$phase) {
+                            scope.$apply();
+                        }
+                    });
+                },
+                mode: 'exact',
+                elements: attrs.id,
+                mode: 'exact',
+                elements: attrs.id,
+                inline: false,
+                toolbar: 'formatselect | bold italic underline | bullist numlist | alignleft aligncenter alignright alignjustify | undo redo ',
+                menubar: false,
+                skin: 'lightgray',
+                theme: 'modern'
+            };
+            if (attrs.uiTinymce) {
+                expression = scope.$eval(attrs.uiTinymce);
+            } else {
+                expression = {};
+            }
+            angular.extend(options, uiTinymceConfig, expression);
+            setTimeout(function() {
+                tinymce.init(options);
+            });
+
+
+            ngModel.$render = function() {
+                if (!tinyInstance) {
+                    tinyInstance = tinymce.get(attrs.id);
+                }
+                if (tinyInstance) {
+                    tinyInstance.setContent(ngModel.$viewValue || '');
+                }
+            };
+        }
+    };
+}]); 
