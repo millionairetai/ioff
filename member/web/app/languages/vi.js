@@ -152,6 +152,7 @@
             calendar_title : "Lịch",
             calendar_infomation : 'Thông tin sự kiện',
             calendar_add_event : "Thêm sự kiện",
+            calendar_update_event : "Cập nhật sự kiện",
             calendar_event_name : "Tên sự kiện",
             calendar_event_all_date : "All day",
             create_by : "tạo bởi",

@@ -150,7 +150,7 @@
             
             //calendar
             calendar_title : "Calendar",
-            calendar_add_event : "Add event",
+            calendar_update_event : "Update event",
             calendar_event_name : "Name",
             calendar_event_all_date : "All day",
             calendar_calendar_id : "Calendar",
