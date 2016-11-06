@@ -595,8 +595,8 @@ appRoot.controller('NotifyCtrl', ['$scope', 'notifyService', '$rootScope', 'PER_
 
     }]);
 //list project
-appRoot.controller('projectCtrl', ['$scope', 'projectService', '$uibModal','$rootScope','socketService', 'PER_PAGE_VIEW_MORE',
-    function ($scope, projectService, $uibModal, $rootScope, socketService, PER_PAGE_VIEW_MORE) {
+appRoot.controller('projectCtrl', ['$scope', 'projectService', '$uibModal','$rootScope','socketService', 'PER_PAGE_VIEW_MORE', 'alertify', 
+    function ($scope, projectService, $uibModal, $rootScope, socketService, PER_PAGE_VIEW_MORE, alertify) {
          
         //get all project
         $scope.filter = {
@@ -609,6 +609,9 @@ appRoot.controller('projectCtrl', ['$scope', 'projectService', '$uibModal','$roo
             projectService.listProject($scope.filter, function (response) {
                 $scope.collection = response.objects.collection;
                 $scope.filter.totalItems = response.objects.totalItems;
+                if (response.objects.error) {
+                	alertify.error(response.objects.error);
+                }
             });
         };
         $scope.getList();
@@ -651,6 +654,9 @@ appRoot.controller('addProjectCtrl', ['socketService','$scope', 'projectService'
         $scope.files = [];
         $scope.people = [];
         $scope.employees = [];
+        $scope.open_start_datetime = false;
+        $scope.open_end_datetime = false;
+        
         $scope.project = {
             parent_id: 0,
             manager: null,
@@ -844,6 +850,9 @@ appRoot.controller('viewProjectCtrl', ['$scope', 'projectService', 'fileService'
             projectService.viewProject({projectId: projectId}, function (response) {
                 $scope.collection = response.objects.collection;
                 $dataEditProject = response.objects.collection;
+                if (response.objects.collection.error) {
+            		$location.path('/project');
+            	}
             });
         };
 
@@ -923,6 +932,10 @@ appRoot.controller('viewProjectCtrl', ['$scope', 'projectService', 'fileService'
                         project_id: projectId,
                     };
                     $scope.files = [];
+                    $scope.release  = $scope.collection.file_info;
+                    $scope.releases = response.objects.files;
+                    $scope.releases = $scope.releases.concat($scope.release);
+                    $scope.collection.file_info = $scope.releases;
                 });
             }
         }
@@ -937,7 +950,13 @@ appRoot.controller('viewProjectCtrl', ['$scope', 'projectService', 'fileService'
         //view more
         $scope.viewMore = function () {
             $scope.filter.currentPage++;
-            $scope.getProjectPosts();
+            projectPostService.getProjectPosts($scope.filter, function (response) {
+                $scope.release  = response.objects.collection;
+                $scope.releases = $scope.projectPost;
+                $scope.projectPost = $scope.releases.concat($scope.release);
+                $scope.projectPostFile = response.objects.files;
+                $scope.filter.totalItems = response.objects.totalItems;
+            });
         }
 
         //edit project
@@ -977,13 +996,44 @@ appRoot.controller('viewProjectCtrl', ['$scope', 'projectService', 'fileService'
                 fileService.removeFile({fileId: id}, function (data) {
                     $scope.collection.file_info.splice(index, 1);
                     alertify.success($rootScope.$lang.remove_file_success);
-                    $scope.getProjectPosts();
                 })
             });
         };
-
-        //handle create project post successful
+       
+        //Delete project post
+        $scope.deleteProjectPost = function (index, id) {
+             dialogMessage.open('confirm', $rootScope.$lang.confirm_delete_file, function () {
+                projectPostService.removeProjectPost({ProjectPostId: id}, function (data) {
+                    $scope.projectPost.splice(index, 1);
+                    alertify.success($rootScope.$lang.remove_project_post_success);
+                });
+            });
+        };
+        
+        //edit project
+        $scope.editProjectPost = function (projectPost, $index) {
+            var modalInstance = $uibModal.open({
+                templateUrl: 'app/views/projectPost/edit.html',
+                controller: 'editProjectPostCtrl',
+                size: 'lg',
+                keyboard: true,
+                backdrop: 'static',
+                resolve: {
+                	projectPost: function () {
+                        return projectPost;
+                    }
+                }
+            });
+        };
+        
+       //handle create project post successful
         $rootScope.$on('add_project_post_success', function (event, data) {
+        	$scope.filter = {
+                    itemPerPage: PER_PAGE_VIEW_MORE,
+                    totalItems: 0,
+                    currentPage: 1,
+                    projectId: projectId
+                };
             $scope.getProjectPosts();
         });
         
@@ -994,11 +1044,56 @@ appRoot.controller('viewProjectCtrl', ['$scope', 'projectService', 'fileService'
         	$scope.limit = 5;
         	$scope.limitFile = 5;
         });
+        
+        $scope.tinymceOptions = {
+                inline: false,
+                toolbar: 'formatselect | bold italic underline | bullist numlist | alignleft aligncenter alignright alignjustify | undo redo ',
+                menubar: false,
+                skin: 'lightgray',
+                theme: 'modern'
+            };
     }]);
 
+//edit project post
+appRoot.controller('editProjectPostCtrl', ['$scope', 'projectPostService', '$uibModalInstance', 'controllerService', 'actionService', '$rootScope', 'projectPost', 'alertify', 'dialogMessage', 'socketService',
+	function ($scope, projectPostService, $uibModalInstance, controllerService, actionService, $rootScope, projectPost, alertify, dialogMessage, socketService) {
+            $scope.project = {
+                id: projectPost.id,
+            	description: projectPost.content,
+            };
+                                       		
+            $scope.update = function () {
+                if (projectPostService.validateProjectPost($scope.project)) {
+                    var params = {'id': projectPost.id, 'content': $scope.project.description};
+                    projectPostService.updateProjectPost(params, function (data) {
+                    projectPost.content = $scope.project.description;
+                    alertify.success($rootScope.$lang.project_post_update_success);
+                	$uibModalInstance.dismiss('save');
+            	});
+        	}
+        };
+        //cancel
+        $scope.cancel = function () {
+        	$uibModalInstance.dismiss('cancel');
+        };
+                                       				
+        //show more
+        $scope.showMore = function (value) {
+    	$scope.more = value;
+    	
+    	$scope.tinymceOptions = {
+                inline: false,
+                toolbar: 'formatselect | bold italic underline | bullist numlist | alignleft aligncenter alignright alignjustify | undo redo ',
+                menubar: false,
+                skin: 'lightgray',
+                theme: 'modern'
+            };
+	}
+}]);
+
 //edit project
-appRoot.controller('editProjectCtrl', ['$scope', 'projectService', '$location', '$uibModalInstance', '$rootScope', 'departmentService', 'alertify', '$timeout', 'employeeService', '$filter', 'statusService', 'priorityService', 
-    function ($scope, projectService, $location, $uibModalInstance, $rootScope, departmentService, alertify, $timeout, employeeService, $filter, statusService, priorityService) {
+appRoot.controller('editProjectCtrl', ['$scope', 'projectService', '$location', '$uibModalInstance', '$rootScope', 'departmentService', 'alertify', '$timeout', 'employeeService', '$filter', 'statusService', 'priorityService', 'socketService',  
+                                       function ($scope, projectService, $location, $uibModalInstance, $rootScope, departmentService, alertify, $timeout, employeeService, $filter, statusService, priorityService, socketService) {
         //step
         $scope.step = 1;
         $scope.more = 0;
@@ -1017,8 +1112,8 @@ appRoot.controller('editProjectCtrl', ['$scope', 'projectService', '$location', 
             parent_id: 0,
             manager: {id: $dataEditProject.project_info.manager_project_id, firstname: $dataEditProject.project_info.project_manager, image: $dataEditProject.project_info.image},
             name: $dataEditProject.project_info.project_name,
-            start_datetime: $dataEditProject.project_info.start_datetime,
-            duedatetime: $dataEditProject.project_info.duedatetime,
+            start_datetime: new Date($dataEditProject.project_info.start_datetime),
+            duedatetime: new Date($dataEditProject.project_info.duedatetime),
             priority_id: parseInt($dataEditProject.project_info.priority_id),
             completed_percent: $dataEditProject.project_info.completed_percent,
             is_public: $dataEditProject.project_info.is_public,
@@ -1158,6 +1253,7 @@ appRoot.controller('editProjectCtrl', ['$scope', 'projectService', '$location', 
                                 alertify.success($rootScope.$lang.project_update_success);
                                 $rootScope.$emit('edit_project_success', {message: 'hung'});
                                 $scope.step++;
+                                socketService.emit('notify', 'ok');
                             });
                         }
                     } else {
@@ -1182,6 +1278,14 @@ appRoot.controller('editProjectCtrl', ['$scope', 'projectService', '$location', 
         $scope.showMore = function (value) {
             $scope.more = value;
         }
+        
+        $scope.tinymceOptions = {
+                inline: false,
+                toolbar: 'formatselect | bold italic underline | bullist numlist | alignleft aligncenter alignright alignjustify | undo redo ',
+                menubar: false,
+                skin: 'lightgray',
+                theme: 'modern'
+            };
 
     }]);
 appRoot.controller('searchCtrl', ['$scope', 'taskService', '$uibModal', '$rootScope', 'PER_PAGE', 'MAX_PAGE_SIZE',

@@ -21,16 +21,20 @@ class ProjectPostController extends ApiController {
         $collection = [];
         $projectPostIds = [];
         $projectId = \Yii::$app->request->post('projectId');
-
         //fetch project post list
         $result = ProjectPost::getProjectPosts($projectId, \Yii::$app->request->post('currentPage'), \Yii::$app->request->post('itemPerPage'));
         foreach ($result as $item) {
+            $actionDelete = false;
+            if (((\Yii::$app->user->getId() == $item->created_employee_id) || (\Yii::$app->user->identity->is_admin)) && ($item->is_log_history == false)) {
+                $actionDelete = true;
+            }
             $collection[] = [
                 'id'                 => $item->id,
                 'time'               => date('H:i d-m-Y ', $item->datetime_created),
                 'content'            => $item->content,
                 'employee_name'      => empty($item->employee) ? '' : $item->employee->getFullName(),
                 'profile_image_path' => empty($item->employee) ? '' : $item->employee->getImage(),
+                'actionDelete'       => $actionDelete,
             ];
 
             $projectPostIds[$item['id']] = $item->id;
@@ -50,6 +54,7 @@ class ProjectPostController extends ApiController {
         $objects['collection'] = $collection;
         $objects['files'] = $fileData;
         $objects['totalItems'] = 0;
+        $objects['debugs'] = \Yii::$app->request->post('currentPage') . '++++'.  \Yii::$app->request->post('itemPerPage');
         
         if (!empty($collection)) {
             $objects['totalItems'] = Projectpost::find()->where(['project_id' => $projectId])->count();
@@ -107,7 +112,7 @@ class ProjectPostController extends ApiController {
             }
 
             //move file
-            File::addFiles($_FILES, \Yii::$app->params['PathUpload'], $projectPost->id, ProjectPost::TABLE_PROJECTPOST);
+            $fileList = File::addFiles($_FILES, \Yii::$app->params['PathUpload'], $projectPost->id, ProjectPost::TABLE_PROJECTPOST);
     
             //notifycation
             $themeEmail = \common\models\EmailTemplate::getThemeProjectPost();
@@ -190,10 +195,58 @@ class ProjectPostController extends ApiController {
             }
             
             $transaction->commit();
-            return $this->sendResponse(false, "", []);
+            return $this->sendResponse(false, "", ['files' => $fileList]);
         } catch (Exception $e) {
             $transaction->rollBack();
             return $this->sendResponse(true, \Yii::t('member', 'error_system'), []);
         }
+    }
+    
+    /**
+     * Action delete project post
+     */
+    public function actionRemoveProjectPost() {
+        $this->_message = \Yii::t('member', 'remove project post success');
+        $transaction = \Yii::$app->db->beginTransaction();
+        try {
+            if (!ProjectPost::deleteAll(['id' => \Yii::$app->request->get('ProjectPostId')])) {
+                 throw new \Exception('remove project post error');
+            }
+            $transaction->commit();
+        } catch (\Exception $e) {
+            $this->_error = true;
+            $this->_message = \Yii::t('member', 'remove project post error');
+            $transaction->rollBack();
+            return $this->sendResponse($this->_error, $this->_message, []);
+        }
+        return $this->sendResponse($this->_error, $this->_message, []);
+    }
+    /**
+     * Action update project post
+     */
+    public function actionUpdateProjectPost() {
+    	$request = \Yii::$app->request->post();
+        if (!(isset($request['id']) && $request['id'])) {
+            throw new \Exception('Request fail');
+        }
+        $this->_message = "Updata Project Post Success";
+        $transaction = \Yii::$app->db->beginTransaction();
+        try {
+        	if (!$projectPost = ProjectPost::findOne($request['id'])) {
+        		throw new \Exception('Get project post info fail');
+        	}
+        	$projectPost->content       = $request['content'];
+        	$projectPost->content_parse = $request['content'];
+        	if (!$projectPost->update()) {
+        		throw new \Exception('Save record to table project post fail');
+        	}
+        	$transaction->commit();
+        } catch (\Exception $e) {
+            $this->_message = "Error";
+            $transaction->rollBack();
+            return $this->sendResponse($this->_error, $this->_message, []);
+        }
+        
+        return $this->sendResponse($this->_error, $this->_message, ['content' => $request['content']]);
     }
 }

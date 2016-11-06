@@ -15,7 +15,7 @@
             </div>
         </div>
         <div class="box-body" >
-            <div class="col-md-6">
+            <div class="col-md-7">
                 <table class="table">
                     <tr>
                         <th width="20%" class="border-top-none">{{$root.$lang.project_name}}</th>
@@ -75,14 +75,13 @@
                         <td></td>
                     </tr>
                     <tr>
-                        <th>{{$root.$lang.project_infomation}}</th>
-                        <td colspan="2">
+                        <td colspan="3">
+                            <b>{{$root.$lang.project_infomation}}</b>
                             <p ng-text-truncate="collection.project_info.description" ng-tt-chars-threshold="250"></p>
                         </td>
                     </tr>
                     <tr>
-                        <th></th>
-                        <td colspan="2">
+                        <td colspan="3">
                             <div  ng-if="collection.file_info != ''" ng-repeat="files in collection.file_info| limitTo:limitFile">
                                 <div>
                                     <a href="{{files.path}}"><span class="glyphicon glyphicon-file" aria-hidden="true"></span>{{files.name}}</a>
@@ -98,7 +97,7 @@
                     </tr>
                 </table>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-5">
                 <table class="table">
                     <tr>
                         <th width="20%" class="border-top-none">{{$root.$lang.project_manage}}</th>
@@ -141,7 +140,8 @@
                     <table class="table">
                         <tr>
                             <th width="10%">{{$root.$lang.project_description}}</th>
-                            <td width="80%"> <textarea class="form-control" rows="5" ng-model="project.description"></textarea>
+                            <td width="80%"> 
+                                <textarea  class="form-control"  data-ui-tinymce ng-model="project.description" rows="5"></textarea>
                                 <br/>
                                 <input id="fileImage" type="file" class="form-control input-file-upload" name="file" onchange="angular.element(this).scope().addFile(this.files);
                                                 $('#fileImage').replaceWith($('#fileImage').clone());" />
@@ -166,10 +166,18 @@
                                     <span class="username"><a href="#/member/{{v.id}}"><b>{{v.employee_name}}</b></a></span>
                                     <span class="description">{{v.time| date : "fullDate" }}</span>
                                 </div>
-                                <!-- /.user-block -->
-                                <div class="box-tools">
-                                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                                </div>
+                                <div class="pull-right box-tools">
+                                       <!-- button with a dropdown -->
+                                       <div class="btn-group" ng-if="v.actionDelete == true">
+                                           <button type="button" class="btn btn-box-tool" data-toggle="dropdown" aria-expanded="false">
+                                           <i class="fa fa-bars"></i></button>
+                                           <ul class="dropdown-menu pull-right" role="menu">
+	                                           <li><a ng-click="editProjectPost(v, $index)">{{$root.$lang.button_update}}</a></li>
+	                                           <li><a ng-click="deleteProjectPost($index, v.id)">{{$root.$lang.remove}}</a></li>
+                                           </ul>
+                                       </div>
+                                       <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                               </div>
                                 <!-- /.box-tools -->
                             </div>
                             <!-- /.box-header -->

@@ -28,7 +28,10 @@ class File extends \common\components\db\ActiveRecord {
     const TABLE_PROJECT = "project";
     const TABLE_TASK = "task";
     const TABLE_EVENT = "event";
+    const TABLE_TASK = "task";
     const TABLE_PROJECT_POST = 'project_post';
+    const TABLE_EVENT_POST = 'event_post';
+    const TABLE_TASK_POST = 'task_post';
 
     /**
      * @inheritdoc
@@ -97,7 +100,7 @@ class File extends \common\components\db\ActiveRecord {
         if (!$employeeSpace) {
             $employeeSpace = new EmployeeSpace();
             $employeeSpace->employee_id = $employeeId;
-            $employeeSpace->space_project = $employeeSpace->space_total = 0;
+            $employeeSpace->space_project = $employeeSpace->space_calendar = $employeeSpace->space_total = 0;
         }
 
         $company = Company::find(['total_storage'])->where(Yii::$app->user->identity->company_id)->one();
@@ -136,7 +139,7 @@ class File extends \common\components\db\ActiveRecord {
                     $employeeSpace->space_project += $size;
                 }
 
-                if ($table == self::TABLE_EVENT) {
+                if ($table == self::TABLE_EVENT || $table == self::TABLE_EVENT_POST) {
                     $employeeSpace->space_calendar += $size;
                 }
                 
@@ -200,17 +203,16 @@ class File extends \common\components\db\ActiveRecord {
         if (empty($fileId)) {
             throw new \Exception('Can not get file id');
         }
-        
-        $file = File::findOne($fileId);
 
+        $file = File::findOne($fileId);
         if (empty($file)) {
             throw new \Exception('Can not get file');
         }
-        
+
         if (!$file->delete()) {
             throw new \Exception('Can not delete file');
         }
-        
+
         file_exists($unlink = \Yii::$app->params['PathUpload'] . DIRECTORY_SEPARATOR . $file->path) ? unlink($unlink) : false;
         //subtract total_storage and space_project
         $company = Company::find(['total_storage'])->where(Yii::$app->user->identity->company_id)->one();
@@ -219,10 +221,10 @@ class File extends \common\components\db\ActiveRecord {
         if (!$company->save(false)) {
             throw new \Exception('Save record to table company fail');
         }
-        
+
         $this->_updateStorageAndLogHistory($file);
-        
-        return true;
+
+        return $file;
     }
 
     /**
@@ -243,7 +245,7 @@ class File extends \common\components\db\ActiveRecord {
 
         return [];
     }
-    
+
     /**
      * Update storage and log history for project, project post, task
      *      task_post, event, event_post
@@ -274,26 +276,97 @@ class File extends \common\components\db\ActiveRecord {
                 if (!$projectPost->save(false)) {
                     throw new \Exception('Save record to table project post fail');
                 }
-
                 break;
-            
+
             case 'task':
             case 'task_post':
                 break;
-            
+
             case 'event':
-            case 'event_post':
+            case 'event_post':              
+                //subtract space_calendar in employe_space.
+                $employeeSpace->space_calendar = $employeeSpace->space_calendar - $file->file_size;
+                $employeeSpace->space_calendar = $employeeSpace->space_calendar >= 0 ? $employeeSpace->space_calendar : 0;
+                $employeeSpace->space_total = $employeeSpace->space_total - $file->file_size;
+                $employeeSpace->space_total = $employeeSpace->space_total >= 0 ? $employeeSpace->space_project : 0;
+                
+                //write logs event post
+                $eventPost = new EventPost();
+                $eventPost->event_id = $file->owner_id;
+                $eventPost->employee_id = \Yii::$app->user->getId();
+                $eventPost->parent_id = 0;
+                $eventPost->is_log_history = self::VAL_TRUE;
+                $eventPost->content = '<ul><li>' . \Yii::t('member', 'delete file') . '<div class="padding-left-20">' . $file->name . '</div></li></ul>';
+                $eventPost->content_parse = '<ul><li>' . \Yii::t('member', 'delete file') . '<div class="padding-left-20">' . $file->name . '</div></li></ul>';
+                $eventPost->parent_employee_id = 0;
+                if (!$eventPost->save(false)) {
+                    throw new \Exception('Save record to table event post fail');
+                }
                 break;
-            
+
             default:
                 break;
         }
-        
+
         if (!$employeeSpace->save(false)) {
             throw new \Exception('Save record to table employee space fail');
         }
-        
+
         return true;
     }
 
+    /**
+     * Get list file by owner id and table name
+     * 
+     * @param string $ownerId
+     * @param string $tableName
+     * @param string $object
+     * @return array|null
+     */
+    public static function getFileByOwnerIdAndTable($ownerId = null, $tableName = null, $object = false) {
+        if (($ownerId == null) || ($tableName == null)) {
+            return null;
+        }
+
+        $innerJoinTable = $tableName . '_post';
+        $query = (new \yii\db\Query())
+                        ->select(['file.id', 'file.name', 'file.path', 'file.datetime_created'])
+                        ->from(File::tableName())
+                        ->where([
+                            'file.company_id' => \Yii::$app->user->getCompanyId(),
+                            'file.owner_object' => $tableName,
+                            'file.owner_id' => $ownerId,
+                        ])->union((new \yii\db\Query())
+                        ->select(['file.id', 'file.name', 'file.path', 'file.datetime_created'])
+                        ->from(File::tableName())
+                        ->innerJoin($innerJoinTable, "{$innerJoinTable}.id = file.owner_id AND {$innerJoinTable}.{$tableName}_id={$ownerId}")
+                        ->where([
+                            'file.company_id' => \Yii::$app->user->getCompanyId(),
+                            'file.owner_object' => $tableName . '_post',
+                        ]), false);
+
+        $sql = $query->createCommand()->getRawSql();
+        $sql .= ' ORDER BY datetime_created DESC';
+        $files = File::findBySql($sql)->all();
+
+        if (empty($files)) {
+            return null;
+        }
+
+        $fileList = [];
+        if (!$object) {
+            foreach ($files as $file) {
+                $fileList[] = [
+                    'id' => $file->id,
+                    'name' => $file->name,
+                    'path' => \Yii::$app->params['PathUpload'] . DIRECTORY_SEPARATOR . $file->path,
+                    'datetime_created' => date('Y-m-d', $file->datetime_created),
+                ];
+            }
+        } else {
+            return $files;
+        }
+        return $fileList;
+    }
+                
 }

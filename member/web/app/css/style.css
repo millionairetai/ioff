@@ -3,6 +3,20 @@
         padding-left: 0 !important;
     }
 }
+a:focus{
+    color: #3c8dbc;
+}
+.font24{
+    font-size: 24px;
+}
+.marg0{margin-bottom: 0 !important;}
+.aligncenter{
+    text-align: center;
+}
+.imgleft .image{
+    float: left;
+    margin-right: 10px;
+}
 /* Custom dialog/modal headers */
 .dialog-header-warning { background-color: #EA9F0D; }
 .dialog-header-primary { background-color: #1AB394; }
@@ -680,164 +694,158 @@ header.main-header{
         position: fixed;
     }
 }
-
-
-/*task*/
-label.assignee-to,label.task-creator,label.follow-to{
-    size: 0.1em;
-    font-weight: 100;
-    font-style: italic;
-}
-
-label.assignee-to,label.follow-to{
-    padding: 25px;
-    padding-top:40px;
-}
-
-.block-image-name{
-    margin-top: 5px;
-    margin-left: 5px;
-}
-
- /*task list*/
- 
-.task-row{
-    padding-top: 20px;
-    padding-bottom: 20px;
-    margin-left: 20px;
-}
-
-.task-row:not(:last-child){
-    border-bottom:solid 1px #CCCCCC;
-}
-
-div#name-desc{
-    /*min-width: 40%;*/
-    width: auto;
-}
-
-div.assignee-to{
-    min-width: 15%;
-}
-    
-ul.users-list.assignee-to{
-    /*width: 60%*/
-}
-
-
-.users-list.assignee-to > li img, .users-list.follow-to > li img, .users-list.task-creator > li img {
-    height: 30px;
-    width: 30px;
-}
-
-.users-list.assignee-to > li img, .users-list.follow-to > li img, .users-list.task-creator > li img {
-    height: 30px;
-    width: 30px;
-}
-
-.users-list.assignee-to > li .users-list-name, .users-list.follow-to > li .users-list-name, .users-list.task-creator > li .users-list-name {
-    font-weight: 100!important;
-}
-
-.users-list.assignee-to > li,.users-list.follow-to > li, .users-list.task-creator > li {
-    width : auto !important;
-}
-
-label.task-creator {
-    height: 50px;
-    padding: 40px;
-    padding-top: 15px;
-}
-
-div.task-creator{
-    margin-left: 5%;
-    margin-top: -5px;
-}
-
-.task-row .padding-img {
-    padding-left: 40px;padding-right: 10px;
-}
-
-.task-row .padding-img-circle {
-    padding-left: 5px;padding-right: 5px;
-}
-
-/* List employee */
-.list-employee{
-    margin: 0 -5px;
-}
-.list-employee .item-employee{
-    margin-bottom: 10px;
-    padding: 0 5px;
-    width: 33.33333333%;
+/* View calendar */
+/* Event member */
+.event-member .box-header dl{
+    width: 25%;
     float: left;
-}
-.list-employee .item-employee dl{
-    padding: 10px;
-    border: 1px solid #f4f4f4;
-    margin: 0;
-    background-color: #fcfcfc;
-    transition: background-color 200ms ease-in-out, opacity 200ms ease-in-out;
-    border-radius: 4px;
-}
-.list-employee .item-employee dl:hover{
-    background-color: #e6eef1;
-}
-.list-employee .item-employee dl dt{
-    font-weight: bold;
-    color: #428bca;
-    margin-bottom: 10px;
-}
-.list-employee .item-employee dl dd .image{
-    width: 80px;
-    display: table-cell;
-    vertical-align: middle;
-    float: none;
-    padding-right: 10px;
-    text-align: center;
-}
-.list-employee .item-employee dl dd .info{
-    display: table-cell;
-}
-.list-employee .item-employee dl dd .image img{
-    max-width: 100%;
-    height: auto;
-}
-.list-employee .item-employee dl dd p{
     margin-bottom: 0;
 }
-/* Reponsive list employee*/
-@media (max-width: 1200px){
-    .list-employee .item-employee{
-        width: 50%;
-    }
+.event-department .box-body ul{
+    padding: 0;
+    margin: 0;
+    list-style: decimal;
+    list-style-position: inside;
 }
-@media (max-width: 992px){
-    body:not(.sidebar-collapse) .list-employee .item-employee{
-        width: 100%;
-    }
+.event-department .box-body ul li{
+    padding: 10px 0 0 10px;
+    border-top: 1px solid #f4f4f4;
 }
-@media (max-width: 768px){
-    body:not(.sidebar-collapse) .list-employee .item-employee{
-        width: 50%;
-    }
+.event-department .box-body ul li:first-child{
+    border-top: none;
+    padding-top: 0;
 }
-@media (max-width: 560px){
-    body:not(.sidebar-collapse) .list-employee .item-employee,.list-employee .item-employee{
-        width: 100%;
-    }
+.event-member .user-block{
+    margin-bottom: 10px;
 }
-/* Registration box */
-.register-box{
-    width: 600px;
+.event-member .user-block:last-child{
+    margin-bottom: 0;
+}
+/* related-event */
+.related-event .imgleft .image{
+    width: 64px;
+}
+.related-event .imgleft .image img{
+    width: 100%;
+}
+/* Main event */
+.top-event .image{
+    width: 78px;
+    height: 78px;
+    float: left;
+}
+.top-event .image img{
+    width: 100%;
+}
+.top-event time.icon
+{
+    font-size: 11px;
+    display: block;
+    position: relative;
+    width: 7em;
+    height: 7em;
+    background-color: #fff;
+    border-radius: 4px;
+    box-shadow: 0 1px 0 #3c8dbc, 0 0 0 1px #3c8dbc;
+    overflow: hidden;
+}
+
+.top-event time.icon *
+{
+    display: block;
+    width: 100%;
+    font-size: 1em;
+    font-weight: bold;
+    font-style: normal;
+    text-align: center;
+}
+
+.top-event time.icon strong
+{
+    position: absolute;
+    top: 0;
+    padding: 0.4em 0;
+    color: #fff;
+    background-color: #3c8dbc;
+    border-bottom: 1px dashed #367fa9;
+    box-shadow: 0 2px 0 #3c8dbc;
+}
+
+.top-event time.icon em
+{
+    position: absolute;
+    bottom: 0.3em;
+    color: #444;
+}
+
+.top-event time.icon span
+{
+    width: 100%;
+    font-size: 2.8em;
+    letter-spacing: -0.05em;
+    padding-top: 0.8em;
+    color: #2f2f2f;
+}
+
+.top-event time.icon:hover, time.icon:focus
+{
+    -webkit-animation: swing 0.6s ease-out;
+    animation: swing 0.6s ease-out;
+}
+
+.top-event dl{
+    margin-left: 88px;
+    margin-bottom: 0;
+}
+.top-event .username{
+    font-size: 16px;
+    font-weight: 600;
+    display: block;
+}
+.top-event .description{
+    color: #999;
+    font-size: 13px;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.detail-event .content-event{
+    max-height: 180px;
+    overflow: hidden;
+    position: relative;
+    -webkit-transition: max-height 1s; /* Safari */
+    transition: max-height 1s;
+}
+.detail-event .readmore{
+    display: block;
+    padding: 12px 0;
+    border-top: 1px solid #e9eaed;
+    position: absolute;
+    width: 100%;
+    bottom: -10px;
     background: #fff;
-    padding: 30px;
-    border: 1px solid #ddd;
-    /*border-radius: 4px;*/
+    z-index: 10;
 }
-/* Reponsive registration*/
-@media (max-width:768px){
-    .register-box{
-        width: 90%;
-    }
+.detail-event .content-event.viewall{
+    max-height: 10000px;
+}
+.detail-event .content-event.viewall .readmore{
+    display: none;
+}
+
+.active_attend {
+    background: #023e61;
+    border-color: #fff6f4;
+}
+.padding_10{
+    padding: 10px;
+}
+
+.color-black{
+    color: black;
+}
+.sidebarfixed {
+    position: absolute;
+    width: calc(100% - 15px);
+    left: 0;
 }

@@ -1,0 +1,215 @@
+<section class="content-header">
+    <h1>{{$root.$lang.calendar_title}}</h1>
+</section>
+
+<section class="content">
+    <div class="row clearfix">
+        <div class="col-md-9">
+            <!-- Default box -->
+            <div class="box box-solid top-event">
+                <div class="box-header with-border" >
+                    <div class="image">
+                        <!-- the icon as a time element -->
+                        <time datetime="2014-09-20" class="icon">
+                            <em>{{collection.event.start_datetime| date:'EEEE'}}</em>
+                            <strong>{{collection.event.start_datetime| date:'MMMM'}}</strong>
+                            <span>{{collection.event.start_datetime| date:'d'}}</span>
+                        </time>
+                    </div>
+                    <dl >
+                        <dd>
+                            <span class="username">
+                                <a href="#"> {{collection.event.name}}</a>
+                            </span>
+                            <span class="description">{{collection.event.is_public_name}} - {{$root.$lang.create_by}} {{collection.event.created_employee_id}}</span>
+
+                            <div class="btn-group" ng-repeat="val in collection.eventConfirmationType"  ng-show="collection.checkAttent">
+                                <span ng-if="collection.event.active_attend === val.column_name">
+                                    <a class="btn btn-primary btn-xs active_attend">{{val.name}}</a> 
+                                </span>
+                                <span ng-if="collection.event.active_attend !== val.column_name">
+                                    <a class="btn btn-primary btn-xs" ng-click="attend(val.column_name)" >{{val.name}}</a> 
+                                </span>
+                            </div>
+                        </dd>
+                    </dl>
+                </div><!--box body-->
+                <div class="box-body">
+                    <dl  ng-if="collection.event.is_all_day == true">
+                        <dt>{{$root.$lang.all_day}}</dt>
+                    </dl>
+                    <dl  ng-if="collection.event.is_all_day == false">
+                        <dt ng-if="collection.event.count_date < 1">
+                        {{$root.$lang.project_start_date}} {{collection.event.start_datetime| date : "fullDate"}} 
+                        {{collection.event.start_time}}
+                        {{$root.$lang.at}} 
+                        {{collection.event.end_time}}
+                        </dt>
+                        <dt ng-if="collection.event.count_date >= 1">
+                        {{$root.$lang.project_start_date}} {{collection.event.start_datetime| date : "fullDate"}} {{collection.event.start_time}} 
+                        <br/> {{$root.$lang.project_end_date}} {{collection.event.end_datetime| date : "fullDate"}} {{collection.event.end_time}}
+                        </dt>
+                        <dd class="direct-chat-timestamp"><i class="fa fa-clock-o"></i> {{collection.event.count_date}} {{$root.$lang.day_ago}} </dd>
+                    </dl>
+                    <dl ng-show="collection.event.address">
+                        <!--<i class="fa fa-map-marker"></i> {{collection.event.address}}-->
+                        <dt><i class="fa fa-map-marker"></i>{{collection.event.address}}</dt>
+                        <!--<dd class="direct-chat-timestamp"><i class="fa fa-map-marker"></i> {{collection.event.address}}</dd>-->
+                    </dl>
+                    <h4>{{$root.$lang.calendar_title}}: {{collection.calendar.name}}</h4>
+                </div><!--box body-->
+            </div>
+            <div class="box box-solid detail-event">
+                <div class="box-header with-border">
+                    <h4 class="box-title">{{$root.$lang.calendar_infomation}}</h4>
+                    <div class="box-tools pull-right">
+                        <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="content-event">
+                        <p ng-bind-html="getHtml(collection.event.description)" ng-tt-chars-threshold="200"></p>
+                    </div>
+                    <br/>
+                    <div ng-if="collection.file_info != ''" ng-repeat="files in collection.file_info| limitTo:limitFile">
+                        <div>
+                            <a href="file/download-file?fileId={{files.id}}"><span class="glyphicon glyphicon-file" aria-hidden="true"></span>{{files.name}}</a>
+                            <i ng-click="deleteFile($index, files.id)" class="fa fa-remove cursor-point"></i>
+                        </div>
+                    </div>
+                    <div class=" text-center" >
+                        <a ng-click="loadMoreFile()" class="pointer ng-binding" ng-if="limitFile < collection.file_info.length && collection.file_info.length > 5">{{$root.$lang.project_list_view_more}} </a>
+                        <a ng-click="closeMoreFile()" class="pointer ng-binding" ng-if="limitFile > 5">{{$root.$lang.less}} </a>
+                    </div>
+                </div><!--box body-->
+            </div>
+            <div class="box box-solid header-event">
+                <div class="box-header with-border">
+                    <div class="modal-footer">
+                        <a href="#calendar"><button type="button" class="btn btn-default btn-flat" ><i class="fa fa-arrow-circle-left"></i> {{$root.$lang.button_back}}</button></a>
+                        <button type="button" class="btn btn-primary btn-flat" ng-click="editEvent()"><i class="fa fa-edit"></i> {{$root.$lang.edit_project}}</button>
+                        <button type="button" class="btn btn-danger btn-flat" ng-click="deleteEvent()"><i class="fa fa-remove"></i> {{$root.$lang.delete_project}}</button>
+                    </div>
+                </div>
+            </div>
+            <div class="box box-solid header-event">
+                <div class="box-body">
+                    <form class="form-horizontal">
+                        <textarea class="form-control"  data-ui-tinymce ng-model="eventPostData.description" rows="5"></textarea>
+                        <br/>
+                        <input id="fileImage" type="file" class="form-control input-file-upload" name="file" onchange="angular.element(this).scope().addFile(this.files);
+                                $('#fileImage').replaceWith($('#fileImage').clone());" />
+                        <br/>
+                        <div class="show-file-name" ng-repeat="file in files">
+                            <strong>{{file.name}}</strong> <i class="fa fa-remove" ng-click="removeFile($index)"></i>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-primary btn-flat" ng-click="addEventPost()" ><i class="fa fa-save"></i> {{$root.$lang.post}}</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="box box-solid recent-post-event">
+                <div class="box-header with-border">
+                    <h4 class="box-title">{{$root.$lang.recent_post}}</h4>
+                    <div class="box-tools pull-right">
+                        <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="box box-solid recent-post-item" ng-repeat="v in eventPost">
+                        <div class="box-header with-border">
+                            <div class="user-block">
+                                <img src="{{v.profile_image_path}}" class="img-circle" alt="User Image" width="58px" height="58px">
+                                <span class="username"><a href="#/member/{{v.id}}"><b>{{v.employee_name}}</b></a></span>
+                                <span class="description">{{v.time| date : "fullDate" }}</span>
+                            </div>
+
+                            <div class="pull-right box-tools">
+                                <!-- button with a dropdown -->
+                                <div class="btn-group" ng-if="v.actionDelete == true">
+                                    <button type="button" class="btn btn-box-tool" data-toggle="dropdown" aria-expanded="false">
+                                        <i class="fa fa-bars"></i></button>
+                                    <ul class="dropdown-menu pull-right" role="menu">
+                                        <li><a ng-click="editEventPost(v, $index)">{{$root.$lang.button_update}}</a></li>
+                                        <li><a ng-click="deleteEventPost($index, v.id)">{{$root.$lang.remove}}</a></li>
+                                    </ul>
+                                </div>
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                            </div>
+                        </div>
+                        <div class="box-body">
+                            <p ng-bind-html="getHtml(v.content)" ng-tt-chars-threshold="200"></p>
+                            <div class="padding-left-20" ng-repeat="file in eventPostFile[v.id]"><a href="file/download-file?fileId={{file.id}}"><span class="glyphicon glyphicon-file" aria-hidden="true"></span> {{file.name}}</a></div>
+                        </div>
+                        <!--box body-->
+                    </div><!-- Recent post item-->
+                    <div class="box-footer text-center" >
+                        <button class="btn form-control cursor-pointer viewmorecl" ng-click="viewMore()" ng-show="filter.totalItems > (filter.offset + filter.itemPerPage)"><a>{{$root.$lang.view_more_upper_case}}</a></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 padding-left-md-0">
+            <div class="box box-solid event-member">
+                <div class="box-header with-border">
+                    <dl>
+                        <dd>
+                            <a ng-click="showAttend('attend', $index)" class='color-black'><p class="aligncenter font24">{{collection.attent.attend}}</p><p class="aligncenter marg0">{{$root.$lang.attend}}</p></a>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dd>
+                            <a ng-click="showAttend('maybe', $index)" class='color-black'><p class="aligncenter font24">{{collection.attent.maybe}}</p><p class="aligncenter marg0">{{$root.$lang.maybe}}</p></a>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dd>
+                            <a ng-click="showAttend('no_attend', $index)" class='color-black'><p class="aligncenter font24">{{collection.attent.no_attend}}</p><p class="aligncenter marg0">{{$root.$lang.no_attent}}</p></a>
+                        </dd>
+                    </dl>
+                    <dl>
+                        <dd>
+                            <a ng-click="showAttend('no_confirm', $index)" class='color-black'><p class="aligncenter font24">{{collection.attent.no_confirm}}</p><p class="aligncenter marg0">{{$root.$lang.no_confirm}}</p></a>
+                        </dd>
+                    </dl>
+                </div>
+                <!-- /.box-body -->
+            </div>
+
+            <div class="box box-solid event-department">
+                <div class="box-header with-border">
+                    <h4 class="box-title">{{$root.$lang.department}}</h4>
+                    <div class="box-tools pull-right">
+                        <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <ul>
+                        <li ng-repeat="department in collection.invitations.department">{{department}}</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="box box-solid event-member" event-fixed>
+                <div class="box-header with-border">
+                    <h4 class="box-title">{{$root.$lang.members}}</h4>
+                    <div class="box-tools pull-right">
+                        <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
+                    </div>
+                </div>
+                <div class="box-body">
+                    <div class="user-block-text-center-right" ng-repeat="employee in collection.invitations.departmentAndEmployee.employeeList| limitTo:limit">
+                        <img src="{{employee.image}}" class="img-circle" width="58px" height="58px"> 
+                        <a href="#/member/{{employee.id}}" class="ng-binding">{{employee.firstname}}</a>
+                    </div>
+                </div><!--box body-->
+                <div class=" text-center" >
+                    <a ng-click="loadMore()" class="pointer ng-binding" ng-if="limit < collection.invitations.departmentAndEmployee.employeeList.length && collection.invitations.departmentAndEmployee.employeeList.length > 5">{{$root.$lang.project_list_view_more}} </a>
+                    <a ng-click="closeMore()" class="pointer ng-binding" ng-if="limit > 5">{{$root.$lang.less}} </a>
+                </div>
+                <br/>
+            </div>
+        </div>
+    </div>
+</section>

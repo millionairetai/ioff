@@ -193,4 +193,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
             },
         ];
     }
+    public function getDiffBetweenDate() {
+        return intval(abs($this->end_datetime - $this->start_datetime)/86400);
+    }
 }

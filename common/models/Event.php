@@ -43,11 +43,10 @@ class Event extends ActiveRecord {
     public function rules() {
         return [
             [['company_id', 'calendar_id', 'employee_id', 'datetime_created', 'lastup_datetime', 'lastup_employee_id'], 'integer', 'message' => Yii::t('member', 'validate_integer')],
-            [['employee_id', 'name', 'start_datetime', 'end_datetime'], 'required', 'message' => Yii::t('member', 'validate_required')],
+            [['employee_id', 'name'], 'required', 'message' => Yii::t('member', 'validate_required')],
             [['description', 'description_parse'], 'string', 'message' => Yii::t('member', 'validate_string')],
-            [['is_public', 'disabled'], 'boolean', 'message' => Yii::t('member', 'validate_boolean')],
+            [['is_public', 'is_all_day', 'disabled'], 'boolean', 'message' => Yii::t('member', 'validate_boolean')],
             [['start_datetime', 'end_datetime', 'address', 'description', 'description_parse', 'sms', 'color'], 'safe'],
-            ['end_datetime', 'compare', 'compareAttribute' => 'start_datetime', 'operator' => '>','message' => Yii::t('member', 'validate_time')],
             [['name', 'address'], 'string', 'max' => 255, 'tooLong' => Yii::t('member', 'validate_max_length')]
         ];
     }
@@ -62,6 +61,7 @@ class Event extends ActiveRecord {
             'calendar_id' => Yii::t('common', 'event_calendar_id'),
             'employee_id' => Yii::t('common', 'event_employee_id'),
             'name' => Yii::t('common', 'event_name'),
+            'is_all_day' => Yii::t('common', 'is_all_day'),
             'description' => Yii::t('common', 'event_description'),
             'description_parse' => Yii::t('common', 'event_description_parse'),
             'address' => Yii::t('common', 'event_address'),
@@ -82,6 +82,13 @@ class Event extends ActiveRecord {
     public static function getCalendarOption() {
         return ArrayHelper::map(Calendar::find()->asArray()->all(), 'id', 'name');
     }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCalendar() {
+        return $this->hasOne(Calendar::className(), ['id' => 'calendar_id']);
+    }
 
     /**
      * Get all calendar in company
@@ -95,7 +102,7 @@ class Event extends ActiveRecord {
      */
     public static function getEvents($calendars, $companyId, $employeeId, $start, $end) {
 
-        $sql = " SELECT event.name,event.start_datetime,event.end_datetime,event.color "
+        $sql = " SELECT event.id,event.name,event.start_datetime,event.end_datetime,event.color,is_all_day "
                 . " FROM event "
                 . "        INNER JOIN calendar	"
                 . "                ON event.calendar_id= calendar.id "
@@ -146,5 +153,147 @@ class Event extends ActiveRecord {
         
         return [];
     }
-
+    
+    /**
+     * display info case is publuc
+     */
+    public function getIsPublic() {
+        return $this->is_public == true ? Yii::t('common', 'event_is_public') : Yii::t('common', 'event_not_public');
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getEmployee() {
+        return $this->hasOne(Employee::className(), ['id' => 'created_employee_id']);
+    }
+    
+    /**
+     * Get event info
+     * 
+     * @param integer $eventId
+     * @return array
+     */
+    public static function getInfoEvent($eventId = null) {
+        //get Id company of user login
+        $companyId = \Yii::$app->user->getCompanyId();
+       
+        $event = Event::findOne(['id' => $eventId, 'company_id' => $companyId]);
+        if (empty($event)) {
+            return false;
+        }
+        //get remind by owner id
+        $remind = Remind::getRemindByOwnerIdAndOwnerTable($eventId, Event::tableName());
+        $attend = EventConfirmationType::getInfoAttend($eventId);
+        //Get department and invitee of this event.
+        $invitations = Invitation::getListByEventId($eventId);
+        $countEmployee = empty($invitations) ? 0 : $invitations['departmentAndEmployee']['count'];
+        $fileList = File::getFileByOwnerIdAndTable($eventId, Event::tableName());
+        $checkAttent = false;
+        
+        if ($event->is_public || ($event->created_employee_id == \Yii::$app->user->getId())) {
+            $checkAttent = true;
+        }else if (isset($invitations['departmentAndEmployee']['employeeList'])) {
+            foreach ($invitations['departmentAndEmployee']['employeeList'] AS $var) {
+                if ($var['id'] == \Yii::$app->user->getId()) {
+                     $checkAttent = true;
+                     break;
+                }
+            }
+        }
+        
+        $checkAttentCountDown = true;
+        if (isset($invitations['departmentAndEmployee']['employeeList'])) {
+            foreach ($invitations['departmentAndEmployee']['employeeList'] AS $var) {
+                if ($var['id'] == \Yii::$app->user->getId()) {
+                    $checkAttentCountDown = false;
+                    break;
+                }
+            }
+        }
+        
+        $result = [
+                'event' => [
+                        'id'                => $event->id,
+                        'name'              => $event->name,
+                        'color'             => $event->color,
+                        'address'           => $event->address,
+                        'count_date'        => $event->getDiffBetweenDate(),
+                        'is_public'         => $event->is_public,
+                        'is_all_day'        => $event->is_all_day,
+                        'calendar_id'       => $event->calendar_id,
+                        'is_public_name'    => $event->getIsPublic(),
+                        'description'       => $event->description,
+                        'description_parse' => $event->description_parse,
+                        'start_datetime'    => isset($event->start_datetime) ? date('Y-m-d', $event->start_datetime) : null,
+                        'start_time'        => isset($event->start_datetime) ? date('H:i', $event->start_datetime) : null,
+                        'end_datetime'      => isset($event->end_datetime) ? date('Y-m-d', $event->end_datetime) : null,
+                        'end_time'          => isset($event->end_datetime) ? date('H:i', $event->end_datetime) : null,
+                        'created_employee_id' => $event->employee->getFullName(),
+                        'creator_event_id' => $event->created_employee_id,
+                        'active_attend'     => $attend['activeAttendByEmployee'],
+                        'employee_id'       => \Yii::$app->user->getId(),
+                ],
+                'calendar'      => ['name' => $event->calendar->getName()],
+                'remind'        => isset($remind->minute_before) ? $remind->minute_before : null,
+                'invitations'   => $invitations,
+                'attent'        => $attend,
+                'file_info'     => $fileList,
+                'eventConfirmationType' => EventConfirmationType::getEventConfirmationTypes(),
+                'checkAttent'   => $checkAttent,
+                'checkAttentCountDown'   => $checkAttentCountDown,
+        ];
+        
+        return $result;
+    }
+   
+    /**
+     * Get number of each event confirmation type.
+     *
+     * @param integer $eventId
+     * @return array
+     */
+    public static function getInfoAttend($eventId = null) {
+        if (empty($eventId)) { 
+            return false;
+        }
+        
+        $attend = EventConfirmationType::getInfoAttend($eventId);
+        //Get confirmed employees to get exact number of employee which confirmed in case event is public
+        //    and user isn't invited, they want to join event.
+        $confirmedEmployeeIds = [];
+        foreach ($attend['attendListEmployeeId'] as $item) {
+            foreach ($item as $val) {
+                $confirmedEmployeeIds[] = $val;
+            }
+        }
+        
+        $invitations = Invitation::getListByEventId($eventId, $confirmedEmployeeIds);
+        $listEmployeeAttend = [];
+        if (isset($invitations['departmentAndEmployee']['employeeList']) && isset($attend['attendListEmployeeId'])) {
+            foreach ($invitations['departmentAndEmployee']['employeeList'] as $key => $val) {
+                if (isset($attend['attendListEmployeeId'][EventConfirmationType::ATTEND]) && in_array($val['id'], $attend['attendListEmployeeId'][EventConfirmationType::ATTEND])) {
+                    $listEmployeeAttend[EventConfirmationType::ATTEND][] = $val;
+                }else if (isset($attend['attendListEmployeeId'][EventConfirmationType::MAYBE]) && in_array($val['id'], $attend['attendListEmployeeId'][EventConfirmationType::MAYBE])) {
+                        $listEmployeeAttend[EventConfirmationType::MAYBE][] = $val;
+                }else if (isset($attend['attendListEmployeeId'][EventConfirmationType::NO_ATTEND]) && in_array($val['id'], $attend['attendListEmployeeId'][EventConfirmationType::NO_ATTEND])) {
+                            $listEmployeeAttend[EventConfirmationType::NO_ATTEND][] = $val;
+                }else{
+                    $listEmployeeAttend[EventConfirmationType::NO_CONFIRM][] = $val;
+                }
+            }
+        }
+        
+        return $listEmployeeAttend;
+    }
+       
+    /**
+     * Get Event information by id
+     *
+     * @param integer $eventId
+     * @return array
+     */
+    public static function getById($eventId) {
+        return Event::find()->select(['id', 'name'])->where(['id' => $eventId])->one();
+    }
 }

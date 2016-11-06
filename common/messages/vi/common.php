@@ -16,6 +16,7 @@ return [
     'or try using the search form'=>'hoặc sử dụng trình tìm kiếm',
     'Email' => 'Email',
     'created' => ' đã tạo ',
+    'edited' => ' đã chỉnh sửa ',
     'Search'=>'Tìm kiếm',
     
     //Calendar
@@ -30,6 +31,7 @@ return [
     'event_start_datetime' => 'Ngày bắt đầu',
     'event_end_datetime' => 'Ngày kết thúc',
     'event_is_public' => 'Công khai',
+    'event_not_public' => 'không công khai',
     'event_datetime_created' => 'Ngày tạo',
     'event_lastup_datetime' => 'Ngày sử đổi',
     'event_lastup_employee_id' => 'Người sửa',

@@ -1,0 +1,43 @@
+<div class="modal-header dialog-header-wait">
+    <button type="button" class="close" ng-click="cancel()">×</button>
+    <h4 class="modal-title text-danger">
+        <strong><i class="fa fa-cubes"></i>{{$root.$lang.show_attend}}</strong>
+    </h4>
+</div>
+<div class="modal-body">
+        <div class="tabbable"> <!-- Only required for left/right tabs -->
+            <ul class="nav nav-tabs">
+                <li ng-class="{active: tabsName == 'attend'}"><a ng-click="tabs('attend')">{{$root.$lang.attend}}</a></li>
+                <li ng-class="{active: tabsName == 'maybe'}"><a ng-click="tabs('maybe')" data-toggle="tab">{{$root.$lang.maybe}}</a></li>
+                <li ng-class="{active: tabsName == 'no_attend'}"><a ng-click="tabs('no_attend')" data-toggle="tab">{{$root.$lang.no_attent}}</a></li>
+                <li ng-class="{active: tabsName == 'no_confirm'}"><a ng-click="tabs('no_confirm')" data-toggle="tab">{{$root.$lang.no_confirm}}</a></li>
+            </ul>
+                <div class="box-body " ng-show="tabsName == 'attend'">
+                    <div class="user-block-text-center-right padding_10" ng-repeat="employee in attendList.attend">
+                        <img src="{{employee.image}}" class="img-circle" width="58px" height="58px"> 
+                        <a href="#/member/{{employee.id}}" class="ng-binding">{{employee.firstname}}</a>
+                    </div>
+                </div>
+                <div class="box-body" ng-show="tabsName == 'maybe'">
+                    <div class="user-block-text-center-right padding_10" ng-repeat="employee in attendList.maybe">
+                        <img src="{{employee.image}}" class="img-circle" width="58px" height="58px"> 
+                        <a href="#/member/{{employee.id}}" class="ng-binding">{{employee.firstname}}</a>
+                    </div>
+                </div>
+                <div class="box-body" ng-show="tabsName == 'no_attend'">
+                    <div class="user-block-text-center-right padding_10" ng-repeat="employee in attendList.no_attend">
+                        <img src="{{employee.image}}" class="img-circle" width="58px" height="58px"> 
+                        <a href="#/member/{{employee.id}}" class="ng-binding">{{employee.firstname}}</a>
+                    </div>
+                </div>
+                <div class="box-body" ng-show="tabsName == 'no_confirm'">
+                    <div class="user-block-text-center-right padding_10" ng-repeat="employee in attendList.no_confirm">
+                        <img src="{{employee.image}}" class="img-circle" width="58px" height="58px"> 
+                        <a href="#/member/{{employee.id}}" class="ng-binding">{{employee.firstname}}</a>
+                    </div>
+                </div>
+        </div>
+   </div>
+   <div class="modal-footer">
+         <button type="button" class="btn btn-default btn-flat" ng-click="cancel()"><i class="fa fa-remove"></i> {{$root.$lang.button_close}}</button>
+   </div>
