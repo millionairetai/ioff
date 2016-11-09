@@ -35,7 +35,8 @@ class Notification extends \common\components\db\ActiveRecord {
     /**
      * @inheritdoc
      */
-    public function rules() {
+    public function rules()
+    {
         return [
             [['owner_id', 'owner_table', 'employee_id', 'type'], 'required'],
             [['company_id', 'owner_id', 'employee_id', 'owner_employee_id', 'datetime_created', 'lastup_datetime', 'lastup_employee_id'], 'integer'],
@@ -49,7 +50,8 @@ class Notification extends \common\components\db\ActiveRecord {
     /**
      * @inheritdoc
      */
-    public function attributeLabels() {
+    public function attributeLabels()
+    {
         return [
             'id' => 'ID',
             'company_id' => 'Company ID',

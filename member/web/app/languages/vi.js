@@ -4,12 +4,15 @@
     angular.module('iofficez').controller('iofficezCtrl', function ($rootScope) {
         $rootScope.$lang = {
             //-----------------------------------------Common languages here----------------------------------
+            data_not_display : 'Không tìm thấy',
+            post_add_success : 'Bài đăng thêm thành công',
             title_error_dialog : 'Thông báo lỗi',
             title_confirm_dialog : 'Xác nhận',
             ok : 'Chấp nhận',
             at : 'đến',
             more : 'Xem thêm',
             less : 'Đóng',
+            add : 'Thêm',
             cancel : 'Hủy',
             add_project : 'Thêm dự án',
             edit_project : 'Cập Nhật',
@@ -29,6 +32,7 @@
             //Lang for expand and remove contaner in each page.
             expand: 'Đóng',
             remove: 'Xóa',
+            no_authoirty_function: 'Bạn không có quyền để truy cập chứng năng này',
             
             //date picker
             datepicker_close : "Đóng",
@@ -269,6 +273,7 @@
             task_my_task: 'Công việc của tôi',
             task_my_followed_task: 'Công việc tôi theo dõi',
             task_all_task: 'Tất cả công việc',
+            task_post_add_success : 'Thêm bài đăng thành công.',
             //end task
             //notify
             notfication_manage: 'Quản lý thông báo',
@@ -276,7 +281,27 @@
             //search
             search: 'Tìm kiếm',
             search_result: 'Kết quả tìm kiếm',
-            search_result_for: 'Kết quả tìm kiếm cho'
+            search_result_for: 'Kết quả tìm kiếm cho',
+            
+          //task
+            task_created : 'Người tạo',
+            parent_child : '  Công việc con',
+            task_assigner : 'Người giao việc',
+            edit_task : 'Cập Nhật',
+            delete_task : 'Xóa công việc',
+            update_post_success : 'Cập Nhật bài đăng thêm thành công',
+            remove_task_post_success : 'Xóa bài đăng thêm thành công',
+            no_authoirty_item: 'Bạn không có quyền để truy cập vào mục vừa chọn',
+            
+            //function add calendar
+            button_add : 'Thêm',
+            add_calendar_title : 'Thêm lịch',
+            update_calendar_title : 'Cập nhật lịch',
+            calendar_name_error_empty : 'Tên lịch không thể bỏ trống',
+            calendar_description_error_empty : 'Mô tả lịch không thể bỏ trống',
+            add_calendar_success : 'Thêm lịch thành công',
+            update_calendar_success : 'Cập nhật thành công',
+            remove_calendar_success : 'Xóa lịch thành công',
         };
     });
 })(window.angular);

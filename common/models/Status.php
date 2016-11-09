@@ -63,4 +63,18 @@ class Status extends \common\components\db\ActiveRecord
     public static function getStatusName($id){
     	return Status::findOne($id);
     }
+    
+    /**
+     * Get status by owner table
+     * 
+     * param string $ownerTable
+     * @return \yii\db\ActiveQuery
+     */
+    public static function getByOwnerTable($ownerTable) {
+        return self::find()
+                ->select(['id','name'])
+                ->where(['owner_table' => $ownerTable])
+                ->asArray()
+                ->all();;
+    }
 }

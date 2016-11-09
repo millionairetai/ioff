@@ -31,6 +31,8 @@ class Activity extends \common\components\db\ActiveRecord
     
     //const for type of activity
     const TYPE_CREATE_TASK = 'create_task';
+    const TYPE_EDIT_TASK   = 'edit_task';
+    const TYPE_CREATE_TASK_POST   = 'create_task_post';
     const TYPE_CREATE_EVENT = 'create_event';
     const TYPE_EDIT_EVENT   = 'edit_event';
     const TYPE_CREATE_EVENT_POST = 'create_event_post';

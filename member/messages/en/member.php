@@ -12,6 +12,7 @@ return [
     'Can not get data' => 'Can not get data',
     'Can not save data'=> 'Can not save data',
     'you do not have authoirity for this action' => 'you do not have authoirity for this action',
+    'Update post error' => 'Update post error',
     //----------------------------------Common language--------------------------------------------------//        
     //project
     'project manager' => 'Manager',
@@ -33,6 +34,7 @@ return [
     'disabled' => 'disabled',
 	'project department' => 'Department',
 	'project members' => 'Menbers',
+    'Can not get task info' => 'Can not get task info',
     //validate common
     'validate required' => '{attribute} is not empty',
     'validate integer' => '{attribute} is must integer',
@@ -92,4 +94,25 @@ return [
     'calendar_event_redmine_1440' => '1 day',
     'calendar_event_redmine_2880' => '2 days',
     'event description op' 	=> 'Description',
+            
+    'create activity post' => 'Create activity post',
+    'create event' => 'Create event',
+    'create event post' => 'Create event post',
+    'create project' => 'Create project',
+    'create project post' => 'Create project post',
+    'create task' => 'Create task',
+    'edit event' => 'Edit event',
+    'task name' => 'Task name',
+    'project name' => 'Project name',
+    'task end date' => 'Task end date',
+    'task priority' => 'Task priority',
+    'task description' => 'Description',
+    'event_not_public' => 'Not share',
+    'event_is_public' => 'Share',
+    'change employee followers' => 'Change employee followers',
+    'change employee assigners' => 'Change employee assigners',
+    'remove task post success'  => 'Remove task post success',
+    'remove task post error' => 'Remove task post error',
+    'task group' => 'Task group',
+    'error calendar name is existed' => 'Calendar name is existed'
 ];

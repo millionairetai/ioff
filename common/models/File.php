@@ -262,7 +262,7 @@ class File extends \common\components\db\ActiveRecord {
                 $employeeSpace->space_project = $employeeSpace->space_project - $file->file_size;
                 $employeeSpace->space_project = $employeeSpace->space_project >= 0 ? $employeeSpace->space_project : 0;
                 $employeeSpace->space_total = $employeeSpace->space_total - $file->file_size;
-                $employeeSpace->space_total = $employeeSpace->space_total >= 0 ? $employeeSpace->space_project : 0;
+                $employeeSpace->space_total = $employeeSpace->space_total >= 0 ? $employeeSpace->space_total : 0;
 
                 //write logs project post
                 $projectPost = new ProjectPost();
@@ -279,6 +279,23 @@ class File extends \common\components\db\ActiveRecord {
 
             case 'task':
             case 'task_post':
+                //subtract space_project in employe_space.
+                $employeeSpace->space_task = $employeeSpace->space_task - $file->file_size;
+                $employeeSpace->space_task = $employeeSpace->space_task >= 0 ? $employeeSpace->space_task : 0;
+                $employeeSpace->space_total = $employeeSpace->space_total - $file->file_size;
+                $employeeSpace->space_total = $employeeSpace->space_total >= 0 ? $employeeSpace->space_total : 0;
+                
+                //write logs project post
+                $taskPost = new TaskPost();
+                $taskPost->task_id = $file->owner_id;
+                $taskPost->employee_id = \Yii::$app->user->getId();
+                $taskPost->parent_id = 0;
+                $taskPost->content = '<ul><li>' . \Yii::t('member', 'delete file') . '<div class="padding-left-20">' . $file->name . '</div></li></ul>';
+                $taskPost->content_parse = '<ul><li>' . \Yii::t('member', 'delete file') . '<div class="padding-left-20">' . $file->name . '</div></li></ul>';
+                $taskPost->parent_employee_id = 0;
+                if (!$taskPost->save(false)) {
+                    throw new \Exception('Save record to table task post fail');
+                }
                 break;
 
             case 'event':
@@ -301,6 +318,9 @@ class File extends \common\components\db\ActiveRecord {
                 if (!$eventPost->save(false)) {
                     throw new \Exception('Save record to table event post fail');
                 }
+                break;
+            case 'event':
+            case 'event_post':
                 break;
 
             default:
@@ -335,6 +355,7 @@ class File extends \common\components\db\ActiveRecord {
                             'file.company_id' => \Yii::$app->user->getCompanyId(),
                             'file.owner_object' => $tableName,
                             'file.owner_id' => $ownerId,
+                            'file.disabled' => 0,
                         ])->union((new \yii\db\Query())
                         ->select(['file.id', 'file.name', 'file.path', 'file.datetime_created'])
                         ->from(File::tableName())

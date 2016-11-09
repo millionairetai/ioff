@@ -424,7 +424,7 @@ appRoot.controller('viewProjectCtrl', ['$scope', 'projectService', 'fileService'
                 backdrop: 'static',
                 resolve: {
                 	projectPost: function () {
-                        return projectPost;
+                            return projectPost;
                     }
                 }
             });
@@ -461,16 +461,16 @@ appRoot.controller('viewProjectCtrl', ['$scope', 'projectService', 'fileService'
 //edit project post
 appRoot.controller('editProjectPostCtrl', ['$scope', 'projectPostService', '$uibModalInstance', 'controllerService', 'actionService', '$rootScope', 'projectPost', 'alertify', 'dialogMessage', 'socketService',
 	function ($scope, projectPostService, $uibModalInstance, controllerService, actionService, $rootScope, projectPost, alertify, dialogMessage, socketService) {
-            $scope.project = {
+            $scope.projectPost = {
                 id: projectPost.id,
             	description: projectPost.content,
             };
                                        		
             $scope.update = function () {
-                if (projectPostService.validateProjectPost($scope.project)) {
-                    var params = {'id': projectPost.id, 'content': $scope.project.description};
+                if (projectPostService.validateProjectPost($scope.projectPost)) {
+                    var params = {'id': projectPost.id, 'content': $scope.projectPost.description};
                     projectPostService.updateProjectPost(params, function (data) {
-                    projectPost.content = $scope.project.description;
+                    projectPost.content = $scope.projectPost.description;
                     alertify.success($rootScope.$lang.project_post_update_success);
                 	$uibModalInstance.dismiss('save');
             	});
@@ -497,7 +497,7 @@ appRoot.controller('editProjectPostCtrl', ['$scope', 'projectPostService', '$uib
 
 //edit project
 appRoot.controller('editProjectCtrl', ['$scope', 'projectService', '$location', '$uibModalInstance', '$rootScope', 'departmentService', 'alertify', '$timeout', 'employeeService', '$filter', 'statusService', 'priorityService', 'socketService',  
-                                       function ($scope, projectService, $location, $uibModalInstance, $rootScope, departmentService, alertify, $timeout, employeeService, $filter, statusService, priorityService, socketService) {
+    function ($scope, projectService, $location, $uibModalInstance, $rootScope, departmentService, alertify, $timeout, employeeService, $filter, statusService, priorityService, socketService) {
         //step
         $scope.step = 1;
         $scope.more = 0;

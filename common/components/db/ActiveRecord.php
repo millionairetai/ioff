@@ -117,6 +117,19 @@ class ActiveRecord extends \yii\db\ActiveRecord
 //        return static::findByCondition($condition)->one();
 //    }
     
+    /**
+     * @inheritdoc
+     * @return static|null ActiveRecord instance matching the condition, or `null` if nothing matches.
+     */
+//    public static function findOne($where, $isAddCompanyId = true)
+//    {
+//        if ($isAddCompanyId) {
+//            return self::find()->where($where)->andCompanyId()->one();
+//        } else {
+//            return self::findOne($where)->one();
+//        }
+//    }    
+    
     public function delete()
     {
         $this->disabled = self::STATUS_DISABLE;
@@ -193,7 +206,38 @@ class ActiveRecord extends \yii\db\ActiveRecord
             },
         ];
     }
+    
     public function getDiffBetweenDate() {
         return intval(abs($this->end_datetime - $this->start_datetime)/86400);
+    }
+        
+    /**
+     * Get record by id
+     * 
+     * @param integer $id
+     * @param array $columns
+     * @return ActiveQuery
+     */
+    public static function getById($id, $columns = []) {
+        if (!empty($columns)) {
+            return self::find($columns)->andWhere(['id' => $id])->andCompanyId()->one();
+        }
+        
+        return self::find()->andWhere(['id' => $id])->andCompanyId()->one();
+    }
+      
+    /**
+     * Check if record is exist by <> id and equal name.
+     * 
+     * @param integer $id
+     * @param array $name
+     * @return boolean
+     */
+    public static function isExist($id, $name) {
+            return self::find('id')
+                        ->andWhere(['<>','id', $id])
+                        ->andWhere(['name' => $name])
+                        ->andCompanyId()
+                        ->exists(); 
     }
 }

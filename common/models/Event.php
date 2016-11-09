@@ -179,12 +179,12 @@ class Event extends ActiveRecord {
         //get Id company of user login
         $companyId = \Yii::$app->user->getCompanyId();
        
-        $event = Event::findOne(['id' => $eventId, 'company_id' => $companyId]);
+        $event = self::findOne(['id' => $eventId, 'company_id' => $companyId]);
         if (empty($event)) {
             return false;
         }
         //get remind by owner id
-        $remind = Remind::getRemindByOwnerIdAndOwnerTable($eventId, Event::tableName());
+        $remind = Remind::getByOwnerIdAndOwnerTable($eventId, Event::tableName());
         $attend = EventConfirmationType::getInfoAttend($eventId);
         //Get department and invitee of this event.
         $invitations = Invitation::getListByEventId($eventId);

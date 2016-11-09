@@ -8,12 +8,14 @@ return [
     'Remember me' => 'Ghi nhớ?',
     'Login' => 'Đăng nhập',
     'Incorrect email or password' => 'Email hoặc mật khẩu không hợp lệ',
+    'Can not get data' => 'Không thể lấy dữ liệu',
     'Can not get project info' => 'Không thể lấy dữ liệu cho dự án này',
+    'Can not get task info' => 'Không thể lấy dữ liệu cho công việc này',
     'error_system' => 'Hệ thống đang gặp vấn đề, Mong bạn báo lại với ban quản trị',
     'Can not get data' => 'Không thể lấy dữ liệu',
     'Can not save data' => 'Không thể lưu dữ liệu',
     'you do not have authoirity for this action' => 'Bạn không có quyền cho hành động này',
-    
+    'Update post error' => 'Cập nhật bài đăng bị lỗi',
     //----------------------------------Common language--------------------------------------------------//    
     //project
     'project manager' => 'Quản lý dự án',
@@ -74,7 +76,7 @@ return [
     'create task' => 'Thêm task',
     'edit event' => 'Chỉnh sửa sự kiện',
     'create task post' => 'Thêm bài đăng',
-      'you do not have authoirity'=> 'Bạn không có quyền để xem dự án này',
+    'you do not have authoirity'=> 'Bạn không có quyền để xem dự án này',
     'no_attend' => 'No Attend',
     'maybe'     => 'Maybe',
     'attend'    => 'Attend',
@@ -95,4 +97,17 @@ return [
     'calendar_event_redmine_1440' => '1 ngày',
     'calendar_event_redmine_2880' => '2 ngày',
     'event description op' 	=> 'Mô tả',
+    'task name' => 'Tên công việc',
+    'project name' => 'Dự án',
+    'task end date' => 'Hạn chót',
+    'task priority' => 'Độ ưu tiên',
+    'task description' => 'Mô tả',
+    'event_not_public' => 'không công khai',
+    'event_is_public' => 'Công khai',
+    'change employee followers' => 'Thay đổi nhân viên theo dõi',
+    'change employee assigners' => 'Thay đổi nhân viên làm',
+    'remove task post success'  => 'Xóa bài đăng công việc thành công',
+    'remove task post error' => 'Xóa bài đăng công việc bị lỗi',
+    'task group' => 'Loại công việc',
+    'error calendar name is existed' => 'Tên lịch đã tồn tại'
 ];

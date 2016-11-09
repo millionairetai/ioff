@@ -209,4 +209,44 @@ class EmailTemplate extends \common\components\db\ActiveRecord
         
         return null;
     }
+    
+    /**
+     * Get theme email of edit task
+     *
+     * @return string|null
+     */
+    public static function getThemeEditTask(){
+    
+        $theme = self::find([
+                'column_name' => Activity::TYPE_EDIT_TASK,
+                'language_code' => \Yii::$app->language,
+                'disabled' => self::STATUS_ENABLE
+        ])->one();
+    
+        if($theme){
+            return $theme;
+        }
+    
+        return null;
+    }
+
+    /**
+     * Get theme email of edit task
+     *
+     * @return string|null
+     */
+    public static function getThemeCreateTaskPost(){
+    
+        $theme = self::find([
+                'column_name' => Activity::TYPE_CREATE_TASK_POST,
+                'language_code' => \Yii::$app->language,
+                'disabled' => self::STATUS_ENABLE
+        ])->one();
+    
+        if($theme){
+            return $theme;
+        }
+    
+        return null;
+    }
 }

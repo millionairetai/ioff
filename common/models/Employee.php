@@ -71,7 +71,11 @@ class Employee extends ActiveRecord implements IdentityInterface
 {
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;
-    
+    //Column_name
+    const COLUNM_NAME_ACTIVE = 'employee.active';
+    const COLUNM_NAME_INACTIVE = 'employee.inactive';
+    const COLUNM_NAME_INVITED = 'employee.invited';
+    const COLUNM_NAME_DISABLED = 'employee.disabled';
     /**
      * @inheritdoc
      */
@@ -409,11 +413,14 @@ class Employee extends ActiveRecord implements IdentityInterface
         $result = [];
         $employeeIds   = empty($employees) ? null : $employees;
         $departmentIds = empty($departments) ? null : $departments;
-        $employees = Employee::find()
-                        ->select(['id', 'firstname', 'lastname', 'profile_image_path', 'department_id', 'birthdate'])
-                        ->andWhere(['id' => $employeeIds])
+        //Get employee is actived.
+        $employees = self::find()
+                        ->select([self::tableName() . '.id', 'firstname', 'lastname', 'profile_image_path', 'department_id', 'birthdate'])
+                        ->leftJoin(Status::tableName(), Status::tableName() . '.id=' . self::tableName() . '.status_id' )
+                        ->andWhere([self::tableName() . '.id' => $employeeIds])
                         ->orWhere(['department_id' => $departmentIds])
-                        ->andCompanyId()
+                        ->andWhere(['column_name'=> self::COLUNM_NAME_ACTIVE])
+                        ->andCompanyId(false, self::tableName())
                         ->all();
         
         if (!empty($employees)) {

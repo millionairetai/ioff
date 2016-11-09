@@ -16,6 +16,9 @@ appRoot.factory('taskService', ['apiService','$rootScope','alertify', function (
             getParentTaskList : function (data,success,error) {
                 apiService.get('task/get-tasks-by-project',data,success,error);
             },
+            getTaskView : function (data,success,error) {
+                apiService.get('task/view',data,success,error);
+            },
             validate_step1 : function(object) {
                 var message = "";
                 var now = new Date();
@@ -70,6 +73,9 @@ appRoot.factory('taskService', ['apiService','$rootScope','alertify', function (
             addTask : function (data,success,error){
                 apiService.upload('task/add',data,success,error);
             },
+            editTask : function (data,success,error){
+                apiService.upload('task/edit',data,success,error);
+            },
             getAssingedTasks : function (data,success,error) {
                 apiService.get('task/get-assigned-tasks',data,success,error);
             },
@@ -84,17 +90,6 @@ appRoot.factory('taskService', ['apiService','$rootScope','alertify', function (
             },
             getSearchGlobalTasks:  function(data,success,error) {
                 apiService.post('task/get-search-global-tasks',data,success,error);
-            },
-            redmind : function(){
-                return [
-                    {id:0,name:$rootScope.$lang.calendar_event_redmine_0},
-                    {id:30,name:$rootScope.$lang.calendar_event_redmine_30},
-                    {id:60,name:$rootScope.$lang.calendar_event_redmine_60},
-                    {id:120,name:$rootScope.$lang.calendar_event_redmine_120},
-                    {id:240,name:$rootScope.$lang.calendar_event_redmine_240},
-                    {id:1440,name:$rootScope.$lang.calendar_event_redmine_1440},
-                    {id:2880,name:$rootScope.$lang.calendar_event_redmine_2880},
-                ];
             }            
         };
     }]);

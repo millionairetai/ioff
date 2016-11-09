@@ -18,6 +18,7 @@ return [
     'created' => ' đã tạo ',
     'edited' => ' đã chỉnh sửa ',
     'Search'=>'Tìm kiếm',
+    'delete error'=>'Xóa bị lỗi',
     
     //Calendar
     'event_id' => 'Mã sự kiện',

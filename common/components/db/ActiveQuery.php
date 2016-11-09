@@ -2,9 +2,8 @@
 
 namespace common\components\db;
 
+class ActiveQuery extends \yii\db\ActiveQuery {
 
-class ActiveQuery extends \yii\db\ActiveQuery
-{
     /**
      * Adds an additional of company_id WHERE condition to the existing one.
      * The new condition and the existing one will be joined using the 'AND' operator.
@@ -14,12 +13,17 @@ class ActiveQuery extends \yii\db\ActiveQuery
      * @see where()
      * @see orWhere()
      */
-    public function andCompanyId($companyId = false)
-    {
-        if (!$companyId) {
-            return $this->andWhere(['company_id' => \Yii::$app->user->getCompanyId()]);
+    public function andCompanyId($companyId = false, $table = '') {
+        $column = 'company_id';
+        if ($table) {
+            $column = $table . '.company_id';
         }
-        
-        return $this->andWhere(['company_id' => $companyId]);
+
+        if (!$companyId) {
+            return $this->andWhere([$column => \Yii::$app->user->getCompanyId()]);
+        }
+
+        return $this->andWhere([$column => $companyId]);
     }
+
 }

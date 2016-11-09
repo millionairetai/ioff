@@ -67,6 +67,10 @@ appRoot.config(function ($routeProvider, $httpProvider) {
                 templateUrl: 'app/views/task/add.html',
                 controller: 'addTaskCtrl'
             })
+            .when('/viewTask/:taskId', {
+                templateUrl: 'app/views/task/view.html',
+                controller: 'viewTaskCtrl'
+            })
             //notify
             .when('/notify', {
                 templateUrl: 'app/views/notify/index.html',

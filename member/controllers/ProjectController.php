@@ -716,5 +716,4 @@ class ProjectController extends ApiController {
         $objects['collection'] = $collection;
         return $this->sendResponse(false, "", $objects);
     }
-    
 }

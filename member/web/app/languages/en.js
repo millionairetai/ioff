@@ -4,12 +4,15 @@
     angular.module('iofficez').controller('iofficezCtrl', function ($rootScope) {
         $rootScope.$lang = {
             //-----------------------------------------Common languages here----------------------------------
+            data_not_display : 'not found',
+            post_add_success : 'Post add successfully',
             title_error_dialog : 'Error',
             title_confirm_dialog : 'Confirm',
             ok : 'Ok',
             at : 'at',
             more : 'View more',
             less : 'View less',
+            add : 'Add',
             cancel : 'Cancel',
             add_project : 'Add project',
             edit_project : 'Edit project',
@@ -29,6 +32,8 @@
             //Lang for expand and remove contaner in each page.
             expand: 'Expand',
             remove: 'Remove',
+            no_authoirty_function: 'You do not have authority to access this functionality',
+            
             //date picker
             datepicker_close : "Close",
             datepicker_clear : "Clear",
@@ -193,7 +198,7 @@
             recent_post : 'Recent post',
             show_attend : "Information of event's participation",
             update_event_post: "Update event post",
-            all_day : 'Nguyên ngày',
+            all_day : 'All day',
             
             //task
             task: 'Task',
@@ -224,8 +229,9 @@
             task_theory: 'Theory',
             task_manager:'Project Manger',
             task_department : 'Department',
-            task_choose_all: 'Tất cả',
+            task_choose_all: 'All',
             task_members: 'Members',
+            parent_task:'Parent task',
             
             task_estimate_error : 'Estimate time is must numberic',
             task_estimate_error_0 : 'Estimate time is greater than -1',
@@ -244,14 +250,39 @@
             task_my_task: 'My task',
             task_my_followed_task: 'My followed task',
             task_all_task: 'All task',
+            task_employee_assigners: 'Employee assigners',
+            task_employee_followers: 'Employee followers',
+            task_post_add_success : 'Add task post success.',
             //end task        
             //notify
-            notfication_manage: 'Quản lý thông báo',
-            notfication_list: 'Danh sách thông báo',   
+            notfication_manage: 'Notfication manage',
+            notfication_list: 'Notfication list',   
             //search
             search: 'Search',
             search_result: 'Search result',
-            search_result_for: 'Search result for'
+            search_result_for: 'Search result for',
+
+          //task
+            task_created : 'Task created',
+            parent_child : 'Parent child',
+            task_assigner : 'Task assigner',
+            edit_task : 'Edit task',
+            delete_task : 'Delete task',
+            update_post_success : 'Update post success',
+            remove_task_post_success : 'Delete post success',
+            task_group : 'Task group',
+            no_authoirty_item: 'You do not have authority to access this item',
+            
+          //function add calendar
+            button_add : 'Add',
+            add_calendar_title : 'Add calendar',
+            update_calendar_title : 'Update calendar',
+            calendar_name_error_empty : 'Calendar name is not empty',
+            calendar_description_error_empty : 'Description is not empty',
+            error_calendar_unique : 'Calendar name is exist',
+            add_calendar_success : 'Add calendar success',
+            update_calendar_success : 'Update calendar success',
+            remove_calendar_success : 'Remove calendar success'
         };
     });
 })(window.angular);

@@ -1,6 +1,6 @@
 //show calendar
-appRoot.controller('calendarCtrl', ['$scope', '$uibModal', 'calendarService', '$timeout', 'settingSystem', 'uiCalendarConfig', 'listCalendar', '$rootScope',
-    function ($scope, $uibModal, calendarService, $timeout, settingSystem, uiCalendarConfig, listCalendar, $rootScope) {
+appRoot.controller('calendarCtrl', ['$scope', '$uibModal', 'calendarService', '$timeout', 'settingSystem', 'uiCalendarConfig', 'listCalendar', '$rootScope', 'dialogMessage', 'alertify', 
+    function ($scope, $uibModal, calendarService, $timeout, settingSystem, uiCalendarConfig, listCalendar, $rootScope, dialogMessage, alertify) {
         var date = new Date();
         var d = date.getDate();
         var m = date.getMonth();
@@ -26,7 +26,7 @@ appRoot.controller('calendarCtrl', ['$scope', '$uibModal', 'calendarService', '$
                 eventLimit: 4,
                 timezone: "local",
                 lang: settingSystem.language,
-                height: 'auto',
+//                height: 'auto',
                 select: function (start, end, allDay) {
                     var modalInstance = $uibModal.open({
                         templateUrl: 'app/views/calendar/add.html',
@@ -47,6 +47,15 @@ appRoot.controller('calendarCtrl', ['$scope', '$uibModal', 'calendarService', '$
                     modalInstance.result.then(function (data) {
                         $timeout(function () {
                             $scope.resetEvents($scope.start, $scope.end);
+                        });
+
+                        calendarService.listCalendars({}, function (respone) {
+                            calendarService.listCalendars({}, function (calendars) {
+                                $scope.calendars = calendars.objects;
+                                for (i = 0; i < $scope.calendars.length; i++) {
+                                    $scope.chooseCalendar.push($scope.calendars[i].id);
+                                }
+                            });
                         });
                     }, function () {
                     });
@@ -88,7 +97,110 @@ appRoot.controller('calendarCtrl', ['$scope', '$uibModal', 'calendarService', '$
 
             });
         }
+        
+        $scope.addCalendar = function () {
+            var modalInstance = $uibModal.open({
+                templateUrl: 'app/views/calendar/addCalendar.html',
+                controller: 'addCalendarCtrl',
+                size: 'lg',
+                keyboard: true,
+                backdrop: 'static',
+            });
+
+            modalInstance.result.then(function (data) {
+                calendarService.listCalendars({}, function (calendars) {
+                    $scope.calendars = calendars.objects;
+                    for (i = 0; i < $scope.calendars.length; i++) {
+                        $scope.chooseCalendar.push($scope.calendars[i].id);
+                    }
+                });
+            });
+        };
+
+        $scope.editCalendar = function (calendar, $index) {
+            var modalInstance = $uibModal.open({
+                templateUrl: 'app/views/calendar/editCalendar.html',
+                controller: 'editCalendarCtrl',
+                size: 'lg',
+                keyboard: true,
+                backdrop: 'static',
+                resolve: {
+                    calendar: function () {
+                        return calendar;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (data) {
+                for (i = 0; i < $scope.calendars.length; i++) {
+                    if ($scope.calendars[i].id == data.id) {
+                        $scope.calendars[i].name = data.name;
+                    }
+                    $scope.chooseCalendar.push($scope.calendars[i].id);
+                }
+            });
+        };
+
+        //Delete calendar title
+        $scope.deleteCalendar = function (index, id) {
+            dialogMessage.open('confirm', $rootScope.$lang.confirm_delete_file, function () {
+                calendarService.deleteCalendar({calendarId: id}, function (data) {
+                    $scope.calendars.splice(index, 1);
+                    $scope.checkCalendar();
+                    alertify.success($rootScope.$lang.remove_calendar_success);
+                });
+            });
+        };
     }]);
+
+//add Calendar Title 
+appRoot.controller('addCalendarCtrl', ['$scope', '$rootScope', '$uibModalInstance', 'calendarService', 'alertify', 'socketService',
+    function ($scope, $rootScope, $uibModalInstance, calendarService, alertify, socketService) {
+
+        $scope.calendar = {
+            name: '',
+            description: '',
+        };
+
+        $scope.add = function () {
+            if (calendarService.validateCalendarAdd($scope.calendar)) {
+                calendarService.addCalendar($scope.calendar, function (data) {
+                    alertify.success($rootScope.$lang.add_calendar_success);
+                    $uibModalInstance.close($scope.calendar);
+                });
+            }
+        };
+        //cancel
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
+    }]);
+
+//edit Calendar Title
+appRoot.controller('editCalendarCtrl', ['$scope', '$rootScope', '$uibModalInstance', 'calendarService', 'alertify', 'socketService', 'calendar',
+    function ($scope, $rootScope, $uibModalInstance, calendarService, alertify, socketService, calendar) {
+        $scope.calendar = {
+            id: calendar.id,
+            name: calendar.name,
+            description: calendar.description
+        };
+
+        $scope.update = function () {
+            if (calendarService.validateCalendarAdd($scope.calendar)) {
+                calendarService.editCalendar($scope.calendar, function (data) {
+                    calendar.description = $scope.calendar.description;
+                    alertify.success($rootScope.$lang.update_calendar_success);
+                    $uibModalInstance.close($scope.calendar);
+                });
+            }
+        };
+
+        //cancel
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
+    }]);
+
 
 //add event to calendar
 
@@ -846,6 +958,14 @@ appRoot.controller('editEventCtrl', ['$rootScope', 'data', 'listCalendar', '$sco
         $scope.showMore = function (value) {
             $scope.more = value;
         }
+
+        $scope.tinymceOptions = {
+            inline: false,
+            toolbar: 'formatselect | bold italic underline | bullist numlist | alignleft aligncenter alignright alignjustify | undo redo ',
+            menubar: false,
+            skin: 'lightgray',
+            theme: 'modern'
+        };
 
         $scope.buttonBar = {
             show: true,

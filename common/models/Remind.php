@@ -95,7 +95,7 @@ class Remind extends \common\components\db\ActiveRecord {
      * 
      * @return string
      */
-    public static function getRemindByOwnerIdAndOwnerTable($ownerId, $ownerTable) {
+    public static function getByOwnerIdAndOwnerTable($ownerId, $ownerTable) {
     	return Remind::findOne(['owner_id' => $ownerId, 'owner_table' => $ownerTable, 'company_id' => \Yii::$app->user->getCompanyId()]);
     }
 

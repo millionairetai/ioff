@@ -21,6 +21,7 @@ class ProjectPostController extends ApiController {
         $collection = [];
         $projectPostIds = [];
         $projectId = \Yii::$app->request->post('projectId');
+
         //fetch project post list
         $result = ProjectPost::getProjectPosts($projectId, \Yii::$app->request->post('currentPage'), \Yii::$app->request->post('itemPerPage'));
         foreach ($result as $item) {
@@ -54,7 +55,6 @@ class ProjectPostController extends ApiController {
         $objects['collection'] = $collection;
         $objects['files'] = $fileData;
         $objects['totalItems'] = 0;
-        $objects['debugs'] = \Yii::$app->request->post('currentPage') . '++++'.  \Yii::$app->request->post('itemPerPage');
         
         if (!empty($collection)) {
             $objects['totalItems'] = Projectpost::find()->where(['project_id' => $projectId])->count();

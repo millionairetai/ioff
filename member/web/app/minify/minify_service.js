@@ -273,15 +273,49 @@ appRoot.factory('calendarService', ['apiService','$rootScope','alertify', functi
                         {id:1440,name:$rootScope.$lang.calendar_event_redmine_1440},
                         {id:2880,name:$rootScope.$lang.calendar_event_redmine_2880},
                         ];
+            },
+            addCalendar : function (data,success,error){
+                apiService.post('calendar/add-calendar', data, success, error);
+            },
+            editCalendar : function (data,success,error){
+                apiService.post('calendar/edit-calendar', data, success, error);
+            },
+            deleteCalendar : function (data,success,error){
+                apiService.get('calendar/delete-calendar', data, success, error);
+            },
+            validateCalendarAdd: function (object) {
+                var message = "";
+                if (object.name.length == 0) {
+                    message += $rootScope.$lang.calendar_name_error_empty + "<br/>";
+                }
+                if (object.description.length == 0) {
+                    message += $rootScope.$lang.calendar_description_error_empty + "<br/>";
+                }
+                if (message.length > 0) {
+                    alertify.error(message);
+                    return false;
+                }
+                return true;
             }
         };
     }]);
-appRoot.factory('commonService', ['apiService', 'taskService', 'projectService', 'calendarService',
-    function (apiService, taskService, projectService, calendarService) {
+appRoot.factory('commonService', ['$rootScope', 'apiService', 'taskService', 'projectService', 'calendarService',
+    function ($rootScope, apiService, taskService, projectService, calendarService) {
 
         return {
             getSearchGlobalSuggest: function (params, success, error) {
                 return apiService.post('task/get-search-global-suggestion', params, success, error, 0);
+            },
+            redmind: function () {
+                return [
+                    {id: 0, name: $rootScope.$lang.calendar_event_redmine_0},
+                    {id: 30, name: $rootScope.$lang.calendar_event_redmine_30},
+                    {id: 60, name: $rootScope.$lang.calendar_event_redmine_60},
+                    {id: 120, name: $rootScope.$lang.calendar_event_redmine_120},
+                    {id: 240, name: $rootScope.$lang.calendar_event_redmine_240},
+                    {id: 1440, name: $rootScope.$lang.calendar_event_redmine_1440},
+                    {id: 2880, name: $rootScope.$lang.calendar_event_redmine_2880},
+                ];
             }
         };
     }]);
@@ -377,7 +411,40 @@ appRoot.factory('EventPostService', ['apiService', '$rootScope', 'alertify', fun
         }
     };
 }]);
-appRoot.factory('notifyService', ['apiService', '$rootScope', 'alertify', function (apiService, $rootScope, alertify) {
+appRoot.factory("flash", ['$rootScope','alertify', function ($rootScope,alertify) {
+    var queue = [];
+    var currentMessage = "";
+
+    $rootScope.$on("$routeChangeSuccess", function () {
+        currentMessage = queue.shift() || "";
+    });
+
+    return {
+        setMessage: function (message) {
+            queue.push(message);
+        },
+        setNoAuthFunctionMessage: function () {
+            queue.push($rootScope.$lang.no_authoirty_function);
+        },
+        setNoAuthItemMessage: function () {
+            queue.push($rootScope.$lang.no_authoirty_item);
+        },
+        setNoDataMessage: function () {
+            queue.push($rootScope.$lang.no_data);
+        },
+        getMessage: function () {
+            return currentMessage;
+        }, 
+        trigger: function () {
+            var message = this.getMessage();
+            if (message) {
+                alertify.error(message);
+            }
+
+            return true;
+        }
+    };
+}]);appRoot.factory('notifyService', ['apiService', '$rootScope', 'alertify', function (apiService, $rootScope, alertify) {
 
         return {
             countNotification: function (data, success, error) {
@@ -517,7 +584,7 @@ appRoot.factory('socketService', ['socketFactory', function (socketFactory) {
 appRoot.factory('statusService', ['apiService', function (apiService) {
     return {
     	getProjectStatus : function (data,success,error){
-            apiService.get('status/get-project-status', data, success, error);
+            apiService.get('status/get-status?type=project', data, success, error);
         }
     };
 }]);
@@ -538,6 +605,9 @@ appRoot.factory('taskService', ['apiService','$rootScope','alertify', function (
             },
             getParentTaskList : function (data,success,error) {
                 apiService.get('task/get-tasks-by-project',data,success,error);
+            },
+            getTaskView : function (data,success,error) {
+                apiService.get('task/view',data,success,error);
             },
             validate_step1 : function(object) {
                 var message = "";
@@ -593,6 +663,9 @@ appRoot.factory('taskService', ['apiService','$rootScope','alertify', function (
             addTask : function (data,success,error){
                 apiService.upload('task/add',data,success,error);
             },
+            editTask : function (data,success,error){
+                apiService.upload('task/edit',data,success,error);
+            },
             getAssingedTasks : function (data,success,error) {
                 apiService.get('task/get-assigned-tasks',data,success,error);
             },
@@ -607,21 +680,39 @@ appRoot.factory('taskService', ['apiService','$rootScope','alertify', function (
             },
             getSearchGlobalTasks:  function(data,success,error) {
                 apiService.post('task/get-search-global-tasks',data,success,error);
-            },
-            redmind : function(){
-                return [
-                    {id:0,name:$rootScope.$lang.calendar_event_redmine_0},
-                    {id:30,name:$rootScope.$lang.calendar_event_redmine_30},
-                    {id:60,name:$rootScope.$lang.calendar_event_redmine_60},
-                    {id:120,name:$rootScope.$lang.calendar_event_redmine_120},
-                    {id:240,name:$rootScope.$lang.calendar_event_redmine_240},
-                    {id:1440,name:$rootScope.$lang.calendar_event_redmine_1440},
-                    {id:2880,name:$rootScope.$lang.calendar_event_redmine_2880},
-                ];
             }            
         };
     }]);
-appRoot.factory( "ValidationServices", function() {
+appRoot.factory('TaskPostService', ['apiService', '$rootScope', 'alertify', function (apiService, $rootScope, alertify) {
+    return {
+        addTaskPost: function (data, success, error) {
+            apiService.upload('task-post/add-task-post', data, success, error);
+        },
+        getTaskPosts: function (data, success, error) {
+            apiService.get('task-post/get-task-post', data, success, error);
+        },
+        getLastTaskPost: function (data, success, error) {
+            apiService.get('task-post/get-last-task-post', data, success, error);
+        },
+        removeTaskPost : function (data,success,error){
+            apiService.get('task-post/remove-task-post', data, success, error);
+        },
+        updateTaskPost : function (data,success,error){
+            apiService.post('task-post/update-task-post', data, success, error);
+        },
+        validateTaskPost: function (object) {
+            var message = "";
+            if (object.description.length == 0) {
+                message += $rootScope.$lang.task_description_error_empty + "<br/>";
+            }
+            if (message.length > 0) {
+                alertify.error(message);
+                return false;
+            }
+            return true;
+        }
+    };
+}]);appRoot.factory( "ValidationServices", function() {
     return {
         failIfWrongThreshouldConfig: function( firstThreshould, secondThreshould ) {
             if( (! firstThreshould && ! secondThreshould) || (firstThreshould && secondThreshould) ) {

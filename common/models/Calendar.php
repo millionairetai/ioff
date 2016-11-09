@@ -63,7 +63,7 @@ class Calendar extends ActiveRecord {
      * @return array
      */
     public static function getAllCalendar($companyId, $employeeId) {
-        $sql = "SELECT event.calendar_id, calendar.name, count(event.id) AS `number_event`																
+        $sql = "SELECT event.calendar_id, calendar.name, calendar.description, count(event.id) AS `number_event`																
                 FROM event																
                     INNER JOIN calendar ON event.calendar_id= calendar.id AND calendar.company_id={$companyId} AND calendar.disabled=0															
                     WHERE (event.is_public=1 OR event.created_employee_id={$employeeId} OR (EXISTS(															
@@ -77,24 +77,27 @@ class Calendar extends ActiveRecord {
                         WHERE invitation.event_id=event.id 																
                     AND invitation.company_id={$companyId} 															
                     AND invitation.disabled=0)))															
+                    AND event.start_datetime >= " . strtotime(date('Y-m-d') . " 00:00:00") . "
                     AND event.company_id={$companyId} 															
                     AND event.disabled=0																								
-                GROUP BY event.calendar_id";
+                GROUP BY event.calendar_id 
+                ORDER BY number_event DESC";
 
         $command = \Yii::$app->db->createCommand($sql);
         $data = $command->queryAll();
         $ids = self::getAllId($data);
 
-        if ($calendars = self::find()->select(['id', 'name'])->andCompanyId()->all()) {
+        if ($calendars = self::find()->select(['id', 'name', 'description'])->andCompanyId()->orderBy('datetime_created ASC')->asArray()->all()) {
             foreach ($calendars as $calendar) {
-                if (!in_array($calendar->id, $ids)) {
+                if (!in_array($calendar['id'], $ids)) {
                     $data[] = [
-                        'calendar_id' => $calendar->id,
-                        'name' => $calendar->name,
+                        'calendar_id' => $calendar['id'],
+                        'name' => $calendar['name'],
+                        'description' => $calendar['description'],
                         'number_event' => 0,
                     ];
 
-                    $ids[] = $calendar->id;
+                    $ids[] = $calendar['id'];
                 }
             }
         }
@@ -118,6 +121,26 @@ class Calendar extends ActiveRecord {
     }
     
     /**
+     * Get calendar by name
+     *
+     * @param string $name
+     * @return object
+     */
+    public static function getByName($name) {
+        return self::find()->andWhere(['name' => $name])->andCompanyId()->one();
+    }
+    
+    /**
+     * Get celendar by id
+     * 
+     * @param integer $id
+     * @return string
+     */
+    public static function getById($id) {
+        return self::find()->select("name")->where(['id' => $id])->one();
+    }
+       
+    /**
      * Get celendar Name
      *
      * @return string
@@ -125,15 +148,5 @@ class Calendar extends ActiveRecord {
     public function getName() {
         return $this->name;
     }
-    
-    /**
-     * Get celendar by id
-     * 
-     * @param integer $eventId
-     * @return string
-     */
-    public static function getById($eventId) {
-        return self::find()->select("name")->where(['id' => $eventId])->one();
-    }
-
+ 
 }

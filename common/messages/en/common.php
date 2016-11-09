@@ -16,8 +16,9 @@ return [
     'or try using the search form'=>'or try using the search form',
     'Email' => 'Email',
     'created' => ' Created date ',
-    'edited' => '  edited ',
+    'edited' => ' edited ',
     'Search'=>'Search',
+    'delete error'=>'Delete error',    
     
     //calendar
     'event_id' => 'Event id',

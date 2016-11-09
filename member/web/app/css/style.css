@@ -1,3 +1,10 @@
+.text-white{
+    color: #fff;
+}
+a.text-white:hover{
+    color: #eee;
+}
+
 @media (min-width: 992px){
     .padding-left-md-0{
         padding-left: 0 !important;
@@ -1009,3 +1016,32 @@ div.task-creator{
         width: 90%;
     }
 }
+
+/* List calendar title */
+.list-calendar-title{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.list-calendar-title>li{
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+}
+.list-calendar-title .btn-list-tool{
+    padding: 5px;
+    font-size: 12px;
+    background: transparent;
+    color: #97a0b3;
+    margin-top: -5px;
+}
+.list-calendar-title .btn-list-tool:hover{
+    color: #606c84;
+}
+.list-calendar-title .btn-group.open .dropdown-toggle.btn-list-tool {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    color: #606c84;
+}
+
+

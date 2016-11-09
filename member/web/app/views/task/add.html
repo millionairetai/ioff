@@ -157,14 +157,14 @@
                         <ui-select multiple  ng-model="task.assigningEmployees" theme="bootstrap" ng-click="findEmployeeForTask('')" ng-keyup="findEmployeeForTask($select.search)">
                             <ui-select-match placeholder="...">
                                 <img src="{{$item.image}}" height="30" width="30" /><br/>
-                                {{$item.firstname}}
+                                {{$item.fullname}}
                             </ui-select-match>
                             <ui-select-choices refresh-delay="1000" repeat="person in searchedEmployees|filter:filterFollowingEmployees">
                                 <div class="item-result ">
                                     <div class="item-result-name">
                                         <img src="{{person.image}}" height="50" width="50">
                                         <div class="container-employee-search-info">
-                                            <strong >{{person.firstname}}</strong><br>
+                                            <strong >{{person.fullname}}</strong><br>
                                             <i >{{person.email}}</i>
                                         </div>
                                         <div class="clearBoth"></div>
@@ -181,14 +181,14 @@
                         <ui-select multiple  ng-model="task.followingEmployees" theme="bootstrap" ng-click="findEmployeeForTask('')" ng-keyup="findEmployeeForTask($select.search)">
                             <ui-select-match placeholder="...">
                                 <img src="{{$item.image}}" height="30" width="30" /><br/>
-                                {{$item.firstname}}
+                                {{$item.fullname}}
                             </ui-select-match>
                             <ui-select-choices refresh-delay="1000" repeat="person in searchedEmployees|filter:filterAssigningEmployees">
                                 <div class="item-result ">
                                     <div class="item-result-name">
                                         <img src="{{person.image}}" height="50" width="50">
                                         <div class="container-employee-search-info">
-                                            <strong >{{person.firstname}}</strong><br>
+                                            <strong >{{person.fullname}}</strong><br>
                                             <i >{{person.email}}</i>
                                         </div>
                                         <div class="clearBoth"></div>

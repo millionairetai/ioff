@@ -29,6 +29,7 @@ class CalendarController extends ApiController {
                 $objects[] = [
                     'id' => (int) $calendar['calendar_id'],
                     'name' => $calendar['name'],
+                    'description' => $calendar['description'],
                     'count' => (int) $calendar['number_event']
                 ];
             }
@@ -146,7 +147,6 @@ class CalendarController extends ApiController {
             $arrayEmployees = [];
             $isQuery = false;
             $query = Employee::find()->andCompanyId();
-
             if (!empty($dataPost['members']) && !empty($dataPost['departments'])) {
                 $isQuery = true;
                 $idEmployees = [];
@@ -848,4 +848,88 @@ class CalendarController extends ApiController {
         return $content == '' ? false : "<ul>" . $content . "</ul>";
     }
 
+    /*
+     * Function add calendar
+     */
+    public function actionAddCalendar() {
+        try {
+            $request = \Yii::$app->request->post();
+            if (!empty($request) && !empty($request['name']) && !empty($request['description'])) {
+                $calendar = Calendar::getByName($request['name']);
+                if (empty($calendar)) {
+                    $calendar = new Calendar();
+                    $calendar->name = $request['name'];
+                    $calendar->description = $request['description'];
+
+                    if (!$calendar->save()) {
+                        $this->_message = $this->parserMessage($calendar->getErrors());
+                        $this->_error = true;
+                        throw new \Exception($this->_message);
+                    }
+                    
+                    return $this->sendResponse(false, [], []);
+                } else {
+                    return $this->sendResponse(true, \Yii::t('member', 'error calendar name is existed'), []);
+                }
+            }
+        } catch (\Exception $e) {
+            return $this->sendResponse(true, \Yii::t('member', 'error_system'), []);
+        }
+    }
+
+    /*
+     * Function edit calendar
+     */
+    public function actionEditCalendar() {
+        try {
+            $request = \Yii::$app->request->post();
+            if (!empty($request) && !empty($request['id']) && !empty($request['name']) && !empty($request['description'])) {
+                $calendar = Calendar::getById($request['id'], ['id']);
+                if (!empty($calendar)) {
+                    $isExist = Calendar::isExist($request['id'], $request['name']);
+                    if (empty($isExist)) {
+                        $calendar->name = $request['name'];
+                        $calendar->description = $request['description'];
+                        if (!$calendar->save(false)) {
+                            $this->_message = $this->parserMessage($calendar->getErrors());
+                            $this->_error = true;
+                            throw new \Exception($this->_message);
+                        }
+                        
+                        return $this->sendResponse(false, [], []);
+                    } else {
+                        return $this->sendResponse(true, \Yii::t('member', 'error calendar name is existed'), []);
+                    }
+                }
+            }
+        } catch (Exception $e) {
+            return $this->sendResponse(true, \Yii::t('member', 'error_system'), []);
+        }
+    }
+    
+    /**
+     * Action delete calendar
+     */
+    public function actionDeleteCalendar() {
+        $transaction = \Yii::$app->db->beginTransaction();
+        try {
+            if (!Calendar::deleteAll(['id' => \Yii::$app->request->get('calendarId')])) {
+                throw new \Exception('delete error');
+            }
+            
+            //Delete all event in this calendar.
+            if (!Event::deleteAll(['calendar_id' => \Yii::$app->request->get('calendarId')])) {
+                throw new \Exception('delete error');
+            }
+            
+            $transaction->commit();
+        } catch (\Exception $e) {
+            $this->_error = true;
+            $this->_message = \Yii::t('common', 'delete error');
+            $transaction->rollBack();
+            return $this->sendResponse($this->_error, '', []);
+        }
+    
+        return $this->sendResponse($this->_error, $this->_message, []);
+    }
 }

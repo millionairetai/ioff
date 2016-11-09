@@ -113,6 +113,76 @@ class Task extends \common\components\db\ActiveRecord {
         return $this->hasMany(TaskGroup::className(), ['project_id' => 'id']);
     }
 
+    public function getTaskGroupAllocations() {
+        return $this->hasMany(TaskGroupAllocation::className(), ['task_id' => 'id']);
+    }
+    
+    /**
+     * display info case is publuc
+     */
+    public function getIsPublic() {
+        return $this->is_public == true ? Yii::t('member', 'event_is_public') : Yii::t('member', 'event_not_public');
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPriority() {
+        return $this->hasOne(Priority::className(), ['id' => 'priority_id']);
+    }
+    
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getEmployee() {
+        return $this->hasOne(Employee::className(), ['id' => 'created_employee_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getAssigner() {
+        return $this->hasOne(Employee::className(), ['id' => 'employee_id']);
+    }
+    
+    /**
+     * get parant task by parent id and project id
+     * 
+     * param integer $parentId
+     * param integer $projectId
+     * 
+     * @return \yii\db\ActiveQuery
+     */
+    public static function getParent($parentId = null, $projectId = null) {
+        if (empty($parentId) || empty($projectId)) {
+            return false;
+        }
+        $taskParent = Task::find()->select(['id', 'name'])->where(['project_id' => $projectId, 'id' => $parentId])->one();
+        if (empty($taskParent)) {
+            return null;
+        }
+        return $taskParent;
+    }
+
+    /**
+     * Get children task by $taskId and current task url
+     * 
+     * param integer $taskId
+     * param integer $projectId
+     * 
+     * @return \yii\db\ActiveQuery
+     */
+    public static function getChildren($taskId = null, $projectId = null) {
+        if (empty($taskId) || empty($projectId)) {
+            return false;
+        }
+        $taskChildren = Task::find()->select(['id', 'name'])->where(['project_id' => $projectId, 'parent_id' => $taskId])->all();
+        if (empty($taskChildren)) {
+            return null;
+        }
+        return $taskChildren;
+    }
+
     /**
      * Get all that employee can be able to see.
      * @param interger $itemPerPage
@@ -139,10 +209,6 @@ class Task extends \common\components\db\ActiveRecord {
         if ($searchText) {
             $tasks->andFilterWhere(['like', 'name', $searchText]);
         }
-
-//        var_dump($tasks);
-//        var_dump($tasks->createCommand()->sql);
-//        die;
 
         $totalCount = $tasks->count();
         $tasks = $tasks->limit($itemPerPage)
@@ -184,4 +250,136 @@ class Task extends \common\components\db\ActiveRecord {
         ];
     }
 
+    /**
+     * Get Event information by id
+     *
+     * @param integer $eventId
+     * @return array
+     */
+    public static function getById($id) {
+        return Task::find()->where(['id' => $id])->one();
+    }
+
+    /**
+     * Get Info task
+     * 
+     * @param $taskId
+     * @return array
+     */
+    public static function getInfoTask($taskId = null){
+        if ($taskId == null) {
+            return null;
+        }
+        //get Id company of user login
+        $companyId = \Yii::$app->user->getCompanyId();
+        //disable = 0/////////////
+        $task = Task::findOne(['id' => $taskId, 'company_id' => $companyId]);
+        if (empty($task)) {
+            return false;
+        }
+        
+        //Get parent tasks:
+        $parentTask = self::getParent($task->parent_id, $task->project_id);
+        if (!empty($parentTask)) {
+            $parentTask = ['id' => $parentTask->id, 'name' => $parentTask->name];
+        }
+        
+        //Get children tasks:
+        $childrens = self::getChildren($task->id, $task->project_id);
+        $childrenList = [];
+        if (!empty($childrens)) {
+            foreach ($childrens as $key => $val) {
+                $childrenList[] =  ['id' => $val->id, 'name' => $val->name];
+            }
+        }
+        
+        //Get file list.
+        $fileList = File::getFileByOwnerIdAndTable($taskId, self::tableName());
+        $theory = $task->estimate_hour > 0 ? ((int) (($task->worked_hour / $task->estimate_hour) * 100)) : 0;
+        $startDateTime = !empty($task->start_datetime) ? date('Y-m-d', $task->start_datetime) : null;
+        $duedatetime   = !empty($task->duedatetime)    ? date('Y-m-d', $task->duedatetime) : null;
+        $creatorTask = [
+                'id'         => $task->created_employee_id,
+                'image'      => !empty($task->employee) ? $task->employee->getImage() : null,
+                'fullname'  => !empty($task->employee) ? $task->employee->getFullName() : null,
+        ];
+        
+        $assigner = [
+                'id'         => $task->employee_id,
+                'image'      => !empty($task->assigner) ? $task->assigner->getImage() : null,
+                'fullname'  => !empty($task->assigner) ? $task->assigner->getFullName() : null,
+        ];
+        
+        //Use to check whether or not employee to view task.
+        $assignView = false;
+        // get followed employees via follower table.
+        $followers = [];
+        if ($task->followers) {
+            foreach ($task->followers as $follower) {
+                $followers[] = ['id' => $follower->id, 'fullname' => $follower->fullname, 'image' => $follower->getImage(), 'email' => $follower->email];
+                if ($follower->id == \Yii::$app->user->getId()) {
+                    $assignView = true;
+                }
+            }
+        }
+        
+        $assignees = [];
+        if ($task->assignees) {
+            foreach ($task->assignees as $assignee) {
+                $assignees[] = ['id' => $assignee->id, 'fullname' => $assignee->fullname, 'image' => $assignee->getImage(), 'email' => $assignee->email];
+                if ($assignee->id == \Yii::$app->user->getId()) {
+                    $assignView = true;
+                }
+            }
+        }
+        //get remind by owner id
+        $remind = Remind::getByOwnerIdAndOwnerTable($taskId, Task::tableName());
+
+        //get list task group
+        $taskGroups = [];
+        foreach ($task->taskGroupAllocations AS $taskgroup){
+            if (!empty($taskgroup->taskgroups)) {
+                $taskGroups[$taskgroup->taskgroups->id] = $taskgroup->taskgroups->id;
+            }
+        }
+
+        $result = [
+                'task' => [
+                        'id'                => $task->id,
+                        'name'              => $task->name,
+                        'kpi_id'            => $task->kpi_id,
+                        'theory'            => $theory,
+                        'parent_id'         => $task->parent_id,
+                        'is_public'         => $task->is_public,
+                        'status_id'         => $task->status_id,
+                        'created_by'        => $creatorTask,
+                        'project_id'        => $task->project_id,
+                        'priority_id'       => $task->priority_id,
+                        'employee_id'       => $task->employee_id,
+                        'description'       => $task->description,
+                        'worked_hour'       => $task->worked_hour,
+                        'duedatetime'       => $duedatetime,
+                        'status_name'       => $task->status->name,
+                        'priority_name'     => $task->priority->name,
+                        'estimate_hour'     => $task->estimate_hour,
+                        'start_datetime'    => $startDateTime,
+                        'is_public_name'    => $task->getIsPublic(),
+                        'completed_percent' => $task->completed_percent,
+                        'description_parse' => $task->description_parse,
+                        'creator_event_id'  => $task->created_employee_id,
+                        'remind'        => isset($remind->minute_before) ? $remind->minute_before : null,
+                ],
+                'file_info'     => $fileList,
+                'parentTask'   => $parentTask,
+                'childrenList' => $childrenList,
+                'assigner' => $assigner,
+                'followers' => $followers,
+                'taskGroup' => array_values($taskGroups),
+                'assignees' => $assignees,
+                'employeeList' => array_merge($followers,$assignees),
+                'assignView' => $assignView
+        ];
+        
+        return $result;
+    }
 }

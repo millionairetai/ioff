@@ -175,10 +175,10 @@ class Project extends \common\components\db\ActiveRecord {
 
         //Department: inner join project_participant with department where project_id, company_id, owner_table=department.
         $projectParticipants = ProjectParticipant::getListByProjectId($projectId);
-        if(!empty($projectParticipants)){
+        if(!empty($projectParticipants)) {
             $departmentNames = empty($projectParticipants['department'])  ? [] : $projectParticipants['department'];
             $participants    = empty($projectParticipants['owner_table']) ? [] : $projectParticipants['owner_table'];
-                }
+        }
 
         // * Get employee information in employee table with where = employee_id or department_id
         $employeeIds = isset($participants['employee']) ? $participants['employee'] : null;

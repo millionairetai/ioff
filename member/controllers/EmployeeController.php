@@ -67,10 +67,10 @@ class EmployeeController extends ApiController {
             $employees = $project->getEmployees();
             
             foreach ($employees as $employee){
-                if($keyword == '' || strpos($employee->firstname,$keyword) === 0){
+                if($keyword == '' || strpos($employee->fullname,$keyword) === 0){
                     $collection[] = [
                         'id' => $employee->id,
-                        'firstname' => $employee->firstname,
+                        'fullname' => $employee->fullname,
                         'email' => $employee->email,
                         'image' => $employee->getImage()
                     ];
