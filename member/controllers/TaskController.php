@@ -24,7 +24,6 @@ class TaskController extends ApiController {
      * sms not write t db.
      * 
      */
-
     public function actionAdd() {
         $objects = [];
         $postData = [];
@@ -43,7 +42,7 @@ class TaskController extends ApiController {
             $task->duedatetime = $task->duedatetime ? strtotime($task->duedatetime) : null;
 
             if (!$task->save()) {
-                $this->_message = $this->parserMessage($ob->getErrors());
+                $this->_message = $this->parserMessage($task->getErrors());
                 $this->_error = true;
                 throw new \Exception($this->_message);
             }
@@ -72,8 +71,8 @@ class TaskController extends ApiController {
             $activity->owner_table = Activity::TABLE_TASK;
             $activity->parent_employee_id = 0;
             $activity->employee_id = \Yii::$app->user->getId();
-            $activity->type = "create_task";
-            $activity->content = \Yii::$app->user->identity->firstname . " " . \Yii::t('common', 'created') . " " . $task->name;
+            $activity->type = Activity::TYPE_CREATE_TASK;
+            $activity->content = Activity::makeContent(\Yii::t('common', 'created'), $task->name);
             if (!$activity->save()) {
                 throw new \Exception('Save record to table Activity fail');
             }
@@ -1109,4 +1108,43 @@ class TaskController extends ApiController {
         return $content == '' ? false : "<ul>" . $content . "</ul>";
     }
     
+    /**
+     * Get My task list show caledar.
+     */
+    public function actionGetMyTaskForCalendar() {
+        $result = [];
+        if ($tasks = Task::getMyTaskForCalendar()) {
+            foreach ($tasks as $task) {
+                $duedatetime = $task['duedatetime'] == null ? : $task['duedatetime'];
+                $result[] = [
+                    'color' => "#00a65a",
+                    'start' => date('Y-m-d'),
+                    'end' => !empty($duedatetime) ? date('Y-m-d H:i:s', $duedatetime) : date('Y-m-d', $duedatetime),
+                    'title' => 'Task: ' . $task['name']
+                ];
+            }
+        }
+        return $this->sendResponse(false, '', $result);
+    }
+        
+    /**
+     * Get my follow task list show caledar.
+     */
+    public function actionGetMyFollowTaskForCalendar() {
+        $result = [];
+        if ($tasks = Task::getMyFollowTaskForCalendar()) {
+            foreach ($tasks as $task) {
+                    $duedatetime = $task['duedatetime'] == null ? : $task['duedatetime'];
+                    $result[] = [
+                            'color' => "#3b91ad",
+                    'start' => date('Y-m-d'),
+                    'end' => !empty($duedatetime) ? date('Y-m-d H:i:s', $duedatetime) : date('Y-m-d', $duedatetime),
+                            'title' => 'Follow: ' . $task['name']
+                    ];
+                }
+            }
+        
+        return $this->sendResponse(false, '', $result);
+    }
+
 }

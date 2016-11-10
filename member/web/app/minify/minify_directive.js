@@ -218,8 +218,6 @@ angular.module('iofficez').directive('clickOnce', function ($timeout) {
         }
     };
 });
-//http://plnkr.co/edit/2aZWQSLS8s6EhO5rKnRh?p=preview
-//http://blog.codebrag.com/post/57412530001/preventing-duplicated-requests-in-angularjs
 appRoot.directive('eventFixed', function ($window) {
     var $win = angular.element($window); // wrap window object as jQuery object
 
@@ -300,6 +298,20 @@ appRoot.directive('radioColor', function($timeout, $parse) {
                 });
             });
             
+        }
+    };
+});appRoot.directive('scrolly', function () {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            var raw = element[0];
+            
+            //need jquery
+            $(element).on('scroll', function () {
+                if (raw.scrollTop + raw.offsetHeight >= raw.scrollHeight) {
+                    scope.$apply(attrs.scrolly);
+                }
+            });
         }
     };
 });appRoot.directive('searchEmployee', ['employeeService', '$modal', function (employeeService, $modal) {

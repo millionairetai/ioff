@@ -240,4 +240,24 @@ class ActiveRecord extends \yii\db\ActiveRecord
                         ->andCompanyId()
                         ->exists(); 
     }
+        
+    /**
+     * BatchInsert
+     * 
+     * @param array $dataInsert
+     * @return boolean
+     */
+    public static function batchInsert($dataInsert, $columns = []) {
+        if (!empty($dataInsert)) {
+            if (empty($columns)) {
+                $columns = array_keys($dataInsert[0]);
+            }
+            
+            if (!\Yii::$app->db->createCommand()->batchInsert(self::tableName(), $columns, $dataInsert)->execute()) {
+                throw new \Exception('Save record to' . self::tableName() . ' table fail');
+            }
+        }
+        
+        return true;
+    }
 }

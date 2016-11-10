@@ -72,8 +72,8 @@ class Task extends \common\components\db\ActiveRecord {
             'kpi_id' => 'Kpi ID',
             'parent_id' => 'Parent ID',
             'employee_id' => 'Employee ID',
-            'name' => 'Name',
-            'description' => 'Description',
+            'name' => Yii:: t('common', 'Name'),
+            'description' => Yii:: t('common', 'Description'),
             'description_parse' => 'Description Parse',
             'start_datetime' => 'Start Datetime',
             'duedatetime' => 'Duedatetime',
@@ -382,4 +382,77 @@ class Task extends \common\components\db\ActiveRecord {
         
         return $result;
     }
+    
+    /**
+     * Get tasks by project id.
+     * @param interger $projectId
+     * @return array|null
+     */
+    public static function getByProjectId($projectId) {
+        return self::find()
+                        ->select(['id', 'name'])
+                        ->where(['project_id' => \Yii::$app->request->get('project_id')])
+                        ->andCompanyId()
+                        ->orderBy('datetime_created DESC')
+                        ->asArray()
+                        ->all();
+    }
+
+    /**
+     * Get list task of employees login
+     */
+    public static function getMyTaskForCalendar() {
+        $subTaskAssiQuery = TaskAssignment::find()
+                ->select('task_id')
+                ->where(['employee_id' => \Yii::$app->user->identity->id]);
+
+        return self::find()
+                        ->select(['task.id', 'task.name', 'task.start_datetime', 'task.duedatetime'])
+                        ->leftJoin('status', 'task.status_id=status.id')
+                        ->andWhere(['task.id' => $subTaskAssiQuery])
+                        ->andWhere(['not in', Status::tableName() . '.column_name', ['task.completed', 'task.closed']])
+                        ->andCompanyId(false, 'task')
+                        ->orderBy('task.datetime_created DESC')
+                        ->asArray()
+                        ->all();
+    }
+
+    /**
+     * Get all task follow employess login
+     */
+    public static function getMyFollowTaskForCalendar() {
+        $subFollowQuery = Follower::find()
+                ->select('task_id')
+                ->where(['employee_id' => \Yii::$app->user->identity->id]);
+
+        return self::find()
+                        ->select(['task.id', 'task.name', 'task.start_datetime', 'task.duedatetime'])
+                        ->leftJoin('status', 'task.status_id=status.id')
+                        ->andWhere(['task.id' => $subFollowQuery])
+                        ->andWhere(['not in', Status::tableName() . '.column_name', ['task.completed', 'task.closed']])
+                        ->andCompanyId(false, 'task')
+                        ->orderBy('task.datetime_created DESC')
+                        ->asArray()
+                        ->all();
+    }
+
+    /**
+     * Get list task of employees login
+     */
+    public static function getMyTaskForPopup($itemPerPage = 10, $currentPage = 1) {
+        $subTaskAssiQuery = TaskAssignment::find()
+                    ->select('task_id')
+                    ->where(['employee_id' => \Yii::$app->user->identity->id]);
+        return self::find()
+                    ->select(['task.id', 'task.name', 'completed_percent'])
+                    ->leftJoin('status', 'task.status_id=status.id')
+                    ->andWhere(['task.id' => $subTaskAssiQuery])
+                    ->andWhere(['not in', Status::tableName() . '.column_name', ['task.completed', 'task.closed']])
+                    ->andCompanyId(false, 'task')
+                    ->orderBy('task.datetime_created DESC')
+                    ->limit($itemPerPage)
+                    ->offset(($currentPage - 1) * $itemPerPage)
+                    ->asArray()
+                    ->all();
+    }    
 }

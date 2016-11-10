@@ -160,7 +160,7 @@ class Employee extends ActiveRecord implements IdentityInterface
             'tax_code' => Yii::t('app', 'Tax Code'),
             'tax_department' => Yii::t('app', 'Tax Department'),
             'start_working_date' => Yii::t('app', 'Start Working Date'),
-            'stop_working_date'  => Yii::t('app', 'Stop Working Date'),
+            'stop_working_date' => Yii::t('app', 'Stop Working Date'),
             'is_visible' => Yii::t('app', 'Is Visible'),
             'profile_image_path' => Yii::t('app', 'Profile Image Path'),
             'language_code' => Yii::t('app', 'Language code'),
@@ -341,14 +341,19 @@ class Employee extends ActiveRecord implements IdentityInterface
     
     /**
      * send email to employee
+     * 
+     * @param array $dataSend
+     * @param array $themeEmail
+     * 
+     * @return boolen
      */
-    public function sendMail($dataSend, $themeEmail){
-        if(!$themeEmail){
+    public function sendMail($dataSend, $themeEmail) {
+        if (!$themeEmail) {
             return false;
         }
         $body = $themeEmail->body;
         $subject = $themeEmail->subject;
-        foreach($dataSend as $key => $value){
+        foreach ($dataSend as $key => $value) {
             $body = str_replace($key, $value, $body);
         }
         /*\Yii::$app->mailer->compose()
@@ -359,20 +364,22 @@ class Employee extends ActiveRecord implements IdentityInterface
         ->setHtmlBody($body)
         ->send();*/
         
+        return true;
     }
     
     /**
      * send sms to employee
      */
-    public function sendSms($dataSend,$themeSms){
-        if(!$themeSms){
+    public function sendSms($dataSend, $themeSms) {
+        if (!$themeSms) {
             return false;
         }
         $body = $themeSms->body;
-        foreach($dataSend as $key => $value){
+        foreach ($dataSend as $key => $value) {
             $body = str_replace($key, $value, $body);
         }
     }
+
     /**
      * Update last_ip_address,last_login_datetime after login
      */

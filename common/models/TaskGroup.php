@@ -76,4 +76,17 @@ class TaskGroup extends \common\components\db\ActiveRecord
     
         return true;
     }
+    
+        /**
+     * Get task groups by project id
+     * @param interger $projectId
+     * @return array|boolean
+     */
+    public static function getByProjectId($projectId) {
+       return self::find()->select(['id', 'name'])
+               ->andWhere(['project_id' => $projectId])
+               ->andCompanyId()
+               ->asArray()
+               ->all();
+    }
 }

@@ -170,6 +170,9 @@ class ProjectController extends ApiController {
                     
                     $themeEmail = \common\models\EmailTemplate::getThemeCreateProject();
                     $themeSms = \common\models\SmsTemplate::getThemeCreateProject();
+                    if ($ob->manager_project_id) {
+                        $projEmployee[] = ['project_id' => $ob->id, 'employee_id' => $ob->manager_project_id];
+                    }
                     
                     foreach ($arrayEmployees as $item) {
                         $no = new Notification();

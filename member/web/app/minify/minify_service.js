@@ -609,6 +609,9 @@ appRoot.factory('taskService', ['apiService','$rootScope','alertify', function (
             getTaskView : function (data,success,error) {
                 apiService.get('task/view',data,success,error);
             },
+            getParentTasks : function (data,success,error) {
+                apiService.get('task/get-parent-tasks',data,success,error);
+            },
             validate_step1 : function(object) {
                 var message = "";
                 var now = new Date();
@@ -617,7 +620,11 @@ appRoot.factory('taskService', ['apiService','$rootScope','alertify', function (
                     message += $rootScope.$lang.task_name_error_empty + "<br/>";
                 }
                 
-                if(object.project_id.length == 0){
+                if(object.name.length > 255){
+                    message += $rootScope.$lang.name_less_than_255_character + "<br/>";
+                }
+                
+                if(object.project_id.length == 0 || object.project_id.length == null){
                     message += $rootScope.$lang.task_project_name_error_empty + "<br/>";
                 }
                 
@@ -646,11 +653,20 @@ appRoot.factory('taskService', ['apiService','$rootScope','alertify', function (
                 return true;
                 
             },
-            validate_step2 : function(object){
+            validate_step2 : function(object) {
                 var message = "";
-                                
-                if(object.taskGroupIds.length == 0){
-                    message += $rootScope.$lang.task_group_error_empty + "<br/>";
+                if(Object.prototype.toString.call(object.duedatetime) !== '[object Date]' && object.redmind > 0) {
+                    message += $rootScope.$lang.task_duedatetime_error_empty + "<br/>";
+                } else {
+                    if(object.redmind > 0){
+                        var sub = moment(object.duedatetime).subtract({ minutes: object.redmind});
+                        var now = moment();
+//                        console.log(sub.diff(now, 'minutes'));
+//                        console.log(sub.diff(now));
+                        if(sub.diff(now) < 0){
+                            message += $rootScope.$lang.task_check_valid_redmind + "<br/>";
+                        }
+                    }
                 }
                 
                 if(message.length > 0){
@@ -666,6 +682,9 @@ appRoot.factory('taskService', ['apiService','$rootScope','alertify', function (
             editTask : function (data,success,error){
                 apiService.upload('task/edit',data,success,error);
             },
+            getMyTasks : function (data,success,error) {
+                apiService.get('task/get-my-tasks',data,success,error);
+            },
             getAssingedTasks : function (data,success,error) {
                 apiService.get('task/get-assigned-tasks',data,success,error);
             },
@@ -680,7 +699,13 @@ appRoot.factory('taskService', ['apiService','$rootScope','alertify', function (
             },
             getSearchGlobalTasks:  function(data,success,error) {
                 apiService.post('task/get-search-global-tasks',data,success,error);
-            }            
+            },
+            getMyTaskForCalendar:  function(data,success,error) {
+                apiService.post('task/get-my-task-for-calendar',data,success,error);
+            },
+            getMyFollowTaskForCalendar:  function(data,success,error) {
+                apiService.post('task/get-my-follow-task-for-calendar',data,success,error);
+            }
         };
     }]);
 appRoot.factory('TaskPostService', ['apiService', '$rootScope', 'alertify', function (apiService, $rootScope, alertify) {

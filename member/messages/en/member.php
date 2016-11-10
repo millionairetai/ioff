@@ -114,5 +114,6 @@ return [
     'remove task post success'  => 'Remove task post success',
     'remove task post error' => 'Remove task post error',
     'task group' => 'Task group',
-    'error calendar name is existed' => 'Calendar name is existed'
+    'error calendar name is existed' => 'Calendar name is existed',
+    'has any employees in this project' => 'Do not has any employees in this project',
 ];

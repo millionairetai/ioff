@@ -40,9 +40,17 @@ appRoot.run(function ($rootScope, socketService, notifyService, taskService, com
         return $sce.trustAsHtml(html);
     };
 
+    $rootScope.myTasks = null;
+    var currentPage = 1;
     $rootScope.getTaskForDropdown = function () {
-        taskService.getTaskForDropdown({}, function (respone) {
-            $rootScope.taskDropdown = respone.objects.collection;
+        taskService.getTaskForDropdown({currentPage: currentPage}, function (respone) {
+            if ($rootScope.myTasks) {
+                $rootScope.myTasks = angular.merge($rootScope.myTasks.concat(respone.objects.collection), respone.objects.collection);
+            }else {
+                $rootScope.myTasks = respone.objects.collection;
+            }
+            currentPage++;
+            $rootScope.taskDropdown =  $rootScope.myTasks;
         });
     }
 

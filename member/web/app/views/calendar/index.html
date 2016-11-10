@@ -111,7 +111,13 @@
                 </div>
                     </div>
                 <div class="box-footer no-padding">
-                        <ul class="list-calendar-title">
+                    <ul class="list-calendar-title">
+                        <li>
+                            <a><input type="checkbox" checklist-model="chooseMyTask" checklist-value="true" icheck ng-change="checkCalendar()"> {{$root.$lang.my_task}} <span class="pull-right badge bg-blue">{{myTask.length}}</span></a>
+                        </li>
+                        <li>
+                            <a><input type="checkbox" checklist-model="chooseMyFollowTask" checklist-value="true" icheck ng-change="checkCalendar()"> {{$root.$lang.my_follow_task}} <span class="pull-right badge bg-blue">{{myFollowTask.length}}</span></a>
+                        </li>
                         <li ng-repeat="calendar in calendars">
                                 <input type="checkbox" checklist-model="chooseCalendar" checklist-value="calendar.id" icheck ng-change="checkCalendar()"> {{calendar.name}}
                                 <div class="btn-group pull-right">

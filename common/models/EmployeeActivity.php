@@ -74,4 +74,62 @@ class EmployeeActivity extends \common\components\db\ActiveRecord
             'disabled' => 'Disabled',
         ];
     }
+
+    /**
+     * Get employee activity by employee id
+     *
+     * @param integer $employeeId
+     * @return object
+     */
+    public static function getByEmployeeId($employeeId) {
+        return self::find()
+                        ->andWhere(['employee_id' => $employeeId])
+                        ->andCompanyId()
+                        ->one();
+    }
+
+    /**
+     * Get employee activity by employee id
+     *
+     * @param string $columnName
+     * @param integer $employeeId
+     * @return boolean
+     */
+    public function increase($columnName) {
+        if (!$this->activity_total) {
+            $this->employee_id = Yii::$app->user->getId();
+            $this->{$columnName} = $this->activity_total = 0;
+        }
+
+        $this->{$columnName} += 1;
+        $this->activity_total += 1;
+        if (!$this->save()) {
+            throw new \Exception('Save record to employee_activity table fail');
+        }
+        
+        return true;
+    }
+    
+        /**
+     * Get employee activity by employee id
+     *
+     * @param string $columnName
+     * @param integer $employeeId
+     * @return boolean
+     */
+    public function decrease($columnName) {
+        if (!$this->activity_total) {
+            $this->employee_id = $employeeId;
+            $this->{$columnName} = $this->activity_total = 0;
+        }
+
+        $this->{$columnName} += 1;
+        $this->activity_total += 1;
+        if (!$this->save()) {
+            throw new \Exception('Save record to employee_activity table fail');
+        }
+        
+        return true;
+    }
+
 }

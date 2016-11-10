@@ -1,5 +1,5 @@
-appRoot.factory('commonService', ['$rootScope', 'apiService', 'taskService', 'projectService', 'calendarService',
-    function ($rootScope, apiService, taskService, projectService, calendarService) {
+appRoot.factory('commonService', ['apiService', 'taskService', 'projectService', 'calendarService', '$rootScope',
+    function (apiService, taskService, projectService, calendarService, $rootScope) {
 
         return {
             getSearchGlobalSuggest: function (params, success, error) {

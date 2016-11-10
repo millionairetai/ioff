@@ -1,6 +1,6 @@
 //show calendar
-appRoot.controller('calendarCtrl', ['$scope', '$uibModal', 'calendarService', '$timeout', 'settingSystem', 'uiCalendarConfig', 'listCalendar', '$rootScope', 'dialogMessage', 'alertify', 
-    function ($scope, $uibModal, calendarService, $timeout, settingSystem, uiCalendarConfig, listCalendar, $rootScope, dialogMessage, alertify) {
+appRoot.controller('calendarCtrl', ['$scope', '$uibModal', 'calendarService', 'taskService', '$timeout', 'settingSystem', 'uiCalendarConfig', 'listCalendar', '$rootScope', 
+    function ($scope, $uibModal, calendarService, taskService, $timeout, settingSystem, uiCalendarConfig, listCalendar, $rootScope) {
         var date = new Date();
         var d = date.getDate();
         var m = date.getMonth();
@@ -79,21 +79,60 @@ appRoot.controller('calendarCtrl', ['$scope', '$uibModal', 'calendarService', '$
             });
         }
 
+        //Add my task in calendar
+        $scope.myTask = [];
+        $scope.chooseMyTask = [];
+        taskService.getMyTaskForCalendar({}, function (respone) {
+            $scope.myTask = respone.objects;
+            $scope.chooseMyTask.push(true);
+        });
+
+        //Add my follow task in calendar
+        $scope.myFollowTask = [];
+        $scope.chooseMyFollowTask = [];
+        taskService.getMyFollowTaskForCalendar({}, function (respone) {
+            $scope.myFollowTask = respone.objects;
+        });
+
         $scope.resetEvents = function (start, end) {
             calendarService.listEvents({start: start.format('YYYY-MM-DD'), end: end.format('YYYY-MM-DD'), calendars: $scope.chooseCalendar}, function (respone) {
                 $scope.events.length = 0;
-                for ($i = 0; $i < respone.objects.length; $i++) {
-                    allDay = respone.objects[$i].is_all_day == 1 ? true : false;
-                    var newEvent = {
-                        title: respone.objects[$i].title,
-                        start: moment(respone.objects[$i].start).toDate(),
-                        end: moment(respone.objects[$i].end).toDate(),
-                        color: respone.objects[$i].color,
-                        url: '#/viewEvent/' + respone.objects[$i].id,
-                        allDay : allDay
-                    };
-                    $scope.events.push(newEvent);
+                $scope.canlendars = respone.objects;
+                $scope.tasks = $scope.myTask;
+                if ($scope.chooseMyTask != 'true') {
+                    $scope.tasks = [];
                 }
+
+                if ($scope.chooseMyFollowTask == 'true') {
+                    $scope.tasks = $scope.tasks.concat($scope.myFollowTask);
+                }
+
+                $scope.results = $scope.canlendars.concat($scope.tasks);
+                angular.forEach($scope.results, function(value, key) {
+                    allDay = value.is_all_day == 1 ? true : false;
+                    var newEvent = {
+                            title: value.title,
+                            start: moment(value.start).toDate(),
+                            end: moment(value.end).toDate(),
+                            color: value.color,
+                            url: '#/viewEvent/' + value.id,
+                            allDay : allDay
+                        };
+                        $scope.events.push(newEvent);
+                });
+                
+//                for ($i = 0; $i < respone.objects.length; $i++) {
+//                    allDay = respone.objects[$i].is_all_day == 1 ? true : false;
+//                    var newEvent = {
+//                        title: respone.objects[$i].title,
+//                        start: moment(respone.objects[$i].start).toDate(),
+//                        end: moment(respone.objects[$i].end).toDate(),
+//                        color: respone.objects[$i].color,
+//                        url: '#/viewEvent/' + respone.objects[$i].id,
+//                        allDay : allDay
+//                    };
+//                    $scope.events.push(newEvent);
+//                }
 
             });
         }

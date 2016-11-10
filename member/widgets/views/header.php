@@ -110,7 +110,7 @@
                         <li class="header">Bạn có 9 công việc</li>
                         <li>
                             <!-- inner menu: contains the actual data -->
-                            <ul class="menu">
+                            <ul class="menu" scrolly="getTaskForDropdown()">
                                 <li ng-repeat="task in taskDropdown"><!-- Task item -->
                                     <a href="#">
                                         <h3>

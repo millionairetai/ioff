@@ -29,6 +29,7 @@ class EmailTemplate extends \common\components\db\ActiveRecord
     const CREATE_PROJECT = 'create_project';
     const CREATE_PROJECT_POST = 'create_project_post';
     const CREATE_EVENT_POST = 'create_event_post';
+    const INVITE_NEW_EMPLOYEE = 'invite_new_employee';
     
     /**
      * @inheritdoc
@@ -248,5 +249,29 @@ class EmailTemplate extends \common\components\db\ActiveRecord
         }
     
         return null;
+    }
+        
+    /**
+     * Get theme email of project post
+     * 
+     * @param $type
+     * @return string|
+     */
+    public static function getTheme($type) {
+        $where = ['language_code' => \Yii::$app->language,];
+        switch ($type) {
+            case self::INVITE_NEW_EMPLOYEE:
+                $where += ['column_name' => self::INVITE_NEW_EMPLOYEE];
+                break;
+            default:
+                break;
+        }
+        
+        $theme = self::find()->select(['subject', 'body', 'default_from_email'])->where($where)->one();
+        if($theme) {
+            return $theme;
+        }
+        
+        return '';
     }
 }

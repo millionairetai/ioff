@@ -109,5 +109,6 @@ return [
     'remove task post success'  => 'Xóa bài đăng công việc thành công',
     'remove task post error' => 'Xóa bài đăng công việc bị lỗi',
     'task group' => 'Loại công việc',
-    'error calendar name is existed' => 'Tên lịch đã tồn tại'
+    'error calendar name is existed' => 'Tên lịch đã tồn tại',
+    'Do not has any employees in this project' => 'Không có bất kỳ nhân viên nào trong dự án này',
 ];

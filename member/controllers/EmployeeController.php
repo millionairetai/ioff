@@ -6,6 +6,10 @@ use Yii;
 use common\components\web\StatusMessage;
 use common\models\Employee;
 use common\models\Project;
+use common\models\EmailTemplate;
+use yii\validators\EmailValidator;
+use common\models\Status;
+use common\models\ProjectEmployee;
 
 class EmployeeController extends ApiController {
 
@@ -109,5 +113,103 @@ class EmployeeController extends ApiController {
                                 
         return $this->sendResponse($error, $message, $objects);
     }    
+
+    //Get all employees by status
+    public function actionGetEmployees() {
+        $objects = [];
+        $itemPerPage = \Yii::$app->request->get('limit');
+        $currentPage = \Yii::$app->request->get('page');
+        $searchName = \Yii::$app->request->get('searchName');
+        $statusName = Yii::$app->request->get('statusName', []);
+        $employees = Employee::getEmployeesByStatusName($statusName, $searchName, $itemPerPage, $currentPage);
+
+        if ($employees['employee']) {
+            foreach ($employees['employee'] as $employee) {
+                $objects['employees'][] = [
+                    'id' => $employee->id,
+                    'fullname' => $employee->fullname,
+                    'email' => $employee->email,
+                    'image' => $employee->image,
+                    'is_admin' => $employee->is_admin,
+                    'department' => !empty($employee->department->name) ? $employee->department->name : '',
+                    'status' => $employee->status->name,
+                ];
+            }
+        }
+
+        $objects['totalItems'] = (int) $employees['totalCount'];
+        return $this->sendResponse(false, "", $objects);
+    }
+
+    //Get all employees by status
+    public function actionInvite() {
+        $objects = [];
+        $message = \Yii::$app->request->post('message');
+        $emails = \Yii::$app->request->post('emails');
+        $this->_message = 'Email %s is invalid';
+
+        try {
+            //Check valid if that's email
+            $error = null;
+            $validator = new EmailValidator();
+            foreach ($emails as $key => $email) {
+                $emails[$key] = trim($email);
+                if (!$validator->validate($emails[$key], $error)) {
+                    $this->_message = sprintf($this->_message, $email);
+                    throw new \Exception($this->_message);
+                }
+            }
+
+            //Check whether emails is existed.
+            if ($existedEmail = Employee::getExistedEmailByEmails($emails)) {
+                $this->_message = 'Email %s is existed';
+                $this->_message = sprintf($this->_message, implode(', ', array_values($existedEmail)));
+                throw new \Exception($this->_message);
+            }
+
+            //Send email
+            $themeEmail = EmailTemplate::getTheme(EmailTemplate::INVITE_NEW_EMPLOYEE);
+            $dataSend = [
+                '{inviter}' => \Yii::$app->user->identity->firstname,
+                '{urlConfirm}' => '',
+                '{message}' => $message
+            ];
+
+            if (!$status = Status::getByOwnerTableAndColumnName('employee', Employee::COLUNM_NAME_INVITED)) {
+                $this->_message = 'Can not invite new employee';
+                throw new \Exception($this->_message);
+            }
+
+            $employee = new Employee();
+            $employees = [];
+            foreach ($emails as $email) {
+                $dataSend['{urlConfirm}'] = SITE_URL . '/index/register?email=' . $email;
+                $employee->email = $email;
+                $employees[] = [
+                    'email' => $email,
+                    'firstname' => '',
+                    'lastname' => '',
+                    'password' => '',
+                    'status_id' => $status['id'],
+                    'password_reset_token' => md5(uniqid() . $email)
+                ];
+
+                if (!$employee->sendMail($dataSend, $themeEmail)) {
+                    $this->_message = 'Can not send email to ' . $email;
+                    throw new \Exception($this->_message);
+                }
+            }
+
+            //Insert batch new invited employee
+            if (!Employee::batchInsert($employees)) {
+                $this->_message = 'Invite new employees fail ';
+                throw new \Exception($this->_message);
+            }
+        } catch (\Exception $e) {
+            return $this->sendResponse(true, $e->getMessage(), []);
+        }
+
+        return $this->sendResponse(false, "", $objects);
+    }
 
 }
