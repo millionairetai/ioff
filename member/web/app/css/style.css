@@ -123,6 +123,9 @@ a:focus{
     border-left: 20px solid #00c0ef !important;
 } 
 
+ul.list-project {
+    list-style-type: none;
+}
 
 /*------------------*/
 .table-input-time{

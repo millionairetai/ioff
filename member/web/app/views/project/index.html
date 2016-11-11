@@ -24,47 +24,41 @@
                     {{$root.$lang.project_empty}}
             </div>-->
             <br/>
-            <table class="table table-vertical" ng-show="collection.length">
-                <tr>
-                    <th>#</th>
-                    <th width="40%">{{$root.$lang.project_name}}</th>
-                    <th>{{$root.$lang.project_status}}</th>
-                    <th>{{$root.$lang.project_theory}}</th>
-                    <th width="10"></th>
-                    <th>{{$root.$lang.project_real}}</th>
-                    <th width="10"></th>
-                </tr>
-                <tr ng-repeat="ob in collection">
-                    <td>{{$index+1}}</td>
-                    <td>
+            <ul id="list-project" ng-show="collection.length" class="list-project">
+                <li ng-repeat="ob in collection">
+                    <div class="row">
+                        <div class="col-md-8">
                         <a href="#/viewProject/{{ob.id}}"><strong>{{ob.name}}</strong></a><br/>
+                            <p><span class="label label-status label-{{ob.status_id}}">{{ob.status}}</span></p>
                         <i>{{ob.description}}</i>
-                    </td>
-                    <td>
-                        <span class="label label-status label-{{ob.status_id}}">{{ob.status}}</span>
-                    </td>
-                    <td>
-                        <div class="progress progress-xs active">
+                            
+                        </div>
+                        <div class="col-md-4">
+                            <div class="progress-group">
+                                <span class="progress-text">{{$root.$lang.project_theory}}</span>
+                                <span class="progress-number"><span class="label label-success">{{ob.completed_percent}}%</span></span>
+
+                                <div class="progress xs active">
                             <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: {{ob.completed_percent}}%">
                                 <span class="sr-only">{{ob.completed_percent}}% </span>
                             </div>
                         </div>
-                    </td>
-                    <td> 
-                        <span class="label label-success">{{ob.completed_percent}}%</span>
-                    </td>
-                    <td>
-                        <div class="progress progress-xs active">
+                            </div>
+
+                            <div class="progress-group">
+                                <span class="progress-text">{{$root.$lang.project_real}}</span>
+                                <span class="progress-number"><span class="label label-warning">{{ob.theory}}%</span></span>
+
+                                <div class="progress xs active">
                             <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: {{ob.theory}}%">
                                 <span class="sr-only">{{ob.theory}}% </span>
                             </div>
                         </div>
-                    </td>
-                    <td> 
-                        <span class="label label-warning">{{ob.theory}}%</span>
-                    </td>
-                </tr>
-            </table>
+        </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
         </div>
         <div class="box-footer text-center" >
             <button class="btn form-control cursor-pointer viewmorecl" ng-click="viewMore()" ng-show="filter.totalItems > (filter.currentPage * filter.itemPerPage)"><a>{{$root.$lang.view_more_upper_case}}</a></button>
