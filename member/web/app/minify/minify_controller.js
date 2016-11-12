@@ -241,8 +241,8 @@ appRoot.controller('AddAuthorityCtrl', ['$scope', '$uibModalInstance', 'controll
             });
         };
     }]);//show calendar
-appRoot.controller('calendarCtrl', ['$scope', '$uibModal', 'calendarService', '$timeout', 'settingSystem', 'uiCalendarConfig', 'listCalendar', '$rootScope',
-    function ($scope, $uibModal, calendarService, $timeout, settingSystem, uiCalendarConfig, listCalendar, $rootScope) {
+appRoot.controller('calendarCtrl', ['$scope', '$uibModal', 'calendarService', 'taskService', '$timeout', 'settingSystem', 'uiCalendarConfig', 'listCalendar', '$rootScope', 
+    function ($scope, $uibModal, calendarService, taskService, $timeout, settingSystem, uiCalendarConfig, listCalendar, $rootScope) {
         var date = new Date();
         var d = date.getDate();
         var m = date.getMonth();
@@ -268,7 +268,7 @@ appRoot.controller('calendarCtrl', ['$scope', '$uibModal', 'calendarService', '$
                 eventLimit: 4,
                 timezone: "local",
                 lang: settingSystem.language,
-                height: 'auto',
+//                height: 'auto',
                 select: function (start, end, allDay) {
                     var modalInstance = $uibModal.open({
                         templateUrl: 'app/views/calendar/add.html',
@@ -289,6 +289,15 @@ appRoot.controller('calendarCtrl', ['$scope', '$uibModal', 'calendarService', '$
                     modalInstance.result.then(function (data) {
                         $timeout(function () {
                             $scope.resetEvents($scope.start, $scope.end);
+                        });
+
+                        calendarService.listCalendars({}, function (respone) {
+                            calendarService.listCalendars({}, function (calendars) {
+                                $scope.calendars = calendars.objects;
+                                for (i = 0; i < $scope.calendars.length; i++) {
+                                    $scope.chooseCalendar.push($scope.calendars[i].id);
+                                }
+                            });
                         });
                     }, function () {
                     });
@@ -312,25 +321,167 @@ appRoot.controller('calendarCtrl', ['$scope', '$uibModal', 'calendarService', '$
             });
         }
 
+        //Add my task in calendar
+        $scope.myTask = [];
+        $scope.chooseMyTask = [];
+        taskService.getMyTaskForCalendar({}, function (respone) {
+            $scope.myTask = respone.objects;
+            $scope.chooseMyTask.push(true);
+        });
+
+        //Add my follow task in calendar
+        $scope.myFollowTask = [];
+        $scope.chooseMyFollowTask = [];
+        taskService.getMyFollowTaskForCalendar({}, function (respone) {
+            $scope.myFollowTask = respone.objects;
+        });
+
         $scope.resetEvents = function (start, end) {
             calendarService.listEvents({start: start.format('YYYY-MM-DD'), end: end.format('YYYY-MM-DD'), calendars: $scope.chooseCalendar}, function (respone) {
                 $scope.events.length = 0;
-                for ($i = 0; $i < respone.objects.length; $i++) {
-                    allDay = respone.objects[$i].is_all_day == 1 ? true : false;
-                    var newEvent = {
-                        title: respone.objects[$i].title,
-                        start: moment(respone.objects[$i].start).toDate(),
-                        end: moment(respone.objects[$i].end).toDate(),
-                        color: respone.objects[$i].color,
-                        url: '#/viewEvent/' + respone.objects[$i].id,
-                        allDay : allDay
-                    };
-                    $scope.events.push(newEvent);
+                $scope.canlendars = respone.objects;
+                $scope.tasks = $scope.myTask;
+                if ($scope.chooseMyTask != 'true') {
+                    $scope.tasks = [];
                 }
+
+                if ($scope.chooseMyFollowTask == 'true') {
+                    $scope.tasks = $scope.tasks.concat($scope.myFollowTask);
+                }
+
+                $scope.results = $scope.canlendars.concat($scope.tasks);
+                angular.forEach($scope.results, function(value, key) {
+                    allDay = value.is_all_day == 1 ? true : false;
+                    var newEvent = {
+                            title: value.title,
+                            start: moment(value.start).toDate(),
+                            end: moment(value.end).toDate(),
+                            color: value.color,
+                            url: '#/viewEvent/' + value.id,
+                            allDay : allDay
+                        };
+                        $scope.events.push(newEvent);
+                });
+                
+//                for ($i = 0; $i < respone.objects.length; $i++) {
+//                    allDay = respone.objects[$i].is_all_day == 1 ? true : false;
+//                    var newEvent = {
+//                        title: respone.objects[$i].title,
+//                        start: moment(respone.objects[$i].start).toDate(),
+//                        end: moment(respone.objects[$i].end).toDate(),
+//                        color: respone.objects[$i].color,
+//                        url: '#/viewEvent/' + respone.objects[$i].id,
+//                        allDay : allDay
+//                    };
+//                    $scope.events.push(newEvent);
+//                }
 
             });
         }
+        
+        $scope.addCalendar = function () {
+            var modalInstance = $uibModal.open({
+                templateUrl: 'app/views/calendar/addCalendar.html',
+                controller: 'addCalendarCtrl',
+                size: 'lg',
+                keyboard: true,
+                backdrop: 'static',
+            });
+
+            modalInstance.result.then(function (data) {
+                calendarService.listCalendars({}, function (calendars) {
+                    $scope.calendars = calendars.objects;
+                    for (i = 0; i < $scope.calendars.length; i++) {
+                        $scope.chooseCalendar.push($scope.calendars[i].id);
+                    }
+                });
+            });
+        };
+
+        $scope.editCalendar = function (calendar, $index) {
+            var modalInstance = $uibModal.open({
+                templateUrl: 'app/views/calendar/editCalendar.html',
+                controller: 'editCalendarCtrl',
+                size: 'lg',
+                keyboard: true,
+                backdrop: 'static',
+                resolve: {
+                    calendar: function () {
+                        return calendar;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function (data) {
+                for (i = 0; i < $scope.calendars.length; i++) {
+                    if ($scope.calendars[i].id == data.id) {
+                        $scope.calendars[i].name = data.name;
+                    }
+                    $scope.chooseCalendar.push($scope.calendars[i].id);
+                }
+            });
+        };
+
+        //Delete calendar title
+        $scope.deleteCalendar = function (index, id) {
+            dialogMessage.open('confirm', $rootScope.$lang.confirm_delete_file, function () {
+                calendarService.deleteCalendar({calendarId: id}, function (data) {
+                    $scope.calendars.splice(index, 1);
+                    $scope.checkCalendar();
+                    alertify.success($rootScope.$lang.remove_calendar_success);
+                });
+            });
+        };
     }]);
+
+//add Calendar Title 
+appRoot.controller('addCalendarCtrl', ['$scope', '$rootScope', '$uibModalInstance', 'calendarService', 'alertify', 'socketService',
+    function ($scope, $rootScope, $uibModalInstance, calendarService, alertify, socketService) {
+
+        $scope.calendar = {
+            name: '',
+            description: '',
+        };
+
+        $scope.add = function () {
+            if (calendarService.validateCalendarAdd($scope.calendar)) {
+                calendarService.addCalendar($scope.calendar, function (data) {
+                    alertify.success($rootScope.$lang.add_calendar_success);
+                    $uibModalInstance.close($scope.calendar);
+                });
+            }
+        };
+        //cancel
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
+    }]);
+
+//edit Calendar Title
+appRoot.controller('editCalendarCtrl', ['$scope', '$rootScope', '$uibModalInstance', 'calendarService', 'alertify', 'socketService', 'calendar',
+    function ($scope, $rootScope, $uibModalInstance, calendarService, alertify, socketService, calendar) {
+        $scope.calendar = {
+            id: calendar.id,
+            name: calendar.name,
+            description: calendar.description
+        };
+
+        $scope.update = function () {
+            if (calendarService.validateCalendarAdd($scope.calendar)) {
+                calendarService.editCalendar($scope.calendar, function (data) {
+                    calendar.description = $scope.calendar.description;
+                    alertify.success($rootScope.$lang.update_calendar_success);
+                    $uibModalInstance.close($scope.calendar);
+                });
+            }
+        };
+
+        //cancel
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
+    }]);
+
 
 //add event to calendar
 
@@ -1089,6 +1240,14 @@ appRoot.controller('editEventCtrl', ['$rootScope', 'data', 'listCalendar', '$sco
             $scope.more = value;
         }
 
+        $scope.tinymceOptions = {
+            inline: false,
+            toolbar: 'formatselect | bold italic underline | bullist numlist | alignleft aligncenter alignright alignjustify | undo redo ',
+            menubar: false,
+            skin: 'lightgray',
+            theme: 'modern'
+        };
+
         $scope.buttonBar = {
             show: true,
             now: {
@@ -1147,9 +1306,142 @@ appRoot.controller('dialogMessage', [ '$rootScope','$scope', '$uibModalInstance'
         
     }]);
 
-appRoot.controller('EmployeeCtrl', ['$scope', '$uibModal', 'authorityService', '$rootScope', 'alertify', 'PER_PAGE', 'MAX_PAGE_SIZE',
-    function ($scope, $uibModal, authorityService, $rootScope, alertify, PER_PAGE, MAX_PAGE_SIZE) {
+appRoot.controller('EmployeeCtrl', ['$scope', '$uibModal', 'employeeService', '$rootScope', 'alertify', 'PER_PAGE', 'MAX_PAGE_SIZE',
+    function ($scope, $uibModal, employeeService, alertify, PER_PAGE, MAX_PAGE_SIZE) {
 
+        $scope.params = {
+            page: 1,
+            limit: 20,
+            statusName: '',
+            orderBy: '',
+            orderType: '',
+            searchName: ''
+        };
+
+        $scope.employee = {
+            pageEmployee: 1,
+            pageInvited: 1,
+            pageInactive: 1,
+            pageAll: 1
+        };
+
+        $scope.commonTemplate = '';
+        $scope.totalItems = 0;
+        $scope.employees = [];
+        $scope.maxPageSize = MAX_PAGE_SIZE;
+        $scope.getEmployees = function (type, $event) {
+            if ($event != '') {
+                $event.preventDefault();
+            }
+            
+            //check if this tab is checked, we don't get ajax again.
+            if ($($event.target).parent().hasClass('active')) {
+                return true;
+            }
+            
+            if ($scope.params.searchName) {
+                angular.element('.nav-item').removeClass('active');
+                angular.element('#all_search').addClass('active');
+            }
+            
+            switch (type) {
+                case 'employee':
+                    {
+                        $scope.params.statusName = 'active';
+                        $scope.params.page = $scope.employee.pageEmployee;
+                    }
+                    break;
+                case 'invited':
+                    {
+                        $scope.params.statusName = 'invited';
+                        $scope.params.page = $scope.employee.pageInvited;
+                    }
+                    break;
+                case 'inactive':
+                    {
+                        $scope.params.statusName = 'inactive';
+                        $scope.params.page = $scope.employee.pageInactive;
+                    }
+                    break;
+                case 'all':
+                    {
+                        $scope.params.statusName = '';
+                        $scope.params.page = $scope.employee.pageAll;
+                    }
+                    break;
+            }
+
+            employeeService.getEmployeesByStatus($scope.params, function (response) {
+                $scope.employees = response.objects.employees;
+                $scope.totalItems = response.objects.totalItems;
+            });
+        };
+        
+        //search by task name
+        $scope.search = function (type) {
+            $scope.getEmployees(type, '');
+        }
+
+        $scope.invite = function (authority, $index) {
+            var modalInstance = $uibModal.open({
+                templateUrl: 'app/views/employee/invitation.html',
+                controller: 'InvitationCtrl',
+                size: 'lg',
+                keyboard: true,
+                backdrop: 'static'
+//                resolve: {
+//                    authority: function () {
+//                        return authority;
+//                    }
+//                }
+            });
+        };
+
+        $scope.edit = function (authority, $index) {
+            var modalInstance = $uibModal.open({
+                templateUrl: 'app/views/employee/edit.html',
+                controller: 'editEmployeeCtrl',
+                size: 'lg',
+                keyboard: true,
+                backdrop: 'static'
+            });
+        };
+
+        $scope.getEmployees('employee', '');
+
+    }]);
+
+appRoot.controller('InvitationCtrl', ['$scope', '$uibModalInstance', 'employeeService', '$rootScope', 'alertify', 'dialogMessage',
+    function ($scope, $uibModalInstance, employeeService, $rootScope, alertify, dialogMessage) {
+        $scope.invitation = {
+            message: '     Please join me in our new intranet. This is a place where everyone can collaborate on projects, coordinate tasks and schedules, and build our knowledge base, ',
+            emails: ''
+        };
+        
+        $scope.invite = function () {
+            //Remove null or empty email.
+            var emails = $scope.invitation.emails;
+            emails = _.compact(emails.split(','));
+            //Check validation email & Check validation message.
+            if (employeeService.validateInvitation(emails, $scope.invitation.message)) {
+                employeeService.invite({emails: emails, message: $scope.invitation.message}, function (response) {
+                    alertify.success('Invite employees successfully');
+                    $uibModalInstance.close(response.objects);
+                });
+            }
+        }
+        
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss();
+        };
+    }]);
+
+appRoot.controller('editEmployeeCtrl', ['$scope', '$uibModalInstance', '$rootScope', 'alertify', '$timeout', 'employeeService', '$filter', 'statusService', 'priorityService',
+    function ($scope, $location, $uibModalInstance, $rootScope, alertify, $timeout, employeeService, $filter, statusService, priorityService) {
+        //cancel
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
     }]);//
 appRoot.controller('homeCtrl', ['$scope','dialogMessage','alertify',function($scope,dialogMessage,alertify) {
     
@@ -1598,7 +1890,7 @@ appRoot.controller('viewProjectCtrl', ['$scope', 'projectService', 'fileService'
                 backdrop: 'static',
                 resolve: {
                 	projectPost: function () {
-                        return projectPost;
+                            return projectPost;
                     }
                 }
             });
@@ -1635,16 +1927,16 @@ appRoot.controller('viewProjectCtrl', ['$scope', 'projectService', 'fileService'
 //edit project post
 appRoot.controller('editProjectPostCtrl', ['$scope', 'projectPostService', '$uibModalInstance', 'controllerService', 'actionService', '$rootScope', 'projectPost', 'alertify', 'dialogMessage', 'socketService',
 	function ($scope, projectPostService, $uibModalInstance, controllerService, actionService, $rootScope, projectPost, alertify, dialogMessage, socketService) {
-            $scope.project = {
+            $scope.projectPost = {
                 id: projectPost.id,
             	description: projectPost.content,
             };
                                        		
             $scope.update = function () {
-                if (projectPostService.validateProjectPost($scope.project)) {
-                    var params = {'id': projectPost.id, 'content': $scope.project.description};
+                if (projectPostService.validateProjectPost($scope.projectPost)) {
+                    var params = {'id': projectPost.id, 'content': $scope.projectPost.description};
                     projectPostService.updateProjectPost(params, function (data) {
-                    projectPost.content = $scope.project.description;
+                    projectPost.content = $scope.projectPost.description;
                     alertify.success($rootScope.$lang.project_post_update_success);
                 	$uibModalInstance.dismiss('save');
             	});
@@ -1671,7 +1963,7 @@ appRoot.controller('editProjectPostCtrl', ['$scope', 'projectPostService', '$uib
 
 //edit project
 appRoot.controller('editProjectCtrl', ['$scope', 'projectService', '$location', '$uibModalInstance', '$rootScope', 'departmentService', 'alertify', '$timeout', 'employeeService', '$filter', 'statusService', 'priorityService', 'socketService',  
-                                       function ($scope, projectService, $location, $uibModalInstance, $rootScope, departmentService, alertify, $timeout, employeeService, $filter, statusService, priorityService, socketService) {
+    function ($scope, projectService, $location, $uibModalInstance, $rootScope, departmentService, alertify, $timeout, employeeService, $filter, statusService, priorityService, socketService) {
         //step
         $scope.step = 1;
         $scope.more = 0;
@@ -1922,8 +2214,8 @@ appRoot.controller('searchCtrl', ['$scope', 'taskService', '$uibModal', '$rootSc
 
         //initial task list
         $scope.searchGlobal('task', '');
-    }]);appRoot.controller('taskCtrl', ['$scope', 'taskService', '$uibModal', '$rootScope', 'PER_PAGE', 'MAX_PAGE_SIZE',
-    function ($scope, taskService, $uibModal, $rootScope, PER_PAGE, MAX_PAGE_SIZE) {
+    }]);appRoot.controller('taskCtrl', ['$scope', 'taskService', '$uibModal', '$rootScope', 'PER_PAGE', 'MAX_PAGE_SIZE', 'flash',
+    function ($scope, taskService, $uibModal, $rootScope, PER_PAGE, MAX_PAGE_SIZE, flash) {
         $scope.params = {
             page: 1,
             limit: 5,
@@ -2031,11 +2323,14 @@ appRoot.controller('searchCtrl', ['$scope', 'taskService', '$uibModal', '$rootSc
         $rootScope.$on('create_task_success', function (event, data) {
             $scope.getList('my_task', '');
         });
+        
+        //alert authority
+        flash.trigger();
     }]);
 
 /*add Task Popup Controller*/
-appRoot.controller('addTaskCtrl', ['socketService', '$scope', 'taskService', '$location', '$uibModalInstance', '$rootScope', 'departmentService', 'alertify', '$timeout', 'employeeService', 'projectService', '$cacheFactory',
-    function (socketService, $scope, taskService, $location, $uibModalInstance, $rootScope, departmentService, alertify, $timeout, employeeService, projectService, $cacheFactory) {
+appRoot.controller('addTaskCtrl', ['socketService', '$scope', 'taskService', '$location', '$uibModalInstance', '$rootScope', 'departmentService', 'alertify', '$timeout', 'employeeService', 'projectService', '$cacheFactory','commonService',
+    function (socketService, $scope, taskService, $location, $uibModalInstance, $rootScope, departmentService, alertify, $timeout, employeeService, projectService, $cacheFactory, commonService) {
         //init
         $scope.step = 1;
         $scope.more = 0;
@@ -2048,7 +2343,7 @@ appRoot.controller('addTaskCtrl', ['socketService', '$scope', 'taskService', '$l
         $scope.files = [];
         $scope.taskGroups = [];
         $scope.parentTasks = [];
-        $scope.redminds = taskService.redmind();
+        $scope.redminds = commonService.redmind();
 
         //task object init
         $scope.task = {
@@ -2100,7 +2395,7 @@ appRoot.controller('addTaskCtrl', ['socketService', '$scope', 'taskService', '$l
 
                 //begin with keyword                
                 for (i = 0; i < $scope.employees.length; i++) {
-                    preProcStr = $scope.employees[i].firstname.toLowerCase();
+                    preProcStr = $scope.employees[i].fullname.toLowerCase();
                     if ($rootScope.$lang.language == 'vi') {
                         preProcStr = $scope.vietnammesePreProc(preProcStr);
                     }
@@ -2113,7 +2408,7 @@ appRoot.controller('addTaskCtrl', ['socketService', '$scope', 'taskService', '$l
 
                 //contains keyword
                 for (i = 0; i < $scope.employees.length; i++) {
-                    preProcStr = $scope.employees[i].firstname.toLowerCase();
+                    preProcStr = $scope.employees[i].fullname.toLowerCase();
                     if ($rootScope.$lang.language == 'vi') {
                         preProcStr = $scope.vietnammesePreProc(preProcStr);
                     }
@@ -2277,3 +2572,562 @@ appRoot.controller('addTaskCtrl', ['socketService', '$scope', 'taskService', '$l
             $scope.more = value;
         }
     }]);
+
+
+/*View Task Controller*/
+var static_postnew = false;
+appRoot.controller('viewTaskCtrl', ['socketService','$sce', 'fileService', '$scope', 'taskService', 'TaskPostService', '$location', '$rootScope', 'departmentService', 'alertify', '$timeout', 'employeeService', 'projectService', '$cacheFactory', '$routeParams', 'dialogMessage', '$uibModal', 'PER_PAGE_VIEW_MORE', 'flash',
+    function (socketService, $sce, fileService, $scope, taskService, TaskPostService, $location,  $rootScope, departmentService, alertify, $timeout, employeeService, projectService, $cacheFactory, $routeParams, dialogMessage, $uibModal, PER_PAGE_VIEW_MORE, flash) {
+  
+    //get info Task
+    var taskId = $routeParams.taskId;
+    $scope.collection = [];
+    $scope.files = [];
+
+    $scope.getInfoTask = function () {
+        taskService.getTaskView({taskId: taskId}, function (response) {
+                if (response.objects.no_data == true) {
+                    flash.setNoDataMessage();
+                    $location.path('/task');
+                }
+                
+                if (response.objects.no_authority == true) {
+                    flash.setNoAuthItemMessage();
+                    $location.path('/task');
+                }
+                
+                $scope.collection = response.objects;
+            }, function (response) {
+                if (response.objects.no_data == true) {
+                    $location.path('/task');
+                }
+        });
+    };
+    $scope.getInfoTask();
+
+    //load move - close file
+    $scope.limitFile = 5;
+    $scope.loadMoreFile = function () {
+        $scope.limitFile = $scope.collection.file_info.length;
+    };
+    $scope.closeMoreFile = function () {
+        $scope.limitFile = 5;
+    };
+
+    //load move - close childe task
+    $scope.limitChildren = 5;
+    $scope.loadMoreChildren = function () {
+        $scope.limitChildren = $scope.collection.childrenList.length;
+    };
+    $scope.closeMoreChildren = function () {
+        $scope.limitChildren = 5;
+    };
+
+    //load move - close followers collection.followers
+    $scope.limitFollowers = 5;
+    $scope.loadMoreFollowers = function () {
+        $scope.limitFollowers = $scope.collection.followers.length;
+    };
+    $scope.closeMoreFollowers = function () {
+        $scope.limitFollowers = 5;
+    };
+    //load move - close followers collection.assignees
+    $scope.limitAssignee = 5;
+    $scope.loadMoreAssignee = function () {
+        $scope.limitAssignee = $scope.collection.assignees.length;
+    };
+    $scope.closeMoreAssignee = function () {
+        $scope.limitAssignee = 5;
+    };
+
+  //removeFile
+    $scope.deleteFile = function (index, id) {
+        dialogMessage.open('confirm', $rootScope.$lang.confirm_delete_file, function () {
+            fileService.removeFile({fileId: id}, function (reponse) {
+                //Remove file in file list in description.
+                $scope.collection.file_info.splice(index, 1);
+                
+                //Remove file in event post.
+                angular.forEach($scope.taskPostFile[reponse.objects.onwer_id], function(val, key){
+                    //Traverse array of file in task post, and check the file we want to delete by name.
+                    if (val.name == reponse.objects.name) {
+                        $scope.taskPostFile[reponse.objects.onwer_id].splice(key, 1);
+                    }
+                });
+                
+                //Get the last event post, to prepend to the first event post list.
+                $scope.getLastTaskPost();
+                alertify.success($rootScope.$lang.remove_file_success);
+            })
+        });
+    };
+
+    $scope.edit = function () {
+        var modalInstance = $uibModal.open({
+            templateUrl: 'app/views/task/edit.html',
+            controller: 'editTaskCtrl',
+            size: 'lg',
+            keyboard: true,
+            backdrop: 'static',
+            resolve: {
+                data: $scope.collection,
+            }
+        });
+        modalInstance.result.then(function (data) {
+            if (static_postnew) {
+                $scope.getInfoTask();
+                $scope.getLastTaskPost();
+            }
+        }, function () {
+        });
+    };
+
+   //function add event post
+    $scope.taskPostData = {
+        description: '',
+        taskId: taskId,
+    };
+    $scope.addTaskPost = function () {
+        if (($scope.collection.employeeList != null)) {
+            $scope.taskPostData.employeeList = $scope.collection.employeeList;
+        }
+
+        if (TaskPostService.validateTaskPost($scope.taskPostData)) {
+            var fd = new FormData();
+            for (var i in $scope.files) {
+                fd.append("file_" + i, $scope.files[i]);
+            }
+
+            fd.append("task", angular.toJson($scope.taskPostData));
+            TaskPostService.addTaskPost(fd, function (response) {
+                alertify.success($rootScope.$lang.task_post_add_success);
+                $scope.taskPostData = {
+                    description: '',
+                    taskId: taskId,
+                };
+
+                $scope.files = [];
+                $scope.releases = response.objects.collection;
+                //check if file is null, we will have errror with unshift function.
+                if (!_.isNull($scope.collection.file_info)) {
+                    var newFiles = response.objects.files[Object.keys(response.objects.files)[0]];
+                    //Revert files because json files returned which is inverted with the order uploaded.
+                    newFiles.reverse();
+                    angular.forEach(newFiles, function(val, key) {
+                        $scope.collection.file_info.unshift(val);
+                    });
+                } else {
+                    $scope.collection.file_info = response.objects.files[Object.keys(response.objects.files)[0]];
+                }
+                var temp = [];
+                temp = temp.concat($scope.releases);
+                $scope.taskPost = temp.concat($scope.taskPost);
+                $scope.taskPostFile = angular.merge($scope.taskPostFile, response.objects.files);
+            });
+        }
+    }
+    
+    //get event post
+    $scope.getHtml = function (html) {
+        return $sce.trustAsHtml(html);
+    };
+
+    $scope.filter = {
+        itemPerPage: PER_PAGE_VIEW_MORE,
+        totalItems: 0,
+        offset: 0,
+        taskId: taskId,
+        currentPage : 1
+    };
+    
+    $scope.taskPost = [];
+    $scope.taskPostFile = [];
+    $scope.getTaskPosts = function () {
+        TaskPostService.getTaskPosts($scope.filter, function (response) {
+            if ($scope.taskPost.length > 0 && response.objects.collection) {
+                $scope.taskPost = $scope.taskPost.concat(response.objects.collection);
+            } else {
+                $scope.taskPost = response.objects.collection;
+            }
+            if (_.size($scope.taskPostFile) > 0 && response.objects.files) {
+                $scope.taskPostFile = angular.merge($scope.taskPostFile, response.objects.files);
+            } else {
+                $scope.taskPostFile = response.objects.files;
+            }
+
+            $scope.filter.totalItems = response.objects.totalItems;
+        });
+    };
+
+    $scope.getTaskPosts();
+    //view more
+    $scope.viewMore = function () {
+        $scope.filter.offset = $scope.taskPost.length;
+        $scope.filter.currentPage ++;
+        $scope.getTaskPosts();
+    }
+
+    $scope.getLastTaskPost = function () {
+        TaskPostService.getLastTaskPost({taskId: taskId}, function (response) {
+            if ($scope.taskPost.length > 0 && response.objects.collection) {
+                $scope.taskPost = response.objects.collection.concat($scope.taskPost);
+            } else {
+                $scope.taskPost = response.objects.collection;
+            }
+
+            if (_.size($scope.taskPostFile) > 0 && response.objects.files) {
+                $scope.taskPostFile = angular.merge($scope.taskPostFile, response.objects.files);
+            } else {
+                $scope.taskPostFile = response.objects.files;
+            }
+
+            $scope.filter.totalItems = response.objects.totalItems;
+        });
+    }
+
+    //Delete task post
+    $scope.deleteTaskPost = function (index, id) {
+        dialogMessage.open('confirm', $rootScope.$lang.confirm_delete_file, function () {
+            TaskPostService.removeTaskPost({taskPostId: id}, function (data) {
+                $scope.taskPost.splice(index, 1);
+                alertify.success($rootScope.$lang.remove_task_post_success);
+            });
+        });
+    };
+
+    //edit task post
+    $scope.editTaskPost = function (taskPost, $index) {
+        var modalInstance = $uibModal.open({
+            templateUrl: 'app/views/taskPost/edit.html',
+            controller: 'editTaskPostCtrl',
+            size: 'lg',
+            keyboard: true,
+            backdrop: 'static',
+            resolve: {
+                taskPost: function () {
+                    return taskPost;
+                }
+            }
+        });
+    };
+    
+    $scope.files = [];
+    //add file post
+    $scope.addFile = function (files) {
+        $scope.$apply(function () {
+            for (var i = 0; i < files.length; i++) {
+                if (files[i].size > 10485760) {
+                    alertify.error($rootScope.$lang.max_size);
+                } else {
+                    if ($scope.files.length >= 20) {
+                        alertify.error($rootScope.$lang.max_length);
+                        return true;
+                    } else {
+                        $scope.files.push(files[i]);
+                    }
+                }
+            }
+        });
+    };
+    //remove file post
+    $scope.removeFile = function ($index) {
+        if (typeof $scope.files[$index] !== 'undefined') {
+            $scope.files.splice($index, 1);
+        }
+    };
+}]);
+
+/*edit Task Popup Controller*/
+appRoot.controller('editTaskCtrl', ['socketService', 'data', '$scope', 'taskService', '$location', '$uibModalInstance', '$rootScope', 'commonService', 'alertify', '$timeout', 'employeeService', 'projectService', '$cacheFactory',
+    function (socketService, data, $scope, taskService, $location, $uibModalInstance, $rootScope, commonService, alertify, $timeout, employeeService, projectService, $cacheFactory) {
+        //init
+        $scope.step = 1;
+        $scope.more = 0;
+        $scope.projects = [];
+        $scope.projectId = [];
+        $scope.priorities = [];
+        $scope.statuses = [];
+        $scope.employees = [];
+        $scope.searchedEmployees = [];
+        $scope.files = [];
+        $scope.taskGroups = [];
+        $scope.parentTasks = [];
+        $scope.redminds = commonService.redmind();
+        
+        //task object init
+        $scope.task = {
+            id: data.task.id,
+            name: data.task.name,
+            project_id: parseInt(data.task.project_id),
+            duedatetime: new Date(data.task.duedatetime),
+            priority_id: parseInt(data.task.priority_id),
+            completed_percent: data.task.completed_percent,
+            description: data.task.description,
+            estimate_hour: parseInt(data.task.estimate_hour),
+            worked_hour: 0,
+            parent_id: parseInt(data.task.parent_id),
+            status_id: parseInt(data.task.status_id),
+            assigningEmployees: data.assignees,
+            followingEmployees: data.followers,
+            is_public: data.task.is_public,
+            taskGroupIds: data.taskGroup,
+            redmind: parseInt(data.task.remind),
+            sms: 0,
+            data_old: data,
+        };
+//        created_by
+
+        //status
+        $scope.beforpopup = function () {
+            taskService.getParentTaskList({project_id: $scope.task.project_id}, function (data) {
+                $scope.parentTasks = data.objects.collection;
+            });
+            taskService.getTaskGroupList({project_id: $scope.task.project_id}, function (data) {
+                $scope.taskGroups = data.objects.collection;
+            });
+            employeeService.searchEmployeeByProjectIdAndKeyword({keyword: '', project_id: $scope.task.project_id}, function (response) {
+                $scope.employees = response.objects.collection;
+            });
+        }
+        $scope.beforpopup();
+        
+        /*Helpers*/
+        $scope.vietnammesePreProc = function (str) {
+            str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a");
+            str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
+            str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
+            str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o");
+            str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
+            str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y");
+            str = str.replace(/đ/g, "d");
+
+            return str;
+        }
+
+        //employees
+        $scope.findEmployeeForTask = function (keyword) {
+            $scope.searchedEmployees = [];
+                var searchedIdx = [];
+                var preProcStr = '';
+                var preProcKeyword = '';
+                preProcKeyword = keyword.toLowerCase();
+
+                if ($rootScope.$lang.language == 'vi') {
+                    preProcKeyword = $scope.vietnammesePreProc(preProcKeyword);
+                }
+
+                //begin with keyword                
+                for (i = 0; i < $scope.employees.length; i++) {
+                    preProcStr = $scope.employees[i].fullname.toLowerCase();
+                    if ($rootScope.$lang.language == 'vi') {
+                        preProcStr = $scope.vietnammesePreProc(preProcStr);
+                    }
+
+                    if (preProcStr.indexOf(preProcKeyword) === 0) {
+                        $scope.searchedEmployees.push($scope.employees[i]);
+                        searchedIdx.push(i);
+                    }
+                }
+
+                //contains keyword
+                for (i = 0; i < $scope.employees.length; i++) {
+                    preProcStr = $scope.employees[i].fullname.toLowerCase();
+                    if ($rootScope.$lang.language == 'vi') {
+                        preProcStr = $scope.vietnammesePreProc(preProcStr);
+                    }
+
+                    if (searchedIdx.indexOf(i) === -1 && preProcStr.indexOf(preProcKeyword) > 0) {
+                        $scope.searchedEmployees.push($scope.employees[i]);
+                    }
+                }
+        };
+
+        $scope.filterFollowingEmployees = function (person) {
+            for (i = 0; i < $scope.task.followingEmployees.length; i++) {
+                if (person.id == $scope.task.followingEmployees[i].id) {
+                    return false;
+                }
+            }
+            for (i = 0; i < $scope.task.assigningEmployees.length; i++) {
+                if (person.id == $scope.task.assigningEmployees[i].id) {
+                    return false;
+                }
+            }
+            return true;
+        };
+
+        $scope.filterAssigningEmployees = function (person) {
+            for (i = 0; i < $scope.task.assigningEmployees.length; i++) {
+                if (person.id == $scope.task.assigningEmployees[i].id) {
+                    return false;
+                }
+            }
+            for (i = 0; i < $scope.task.followingEmployees.length; i++) {
+                if (person.id == $scope.task.followingEmployees[i].id) {
+                    return false;
+                }
+            }
+            return true;
+        };
+
+        //add file
+        $scope.addFile = function (files) {
+            $scope.$apply(function () {
+                for (var i = 0; i < files.length; i++) {
+                    if (files[i].size > 10485760) {
+                        alertify.error($rootScope.$lang.max_size);
+                    } else {
+                        if ($scope.files.length >= 20) {
+                            alertify.error($rootScope.$lang.max_length);
+                            return true;
+                        } else {
+                            $scope.files.push(files[i]);
+                        }
+                    }
+                }
+            });
+        };
+
+        //remove file
+        $scope.removeFile = function ($index) {
+            if (typeof $scope.files[$index] !== 'undefined') {
+                $scope.files.splice($index, 1);
+            }
+        };
+
+        $scope.taskGroupTagTransform = function (newTag) {
+            var item = {
+                name: $rootScope.$lang.task_group + newTag,
+            };
+
+            return item;
+        };
+        
+        $projectIdOld = $scope.task.project_id;
+        $parent_idOld = $scope.task.parent_id;
+        $taskGroupIdOld = $scope.task.taskGroupIds;
+        $assigningEmployeeOld = $scope.task.assigningEmployees;
+        $followingEmployeeOld = $scope.task.followingEmployees;
+        $scope.updateAfterProjectChanged = function () {
+            if ($scope.task.project_id == $projectIdOld) {
+                $scope.task.parent_id = 19;
+                $scope.task.taskGroupIds = $taskGroupIdOld;
+                $scope.task.assigningEmployees = $assigningEmployeeOld;
+                $scope.task.followingEmployees = $followingEmployeeOld;
+                $scope.beforpopup();
+            } else {
+                var $httpDefaultCache = $cacheFactory.get('$http');
+                $httpDefaultCache.removeAll();
+                $scope.task.parent_id = 0;
+                $scope.task.taskGroupIds = 0;
+                $scope.task.assigningEmployees = [];
+                $scope.task.followingEmployees = [];
+                //status
+                taskService.getParentTaskList({project_id: $scope.task.project_id}, function (data) {
+                    $scope.parentTasks = data.objects.collection;
+                });
+
+                taskService.getTaskGroupList({project_id: $scope.task.project_id}, function (data) {
+                    $scope.taskGroups = data.objects.collection;
+                });
+
+                employeeService.searchEmployeeByProjectIdAndKeyword({keyword: '', project_id: $scope.task.project_id}, function (response) {
+                    $scope.employees = response.objects.collection;
+                });
+            }
+        };
+
+        $scope.checkProject = function () {
+            if ($scope.task.project_id === 0 || $scope.task.project_id === undefined) {
+                alertify.error($rootScope.$lang.task_project_empty);
+            }
+        }
+        /*Call services*/
+        //project 
+        projectService.getProjectList({}, function (data) {
+            $scope.projects = data.objects.collection;
+        });
+
+        //priority
+        taskService.getPriorityList({}, function (data) {
+            $scope.priorities = data.objects.collection;
+        });
+
+        //status
+        taskService.getStatusList({}, function (data) {
+            $scope.statuses = data.objects.collection;
+        });
+
+        //next
+        $scope.next = function () {
+            if ($scope.step < 3) {
+                //check validate when go to step 2
+                if ($scope.step == 1) {
+                    if (taskService.validate_step1($scope.task)) {
+                        $scope.step++;
+                    }
+                } else {
+                    if ($scope.step == 2) {
+                        //check validate when go to step 3
+//                        if (taskService.validate_step2($scope.task)) {
+                            var fd = new FormData();
+                            for (var i in $scope.files) {
+                                fd.append("file_" + i, $scope.files[i]);
+                            }
+                            fd.append("task", angular.toJson($scope.task));
+                            taskService.editTask(fd, function (response) {
+                                if (response.objects.postnew) {
+                                    static_postnew = true;
+                                }
+                                alertify.success($rootScope.$lang.task_notify_success);
+                                $uibModalInstance.close($scope.task);
+                                socketService.emit('notify', 'ok');
+                                $scope.step++;
+                            });
+//                        }
+                    } else {
+                        $scope.step++;
+                    }
+                }
+            }
+        };
+        //back
+        $scope.back = function () {
+            if ($scope.step == 2) {
+                $scope.step--;
+            }
+        };
+
+        //cancel
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
+
+        //show more
+        $scope.showMore = function (value) {
+            $scope.more = value;
+        }
+    }]);
+
+//edit task post
+appRoot.controller('editTaskPostCtrl', ['$scope', 'TaskPostService', '$uibModalInstance', 'controllerService', 'actionService', '$rootScope', 'taskPost', 'alertify', 'dialogMessage', 'socketService',
+    function ($scope, TaskPostService, $uibModalInstance, controllerService, actionService, $rootScope, taskPost, alertify, dialogMessage, socketService) {
+        $scope.taskpost = {
+            id: taskPost.id,
+            description: taskPost.content,
+        };
+        $scope.update = function () {
+            if (TaskPostService.validateTaskPost($scope.taskpost)) {
+                var params = {'id': taskPost.id, 'content': $scope.taskpost.description};
+                TaskPostService.updateTaskPost(params, function (data) {
+                    taskPost.content = $scope.taskpost.description;
+                    alertify.success($rootScope.$lang.update_post_success);
+                    $uibModalInstance.dismiss('save');
+                });
+            }
+        };
+        //cancel
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+    };
+}]);

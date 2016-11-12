@@ -3,7 +3,7 @@ return [
     'components' => [
         'db' => [
             'class' => 'common\components\db\Connection',
-            'dsn' => 'mysql:host=localhost;dbname=iofficez',
+            'dsn' => 'mysql:host=localhost;dbname=iofficez_adjustment',
             'username' => 'root',
             'password' => '',
             'charset' => 'utf8',
