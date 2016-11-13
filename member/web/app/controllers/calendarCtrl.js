@@ -120,20 +120,6 @@ appRoot.controller('calendarCtrl', ['$scope', '$uibModal', 'calendarService', 't
                         };
                         $scope.events.push(newEvent);
                 });
-                
-//                for ($i = 0; $i < respone.objects.length; $i++) {
-//                    allDay = respone.objects[$i].is_all_day == 1 ? true : false;
-//                    var newEvent = {
-//                        title: respone.objects[$i].title,
-//                        start: moment(respone.objects[$i].start).toDate(),
-//                        end: moment(respone.objects[$i].end).toDate(),
-//                        color: respone.objects[$i].color,
-//                        url: '#/viewEvent/' + respone.objects[$i].id,
-//                        allDay : allDay
-//                    };
-//                    $scope.events.push(newEvent);
-//                }
-
             });
         }
         
@@ -464,7 +450,6 @@ appRoot.controller('addEventCtrl', ['$rootScope', 'data', '$scope', 'calendarSer
 var $dataEditEvent = [];
 appRoot.controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService', 'EventPostService', '$uibModal', '$rootScope', 'dialogMessage', '$routeParams', 'alertify', '$sce', 'PER_PAGE_VIEW_MORE','$location',
     function ($scope, calendarService, fileService, EventPostService, $uibModal, $rootScope, dialogMessage, $routeParams, alertify, $sce, PER_PAGE_VIEW_MORE, $location) {
-//        var calendarId = $routeParams.eventId;
         var eventId = $routeParams.eventId;
         //set paramter for layout
         $scope.collection = [];

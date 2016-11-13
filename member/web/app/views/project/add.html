@@ -186,7 +186,7 @@
                     <div class="col-sm-9">
                         <ui-select multiple  ng-model="project.members" theme="bootstrap" ng-disabled="disabled"  on-select="selectMember($item, $model)">
                             <ui-select-match placeholder="">
-                                <img src="{{$item.image}}" height="30" width="30" /><br/>
+                                <img class="img-circle" src="{{$item.image}}" height="30" width="30" />
                                 {{$item.firstname}}
                             </ui-select-match>
                             <ui-select-choices refresh="findEmployeeForProject($select.search)" refresh-delay="1000" repeat="person in employees">

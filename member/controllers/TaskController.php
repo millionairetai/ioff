@@ -26,8 +26,6 @@ class TaskController extends ApiController {
      */
     public function actionAdd() {
         $objects = [];
-        $postData = [];
-
         $postData = \Yii::$app->request->post('task', '');
         if (!empty($postData)) {
             $postData = json_decode($postData, true);
@@ -37,9 +35,9 @@ class TaskController extends ApiController {
         try {
             $task = new Task();
             $task->attributes = $postData;
-            $task->employee_id = Yii::$app->user->getId();
-            $task->description_parse = $task->description;
+            $task->description_parse = strip_tags($task->description);
             $task->duedatetime = $task->duedatetime ? strtotime($task->duedatetime) : null;
+            $task->employee_id = Yii::$app->user->getId();
 
             if (!$task->save()) {
                 $this->_message = $this->parserMessage($task->getErrors());
@@ -77,19 +75,12 @@ class TaskController extends ApiController {
                 throw new \Exception('Save record to table Activity fail');
             }
 
-            $employeeActivity = EmployeeActivity::find()->andWhere(['employee_id' => \Yii::$app->user->getId()])->andCompanyId()->one();
+            $employeeActivity = EmployeeActivity::getByEmployeeId(Yii::$app->user->getId());
             if (!$employeeActivity) {
                 $employeeActivity = new EmployeeActivity();
-                $employeeActivity->employee_id = \Yii::$app->user->getId();
-                $employeeActivity->activity_task = $employeeActivity->activity_total = 0;
             }
 
-            $employeeActivity->activity_task += 1;
-            $employeeActivity->activity_total += 1;
-            if (!$employeeActivity->save()) {
-                throw new \Exception('Save record to employee_activity table fail');
-            }
-
+            $employeeActivity->increase('activity_task');
             $taskGroupAllocation = [];
             if (!empty($postData['taskGroupIds'])) {
                 foreach ($postData['taskGroupIds'] as $taskGroupId) {
@@ -97,40 +88,33 @@ class TaskController extends ApiController {
                 }
             }
 
-            $employees = Employee::find()->select([Employee::tableName() . '.id', Employee::tableName() . '.email', 'firstname', 'lastname'])
-                    ->where([Employee::tableName() . '.id' => array_merge($aAssignedEmployeeIds, $aFollowedEmployeeIds)])
-                    ->andCompanyId()
-                    ->all();
-
             $sms = [];
             $remind = [];
             $notifications = [];
-            $noContent = \Yii::$app->user->identity->firstname . " " . \Yii::t('common', 'created') . " " . $task->name;
+            $employees = Employee::getByIds(array_merge($aAssignedEmployeeIds, $aFollowedEmployeeIds));
+            $noContent = Notification::makeContent(\Yii::t('common', 'created'), $task->name);
             foreach ($employees as $employee) {
                 //notification
                 $notifications[] = [$task->id, Notification::TABLE_TASK, $employee->id, \Yii::$app->user->getId(), "create_task", $noContent];
-
                 $dataSend = [
-                    '{creator name}' => \Yii::$app->user->identity->firstname,
+                    '{creator name}' => \Yii::$app->user->identity->fullname,
                     '{project name}' => '', //need to get
                     '{task name}' => $task->name
                 ];
                 //prepare data and template email, sms
                 if (in_array($employee->id, $aAssignedEmployeeIds)) {
-                    $themeEmail = \common\models\EmailTemplate::getThemeCreateTaskForAssigner(); //
-                    $themeSms = \common\models\SmsTemplate::getThemeCreateTaskForAssigner(); //
+                    $themeEmail = \common\models\EmailTemplate::getThemeCreateTaskForAssigner();
+                    $themeSms = \common\models\SmsTemplate::getThemeCreateTaskForAssigner();
                 } else if (in_array($employee->id, $aFollowedEmployeeIds)) {
-                    $themeEmail = \common\models\EmailTemplate::getThemeCreateTaskForFollower(); //
-                    $themeSms = \common\models\SmsTemplate::getThemeCreateTaskForFollower(); //
+                    $themeEmail = \common\models\EmailTemplate::getThemeCreateTaskForFollower();
+                    $themeSms = \common\models\SmsTemplate::getThemeCreateTaskForFollower();
                 }
 
                 //send mail
                 $employee->sendMail($dataSend, $themeEmail);
-
                 //sms
                 if ($task->sms) {
                     $sms[] = [$task->id, $employee->id, \common\models\Sms::TABLE_TASK, $noContent, 1, 0];
-                    //send sms
                     $employee->sendSms($dataSend, $themeSms);
                 }
 
@@ -138,50 +122,14 @@ class TaskController extends ApiController {
                 if (!empty($postData['redmind'])) {
                     $remind[] = [$employee->id, $task->id, Remind::TABLE_TASK, $task->name, $task->duedatetime - ($postData['redmind'] * 60), $postData['redmind'], 0, 0];
                 }
-            }//end foreach employees
-
-            if (!empty($taskAss)) {
-                if (!Yii::$app->db->createCommand()->batchInsert(
-                                TaskAssignment::tableName(), ['task_id', 'employee_id'], $taskAss)->execute()) {
-                    throw new \Exception('BatchInsert to task_assignment table fail');
                 }
-            }
 
-            if (!empty($taskFollow)) {
-                if (!Yii::$app->db->createCommand()->batchInsert(
-                                Follower::tableName(), ['task_id', 'employee_id'], $taskFollow)->execute()) {
-                    throw new \Exception('BatchInsert to follower table fail');
-                }
-            }
-
-            if (!empty($taskGroupAllocation)) {
-                if (!Yii::$app->db->createCommand()->batchInsert(
-                                TaskGroupAllocation::tableName(), ['task_group_id', 'task_id'], $taskGroupAllocation)->execute()) {
-                    throw new \Exception('BatchInsert to task_group_allocation table fail');
-                }
-            }
-
-            if (!empty($notifications)) {
-                if (!Yii::$app->db->createCommand()->batchInsert(
-                                Notification::tableName(), ['owner_id', 'owner_table', 'employee_id', 'owner_employee_id', 'type', 'content'], $notifications)->execute()) {
-                    throw new \Exception('BatchInsert to notification table fail');
-                }
-            }
-
-            if (!empty($remind)) {
-                if (!Yii::$app->db->createCommand()->batchInsert(
-                                Remind::tableName(), ['employee_id', 'owner_id', 'owner_table', 'content', 'remind_datetime', 'minute_before', 'repeated_time', 'is_snoozing'], $remind)->execute()) {
-                    throw new \Exception('BatchInsert to remind table fail');
-                }
-            }
-
-            if (!empty($sms)) {
-                if (!Yii::$app->db->createCommand()->batchInsert(
-                                Sms::tableName(), ['owner_id', 'employee_id', 'owner_table', 'content', 'is_success', 'fee'], $sms)->execute()) {
-                    throw new \Exception('BatchInsert to sms table fail');
-                }
-            }
-
+            TaskAssignment::batchInsert($taskAss, ['task_id', 'employee_id']);
+            Follower::batchInsert($taskFollow, ['task_id', 'employee_id']);
+            TaskGroupAllocation::batchInsert($taskGroupAllocation, ['task_id', 'task_group_id',]);
+            Notification::batchInsert($notifications, ['owner_id', 'owner_table', 'employee_id', 'owner_employee_id', 'type', 'content']);
+            Remind::batchInsert($remind, ['employee_id', 'owner_id', 'owner_table', 'content', 'remind_datetime', 'minute_before', 'repeated_time', 'is_snoozing']);
+            Sms::batchInsert($sms, ['owner_id', 'employee_id', 'owner_table', 'content', 'is_success', 'fee']);
             $transaction->commit();
         } catch (\Exception $e) {
             $this->_message = $e->getMessage();
@@ -197,6 +145,25 @@ class TaskController extends ApiController {
         return $this->sendResponse($this->_error, $this->_message, $objects);
     }
 
+    /**
+     * Get parent tasks 
+     */
+    public function actionGetParentTasks() {
+        $objects = [];
+        $collection = [];
+        if ($tasks = Task::getByProjectId(\Yii::$app->request->get('project_id'))) {
+            foreach ($tasks as $task) {
+                $collection[] = [
+                    'id' => $task['id'],
+                    'name' => $task['name'],
+                ];
+            }
+        }
+
+        $objects['collection'] = $collection;
+        return $this->sendResponse(false, '', $objects);
+    }
+    
     public function actionGetTasksByProject() {
         $collection = [];
         $tasks = Task::find()
@@ -237,33 +204,19 @@ class TaskController extends ApiController {
     /**
      * Get task list assigned for currrent login employee.
      */
-    public function actionGetAssignedTasks() {
+    public function actionGetMyTasks() {
         $itemPerPage = \Yii::$app->request->get('limit');
         $currentPage = \Yii::$app->request->get('page');
-        $search_text = \Yii::$app->request->get('searchText');
+        $searchText = \Yii::$app->request->get('searchText');
         try {
-            $taskAss = TaskAssignment::find()
-                            ->select(['task_id'])
-                            ->where(['employee_id' => \Yii::$app->user->identity->id])
-                            ->andCompanyId()->asArray()->all();
-            if (empty($taskAss)) {
-                throw new \Exception('Get task_assigment empty');
-            }
-
-            $tasks = Task::find()->andWhere(['id' => array_map('current', $taskAss)])->andCompanyId();
-            if ($search_text) {
-                $tasks->andFilterWhere(['like', 'name', $search_text]);
-            }
-
-            $totalCount = $tasks->count();
-            $tasks = $tasks->limit($itemPerPage)->offset(($currentPage - 1) * $itemPerPage)->all();
-            if (empty($tasks)) {
-                throw new \Exception('Get task empty');
-            }
-
+            $collection = [];
+            $totalCount = 0;
             $assignees = [];
             $followers = [];
-            $collection = [];
+
+            $tasks = Task::getMyTasks($itemPerPage, $currentPage, $searchText);
+            $totalCount = $tasks['totalCount'];
+            $tasks = $tasks['collection'];
             foreach ($tasks as $task) {
                 $assignees = [];
                 $followers = [];
@@ -302,30 +255,17 @@ class TaskController extends ApiController {
     public function actionGetFollowTasks() {
         $itemPerPage = \Yii::$app->request->get('limit');
         $currentPage = \Yii::$app->request->get('page');
-        $search_text = \Yii::$app->request->get('searchText');
+        $searchText = \Yii::$app->request->get('searchText');
         try {
-            $taskAss = Follower::find()
-                            ->select(['task_id'])
-                            ->where(['employee_id' => \Yii::$app->user->identity->id])
-                            ->andCompanyId()->asArray()->all();
-            if (empty($taskAss)) {
-                throw new \Exception('Get task_assigment empty');
-            }
-
-            $tasks = Task::find()->andWhere(['id' => array_map('current', $taskAss)])->andCompanyId();
-            if ($search_text) {
-                $tasks->andFilterWhere(['like', 'name', $search_text]);
-            }
-
-            $totalCount = $tasks->count();
-            $tasks = $tasks->limit($itemPerPage)->offset(($currentPage - 1) * $itemPerPage)->all();
-            if (empty($tasks)) {
-                throw new \Exception('Get task empty');
-            }
-
+            $collection = [];
+            $totalCount = 0;
             $assignees = [];
             $followers = [];
             $collection = [];
+
+            $tasks = Task::getFollowTasks($itemPerPage, $currentPage, $searchText);
+            $totalCount = $tasks['totalCount'];
+            $tasks = $tasks['collection'];
             foreach ($tasks as $task) {
                 $assignees = [];
                 $followers = [];
@@ -365,18 +305,47 @@ class TaskController extends ApiController {
         $itemPerPage = \Yii::$app->request->get('limit');
         $currentPage = \Yii::$app->request->get('page');
         $searchText = \Yii::$app->request->get('searchText');
+
         try {
-            $result = Task::getTasks($itemPerPage, $currentPage, $searchText);
+            $collection = [];
+            $totalCount = 0;
+            $assignees = [];
+            $followers = [];
+            $collection = [];
+
+            $tasks = Task::getTasks($itemPerPage, $currentPage, $searchText);
+            $totalCount = $tasks['totalCount'];
+            $tasks = $tasks['collection'];
+            foreach ($tasks as $task) {
+                $assignees = [];
+                $followers = [];
+                $creator = $task->creator;
+                foreach ($task->assignees as $assignee) {
+                    $assignees[] = ['fullname' => $assignee->fullname, 'email' => $assignee->email, 'image' => $assignee->getImage()];
+                }
+
+                foreach ($task->followers as $follower) {
+                    $followers[] = ['fullname' => $follower->fullname, 'email' => $follower->email, 'image' => $follower->getImage()];
+                }
+
+                $collection[] = [
+                    'id' => $task->id,
+                    'name' => $task->name,
+                    'description' => strlen($task->description) > 400 ? (substr($task->description, 0, 400) . "...") : $task->description,
+                    'creator' => ['fullname' => $creator->fullname, 'email' => $creator->email, 'image' => $creator->getImage()],
+                    'followers' => $followers,
+                    'assignees' => $assignees,
+                    'completed_percent' => $task->completed_percent,
+                ];
+            }
         } catch (\Exception $e) {
-            $result = [
-                'collection' => [],
-                'totalCount' => 0,
-            ];
+            $collection = [];
+            $totalCount = 0;
         }
 
         $objects = [];
-        $objects['collection'] = $result['collection'];
-        $objects['totalItems'] = (int) $result['totalCount'];
+        $objects['collection'] = $collection;
+        $objects['totalItems'] = (int) $totalCount;
         return $this->sendResponse(false, '', $objects);
     }
 

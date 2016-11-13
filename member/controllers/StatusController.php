@@ -12,7 +12,7 @@ class StatusController extends ApiController {
     public function actionGetProjectStatus() {
         $objects = [];
 
-        $array = Status::find()->select(['id', 'name'])->andWhere(['column_name' => 'project'])->andCompanyId()->all();
+        $array = Status::find()->select(['id', 'name'])->andWhere(['owner_table' => 'project'])->andCompanyId()->all();
         foreach ($array as $item) {
             $objects[] = [
                 'id' => $item->id,
@@ -24,7 +24,7 @@ class StatusController extends ApiController {
     
     public function actionGetTaskStatusList(){                
         $objects = [];       
-        $statuses = Status::find()->select(['id','name'])->where(['column_name' => 'task'])->andCompanyId()->all();;
+        $statuses = Status::find()->select(['id','name'])->where(['owner_table' => 'task'])->andCompanyId()->all();;
         
         $collection = [];
                 

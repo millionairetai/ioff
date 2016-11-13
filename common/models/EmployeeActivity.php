@@ -26,21 +26,19 @@ use Yii;
  * @property integer $lastup_employee_id
  * @property boolean $disabled
  */
-class EmployeeActivity extends \common\components\db\ActiveRecord
-{
+class EmployeeActivity extends \common\components\db\ActiveRecord {
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'employee_activity';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['employee_id'], 'required'],
             [['company_id', 'employee_id', 'activity_project', 'activity_task', 'activity_calendar', 'activity_annoucement', 'activity_statergy_map', 'activity_kpi', 'activity_employee', 'activity_contract', 'activity_subject', 'activity_post', 'activity_total', 'datetime_created', 'lastup_datetime', 'lastup_employee_id'], 'integer'],
@@ -51,8 +49,7 @@ class EmployeeActivity extends \common\components\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => 'ID',
             'company_id' => 'Company ID',

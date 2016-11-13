@@ -69,7 +69,8 @@ use common\components\db\ActiveRecord;
  */
 class Employee extends ActiveRecord implements IdentityInterface {
 
-    const STATUS_DELETED = 0;
+    const STATUS_DELETED = 20;
+    //Change with database.
     const STATUS_ACTIVE = 10;
     //Column_name
     const COLUNM_NAME_ACTIVE = 'employee.active';
@@ -394,6 +395,15 @@ class Employee extends ActiveRecord implements IdentityInterface {
     }
 
     /**
+     * Get department
+     * 
+     * @return object
+     */
+    public function getDepartment() {
+        return $this->hasOne(Department::className(), ['id' => 'department_id']);
+    }
+    
+    /**
      * Get info of list employee
      * 
      * @param array $departments
@@ -488,6 +498,72 @@ class Employee extends ActiveRecord implements IdentityInterface {
      */
     public function getStatus() {
         return $this->hasOne(Status::className(), ['id' => 'status_id']);
+    }
+    
+    /**
+     * Get employees by status name
+     *
+     * @param string $statusName
+     * @return boolean|array
+     */
+    public static function getEmployeesByStatusName($statusName, $searchName, $itemPerPage, $currentPage = 1, $orderBy = 'datetime_created', $orderType = 'DESC') {
+        $employee = Employee::find()
+                ->select(['employee.id', 'email', 'firstname', 'lastname', 'profile_image_path', 'status_id', 'department_id'])
+                ->joinWith('status', 'department');
+
+        if ($statusName) {
+            $employee = $employee->where(["status.column_name" => 'employee.' . $statusName]);
+        }
+
+        if ($searchName) {
+            $employee = $employee->andWhere('employee.firstname LIKE :name', [':name' => '%' . $searchName . '%']);
+        }
+
+        $employee = $employee->andCompanyId(false, 'employee')->limit($itemPerPage)->offset(($currentPage - 1) * $itemPerPage);
+//        echo($employee->createCommand()->sql);
+        return [
+            'employee' => $employee->orderBy("employee.$orderBy $orderType")->all(),
+            'totalCount' => (int) $employee->count(),
+        ];
+    }
+
+    /**
+     * Get employees by ids
+     *
+     * @param array $ids
+     * @return boolean|array
+     */
+    public static function getByIds($ids = []) {
+        if (!is_array($ids)) {
+            $ids = [$ids];
+        }
+
+        return self::find()->select([self::tableName() . '.id', self::tableName() . '.email', 'firstname', 'lastname'])
+                ->where([self::tableName() . '.id' => $ids])
+                ->andCompanyId()
+                ->all();
+    }
+
+    /**
+     * Get employees by emails
+     *
+     * @param array $emails
+     * @return boolean|array
+     */
+    public static function getExistedEmailByEmails($emails) {
+        $employees = self::find()
+                ->select(['email'])
+                ->where('email IN("' . implode('", "', $emails) . '")')
+                ->asArray()
+                ->all();
+
+        $return = [];
+        //Traverse
+        foreach ($employees as $employee) {
+            $return[] = $employee['email'];
+        }
+
+        return $return;
     }
 
 }

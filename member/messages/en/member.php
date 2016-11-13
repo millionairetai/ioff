@@ -8,7 +8,7 @@ return [
     'Remember me' => 'Ghi nhớ?',
     'Login' => 'Đăng nhập',
     'Incorrect email or password' => 'Email hoặc mật khẩu không hợp lệ',
-    'error_system' => 'System is error, Please contact to admin',
+    'error_system' => 'Function can not process your request because system is in data processing',
     'Can not get data' => 'Can not get data',
     'Can not save data'=> 'Can not save data',
     'you do not have authoirity for this action' => 'you do not have authoirity for this action',
@@ -116,4 +116,6 @@ return [
     'task group' => 'Task group',
     'error calendar name is existed' => 'Calendar name is existed',
     'has any employees in this project' => 'Do not has any employees in this project',
+    //task
+    'Do not has any employees in this project' => 'Do not has any employees in this project',
 ];

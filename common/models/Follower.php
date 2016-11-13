@@ -79,20 +79,4 @@ class Follower extends \common\components\db\ActiveRecord
         
         return $results;
     }
-    
-    /**
-     * Add invitation batchInsert
-     *
-     * @param array $dataInsert
-     * @return boolean
-     */
-    public static function batchInsert($dataInsert) {
-        if (!empty($dataInsert)) {
-            if (!\Yii::$app->db->createCommand()->batchInsert(self::tableName(), array_keys($dataInsert[0]), $dataInsert)->execute()) {
-                throw new \Exception('Save record to table invitation fail');
-}
-        }
-    
-        return true;
-    }
 }

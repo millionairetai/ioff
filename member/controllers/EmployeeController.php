@@ -36,19 +36,14 @@ class EmployeeController extends ApiController {
     }
 
     public function actionSearchByProjectIdAndKeyword() {
-        $projectId = Yii::$app->request->post('project_id');
-        $keyword = Yii::$app->request->post('keyword');
-        
         $error = false;
         $message = "";
         $objects = [];
         $collection = [];
-        
-        if(($project = Project::findOne($projectId)) !== null){            
-            $employees = $project->getEmployees();
-            
-            foreach ($employees as $employee){
-                if($keyword == '' || strpos($employee->fullname,$keyword) === 0){
+        $keyword = Yii::$app->request->post('keyword');
+        if ($employees = ProjectEmployee::getEmployeesByProjectId(Yii::$app->request->post('project_id'))) {
+            foreach ($employees as $employee) {
+                if ($keyword == '' || strpos($employee->fullname, $keyword) === 0) {
                     $collection[] = [
                         'id' => $employee->id,
                         'fullname' => $employee->fullname,
@@ -57,16 +52,16 @@ class EmployeeController extends ApiController {
                     ];
                 }
             }     
-        }else{
+        } else {
             $error = true;
-            $message = "NO_PROJECT_FOUND";
+            $message = Yii::t('member', 'Do not has any employees in this project');
         }
         
-        $objects['collection'] =$collection;                       
+        $objects['collection'] = $collection;
         return $this->sendResponse($error, $message, $objects);
     }
     
-    public function actionSearchByKeyword(){
+    public function actionSearchByKeyword() {
         $keyword = Yii::$app->request->post('keyword');
         $employees = Employee::find()->andCompanyId()->all();
         
@@ -75,8 +70,8 @@ class EmployeeController extends ApiController {
         $objects = [];
         $collection = [];
         
-        foreach ($employees as $employee){
-            if($keyword == '' || strpos($employee->firstname,$keyword) === 0){
+        foreach ($employees as $employee) {
+            if ($keyword == '' || strpos($employee->firstname, $keyword) === 0) {
                 $collection[] = [
                     'id' => $employee->id,
                     'firstname' => $employee->firstname,
@@ -86,7 +81,7 @@ class EmployeeController extends ApiController {
             }
         }
                         
-        $objects['collection'] =$collection;
+        $objects['collection'] = $collection;
                                 
         return $this->sendResponse($error, $message, $objects);
     }    

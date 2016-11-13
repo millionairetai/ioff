@@ -183,69 +183,115 @@ class Task extends \common\components\db\ActiveRecord {
         return $taskChildren;
     }
 
+
     /**
-     * Get all that employee can be able to see.
+     * Get all of follow tasks that employee follow.
+     * 
      * @param interger $itemPerPage
      * @param interger $currentPage
      * @param string $searchText
      * @return array|null
      */
-    public static function getTasks($itemPerPage, $currentPage, $searchText) {
-        $tasks = self::find()
-                        ->select(['task.id', 'task.name', 'task.description', 'completed_percent',])
-                        ->distinct()
-                        ->innerJoin('task_assignment', 'task.id = task_assignment.task_id')
-                        ->innerJoin('follower', 'task.id = follower.task_id')
-                        ->orWhere([
-                            'task.is_public' => self::VAL_TRUE,
-                        ])->orWhere([
-                    'task.created_employee_id' => \Yii::$app->user->identity->id,
-                ])->orWhere([
-                    'task_assignment.employee_id' => \Yii::$app->user->identity->id,
-                ])->orWhere([
-            'follower.employee_id' => \Yii::$app->user->identity->id,
-        ]);
+    public static function getFollowTasks($itemPerPage, $currentPage, $searchText) {
+        $subFollowQuery = Follower::find()
+                ->select('task_id')
+                ->where(['employee_id' => \Yii::$app->user->identity->id]);
+
+        $tasks = Task::find(['id', 'company_id', 'company_id', 'priority_id', 'status_id', 'parent_id', 'employee_id',
+                            'name', 'description', 'description_parse', 'start_datetime', 'duedatetime', 'estimate_hour', 'worked_hour',
+                            'completed_percent', 'is_public'])
+                        ->with('creator', 'assignees', 'followers')
+                        ->andWhere(['id' => $subFollowQuery])->andCompanyId();
+        
+        if ($searchText) {
+            $tasks->andFilterWhere(['like', 'name', $searchText]);
+        }
+
+        $totalCount = $tasks->count();
+        $tasks = $tasks->orderBy('datetime_created DESC')
+                        ->limit($itemPerPage)->offset(($currentPage - 1) * $itemPerPage)->all();
+        if (empty($tasks)) {
+            throw new \Exception('Get task empty');
+        }
+
+        return [
+            'collection' => $tasks,
+            'totalCount' => $totalCount,
+        ];
+    }
+
+    /**
+     * Get all of tasks that employee is assigned.
+     * 
+     * @param interger $itemPerPage
+     * @param interger $currentPage
+     * @param string $searchText
+     * @return array|null
+     */
+    public static function getMyTasks($itemPerPage, $currentPage, $searchText) {
+        $subTaskAssiQuery = TaskAssignment::find()
+                ->select('task_id')
+                ->where(['employee_id' => \Yii::$app->user->identity->id]);
+
+        $tasks = Task::find(['id', 'company_id', 'company_id', 'priority_id', 'status_id', 'parent_id', 'employee_id',
+                            'name', 'description', 'description_parse', 'start_datetime', 'duedatetime', 'estimate_hour', 'worked_hour',
+                            'completed_percent', 'is_public'])
+                        ->with('creator', 'assignees', 'followers')
+                        ->andWhere(['id' => $subTaskAssiQuery])->andCompanyId();
 
         if ($searchText) {
             $tasks->andFilterWhere(['like', 'name', $searchText]);
         }
 
         $totalCount = $tasks->count();
-        $tasks = $tasks->limit($itemPerPage)
+        $tasks = $tasks->orderBy('datetime_created DESC')
+                        ->limit($itemPerPage)->offset(($currentPage - 1) * $itemPerPage)->all();
+        if (empty($tasks)) {
+            throw new \Exception('Get task empty');
+        }
+
+        return [
+            'collection' => $tasks,
+            'totalCount' => $totalCount,
+        ];
+    }    
+    
+    /**
+     * Get all of tasks that employee who can be able to see.
+     * @param interger $itemPerPage
+     * @param interger $currentPage
+     * @param string $searchText
+     * @return array|null
+     */
+    public static function getTasks($itemPerPage, $currentPage, $searchText) {
+        $subFollowQuery = Follower::find()->select('task_id')->where(['employee_id' => \Yii::$app->user->identity->id]);
+        $subTaskAssiQuery = TaskAssignment::find()->select('task_id')->where(['employee_id' => \Yii::$app->user->identity->id]);
+        $tasks = self::find()
+                        ->select(['task.id', 'task.name', 'task.description', 'completed_percent', 'task.created_employee_id'])
+                        ->orWhere([
+                            'task.is_public' => self::VAL_TRUE,
+                        ])->orWhere([
+                    'task.created_employee_id' => \Yii::$app->user->identity->id,
+                ])->orWhere([
+                    'task.id' => $subFollowQuery,
+                ])->orWhere([
+                    'task.id' => $subTaskAssiQuery,
+                ])->andCompanyId();
+
+        if ($searchText) {
+            $tasks->andFilterWhere(['like', 'name', $searchText]);
+        }
+
+        $totalCount = $tasks->count();
+        $tasks = $tasks->orderBy('task.datetime_created DESC')->limit($itemPerPage)
                 ->offset(($currentPage - 1) * $itemPerPage)
                 ->all();
         if (empty($tasks)) {
             return [];
         }
 
-        $assignees = [];
-        $followers = [];
-        $collection = [];
-        foreach ($tasks as $task) {
-            $assignees = [];
-            $followers = [];
-            $creator = $task->creator;
-            foreach ($task->assignees as $assignee) {
-                $assignees[] = ['fullname' => $assignee->fullname, 'email' => $assignee->email, 'image' => $assignee->getImage()];
-            }
-
-            foreach ($task->followers as $follower) {
-                $followers[] = ['fullname' => $follower->fullname, 'email' => $follower->email, 'image' => $follower->getImage()];
-            }
-            
-            $collection[] = [
-                'id' => $task->id,
-                'name' => $task->name,
-                'description' => strlen($task->description) > 400 ? (substr($task->description, 0, 400) . "...") : $task->description,
-//                'creator' => ['fullname' => $creator->fullname, 'email' => $creator->email, 'image' => $creator->getImage()],
-                'followers' => $followers,
-                'assignees' => $assignees,
-                'completed_percent' => $task->completed_percent,
-            ];
-        }
-
         return [
-            'collection' => $collection,
+            'collection' => $tasks,
             'totalCount' => $totalCount,
         ];
     }

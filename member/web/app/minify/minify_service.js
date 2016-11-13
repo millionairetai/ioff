@@ -502,8 +502,11 @@ appRoot.factory("flash", ['$rootScope','alertify', function ($rootScope,alertify
     }]);
 appRoot.factory('priorityService', ['apiService', function (apiService) {
     return {
-    	getProjectPriority : function (data,success,error){
-            apiService.get('priority/get-project-priority', data, success, error);
+    	getTaskPriority : function (data,success,error){
+            apiService.get('priority/get-priority?type=task', data, success, error);
+        },
+        getProjectPriority : function (data,success,error){
+            apiService.get('priority/get-priority?type=project', data, success, error);
         }
     };
 }]);
@@ -750,6 +753,14 @@ appRoot.factory('taskService', ['apiService','$rootScope','alertify', function (
             },
             getMyFollowTaskForCalendar:  function(data,success,error) {
                 apiService.post('task/get-my-follow-task-for-calendar',data,success,error);
+            }
+        };
+    }]);
+appRoot.factory('taskGroupService', ['apiService', '$rootScope', 'alertify', function (apiService, $rootScope, alertify) {
+
+        return {
+            getTaskGroups: function (data, success, error) {
+                apiService.get('task-group/get-task-groups', data, success, error);
             }
         };
     }]);

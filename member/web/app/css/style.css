@@ -955,6 +955,9 @@ div.task-creator{
     width: 33.33333333%;
     float: left;
 }
+.list-employee .item-employee:nth-child(3n+1){
+    clear: both;
+}
 .list-employee .item-employee dl{
     padding: 10px;
     border: 1px solid #f4f4f4;
@@ -993,6 +996,12 @@ div.task-creator{
 @media (max-width: 1200px){
     .list-employee .item-employee{
         width: 50%;
+    }
+    .list-employee .item-employee:nth-child(2n+1){
+        clear: both;
+}
+    .list-employee .item-employee:nth-child(3n+1){
+        clear: none;
     }
 }
 @media (max-width: 992px){

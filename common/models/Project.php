@@ -220,12 +220,12 @@ class Project extends \common\components\db\ActiveRecord {
         ];
     }
 
-   public function getEmployees() {
-        $projectParticipantModel = new ProjectParticipant();
-        $employees = $projectParticipantModel->getEmployeesByProjectId($this->id);        
-                
-        return $employees;
-    }
+//   public function getEmployees() {
+//        $projectParticipantModel = new ProjectParticipant();
+//        $employees = $projectParticipantModel->getEmployeesByProjectId($this->id);        
+//                
+//        return $employees;
+//    }
 
     public function getTasks() {
         return $this->hasMany(Task::className(), ['project_id'=>'id']);

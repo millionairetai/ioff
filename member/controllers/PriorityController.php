@@ -7,17 +7,32 @@ class PriorityController extends ApiController {
     /*
      * Get priority
      */
-    public function actionGetProjectPriority() {
+//    public function actionGetProjectPriority() {
+//        $objects = [];
+//
+//        $array = Priority::find()->select(['id', 'name'])->andCompanyId()->all();
+//        foreach ($array as $item) {
+//            $objects[] = [
+//                'id' => $item->id,
+//                'name' => $item->name
+//            ];
+//        }
+//        
+//        return $this->sendResponse(false, "", $objects);
+//    }
+             
+    /**
+     * Get priority list by owner table
+     */
+    public function actionGetPriority() {
         $objects = [];
-
-        $array = Priority::find()->select(['id', 'name'])->andCompanyId()->all();
-        foreach ($array as $item) {
+        $status = Priority::getByOwnerTable(\Yii::$app->request->get('type'));
+        foreach ($status as $item) {
             $objects[] = [
-                'id' => $item->id,
-                'name' => $item->name
+                'id' => $item['id'],
+                'name' => $item['name'],
             ];
         }
-        
         return $this->sendResponse(false, "", $objects);
     }
 }

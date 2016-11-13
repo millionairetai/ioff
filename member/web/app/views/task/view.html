@@ -6,7 +6,7 @@
 
 <section class="content" ng-show="collection.no_data == false">
     <!-- Default box -->
-    <div class="box">
+    <div class="box box-solid">
         <div class="box-header with-border">
             <h3 class="box-title">{{$root.$lang.task_infomation}}</h3>
             <div class="box-tools pull-right">
@@ -14,7 +14,7 @@
                 <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="{{$root.$lang.remove}}"><i class="fa fa-times"></i></button>
             </div>
         </div>
-        <div class="box-body" >
+        <div class="box-body">
             <div class="col-md-7">
                 <table class="table">
                     <tr>
@@ -187,7 +187,7 @@
                         <tr>
                             <th width="10%">{{$root.$lang.task_description}}</th>
                             <td width="80%"> 
-                                <textarea  class="form-control"  data-ui-tinymce ng-model="taskPostData.description" rows="5"></textarea>
+                                <textarea class="form-control" data-ui-tinymce ng-model="taskPostData.description" rows="5"></textarea>
                                 <br/>
                                 <input id="fileImage" type="file" class="form-control input-file-upload" name="file" onchange="angular.element(this).scope().addFile(this.files);
                                         $('#fileImage').replaceWith($('#fileImage').clone());" />

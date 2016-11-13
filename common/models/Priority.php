@@ -11,6 +11,8 @@ use Yii;
  * @property integer $company_id
  * @property string $name
  * @property string $description
+ * @property string $owner_table
+ * @property string $column_name
  * @property string $datetime_created
  * @property string $lastup_datetime
  * @property string $lastup_employee_id
@@ -32,11 +34,12 @@ class Priority extends \common\components\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'datetime_created', 'lastup_datetime', 'lastup_employee_id'], 'required'],
+            [['name', 'datetime_created', 'owner_table', 'column_name', 'lastup_datetime', 'lastup_employee_id'], 'required'],
             [['description'], 'string'],
             [['company_id','datetime_created', 'lastup_datetime', 'lastup_employee_id'], 'integer'],
             [['disabled'], 'boolean'],
-            [['name'], 'string', 'max' => 255]
+            [['name'], 'string', 'max' => 255],
+            [['owner_table', 'column_name',], 'string', 'max' => 50],
         ];
     }
 
@@ -59,5 +62,19 @@ class Priority extends \common\components\db\ActiveRecord
     
     public static function getPriorityName($id){
     	return Priority::findOne($id);
+    }
+        
+    /**
+     * Get priority by owner table
+     * 
+     * param string $ownerTable
+     * @return \yii\db\ActiveQuery
+     */
+    public static function getByOwnerTable($ownerTable) {
+        return self::find()
+                ->select(['id','name'])
+                ->where(['owner_table' => $ownerTable])
+                ->asArray()
+                ->all();;
     }
 }

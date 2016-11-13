@@ -15,3 +15,5 @@ angular.module('iofficez').directive('clickOnce', function ($timeout) {
         }
     };
 });
+//http://plnkr.co/edit/2aZWQSLS8s6EhO5rKnRh?p=preview
+//http://blog.codebrag.com/post/57412530001/preventing-duplicated-requests-in-angularjs

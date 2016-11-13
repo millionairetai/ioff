@@ -246,7 +246,7 @@ class ProjectController extends ApiController {
                          || (\Yii::$app->user->identity->is_admin == true)
                          || ($data_project['project_info']['manager_project_id'] == Yii::$app->user->identity->id)
                             ) {
-                    return $this->sendResponse(false, $projectId, $objects);
+                        return $this->sendResponse(false, $projectId, $objects);
                     } else {
                         $EmployeesInProject = ProjectEmployee::findOne([
                                 'project_id'  => $projectId,
@@ -477,8 +477,8 @@ class ProjectController extends ApiController {
                     if ($after != $befor) {
                         switch ($key) {
                             case \Yii::t('member', 'project description op'):
-                            $description = !empty($befor) ? \Yii::t('member', 'project description op'). ' '. \Yii::t('member', 'comment update after'). ' ' .$befor : $noSetting;
-                            $content .= '<li>'. $description .'</li>';
+                                $description = !empty($befor) ? \Yii::t('member', 'project description op') . ' ' . \Yii::t('member', 'comment update after') . ' ' . $befor : $noSetting;
+                                $content .= '<li>' . $description . '</li>';
                             break;
                             case \Yii::t('member', 'project status op'):
                             case \Yii::t('member', 'project priority op'):
@@ -704,18 +704,37 @@ class ProjectController extends ApiController {
     	return $result;
     }
 
-    public function actionGetAllProjectIdAndNames() {
+//    public function actionGetAllProjectIdAndNames() {
+//        $objects = [];
+//        $collection = [];
+//        $projects = Project::find()->select(['id','name'])->andCompanyId()->all();
+//        
+//        foreach ($projects as $project) {
+//            $collection[] = [
+//                'id' => $project->id,
+//                'name' => $project->name
+//            ];
+//        }
+//        
+//        $objects['collection'] = $collection;
+//        return $this->sendResponse(false, "", $objects);
+//    }
+    
+    /**
+     * Get project id and name.
+     */
+    public function actionGetProjects() {
         $objects = [];
         $collection = [];
-        $projects = Project::find()->select(['id','name'])->andCompanyId()->all();
-        
-        foreach ($projects as $project) {
-            $collection[] = [
-                'id' => $project->id,
-                'name' => $project->name
-            ];
+        if ($projects = Project::getIdAndNameProjects()) {
+            foreach ($projects as $project) {
+                $collection[] = [
+                    'id' => $project['id'],
+                    'name' => $project['name']
+                ];
+            }
         }
-        
+
         $objects['collection'] = $collection;
         return $this->sendResponse(false, "", $objects);
     }
