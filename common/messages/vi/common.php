@@ -33,6 +33,15 @@ return [
     'Language' => 'Ngôn ngữ',
     'Plan type' => 'Gói sử dụng',    
     'Title' => 'Tiêu đề',
+    'Subject' => 'Tiêu đề',
+    'Body' => 'Nội dung',
+    'Verification Code' => 'Mã xác nhận',
+    'Contact' => 'Liên hệ',
+    'Register' => 'Đăng ký',
+    'Company name' => 'Tên công ty',    
+    'First name' => 'Họ',
+    'Last name' => 'Tên',
+    'Thank you for contacting us. We will respond to you as soon as possible' => 'Cảm ơn vì đã liên hệ với chúng tôi. Chúng tôi sẽ phản hồi bạn nhanh nhất có thể', 
     'delete error'=>'Xóa bị lỗi',
     
     //Calendar

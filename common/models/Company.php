@@ -33,7 +33,7 @@ use common\models\Language;
  * @property string $lastup_employee_id
  * @property boolean $disabled
  */
-class Company extends \common\components\db\ActiveRecord {
+class Company extends \backend\components\db\ActiveRecord {
 
     const COLUNM_NAME_ACTIVE = 'company.active';
     const COLUNM_NAME_INACTIVE = 'company.inactive';

@@ -33,6 +33,15 @@ return [
     'Language' => 'Language',
     'Plan type' => 'Plan type',
     'Title' => 'Title',  
+    'Subject' => 'Subject',
+    'Body' => 'Body',
+    'Verification Code' => 'Verification Code',
+    'Contact' => 'Contact',
+    'Register' => 'Register',
+    'Company name' => 'Company name',
+    'First name' => 'First name',
+    'Last name' => 'Last name',
+    'Thank you for contacting us. We will respond to you as soon as possible' => 'Thank you for contacting us. We will respond to you as soon as possible.',
     'delete error'=>'Delete error',    
     
     //calendar

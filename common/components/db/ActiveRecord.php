@@ -56,7 +56,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
     
     public function behaviors()
     {
-        return [
+        $events = [
             [
                 'class' => TimestampBehavior::className(),
                 'attributes' => [
@@ -67,11 +67,6 @@ class ActiveRecord extends \yii\db\ActiveRecord
                 ],
             ],
             [
-                'class' => BlameableBehavior::className(),
-                'createdByAttribute' => 'created_employee_id',
-                'updatedByAttribute' => 'lastup_employee_id',
-            ],
-            [
                 'class' => AttributeBehavior::className(),
                 'attributes' => [
                     ActiveRecord::EVENT_BEFORE_INSERT => 'disabled',
@@ -79,14 +74,26 @@ class ActiveRecord extends \yii\db\ActiveRecord
                 ],
                 'value' => self::STATUS_ENABLE,
             ],
-            [
+        ];
+        
+        if (\Yii::$app->user->identity) {
+            $events[]= [
                 'class' => AttributeBehavior::className(),
                 'attributes' => [
                     ActiveRecord::EVENT_BEFORE_INSERT => 'company_id',
                 ],
                 'value' => \Yii::$app->user->getCompanyId(),
-            ],
         ];
+            
+            $events[]= [
+                'class' => BlameableBehavior::className(),
+                'createdByAttribute' => 'created_employee_id',
+                'updatedByAttribute' => 'lastup_employee_id',
+            ];
+        }
+
+        return $events;
+        
     }
 
     /**
