@@ -85,6 +85,14 @@ appRoot.config(function ($routeProvider, $httpProvider) {
                 templateUrl: 'app/views/employee/index.html',
                 controller: 'EmployeeCtrl'
             })
+            .when('/authority/:authorityId', {
+                templateUrl: 'app/views/authority/detail.html',
+                controller: 'AuthorityDetailCtrl'
+            })
+            .when('/changePackage', {
+                templateUrl: 'app/views/company/changePackage.html',
+                controller: 'changePackageCtrl'
+            })
             .otherwise({redirectTo: '/home'});
 
 });

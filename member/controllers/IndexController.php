@@ -41,8 +41,32 @@ class IndexController extends Controller {
      */
     public function actionRegister() {
         if (\Yii::$app->user->isGuest) {
-            $this->layout = "registration";
+            $this->layout = "no_login";
             return $this->render('registration', []);
+        }
+
+        return $this->redirect('/');
+    }
+
+    /*
+     * Forget password
+     */
+    public function actionForgetPassword() {
+        if (\Yii::$app->user->isGuest) {
+            $this->layout = "no_login";
+            return $this->render('forget_password', []);
+        }
+
+        return $this->redirect('/');
+    }
+
+    /*
+     * Reset password
+     */
+    public function actionResetPassword() {
+        if (\Yii::$app->user->isGuest) {
+            $this->layout = "no_login";
+            return $this->render('reset_password', []);
         }
 
         return $this->redirect('/');
