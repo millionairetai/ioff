@@ -188,7 +188,7 @@ class Event extends ActiveRecord {
         $attend = EventConfirmationType::getInfoAttend($eventId);
         //Get department and invitee of this event.
         $invitations = Invitation::getListByEventId($eventId);
-        $countEmployee = empty($invitations) ? 0 : $invitations['departmentAndEmployee']['count'];
+        $countEmployee = empty($invitations['departmentAndEmployee']['count']) ? 0 : $invitations['departmentAndEmployee']['count'];
         $fileList = File::getFileByOwnerIdAndTable($eventId, Event::tableName());
         $checkAttent = false;
         
