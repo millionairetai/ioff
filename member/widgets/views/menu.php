@@ -6,14 +6,14 @@ use yii\helpers\Url;
         <section class="sidebar">
           <!-- sidebar menu: : style can be found in sidebar.less -->
           <ul class="sidebar-menu">
-            <li>
-              <a href="#activity">
-                <i class="fa fa-th"></i> <span>Activity</span> 
-              </a>
-            </li>
             <li class="treeview">
                 <a href="#home">
                 <i class="fa fa-dashboard"></i> <span>Dashboard</span> <i class="fa fa-angle-left pull-right"></i>
+              </a>
+            </li>
+            <li>
+              <a href="#activity">
+                <i class="fa fa-th"></i> <span>Activity</span> 
               </a>
             </li>
             <li>
