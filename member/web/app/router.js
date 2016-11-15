@@ -85,13 +85,33 @@ appRoot.config(function ($routeProvider, $httpProvider) {
                 templateUrl: 'app/views/employee/index.html',
                 controller: 'EmployeeCtrl'
             })
-            .when('/authority/:authorityId', {
-                templateUrl: 'app/views/authority/detail.html',
-                controller: 'AuthorityDetailCtrl'
+             .when('/viewEmployee/:employeeId', {
+                templateUrl: 'app/views/employee/profile.html',
+                controller: 'profileCtrl'
+            })
+            .when('/changePassword/:employeeId', {
+                templateUrl: 'app/views/employee/change_password.html',
+                controller: 'ChangePasswordCtrl'
+            })
+            .when('/activity', {
+                templateUrl: 'app/views/activity/index.html',
+                controller: 'ActivityCtrl'
+            })
+            .when('/company', {
+                templateUrl: 'app/views/company/index.html',
+                controller: 'CompanyCtrl'
             })
             .when('/changePackage', {
                 templateUrl: 'app/views/company/changePackage.html',
                 controller: 'changePackageCtrl'
+            })
+            .when('/authority/:authorityId', {
+                templateUrl: 'app/views/authority/detail.html',
+                controller: 'AuthorityDetailCtrl'
+            })
+            .when('/report', {
+                templateUrl: 'app/views/report/index.html',
+                controller: 'reportCtrl'
             })
             .otherwise({redirectTo: '/home'});
 

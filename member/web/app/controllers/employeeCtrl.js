@@ -135,3 +135,8 @@ appRoot.controller('editEmployeeCtrl', ['$scope', '$uibModalInstance', '$rootSco
             $uibModalInstance.dismiss('cancel');
         };
     }]);
+
+appRoot.controller('profileCtrl', ['$scope', '$rootScope', 'alertify', '$timeout',  '$filter',
+    function ($scope, $location, $rootScope, alertify, $timeout, $filter) {
+
+    }]);

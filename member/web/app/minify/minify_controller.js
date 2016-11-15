@@ -1432,6 +1432,11 @@ appRoot.controller('editEmployeeCtrl', ['$scope', '$uibModalInstance', '$rootSco
         $scope.cancel = function () {
             $uibModalInstance.dismiss('cancel');
         };
+    }]);
+
+appRoot.controller('profileCtrl', ['$scope', '$rootScope', 'alertify', '$timeout',  '$filter',
+    function ($scope, $location, $rootScope, alertify, $timeout, $filter) {
+
     }]);//
 appRoot.controller('homeCtrl', ['$scope','dialogMessage','alertify',function($scope,dialogMessage,alertify) {
     
