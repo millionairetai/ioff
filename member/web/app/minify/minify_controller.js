@@ -241,8 +241,8 @@ appRoot.controller('AddAuthorityCtrl', ['$scope', '$uibModalInstance', 'controll
             });
         };
     }]);//show calendar
-appRoot.controller('calendarCtrl', ['$scope', '$uibModal', 'calendarService', 'taskService', '$timeout', 'settingSystem', 'uiCalendarConfig', 'listCalendar', '$rootScope', 
-    function ($scope, $uibModal, calendarService, taskService, $timeout, settingSystem, uiCalendarConfig, listCalendar, $rootScope) {
+appRoot.controller('calendarCtrl', ['$scope', '$uibModal', 'calendarService', 'taskService', '$timeout', 'settingSystem', 'uiCalendarConfig', 'listCalendar', '$rootScope', 'dialogMessage',
+    function ($scope, $uibModal, calendarService, taskService, $timeout, settingSystem, uiCalendarConfig, listCalendar, $rootScope, dialogMessage) {
         var date = new Date();
         var d = date.getDate();
         var m = date.getMonth();
@@ -362,20 +362,6 @@ appRoot.controller('calendarCtrl', ['$scope', '$uibModal', 'calendarService', 't
                         };
                         $scope.events.push(newEvent);
                 });
-                
-//                for ($i = 0; $i < respone.objects.length; $i++) {
-//                    allDay = respone.objects[$i].is_all_day == 1 ? true : false;
-//                    var newEvent = {
-//                        title: respone.objects[$i].title,
-//                        start: moment(respone.objects[$i].start).toDate(),
-//                        end: moment(respone.objects[$i].end).toDate(),
-//                        color: respone.objects[$i].color,
-//                        url: '#/viewEvent/' + respone.objects[$i].id,
-//                        allDay : allDay
-//                    };
-//                    $scope.events.push(newEvent);
-//                }
-
             });
         }
         
@@ -706,7 +692,6 @@ appRoot.controller('addEventCtrl', ['$rootScope', 'data', '$scope', 'calendarSer
 var $dataEditEvent = [];
 appRoot.controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService', 'EventPostService', '$uibModal', '$rootScope', 'dialogMessage', '$routeParams', 'alertify', '$sce', 'PER_PAGE_VIEW_MORE','$location',
     function ($scope, calendarService, fileService, EventPostService, $uibModal, $rootScope, dialogMessage, $routeParams, alertify, $sce, PER_PAGE_VIEW_MORE, $location) {
-//        var calendarId = $routeParams.eventId;
         var eventId = $routeParams.eventId;
         //set paramter for layout
         $scope.collection = [];
@@ -2225,15 +2210,30 @@ appRoot.controller('searchCtrl', ['$scope', 'taskService', '$uibModal', '$rootSc
         };
 
         $scope.task = {
-            searchFollow: '',
-            searchAssigned: '',
-            pageFollow: 1,
-            pageAssigned: 1
+            search: {
+                follow: '',
+                assigned: '',
+                all: ''
+            },
+            page: {
+                follow: 1,
+                assigned: 1,
+                all: 1
+            }
         };
 
         //array store task collection response from server
-        $scope.collection = [];
-        $scope.totalItems = 0;
+        $scope.collection = {
+            assigned: [],
+            follow: [],
+            all: []
+        };
+
+        $scope.totalItems = {
+            assigned: 0,
+            follow: 0,
+            all: 0
+        };
         $scope.maxPageSize = MAX_PAGE_SIZE;
 
         //get list with pagination
@@ -2250,40 +2250,31 @@ appRoot.controller('searchCtrl', ['$scope', 'taskService', '$uibModal', '$rootSc
             switch (type) {
                 case 'my_task':
                     {
-                        $scope.params.searchText = $scope.task.searchAssigned;
-                        $scope.params.page = $scope.task.pageAssigned;
-                        taskService.getAssingedTasks($scope.params, function (response) {
-                            $scope.collection = response.objects.collection;
-                            $scope.totalItems = response.objects.totalItems;
-                            if (!$scope.$$phase) {
-                                $scope.$apply();
-                            }
+                        $scope.params.searchText = $scope.task.search.assigned;
+                        $scope.params.page = $scope.task.page.assigned;
+                        taskService.getMyTasks($scope.params, function (response) {
+                            $scope.collection.assigned = response.objects.collection;
+                            $scope.totalItems.assigned = response.objects.totalItems;
                         });
                     }
                     break;
                 case 'follow_task':
                     {
-                        $scope.params.searchText = $scope.task.searchFollow;
-                        $scope.params.page = $scope.task.pageFollow;
+                        $scope.params.searchText = $scope.task.search.follow;
+                        $scope.params.page = $scope.task.page.follow;
                         taskService.getFollowTasks($scope.params, function (response) {
-                            $scope.collection = response.objects.collection;
-                            $scope.totalItems = response.objects.totalItems;
-                            if (!$scope.$$phase) {
-                                $scope.$apply();
-                            }
+                            $scope.collection.follow = response.objects.collection;
+                            $scope.totalItems.follow = response.objects.totalItems;
                         });
                     }
                     break;
                 case 'all_task':
                     {
-                        $scope.params.searchText = $scope.task.searchTasks;
-                        $scope.params.page = $scope.task.pageTasks;
+                        $scope.params.searchText = $scope.task.search.all;
+                        $scope.params.page = $scope.task.page.all;
                         taskService.getTasks($scope.params, function (response) {
-                            $scope.collection = response.objects.collection;
-                            $scope.totalItems = response.objects.totalItems;
-                            if (!$scope.$$phase) {
-                                $scope.$apply();
-                            }
+                            $scope.collection.all = response.objects.collection;
+                            $scope.totalItems.all = response.objects.totalItems;
                         });
                     }
                     break;
@@ -2329,8 +2320,8 @@ appRoot.controller('searchCtrl', ['$scope', 'taskService', '$uibModal', '$rootSc
     }]);
 
 /*add Task Popup Controller*/
-appRoot.controller('addTaskCtrl', ['socketService', '$scope', 'taskService', '$location', '$uibModalInstance', '$rootScope', 'departmentService', 'alertify', '$timeout', 'employeeService', 'projectService', '$cacheFactory','commonService',
-    function (socketService, $scope, taskService, $location, $uibModalInstance, $rootScope, departmentService, alertify, $timeout, employeeService, projectService, $cacheFactory, commonService) {
+appRoot.controller('addTaskCtrl', ['socketService', '$scope', 'taskService', '$location', '$uibModalInstance', '$rootScope', 'departmentService', 'alertify', '$timeout', 'employeeService', 'projectService', '$cacheFactory', 'commonService', 'taskGroupService', 'priorityService',
+    function (socketService, $scope, taskService, $location, $uibModalInstance, $rootScope, departmentService, alertify, $timeout, employeeService, projectService, $cacheFactory, commonService, taskGroupService, priorityService) {
         //init
         $scope.step = 1;
         $scope.more = 0;
@@ -2361,7 +2352,7 @@ appRoot.controller('addTaskCtrl', ['socketService', '$scope', 'taskService', '$l
             followingEmployees: [],
             is_public: 0,
             taskGroupIds: [],
-            sms: 0,
+            sms: 0
         };
 
         /*Helpers*/
@@ -2482,11 +2473,11 @@ appRoot.controller('addTaskCtrl', ['socketService', '$scope', 'taskService', '$l
             $scope.task.followingEmployees = [];
 
             //status
-            taskService.getParentTaskList({project_id: $scope.task.project_id}, function (data) {
+            taskService.getParentTasks({project_id: $scope.task.project_id}, function (data) {
                 $scope.parentTasks = data.objects.collection;
             });
 
-            taskService.getTaskGroupList({project_id: $scope.task.project_id}, function (data) {
+            taskGroupService.getTaskGroups({project_id: $scope.task.project_id}, function (data) {
                 $scope.taskGroups = data.objects.collection;
             });
 
@@ -2503,13 +2494,13 @@ appRoot.controller('addTaskCtrl', ['socketService', '$scope', 'taskService', '$l
         }
         /*Call services*/
         //project 
-        projectService.getProjectList({}, function (data) {
+        projectService.getProjects({}, function (data) {
             $scope.projects = data.objects.collection;
         });
 
         //priority
-        taskService.getPriorityList({}, function (data) {
-            $scope.priorities = data.objects.collection;
+        priorityService.getTaskPriority({}, function (data) {
+            $scope.priorities = data.objects;
             if ($scope.priorities.length > 0) {
                 $scope.task.priority_id = $scope.priorities[0].id;
             }
@@ -2838,8 +2829,8 @@ appRoot.controller('viewTaskCtrl', ['socketService','$sce', 'fileService', '$sco
 }]);
 
 /*edit Task Popup Controller*/
-appRoot.controller('editTaskCtrl', ['socketService', 'data', '$scope', 'taskService', '$location', '$uibModalInstance', '$rootScope', 'commonService', 'alertify', '$timeout', 'employeeService', 'projectService', '$cacheFactory',
-    function (socketService, data, $scope, taskService, $location, $uibModalInstance, $rootScope, commonService, alertify, $timeout, employeeService, projectService, $cacheFactory) {
+appRoot.controller('editTaskCtrl', ['socketService', 'data', '$scope', 'taskService', '$location', '$uibModalInstance', '$rootScope', 'commonService', 'alertify', '$timeout', 'employeeService', 'projectService', '$cacheFactory', 'priorityService',
+    function (socketService, data, $scope, taskService, $location, $uibModalInstance, $rootScope, commonService, alertify, $timeout, employeeService, projectService, $cacheFactory, priorityService) {
         //init
         $scope.step = 1;
         $scope.more = 0;
@@ -3044,12 +3035,12 @@ appRoot.controller('editTaskCtrl', ['socketService', 'data', '$scope', 'taskServ
         }
         /*Call services*/
         //project 
-        projectService.getProjectList({}, function (data) {
+        projectService.getProjects({}, function (data) {
             $scope.projects = data.objects.collection;
         });
 
         //priority
-        taskService.getPriorityList({}, function (data) {
+        priorityService.getTaskPriority({}, function (data) {
             $scope.priorities = data.objects.collection;
         });
 
