@@ -6,6 +6,14 @@ appRoot.factory('actionService', ['apiService', function (apiService) {
             }
         };
     }]);
+appRoot.factory('activityService', ['apiService', function (apiService) {
+
+        return {
+            searchEmployee : function (data,success,error){
+                return apiService.post('employee/search',data,success,error);
+            }
+        };
+    }]);
 appRoot.factory('apiService', ['$rootScope', '$http', '$location', 'alertify', function ($rootScope, $http, $location, alertify) {
 
         return {

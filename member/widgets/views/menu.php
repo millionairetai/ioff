@@ -6,6 +6,11 @@ use yii\helpers\Url;
         <section class="sidebar">
           <!-- sidebar menu: : style can be found in sidebar.less -->
           <ul class="sidebar-menu">
+            <li>
+              <a href="#activity">
+                <i class="fa fa-th"></i> <span>Activity</span> 
+              </a>
+            </li>
             <li class="treeview">
                 <a href="#home">
                 <i class="fa fa-dashboard"></i> <span>Dashboard</span> <i class="fa fa-angle-left pull-right"></i>
@@ -34,6 +39,11 @@ use yii\helpers\Url;
             <li>
               <a href="#authority">
                 <i class="fa fa-group"></i> <span>Authorities</span> 
+              </a>
+            </li>
+            <li>
+              <a href="#company">
+                <i class="fa fa-group"></i> <span>Company</span> 
               </a>
             </li>
             <li>
