@@ -62,7 +62,7 @@ class EventConfirmation extends \common\components\db\ActiveRecord {
      * @return integer
      */
     public static function getNumberConfirmedEmployee($eventId) {
-        return EventConfirmation::find()->where(['event_confirmation_type_id' => EventConfirmationType::VAL_NO_CONFIRM, 'event_id' => $eventId])->count();
+        return self::find()->where(['event_confirmation_type_id' => EventConfirmationType::VAL_NO_CONFIRM, 'event_id' => $eventId])->count();
     }
 
     /**

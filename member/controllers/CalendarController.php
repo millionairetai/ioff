@@ -444,12 +444,19 @@ class CalendarController extends ApiController {
      * @return array
      */
     private function _mergeDataEmployee($dataPost = []) {
-        if (empty($dataPost))
+        if (empty($dataPost)) {
             return false;
-        
+        }
 
+        $invitees = [];
         $employeeOld = !empty($dataPost['data_old']['invitations']['departmentAndEmployee']['employeeList']) ? $dataPost['data_old']['invitations']['departmentAndEmployee']['employeeList'] : null;
-        $employeeNew = Employee::getlistByepartmentIdsAndEmployeeIds($dataPost['departments'], $dataPost['members']);
+        if (!empty($dataPost['members'])) {
+            foreach ($dataPost['members'] as $val) {
+                $invitees[] = $val['id'];
+            }
+        }
+        
+        $employeeNew = Employee::getlistByepartmentIdsAndEmployeeIds($dataPost['departments'], $invitees);
         $employeeAttend = isset($dataPost['data_old']['attent']['eventConfirmList']) ? $dataPost['data_old']['attent']['eventConfirmList'] : [];
         $result = [];
 
@@ -460,7 +467,7 @@ class CalendarController extends ApiController {
                     if (!in_array($valMemberNew['id'], array_values($employeeAttend))) {
                         $result['employeeNew'][$keyMemberNew] = $valMemberNew['id'];
                         $result['employees'][$keyMemberNew] = $valMemberNew['id'];
-}
+                    }
                     if ($valEmployeeOld['id'] == $valMemberNew['id']) {
                         unset($employeeOld[$keyEmployessOld]);
                         unset($employeeNew['employeeList'][$keyMemberNew]);
@@ -549,17 +556,17 @@ class CalendarController extends ApiController {
         }
 
         //Add new employee
-        $dataInsertInvitation = [];
+        $eventConfirmation = [];
         if (!empty($dataMegre['employeeNew'])) {
             foreach ($dataMegre['employeeNew'] as $val) {
-                $dataInsertInvitation[] = [
+                $eventConfirmation[] = [
                     'employee_id' => $val,
                     'event_id' => $event_id
                 ];
             }
         }
 
-        EventConfirmation::batchInsert($dataInsertInvitation);
+        EventConfirmation::batchInsert($eventConfirmation);
         
         return true;
     }
