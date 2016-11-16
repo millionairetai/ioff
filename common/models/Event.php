@@ -187,7 +187,7 @@ class Event extends ActiveRecord {
         $remind = Remind::getByOwnerIdAndOwnerTable($eventId, Event::tableName());
         $attend = EventConfirmationType::getInfoAttend($eventId);
         //Get department and invitee of this event.
-        $invitations = Invitation::getListByEventId($eventId);
+        $invitations = Invitation::getByEventId($eventId);
         $countEmployee = empty($invitations['departmentAndEmployee']['count']) ? 0 : $invitations['departmentAndEmployee']['count'];
         $fileList = File::getFileByOwnerIdAndTable($eventId, Event::tableName());
         $checkAttent = false;
@@ -269,7 +269,7 @@ class Event extends ActiveRecord {
             }
         }
         
-        $invitations = Invitation::getListByEventId($eventId, $confirmedEmployeeIds);
+        $invitations = Invitation::getByEventId($eventId, $confirmedEmployeeIds);
         $listEmployeeAttend = [];
         if (isset($invitations['departmentAndEmployee']['employeeList']) && isset($attend['attendListEmployeeId'])) {
             foreach ($invitations['departmentAndEmployee']['employeeList'] as $key => $val) {

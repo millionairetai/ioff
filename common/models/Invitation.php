@@ -86,23 +86,24 @@ class Invitation extends ActiveRecord
      * 
      * @return boolean|array
      */
-    public static function getListByEventId($eventId = null, $confirmedEmployeeIds = []) {
+    public static function getByEventId($eventId = null, $confirmedEmployeeIds = []) {
         if ($eventId == null)  { 
             return false;
         }
         
-        $invitations = Invitation::findAll(['company_id' => \Yii::$app->user->getCompanyId(), 'event_id' => $eventId]);
+        $invitations = self::find()->select(['owner_table', 'owner_id'])
+                ->andWhere(['event_id' => $eventId])
+                ->all();
         if (!empty($invitations)) {
             $result = [];
             foreach ($invitations as $invitation) {
-                if ($invitation->owner_table == Department::tableName()) {
+                if ($invitation->owner_table == self::TABLE_DEPARTMENT) {
                     $result[$invitation->owner_table][$invitation->owner_id] = $invitation->department->name;
                 }
-                if ($invitation->owner_table == Employee::tableName()) {
+                if ($invitation->owner_table == self::TABLE_EMPLOYEE) {
                     $result[$invitation->owner_table][$invitation->owner_id] = $invitation->employee->fullname;
                 }
             }
-            
             $departments = isset($result['department']) ? array_keys($result['department']) : null;
             $employees   = isset($result['employee'])   ? array_keys($result['employee']) : null;
             if (!empty($confirmedEmployeeIds)) {
@@ -113,27 +114,10 @@ class Invitation extends ActiveRecord
             
             //Check if employees is null, we avoid error null with function of array_unique.
             $employees = !empty($employees) ? array_unique($employees) : $employees;
-            
             $result['departmentAndEmployee'] = Employee::getlistByepartmentIdsAndEmployeeIds($departments, $employees);
             return $result;
         }
         
         return false;
     }
-
-    /**
-     * Add invitation batchInsert
-     * 
-     * @param array $dataInsert
-     * @return boolean
-     */
-    public static function batchInsert($dataInsert) {
-        if (!empty($dataInsert)) {
-            if (!\Yii::$app->db->createCommand()->batchInsert(self::tableName(), array_keys($dataInsert[0]), $dataInsert)->execute()) {
-                throw new \Exception('Save record to table invitation fail');
-            }
-        }
-
-        return true;
-    }        
 }
