@@ -488,8 +488,8 @@ class Employee extends ActiveRecord implements IdentityInterface {
             }
             $query->andWhere(['not in', self::tableName() . '.id', $ids]);
         }
-
-        return $query->andCompanyId(true, self::tableName())->all();
+        
+        return $query->andCompanyId(false, self::tableName())->all();
     }
     
     /**

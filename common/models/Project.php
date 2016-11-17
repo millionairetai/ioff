@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use common\models\ProjectEmployee;
 
 /**
  * This is the model class for table "project".
@@ -101,58 +102,69 @@ class Project extends \common\components\db\ActiveRecord {
     }
 
     /**
-     * get project based on employee
+     * Get all of projects that employee who can be able to see.
+     * @param interger $itemPerPage
+     * @param interger $offset
+     * @return array|null
      */
-    public static function getProject($params, $currentPage = 1, $itemPerPage = 10) {
-        $companyId = \Yii::$app->user->getCompanyId();
+    public static function getProjects($itemPerPage = 10, $offset = 0) {
+        $subProjEmp = ProjectEmployee::find()->select('project_id')->where(['employee_id' => \Yii::$app->user->identity->id]);
+        $projects = self::find()
+                        ->select(['project.id', 'project.name', 'project.description', 'project.status_id',
+                            'project.completed_percent', 'project.worked_hour', 'project.estimate_hour', 'status.name as status_name'])
+                        ->joinWith('status')
+                        ->orWhere([
+                            'project.is_public' => self::VAL_TRUE,
+                        ])->orWhere([
+                    'project.created_employee_id' => \Yii::$app->user->identity->id,
+                ])->orWhere([
+                    'project.manager_project_id' => \Yii::$app->user->identity->id,
+                ])->orWhere([
+                    'project.id' => $subProjEmp,
+                ])->andCompanyId(false, self::tableName());
 
-        $sql = " SELECT project.id, project.name, project.description, project.status_id,"
-                . "     project.completed_percent, project.worked_hour, project.estimate_hour, status.name as status_name"
-                . " FROM project"
-                . "     INNER JOIN status"
-                . "         ON project.status_id=status.id"
-                . "             AND status.company_id={$companyId}"
-                . " WHERE ("
-                . "           project.is_public=" . self::VAL_TRUE
-                . "           OR project.manager_project_id=:empolyee_id"
-                . "           OR project.created_employee_id=:empolyee_id"
-                . "           OR EXISTS("
-                . "                        SELECT *"
-                . "                        FROM project_participant"
-                . "                        WHERE project_participant.project_id = project.id"
-                . "                            AND project_participant.owner_table='employee'"
-                . "                            AND project_participant.owner_id=:empolyee_id"
-                . "                            AND project_participant.company_id={$companyId}"
-                . "                            AND project_participant.disabled=" . self::STATUS_ENABLE
-                . "           ) OR EXISTS("
-                . "                        SELECT *"
-                . "                        FROM project_participant"
-                . "                            INNER JOIN department"
-                . "                                ON department.id=project_participant.owner_id"
-                . "                                   AND project_participant.owner_table='department'"
-                . "                                   AND department.company_id={$companyId}"
-                . "                                   AND department.disabled=" . self::STATUS_ENABLE
-                . "                            INNER JOIN employee"
-                . "                                ON department.id=employee.department_id"
-                . "                                   AND employee.id=:empolyee_id"
-                . "                                   AND employee.company_id={$companyId}"
-                . "                                   AND employee.disabled=" . self::STATUS_ENABLE
-                . "                        WHERE project_participant.project_id=project.id"
-                . "                            AND project_participant.company_id={$companyId}"
-                . "                            AND project_participant.disabled=" . self::STATUS_ENABLE
-                . "           )"
-                . "         )"
-                . "         AND project.company_id={$companyId}"
-                . "         AND project.disabled=" . self::STATUS_ENABLE
-                . " ORDER BY project.datetime_created DESC";
 
-        $offset = $currentPage * $itemPerPage;
-        $sql_limit = $sql;
-        $sql_limit .= " limit 0 ," . $offset;
-        $command = \Yii::$app->getDb()->createCommand($sql_limit)->bindValues($params);
-        $data = $command->queryAll();
+        $totalCount = $projects->count();
+        $projects = $projects->orderBy('project.datetime_created DESC')->limit($itemPerPage)
+                ->offset($offset)
+                ->asArray()
+                ->all();
+        if (empty($projects)) {
+            return [];
+        }
 
-        return ['data' => $data, 'sql' => $sql];
+        return [
+            'collection' => $projects,
+            'totalCount' => $totalCount,
+        ];
+    }
+
+    /**
+     * Get lasted project
+     * @return array|null
+     */
+    public function getLastedProject() {
+        $subProjEmp = ProjectEmployee::find()->select('project_id')->where(['employee_id' => \Yii::$app->user->identity->id]);
+        $project = Project::find()
+                        ->select(['project.id', 'project.name', 'project.description', 'project.status_id',
+                            'project.completed_percent', 'project.worked_hour', 'project.estimate_hour', 'status.name as status_name'])
+                        ->joinWith('status')
+                        ->orWhere([
+                            'project.is_public' => self::VAL_TRUE,
+                        ])->orWhere([
+                    'project.created_employee_id' => \Yii::$app->user->identity->id,
+                ])->orWhere([
+                    'project.manager_project_id' => \Yii::$app->user->identity->id,
+                ])->orWhere([
+                    'project.id' => $subProjEmp,
+                ])->andCompanyId(false, self::tableName());
+
+        $project = $project->orderBy('project.datetime_created DESC')->asArray()->one();
+        if (empty($project)) {
+            return [];
+        }
+        
+        return $project;
     }
 
     /**
@@ -175,9 +187,9 @@ class Project extends \common\components\db\ActiveRecord {
 
         //Department: inner join project_participant with department where project_id, company_id, owner_table=department.
         $projectParticipants = ProjectParticipant::getListByProjectId($projectId);
-        if(!empty($projectParticipants)) {
-            $departmentNames = empty($projectParticipants['department'])  ? [] : $projectParticipants['department'];
-            $participants    = empty($projectParticipants['owner_table']) ? [] : $projectParticipants['owner_table'];
+        if (!empty($projectParticipants)) {
+            $departmentNames = empty($projectParticipants['department']) ? [] : $projectParticipants['department'];
+            $participants = empty($projectParticipants['owner_table']) ? [] : $projectParticipants['owner_table'];
         }
 
         // * Get employee information in employee table with where = employee_id or department_id
@@ -185,7 +197,7 @@ class Project extends \common\components\db\ActiveRecord {
         $departmentIds = isset($participants['department']) ? $participants['department'] : null;
         $employees = Employee::getlistByepartmentIdsAndEmployeeIds($departmentIds, $employeeIds);
         if (!empty($employees)) {
-            $employeeList     = empty($employees['employeeList'])     ? [] : $employees['employeeList'];
+            $employeeList = empty($employees['employeeList']) ? [] : $employees['employeeList'];
             $employeeEditList = empty($employees['employeeEditList']) ? [] : $employees['employeeEditList'];
         }
 
@@ -228,11 +240,11 @@ class Project extends \common\components\db\ActiveRecord {
 //    }
 
     public function getTasks() {
-        return $this->hasMany(Task::className(), ['project_id'=>'id']);
+        return $this->hasMany(Task::className(), ['project_id' => 'id']);
     }
-        
+
     public function getCompany() {
-        return $this->hasOne(Company::className(), ['id'=>'company_id']);        
+        return $this->hasOne(Company::className(), ['id' => 'company_id']);
     }
 
     /**
@@ -241,10 +253,11 @@ class Project extends \common\components\db\ActiveRecord {
      */
     public static function getIdAndNameProjects() {
         return self::find()
-                ->select(['id','name'])
-                ->andCompanyId()
-                ->orderBy('datetime_created DESC')
-                ->asArray()
-                ->all();
+                        ->select(['id', 'name'])
+                        ->andCompanyId()
+                        ->orderBy('datetime_created DESC')
+                        ->asArray()
+                        ->all();
     }
+
 }

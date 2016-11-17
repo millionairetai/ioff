@@ -25,7 +25,7 @@
             </div>-->
             <br/>
             <ul id="list-project" ng-show="collection.length" class="list-project">
-                <li ng-repeat="ob in collection">
+                <li ng-repeat="ob in collection track by $index">
                     <div class="row">
                         <div class="col-md-8">
                         <a href="#/viewProject/{{ob.id}}"><strong>{{ob.name}}</strong></a><br/>
@@ -61,7 +61,7 @@
             </ul>
         </div>
         <div class="box-footer text-center" >
-            <button class="btn form-control cursor-pointer viewmorecl" ng-click="viewMore()" ng-show="filter.totalItems > (filter.currentPage * filter.itemPerPage)"><a>{{$root.$lang.view_more_upper_case}}</a></button>
+            <button class="btn form-control cursor-pointer viewmorecl" ng-click="viewMore()" ng-show="filter.totalItems > collection.length"><a>{{$root.$lang.view_more_upper_case}}</a></button>
             
         </div><!-- /.box-footer-->
     </div><!-- /.box -->

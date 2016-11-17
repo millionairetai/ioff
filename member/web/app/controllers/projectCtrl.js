@@ -1,23 +1,39 @@
 //list project
 appRoot.controller('projectCtrl', ['$scope', 'projectService', '$uibModal','$rootScope','socketService', 'PER_PAGE_VIEW_MORE', 'alertify', 
     function ($scope, projectService, $uibModal, $rootScope, socketService, PER_PAGE_VIEW_MORE, alertify) {
-         
         //get all project
         $scope.filter = {
             itemPerPage : PER_PAGE_VIEW_MORE,
             totalItems : 0,
-            currentPage : 1
+            offset : 0
         };
+        
         $scope.collection = [];
-        $scope.getList = function(){
+        $scope.getList = function() {
+            $scope.filter.offset = $scope.collection.length > 0 ? $scope.collection.length : 0;
             projectService.listProject($scope.filter, function (response) {
-                $scope.collection = response.objects.collection;
+                var temp = [];
+                temp = temp.concat(response.objects.collection);
+                $scope.collection = temp.concat($scope.collection);
                 $scope.filter.totalItems = response.objects.totalItems;
                 if (response.objects.error) {
                 	alertify.error(response.objects.error);
                 }
             });
         };
+        
+        $scope.getLastedProject = function(){
+            $scope.filter.offset = $scope.collection.length > 0 ? $scope.collection.length : 0;
+            projectService.getLastedProject({}, function (response) {
+                var temp = [];
+                temp = temp.concat(response.objects.collection);
+                $scope.collection = temp.concat($scope.collection);
+                if (response.objects.error) {
+                	alertify.error(response.objects.error);
+                }
+            });
+        };
+        
         $scope.getList();
         
         //add project
@@ -32,15 +48,14 @@ appRoot.controller('projectCtrl', ['$scope', 'projectService', '$uibModal','$roo
         };
         
         //view more
-        $scope.viewMore = function(){
-            $scope.filter.currentPage ++;
+        $scope.viewMore = function() {
             $scope.getList();
         }
         
         
         //handle create project successful
         $rootScope.$on('create_project_success', function(event, data) { 
-            $scope.getList();
+            $scope.getLastedProject();
         });
         
     }]);

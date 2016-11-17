@@ -530,6 +530,9 @@ appRoot.factory('projectService', ['apiService','$rootScope','alertify', functio
             addProject : function (data,success,error){
                 apiService.upload('project/add',data,success,error);
             },
+            getLastedProject : function (data,success,error){
+                apiService.get('project/get-lasted-project',data,success,error);
+            },
             viewProject: function (data,success,error){
                 apiService.post('project/view',data, success, error);
             },

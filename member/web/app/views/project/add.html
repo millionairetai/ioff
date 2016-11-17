@@ -150,7 +150,7 @@
                             <ui-select-choices refresh="findEmployee($select.search)" refresh-delay="1000" repeat="person in people">
                                 <div class="item-result ">
                                     <div class="item-result-name">
-                                        <img src="{{person.image}}" height="50" width="50">
+                                        <img class="img-circle" src="{{person.image}}" height="50" width="50">
                                         <div class="container-employee-search-info">
                                             <strong >{{person.firstname}}</strong><br>
                                             <i >{{person.email}}</i>
@@ -192,7 +192,7 @@
                             <ui-select-choices refresh="findEmployeeForProject($select.search)" refresh-delay="1000" repeat="person in employees">
                                 <div class="item-result ">
                                     <div class="item-result-name">
-                                        <img src="{{person.image}}" height="50" width="50">
+                                        <img class="img-circle" src="{{person.image}}" height="50" width="50">
                                         <div class="container-employee-search-info">
                                             <strong >{{person.firstname}}</strong><br>
                                             <i >{{person.email}}</i>
