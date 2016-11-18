@@ -1310,72 +1310,91 @@ appRoot.controller('EmployeeCtrl', ['$scope', '$uibModal', 'employeeService', '$
 
         $scope.params = {
             page: 1,
-            limit: 20,
-            statusName: '',
+            limit: 5,
+            searchName: '',
             orderBy: '',
             orderType: '',
-            searchName: ''
+            statusName: ''
         };
 
         $scope.employee = {
-            pageEmployee: 1,
-            pageInvited: 1,
-            pageInactive: 1,
-            pageAll: 1
+            search: {
+                active: '',
+                invited: '',
+                inactive: '',
+                all: ''
+            },
+            page: {
+                active: 1,
+                invited: 1,
+                inactive: 1,
+                all: 1
+            }
+        };
+
+        $scope.totalItems = {
+            active: 0,
+            invited: 0,
+            inactive: 0,
+            all: 0
         };
 
         $scope.commonTemplate = '';
-        $scope.totalItems = 0;
         $scope.employees = [];
         $scope.maxPageSize = MAX_PAGE_SIZE;
         $scope.getEmployees = function (type, $event) {
             if ($event != '') {
                 $event.preventDefault();
             }
-            
+
             //check if this tab is checked, we don't get ajax again.
             if ($($event.target).parent().hasClass('active')) {
                 return true;
             }
-            
+
             if ($scope.params.searchName) {
                 angular.element('.nav-item').removeClass('active');
                 angular.element('#all_search').addClass('active');
             }
-            
+
             switch (type) {
-                case 'employee':
-                    {
-                        $scope.params.statusName = 'active';
-                        $scope.params.page = $scope.employee.pageEmployee;
-                    }
+                case 'active':
+                    $scope.params.statusName = 'active';
+                    $scope.params.page = $scope.employee.page.active;
                     break;
                 case 'invited':
-                    {
-                        $scope.params.statusName = 'invited';
-                        $scope.params.page = $scope.employee.pageInvited;
-                    }
+                    $scope.params.statusName = 'invited';
+                    $scope.params.page = $scope.employee.page.invited;
                     break;
                 case 'inactive':
-                    {
-                        $scope.params.statusName = 'inactive';
-                        $scope.params.page = $scope.employee.pageInactive;
-                    }
+                    $scope.params.statusName = 'inactive';
+                    $scope.params.page = $scope.employee.page.inactive;
                     break;
                 case 'all':
-                    {
-                        $scope.params.statusName = '';
-                        $scope.params.page = $scope.employee.pageAll;
-                    }
+                    $scope.params.statusName = '';
+                    $scope.params.page = $scope.employee.page.all;
                     break;
             }
 
             employeeService.getEmployeesByStatus($scope.params, function (response) {
                 $scope.employees = response.objects.employees;
-                $scope.totalItems = response.objects.totalItems;
+                switch (type) {
+                    case 'active':
+                        $scope.totalItems.active = response.objects.totalItems;
+                        break;
+                    case 'invited':
+                        $scope.totalItems.invited = response.objects.totalItems;
+                        break;
+                    case 'inactive':
+                        $scope.totalItems.inactive = response.objects.totalItems;
+                        break;
+                    case 'all':
+                        $scope.totalItems.all = response.objects.totalItems;
+                        break;
+                }
             });
         };
-        
+
         //search by task name
         $scope.search = function (type) {
             $scope.getEmployees(type, '');
@@ -1406,7 +1425,7 @@ appRoot.controller('EmployeeCtrl', ['$scope', '$uibModal', 'employeeService', '$
             });
         };
 
-        $scope.getEmployees('employee', '');
+        $scope.getEmployees('active', '');
 
     }]);
 
@@ -1416,7 +1435,7 @@ appRoot.controller('InvitationCtrl', ['$scope', '$uibModalInstance', 'employeeSe
             message: '     Please join me in our new intranet. This is a place where everyone can collaborate on projects, coordinate tasks and schedules, and build our knowledge base, ',
             emails: ''
         };
-        
+
         $scope.invite = function () {
             //Remove null or empty email.
             var emails = $scope.invitation.emails;
@@ -1429,7 +1448,7 @@ appRoot.controller('InvitationCtrl', ['$scope', '$uibModalInstance', 'employeeSe
                 });
             }
         }
-        
+
         $scope.cancel = function () {
             $uibModalInstance.dismiss();
         };
@@ -1443,7 +1462,7 @@ appRoot.controller('editEmployeeCtrl', ['$scope', '$uibModalInstance', '$rootSco
         };
     }]);
 
-appRoot.controller('profileCtrl', ['$scope', '$rootScope', 'alertify', '$timeout',  '$filter',
+appRoot.controller('profileCtrl', ['$scope', '$rootScope', 'alertify', '$timeout', '$filter',
     function ($scope, $location, $rootScope, alertify, $timeout, $filter) {
 
     }]);//

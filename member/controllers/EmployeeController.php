@@ -94,8 +94,7 @@ class EmployeeController extends ApiController {
         $searchName = \Yii::$app->request->get('searchName');
         $statusName = Yii::$app->request->get('statusName', []);
         $employees = Employee::getEmployeesByStatusName($statusName, $searchName, $itemPerPage, $currentPage);
-
-        if ($employees['employee']) {
+        if (!empty($employees['employee'])) {
             foreach ($employees['employee'] as $employee) {
                 $objects['employees'][] = [
                     'id' => $employee->id,
