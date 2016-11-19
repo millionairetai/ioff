@@ -110,7 +110,7 @@ class Project extends \common\components\db\ActiveRecord {
     public static function getProjects($itemPerPage = 10, $offset = 0) {
         $subProjEmp = ProjectEmployee::find()->select('project_id')->where(['employee_id' => \Yii::$app->user->identity->id]);
         $projects = self::find()
-                        ->select(['project.id', 'project.name', 'project.description', 'project.status_id',
+                        ->select(['project.id', 'project.name', 'project.description_parse', 'project.status_id',
                             'project.completed_percent', 'project.worked_hour', 'project.estimate_hour', 'status.name as status_name'])
                         ->joinWith('status')
                         ->orWhere([
@@ -146,7 +146,7 @@ class Project extends \common\components\db\ActiveRecord {
     public function getLastedProject() {
         $subProjEmp = ProjectEmployee::find()->select('project_id')->where(['employee_id' => \Yii::$app->user->identity->id]);
         $project = Project::find()
-                        ->select(['project.id', 'project.name', 'project.description', 'project.status_id',
+                        ->select(['project.id', 'project.name', 'project.description_parse', 'project.status_id',
                             'project.completed_percent', 'project.worked_hour', 'project.estimate_hour', 'status.name as status_name'])
                         ->joinWith('status')
                         ->orWhere([
