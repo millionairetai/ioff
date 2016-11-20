@@ -77,10 +77,8 @@ class CalendarController extends ApiController {
             $ob = new Event();
             $ob->attributes = $dataPost;
             $ob->employee_id = Yii::$app->user->getId();
-            $ob->description_parse = strip_tags($ob->description);
             $ob->start_datetime = $ob->start_datetime ? strtotime($ob->start_datetime) : null;
             $ob->end_datetime = $ob->end_datetime ? strtotime($ob->end_datetime) : null;
-
             if (!$ob->save()) {
                 $this->_message = $this->parserMessage($ob->getErrors());
                 $this->_error = true;
@@ -279,7 +277,6 @@ class CalendarController extends ApiController {
 
             $ob->attributes = $dataPost;
             $ob->employee_id = Yii::$app->user->getId();
-            $ob->description_parse = strip_tags($ob->description);
             $ob->start_datetime = $ob->start_datetime ? strtotime($ob->start_datetime) : null;
             $ob->end_datetime = $ob->end_datetime ? strtotime($ob->end_datetime) : null;
             if (!$ob->save()) {

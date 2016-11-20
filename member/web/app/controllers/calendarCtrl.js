@@ -178,7 +178,7 @@ appRoot.controller('calendarCtrl', ['$scope', '$uibModal', 'calendarService', 't
         };
     }]);
 
-//add Calendar Title 
+//add Calendar 
 appRoot.controller('addCalendarCtrl', ['$scope', '$rootScope', '$uibModalInstance', 'calendarService', 'alertify', 'socketService',
     function ($scope, $rootScope, $uibModalInstance, calendarService, alertify, socketService) {
 
@@ -201,7 +201,7 @@ appRoot.controller('addCalendarCtrl', ['$scope', '$rootScope', '$uibModalInstanc
         };
     }]);
 
-//edit Calendar Title
+//edit Calendar
 appRoot.controller('editCalendarCtrl', ['$scope', '$rootScope', '$uibModalInstance', 'calendarService', 'alertify', 'socketService', 'calendar',
     function ($scope, $rootScope, $uibModalInstance, calendarService, alertify, socketService, calendar) {
         $scope.calendar = {
@@ -226,9 +226,7 @@ appRoot.controller('editCalendarCtrl', ['$scope', '$rootScope', '$uibModalInstan
         };
     }]);
 
-
 //add event to calendar
-
 appRoot.controller('addEventCtrl', ['$rootScope', 'data', '$scope', 'calendarService', 'alertify', '$uibModalInstance', 'departmentService', 'employeeService', '$timeout', 'socketService',
     function ($rootScope, data, $scope, calendarService, alertify, $uibModalInstance, departmentService, employeeService, $timeout, socketService) {
         //step
@@ -263,6 +261,7 @@ appRoot.controller('addEventCtrl', ['$rootScope', 'data', '$scope', 'calendarSer
             calendar_id: 0,
             is_public: 0,
             description: '',
+            description_parse: '',
             color: "",
             redmind: 0,
             sms: 0,
@@ -370,6 +369,7 @@ appRoot.controller('addEventCtrl', ['$rootScope', 'data', '$scope', 'calendarSer
                                 fd.append("file_" + i, $scope.files[i]);
                             }
 
+                            $scope.event.description_parse = tinyMCE.activeEditor.getContent({format : 'text'});
                             fd.append("event", angular.toJson($scope.event));
                             calendarService.addEvent(fd, function (response) {
                                 alertify.success($rootScope.$lang.calendar_notify_event_created_success);
@@ -469,6 +469,7 @@ appRoot.controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService',
         //function add event post
         $scope.eventPostData = {
             description: '',
+            description_parse: '',
             eventId: eventId,
         };
         $scope.addEventPost = function () {
@@ -484,11 +485,13 @@ appRoot.controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService',
                     fd.append("file_" + i, $scope.files[i]);
                 }
 
+                $scope.eventPostData.description_parse = tinyMCE.activeEditor.getContent({format : 'text'});
                 fd.append("event", angular.toJson($scope.eventPostData));
                 EventPostService.addEventPost(fd, function (response) {
                     alertify.success($rootScope.$lang.event_post_add_success);
                     $scope.eventPostData = {
                         description: '',
+                        description_parse: '',
                         eventId: eventId,
                     };
 
@@ -756,7 +759,6 @@ appRoot.controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService',
         };
     }]);
 
-
 //show attend 
 appRoot.controller('showAttendCtrl', ['$scope', 'eventPost', 'eventId', 'calendarService', '$uibModalInstance',
     function ($scope, eventPost, eventId, calendarService, $uibModalInstance) {
@@ -781,10 +783,11 @@ appRoot.controller('editEventPostCtrl', ['$scope', 'EventPostService', '$uibModa
         $scope.eventpost = {
             id: eventPost.id,
             description: eventPost.content,
+            description_parse: eventPost.content_parse,
         };
         $scope.update = function () {
             if (EventPostService.validateEventPost($scope.eventpost)) {
-                var params = {'id': eventPost.id, 'content': $scope.eventpost.description};
+                var params = {'id': eventPost.id, 'content': $scope.eventpost.description, content_parse: tinyMCE.activeEditor.getContent({format : 'text'})};
                 EventPostService.updateEventPost(params, function (data) {
                     eventPost.content = $scope.eventpost.description;
                     alertify.success($rootScope.$lang.update_post_success);
@@ -837,6 +840,7 @@ appRoot.controller('editEventCtrl', ['$rootScope', 'data', 'listCalendar', '$sco
             calendar_id: data.calendars.event.calendar_id,
             is_public: data.calendars.event.is_public,
             description: data.calendars.event.description,
+            description_parse: data.calendars.event.description,
             color: data.calendars.event.color,
             redmind: parseInt(data.calendars.remind),
             sms: 0,
@@ -947,11 +951,14 @@ appRoot.controller('editEventCtrl', ['$rootScope', 'data', 'listCalendar', '$sco
                             $scope.event.end_datetime = moment($scope.event.var_end_datetime).format('YYYY-MM-DD HH:mm');
                             flg = true;
                         }
+                        
                         if (flg) {
                             var fd = new FormData();
                             for (var i in $scope.files) {
                                 fd.append("file_" + i, $scope.files[i]);
                             }
+                            
+                            $scope.event.description_parse = tinyMCE.activeEditor.getContent({format : 'text'});
                             fd.append("event", angular.toJson($scope.event));
                             calendarService.editEvent(fd, function (response) {
                                 alertify.success($rootScope.$lang.calendar_notify_event_created_success);
