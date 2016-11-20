@@ -267,7 +267,7 @@ class Task extends \common\components\db\ActiveRecord {
         $subFollowQuery = Follower::find()->select('task_id')->where(['employee_id' => \Yii::$app->user->identity->id]);
         $subTaskAssiQuery = TaskAssignment::find()->select('task_id')->where(['employee_id' => \Yii::$app->user->identity->id]);
         $tasks = self::find()
-                        ->select(['task.id', 'task.name', 'task.description', 'completed_percent', 'task.created_employee_id'])
+                        ->select(['task.id', 'task.name', 'task.description',  'task.description_parse','completed_percent', 'task.created_employee_id'])
                         ->orWhere([
                             'task.is_public' => self::VAL_TRUE,
                         ])->orWhere([
