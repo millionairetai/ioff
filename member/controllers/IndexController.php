@@ -7,6 +7,7 @@ use yii\web\Controller;
 use common\models\LoginForm;
 use yii\helpers\Url;
 use common\models\Employee;
+use member\models\RegistrationForm;
 
 /**
  * index controller
@@ -39,10 +40,24 @@ class IndexController extends Controller {
     /*
      * Register account
      */
-    public function actionRegister() {
+    public function actionRegister($email, $token) {
         if (\Yii::$app->user->isGuest) {
             $this->layout = "no_login";
-            return $this->render('registration', []);
+            //b. Check if those are fit with conditions			
+            $registration = new RegistrationForm();
+            if ($registration->getInvitedInfo($email, $token)) {
+                //c. Show form to user input new information						
+                //d. Validate firstname, lastname and password match re-password.							
+                //e. If validation is success, update info into employee table.							
+                if ($registration->save()) {
+                    //d. Login for that account		
+                }
+                
+                return $this->render('registration', ['registration' => $registration]);
+            }
+            
+            return $this->redirect('/');
+            					
         }
 
         return $this->redirect('/');

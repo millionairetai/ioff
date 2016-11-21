@@ -5,10 +5,10 @@ use yii\widgets\ActiveForm;
 <div class="container">
     <div class="row">
         <div class="register-box">
-            <form role="form">
+            <?php $form = ActiveForm::begin(); ?>
                 <h2>Confirming registration on iofficez</h2>
                 <hr/>
-                <p><b>Email</b>: hoang_tuan@gmail.com</p>
+                <p><b><?= Yii::t('common', 'Email') ?></b>: <?= $$registration->email ?></p>
                 <div class="row">
                     <div class="col-xs-6 col-sm-6 col-md-6">
                         <div class="form-group">
@@ -22,10 +22,10 @@ use yii\widgets\ActiveForm;
                     </div>
                 </div>
                 <div class="form-group">
-                    <input type="text" name="phone_number" id="phone_number" class="form-control" placeholder="Password" tabindex="3">
+                    <?php echo $form->field($$registration, 'password', ['template' => '{input}'])->passwordInput(['placeholder' => \Yii::t('common', 'Password'), 'tabindex' => 3]); ?>
                 </div>
                 <div class="form-group">
-                    <input type="email" name="email" id="email" class="form-control" placeholder="Re-password" tabindex="4">
+                    
                 </div>
                 <hr/>
                 <div class="row">
@@ -43,7 +43,7 @@ use yii\widgets\ActiveForm;
                     <!-- /.col -->
                 </div>
                 <a href="login" class="text-center">I already have a membership</a>
-            </form>
+            <?php ActiveForm::end(); ?>
         </div>
     </div>
 </div>

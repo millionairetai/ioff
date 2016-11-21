@@ -118,7 +118,6 @@ class EmployeeController extends ApiController {
         $message = \Yii::$app->request->post('message');
         $emails = \Yii::$app->request->post('emails');
         $this->_message = 'Email %s is invalid';
-
         try {
             //Check valid if that's email
             $error = null;
@@ -154,7 +153,8 @@ class EmployeeController extends ApiController {
             $employee = new Employee();
             $employees = [];
             foreach ($emails as $email) {
-                $dataSend['{urlConfirm}'] = SITE_URL . '/index/register?email=' . $email;
+                $token = md5(uniqid() . $email);
+                $dataSend['{urlConfirm}'] = SITE_URL . "/index/register?email={$email}&token={$token}";
                 $employee->email = $email;
                 $employees[] = [
                     'email' => $email,
@@ -162,7 +162,7 @@ class EmployeeController extends ApiController {
                     'lastname' => '',
                     'password' => '',
                     'status_id' => $status['id'],
-                    'password_reset_token' => md5(uniqid() . $email)
+                    'password_reset_token' => md5(uniqid() . $email),
                 ];
 
                 if (!$employee->sendMail($dataSend, $themeEmail)) {
