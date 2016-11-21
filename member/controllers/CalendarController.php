@@ -923,7 +923,7 @@ class CalendarController extends ApiController {
             }
             
             //Delete all event in this calendar.
-            if (!Event::deleteAll(['calendar_id' => \Yii::$app->request->get('calendarId')])) {
+            if (Event::deleteAll(['calendar_id' => \Yii::$app->request->get('calendarId')]) === false) {
                 throw new \Exception('delete error');
             }
             
@@ -932,7 +932,7 @@ class CalendarController extends ApiController {
             $this->_error = true;
             $this->_message = \Yii::t('common', 'delete error');
             $transaction->rollBack();
-            return $this->sendResponse($this->_error, '', []);
+            return $this->sendResponse($this->_error, $this->_message, []);
         }
     
         return $this->sendResponse($this->_error, $this->_message, []);
