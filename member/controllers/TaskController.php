@@ -1087,7 +1087,7 @@ class TaskController extends ApiController {
                 $result[] = [
                     'color' => "#00a65a",
                     'start' => date('Y-m-d'),
-                    'end' => !empty($duedatetime) ? date('Y-m-d H:i:s', $duedatetime) : date('Y-m-d', $duedatetime),
+                    'end' => !empty($duedatetime) ? date('Y-m-d', $duedatetime) . " 23:59:59" : date('Y-m-d', $duedatetime),
                     'title' => 'Task: ' . $task['name']
                 ];
             }
@@ -1104,10 +1104,10 @@ class TaskController extends ApiController {
             foreach ($tasks as $task) {
                     $duedatetime = $task['duedatetime'] == null ? : $task['duedatetime'];
                     $result[] = [
-                            'color' => "#3b91ad",
-                    'start' => date('Y-m-d'),
-                    'end' => !empty($duedatetime) ? date('Y-m-d H:i:s', $duedatetime) : date('Y-m-d', $duedatetime),
-                            'title' => 'Follow: ' . $task['name']
+                        'color' => "#3b91ad",
+                        'start' => date('Y-m-d'),
+                        'end' => !empty($duedatetime) ? date('Y-m-d', $duedatetime) . " 23:59:59" : date('Y-m-d', $duedatetime),
+                        'title' => 'Follow: ' . $task['name']
                     ];
                 }
             }
