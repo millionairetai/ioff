@@ -43,6 +43,8 @@ return [
     'Last name' => 'Tên',
     'Thank you for contacting us. We will respond to you as soon as possible' => 'Cảm ơn vì đã liên hệ với chúng tôi. Chúng tôi sẽ phản hồi bạn nhanh nhất có thể', 
     'delete error'=>'Xóa bị lỗi',
+    'Datetime Created' => 'Ngày tạo',
+    'Lastup Datetime' => 'Thời gian cập nhật gần đây nhất',
     
     //Calendar
     'event_id' => 'Mã sự kiện',

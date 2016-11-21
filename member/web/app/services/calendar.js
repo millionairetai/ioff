@@ -124,10 +124,13 @@ appRoot.factory('calendarService', ['apiService','$rootScope','alertify', functi
             deleteCalendar : function (data,success,error){
                 apiService.get('calendar/delete-calendar', data, success, error);
             },
-            validateCalendarAdd: function (object) {
+            validate: function (object) {
                 var message = "";
                 if (object.name.length == 0) {
                     message += $rootScope.$lang.calendar_name_error_empty + "<br/>";
+                }
+                if (object.name.length > 255) {
+                    message += $rootScope.$lang.name_must_less_than_255_characters + "<br/>";
                 }
                 if (object.description.length == 0) {
                     message += $rootScope.$lang.calendar_description_error_empty + "<br/>";

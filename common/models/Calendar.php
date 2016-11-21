@@ -46,7 +46,7 @@ class Calendar extends ActiveRecord {
         return [
             'id' => Yii::t('common', 'ID'),
             'company_id' => Yii::t('common', 'Company id'),
-            'name' => Yii::t('common', 'Event Calendar'),
+            'name' => Yii::t('common', 'Name'),
             'description' => Yii::t('common', 'Description'),
             'datetime_created' => Yii::t('common', 'Datetime Created'),
             'lastup_datetime' => Yii::t('common', 'Lastup Datetime'),

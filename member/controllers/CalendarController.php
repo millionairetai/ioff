@@ -864,15 +864,16 @@ class CalendarController extends ApiController {
                     $calendar = new Calendar();
                     $calendar->name = $request['name'];
                     $calendar->description = $request['description'];
-
                     if (!$calendar->save()) {
                         $this->_message = $this->parserMessage($calendar->getErrors());
                         $this->_error = true;
                         throw new \Exception($this->_message);
-                    }
-                    
+                    } 
                     return $this->sendResponse(false, [], []);
                 } else {
+                    if ($this->_error) {
+                        return $this->sendResponse(true, \Yii::t('member', $this->_message), []);
+                    }
                     return $this->sendResponse(true, \Yii::t('member', 'error calendar name is existed'), []);
                 }
             }

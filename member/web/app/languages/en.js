@@ -82,6 +82,7 @@
             redmind : "Redmind me",
             see_all: "See all",
             update_post_success:'Update post successfully',
+            name_must_less_than_255_characters: 'Name must be less than 255 characters',
             //-----------------------------------------End of common language.----------------------------------
             
             //project

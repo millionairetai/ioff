@@ -43,6 +43,8 @@ return [
     'Last name' => 'Last name',
     'Thank you for contacting us. We will respond to you as soon as possible' => 'Thank you for contacting us. We will respond to you as soon as possible.',
     'delete error'=>'Delete error',    
+    'Datetime Created' => 'Datetime Created',
+    'Lastup Datetime' => 'Lastup Datetime',
     
     //calendar
     'event_id' => 'Event id',

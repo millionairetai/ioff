@@ -81,6 +81,7 @@
             redmind : "Nhắc nhở",
             see_all: "Xem tất cả",
             update_post_success:'Bài đăng cập nhật thành công',
+            name_must_less_than_255_characters: 'Tên phải nhỏ hơn 255 kí tự',
             //-----------------------------------------End of common language.----------------------------------
             
             //project
