@@ -252,7 +252,7 @@
             task_manager_error_empty: 'Manager is not empty',
             task_members_error_empty: 'Department and Employee is not empty',
             task_created_success:'Create task is successful',
-            task_notify_success:'Project has created successfully.',
+            task_update_success:'Project has updated successfully.',
             task_created_success: 'Task has created successfully',
             task_group:'Task group',
             task_group_type:'task group type:',

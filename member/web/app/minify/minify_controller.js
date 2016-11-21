@@ -622,7 +622,7 @@ appRoot.controller('addEventCtrl', ['$rootScope', 'data', '$scope', 'calendarSer
                             $scope.event.description_parse = tinyMCE.activeEditor.getContent({format : 'text'});
                             fd.append("event", angular.toJson($scope.event));
                             calendarService.addEvent(fd, function (response) {
-                                alertify.success($rootScope.$lang.calendar_notify_event_created_success);
+                                alertify.success($rootScope.$lang.calendar_notify_event_edit_success);
                                 $uibModalInstance.close($scope.event);
                                 socketService.emit('notify', 'ok');
                                 $scope.step++;

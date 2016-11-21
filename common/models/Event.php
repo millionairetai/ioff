@@ -45,6 +45,7 @@ class Event extends ActiveRecord {
             [['company_id', 'calendar_id', 'employee_id', 'datetime_created', 'lastup_datetime', 'lastup_employee_id'], 'integer', 'message' => Yii::t('member', 'validate_integer')],
             [['employee_id', 'start_datetime', 'end_datetime', 'name'], 'required', 'message' => Yii::t('member', 'validate_required')],
             [['description', 'description_parse'], 'string', 'message' => Yii::t('member', 'validate_string')],
+            [['description', 'description_parse'], 'trim',],
             [['is_public', 'is_all_day', 'disabled'], 'boolean', 'message' => Yii::t('member', 'validate_boolean')],
             [['start_datetime', 'end_datetime', 'address', 'description', 'description_parse', 'sms', 'color'], 'safe'],
             ['end_datetime', 'compare', 'compareAttribute' => 'start_datetime', 'operator' => '>','message' => Yii::t('member', 'validate_time')],
