@@ -1489,9 +1489,7 @@ appRoot.controller('projectCtrl', ['$scope', 'projectService', '$uibModal','$roo
         $scope.getList = function() {
             $scope.filter.offset = $scope.collection.length > 0 ? $scope.collection.length : 0;
             projectService.listProject($scope.filter, function (response) {
-                var temp = [];
-                temp = temp.concat(response.objects.collection);
-                $scope.collection = temp.concat($scope.collection);
+                $scope.collection = $scope.collection.concat(response.objects.collection);
                 $scope.filter.totalItems = response.objects.totalItems;
                 if (response.objects.error) {
                 	alertify.error(response.objects.error);
@@ -1691,8 +1689,9 @@ appRoot.controller('addProjectCtrl', ['socketService','$scope', 'projectService'
                             for (var i in $scope.files) {
                                 fd.append("file_"+i, $scope.files[i]);
                             }
-                            fd.append("project", angular.toJson($scope.project));
+                            
                             $scope.project.description_parse = tinyMCE.activeEditor.getContent({format : 'text'});
+                            fd.append("project", angular.toJson($scope.project));
                             projectService.addProject(fd,function(response){
                                 alertify.success($rootScope.$lang.project_notify_success);
                                 $rootScope.$emit('create_project_success', {message: 'hung'});

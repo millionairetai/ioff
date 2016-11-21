@@ -13,6 +13,13 @@ return [
     'Can not save data'=> 'Can not save data',
     'you do not have authoirity for this action' => 'you do not have authoirity for this action',
     'Update post error' => 'Update post error',
+   //validate common
+    'validate_required' => '{attribute} is not empty',
+    'validate_integer' => '{attribute} is must integer',
+    'validate_string' => '{attribute} is must string',
+    'validate_boolean' => '{attribute} is must boolean',
+    'validate_max_length' => '{attribute} is must less than 255 character ',
+    'validate_time' => 'End time is must greater than start time',
     //----------------------------------Common language--------------------------------------------------//        
     //project
     'project manager' => 'Manager',
