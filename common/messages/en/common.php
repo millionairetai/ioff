@@ -42,7 +42,12 @@ return [
     'First name' => 'First name',
     'Last name' => 'Last name',
     'Thank you for contacting us. We will respond to you as soon as possible' => 'Thank you for contacting us. We will respond to you as soon as possible.',
-    'delete error'=>'Delete error',    
+    'delete error'=>'Delete error',   
+    'I already have a membership' => 'I already have a membership',
+    'I agree to the' => 'I agree to the', 
+    'terms' => 'terms', 
+    'Agree' => 'Agree',    
+    'Passwords do not match together' => 'Passwords do not match together',    
     
     //calendar
     'event_id' => 'Event id',

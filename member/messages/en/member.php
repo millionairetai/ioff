@@ -118,4 +118,10 @@ return [
     'has any employees in this project' => 'Do not has any employees in this project',
     //task
     'Do not has any employees in this project' => 'Do not has any employees in this project',
+    //Employee
+    'Confirming registration on' => 'Confirming registration on', 
+    'to the terms' => 'to the terms',
+    'I agree' => 'I agree',
+    'Registration employee' => 'Registration employee',
+    'You do not agree to terms' => 'You do not agree to terms',
 ];

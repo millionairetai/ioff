@@ -42,22 +42,28 @@ class IndexController extends Controller {
      */
     public function actionRegister($email, $token) {
         if (\Yii::$app->user->isGuest) {
-            $this->layout = "no_login";
-            //b. Check if those are fit with conditions			
+            $this->layout = "no_login";	
             $registration = new RegistrationForm();
-            if ($registration->getInvitedInfo($email, $token)) {
-                //c. Show form to user input new information						
-                //d. Validate firstname, lastname and password match re-password.							
-                //e. If validation is success, update info into employee table.							
-                if ($registration->save()) {
-                    //d. Login for that account		
+            //Check if those are fit with invited conditions		
+            if ($registration->getInvitedEmployee($email, $token)) {					
+                //Validate firstname, lastname and password match re-password.													
+                if ($registration->load(Yii::$app->request->post()) && $registration->validate()) {
+                    if ($employee = $registration->signup()) {
+                        //Login for that account		
+                        if (Yii::$app->getUser()->login($employee)) {
+                            Yii::$app->user->identity->updateEmployeeLoginInfo();
+                            return $this->goHome();
+                        }
+                    } else {
+                        Yii::$app->session->setFlash('error', Yii::t('member', 'error_system'));
+                        return $this->render('registration', ['registration' => $registration]);
+                    }
+                } else {
+                    return $this->render('registration', ['registration' => $registration]);
                 }
-                
-                return $this->render('registration', ['registration' => $registration]);
             }
             
-            return $this->redirect('/');
-            					
+            return $this->redirect('/');					
         }
 
         return $this->redirect('/');

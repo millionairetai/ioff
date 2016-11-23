@@ -384,11 +384,11 @@ class Employee extends ActiveRecord implements IdentityInterface {
         return $this->firstname . ' ' . $this->lastname;
     }
 
-    public function getAssignedTasks() {
-        return $this->hasMany(Task::className(), ['id' => 'task_id'])->viaTable('task_assignment', ['employee_id' => 'id'])->joinWith(['company' => function($query) {
-                        $query->onCondition(Company::tableName() . '.id =' . \Yii::$app->user->getCompanyId());
-                    }]);
-    }
+//    public function getAssignedTasks() {
+//        return $this->hasMany(Task::className(), ['id' => 'task_id'])->viaTable('task_assignment', ['employee_id' => 'id'])->joinWith(['company' => function($query) {
+//                        $query->onCondition(Company::tableName() . '.id =' . \Yii::$app->user->getCompanyId());
+//                    }]);
+//    }
 
     public function getCompany() {
         return $this->hasOne(Company::className(), ['id' => 'company_id']);
@@ -565,5 +565,44 @@ class Employee extends ActiveRecord implements IdentityInterface {
 
         return $return;
     }
-
+    
+    /**
+     * Get inivited info of employee
+     *
+     * @param string $emails
+     * @param string $token
+     * @return boolean|array
+     */
+    public static function getInvitedInfo($email, $token) {
+        if (empty($token)) {
+            return false;
+        }
+        
+        return self::find()
+                ->select([Employee::tableName() . '.id', 'email', 'status_id'])
+                ->leftJoin(Status::tableName(), Employee::tableName() . '.status_id=' . Status::tableName() . '.id')
+                ->where([
+                    Employee::tableName() . '.email' => $email, 
+                    Employee::tableName() . '.password_reset_token' => $token, 
+                    Status::tableName() . '.column_name' => Employee::COLUNM_NAME_INVITED,                     
+                ])
+                ->one();
+        
+    }
+    
+    /**
+     * Get employees by email
+     *
+     * @param array $emails
+     * @return boolean|array
+     */
+    public static function getByEmail($email) {        
+         return self::find()
+                    ->select([Employee::tableName() . '.id', 'email'])
+                    ->where([
+                        Employee::tableName() . '.email' => $email, 
+                    ])
+                    ->one();
+        
+    }
 }

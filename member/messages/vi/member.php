@@ -111,4 +111,10 @@ return [
     'task group' => 'Loại công việc',
     'error calendar name is existed' => 'Tên lịch đã tồn tại',
     'Do not has any employees in this project' => 'Không có bất kỳ nhân viên nào trong dự án này',
+    //Employee
+    'Confirming registration on' => 'Xác nhận đăng ký trên', 
+    'to the terms' => 'với những điều khoản',
+    'I agree' => 'Tôi đồng ý',
+    'Registration employee' => 'Đăng ký thành viên',
+    'You do not agree to terms' => 'Bạn không đồng ý với những điều khoản',
 ];

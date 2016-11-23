@@ -43,6 +43,11 @@ return [
     'Last name' => 'Tên',
     'Thank you for contacting us. We will respond to you as soon as possible' => 'Cảm ơn vì đã liên hệ với chúng tôi. Chúng tôi sẽ phản hồi bạn nhanh nhất có thể', 
     'delete error'=>'Xóa bị lỗi',
+    'I already have a membership' => 'Tôi đã là thành viên',
+    'I agree to the' => 'Tôi đồng ý với', 
+    'terms' => 'những điều khoản', 
+    'Agree' => 'Đồng ý',
+    'Passwords do not match together' => 'Mật khẩu không khớp với nhau',
     
     //Calendar
     'event_id' => 'Mã sự kiện',

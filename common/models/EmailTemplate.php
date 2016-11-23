@@ -30,6 +30,8 @@ class EmailTemplate extends \common\components\db\ActiveRecord
     const CREATE_PROJECT_POST = 'create_project_post';
     const CREATE_EVENT_POST = 'create_event_post';
     const INVITE_NEW_EMPLOYEE = 'invite_new_employee';
+    const SUCCESS_COMPANY_REGISTRATION = 'success_company_registration';
+    const SUCCESS_EMPLOYEE_REGISTRATION = 'success_employee_registration';
     
     /**
      * @inheritdoc
@@ -262,6 +264,10 @@ class EmailTemplate extends \common\components\db\ActiveRecord
         switch ($type) {
             case self::INVITE_NEW_EMPLOYEE:
                 $where += ['column_name' => self::INVITE_NEW_EMPLOYEE];
+                break;
+            
+            case self::SUCCESS_EMPLOYEE_REGISTRATION:
+                $where += ['column_name' => self::SUCCESS_EMPLOYEE_REGISTRATION];
                 break;
             default:
                 break;
