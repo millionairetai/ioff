@@ -48,8 +48,23 @@ use yii\helpers\Url;
                 </a>
             </li>
             <li>
+                <a href="#company">
+                    <i class="fa fa-bars"></i> <span>Department</span> 
+                </a>
+            </li>
+            <li>
                 <a href="#report">
                     <i class="fa fa-line-chart"></i> <span>Report</span> 
+                </a>
+            </li>
+            <li>
+                <a href="#company">
+                    <i class="fa fa-file"></i> <span>File</span> 
+                </a>
+            </li>
+            <li>
+                <a href="#company">
+                    <i class="fa fa-cc-mastercard"></i> <span>Invoice</span> 
                 </a>
             </li>
             <li>

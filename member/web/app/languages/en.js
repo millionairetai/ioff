@@ -319,7 +319,9 @@
             birthdate: 'Birth date',
             is_invalid: 'is invalid',
             emails_required: 'Emails can not blank',
-            message_required: 'Message can not blank'
+            message_required: 'Message can not blank',
+            employee_manage: 'Employee manage',
+            employee_list: 'Employee list'
         };
     });
 })(window.angular);

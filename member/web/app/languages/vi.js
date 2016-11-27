@@ -332,7 +332,9 @@
             birthdate: 'Ngày sinh',
             is_invalid: 'không hợp lệ',
             emails_required: 'Danh sách email không thể bỏ trống',
-            message_required: 'Tin nhắn không thể bỏ trống'
+            message_required: 'Tin nhắn không thể bỏ trống',
+            employee_manage: 'Quản lý nhân viên',
+            employee_list: 'Danh sách nhân viên'
         };
     });
 })(window.angular);

@@ -21,9 +21,10 @@
 <div class="authority-list-page">
     <section class="content-header">
         <h1>
-            Employee manage
+            {{$root.$lang.employee_manage}}
         </h1>
         <div class="tool-right">
+            <a class="btn btn-primary btn-flat" ng-click="add()"><i class="fa fa-plus-square"></i> {{$root.$lang.add}}</a>
             <a class="btn btn-primary btn-flat" ng-click="invite()"><i class="fa fa-plus-square"></i> {{$root.$lang.invite}}</a>
         </div>
     </section>
@@ -32,7 +33,7 @@
         <!-- Default box -->
         <div class="box box-solid">
             <div class="box-header with-border">
-                <h3 class="box-title">Employee list</h3>            
+                <h3 class="box-title">{{$root.$lang.employee_list}}</h3>            
                 <div class="box-tools pull-right">
                     <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
                     <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>

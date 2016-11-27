@@ -211,7 +211,7 @@ class EmployeeController extends ApiController {
         try {
             if ($employee = Employee::getById(Yii::$app->request->post('id'))) {
                 $employee->attributes = Yii::$app->request->post();
-                $employee->birthdate = strtotime($employee->birthdate);
+                $employee->birthdate = $employee->birthdate != 0 ?  strtotime($employee->birthdate) : $employee->birthdate;
                 if ($employee->save() !== false) {
                     return $this->sendResponse($this->_error, $this->_message, []);
                 }

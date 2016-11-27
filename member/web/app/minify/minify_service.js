@@ -394,7 +394,6 @@ appRoot.factory('dialogMessage', ['$rootScope', "$uibModal", function ($rootScop
 
 appRoot.factory('employeeService', ['apiService', '$rootScope', 'alertify',
     function (apiService, $rootScope, alertify) {
-
         return {
             searchEmployee: function (data, success, error) {
                 return apiService.post('employee/search', data, success, error);

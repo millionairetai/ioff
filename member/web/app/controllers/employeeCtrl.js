@@ -200,6 +200,11 @@ appRoot.controller('editEmployeeCtrl', ['$scope', '$uibModalInstance', '$rootSco
         $scope.update = function () {
             $scope.employee.department_id = $scope.employee.department_id.id;
             $scope.employee.authority_id = $scope.employee.authority_id.id;
+            if ($scope.employee.birthdate == '') {
+                $scope.employee.birthdate = 0;
+            }
+            
+            $scope.employee.authority_id = $scope.employee.authority_id.id;
             if (employeeService.validate($scope.employee)) {
                 commonService.update('employee', $scope.employee, function (response) {
                     $scope.employee = response.objects;
