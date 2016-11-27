@@ -120,7 +120,6 @@ appRoot.controller('addProjectCtrl', ['socketService','$scope', 'projectService'
             $scope.findEmployee('');
         };
         
-        
         //get list status
         statusService.getProjectStatus({}, function (data) {
             $scope.status = data.objects;

@@ -2,54 +2,110 @@
     <button type="button" class="close" ng-click="cancel()">×</button>
     <h4 class="modal-title text-danger"> 
         <strong><i class="fa fa-cubes"></i>
-            <span ng-show="!authority">{{$root.$lang.authority_add}}</span>
-            <span ng-show="authority">{{$root.$lang.authority_edit}}</span>
+            <span>{{$root.$lang.update_employee}}</span>
         </strong>
     </h4>
 </div>
-<div class="modal-body text-dangers add-authority-box" >    
+<div class="modal-body text-dangers" >    
     <div class="box-body form-horizontal">
         <div class="row form-group">
-            <label for="inputEmail3" class="col-sm-3 control-label ng-binding">{{$root.$lang.authority_name}}</label>    
+            <label for="inputEmail3" class="col-sm-3 control-label ng-binding">Email</label>    
             <div class="col-sm-9">
-                <input type="text" class="form-control" ng-model="authorityName"/>
-
+                {{employee.email}}
             </div>
         </div>
         <div class="row form-group">
-            <label for="inputEmail3" class="col-sm-3 control-label ng-binding">{{$root.$lang.functionality_group}}</label>          
+            <label for="inputEmail3" class="col-sm-3 control-label ng-binding">{{$root.$lang.firstname}}</label>    
             <div class="col-sm-9">
-                <select class="form-control" ng-model="currController">
-                    <option value=''>{{$root.$lang.project_choose_all}}</option>
-                    <option ng-repeat="(key, value) in controllers" value="{{key}}">{{value}}</option>
+                <input type="text" class="form-control" ng-model="employee.firstname"/>
+            </div>
+        </div>
+        <div class="row form-group">
+            <label for="inputEmail3" class="col-sm-3 control-label ng-binding">{{$root.$lang.lastname}}</label>    
+            <div class="col-sm-9">
+                <input type="text" class="form-control" ng-model="employee.lastname"/>
+            </div>
+        </div>
+        <div class="row form-group">
+            <label for="inputEmail3" class="col-sm-3 control-label ng-binding">{{$root.$lang.authority}}</label>          
+            <div class="col-sm-9">
+                <select class="form-control" ng-model="employee.authority_id" 
+                        ng-options="option.name for option in authorities">
+                    <option value=''>--</option>
                 </select>
             </div>
-        </div> 
+        </div>
         <div class="row form-group">
-            <label for="inputEmail3" class="col-sm-3 control-label ng-binding">{{$root.$lang.functionalities}}</label>              
-            <div class="col-sm-9">
-                <ul class="list-controller">
-                    <li ng-repeat="(controllerId, controller) in actions" ng-show="!currController || currController === controllerId">
-                        <div class="checkbox">
-                            <input type="checkbox" ng-model="controller.isChecked" icheck  ng-change="selectController(controllerId)"/>  <strong>{{controllers[controllerId]}}</strong>
-                        </div>
-                        <ul class="list-action show-on-mobile">
-                            <li ng-repeat="item in controller.actions">
-                                <div class="checkbox">
-                                    <input type="checkbox" ng-model="item.isChecked" icheck ng-change="selectAction(controllerId, $index)"/> {{item.name}}
-                                </div>
-                            </li>
-                        </ul>
-                        <div class="clear"></div>
-                    </li>
-                </ul>        
+            <label for="inputEmail3" class="col-sm-3 control-label ng-binding">Admin</label>      
+            <div class="col-sm-9" >
+                <div class="checkbox">
+                    <input type="checkbox" ng-model="employee.is_admin" icheck>
+                </div>
             </div>
         </div>
+        <div class="row form-group">
+            <label for="inputEmail3" class="col-sm-3 control-label ng-binding">{{$root.$lang.status}}</label>          
+            <div class="col-sm-9" >
+                <div class="btn-group">
+                    <label ng-repeat="row in statuses" class="btn btn-primary" ng-class="{active:row.id == employee.status_id}" ng-model="employee.status_id" uib-btn-radio="{{row.id}}">{{row.name}}</label>
+                </div>
+            </div>
+        </div>
+        <div class="row form-group">
+            <label for="inputEmail3" class="col-sm-3 control-label ng-binding">{{$root.$lang.mobile_phone}}</label>    
+            <div class="col-sm-9">
+                <input type="text" class="form-control" ng-model="employee.mobile_phone"/>
+            </div>
+        </div>
+        <div class="row form-group">
+            <label for="inputEmail3" class="col-sm-3 control-label ng-binding">{{$root.$lang.work_phone}}</label>    
+            <div class="col-sm-9">
+                <input type="text" class="form-control" ng-model="employee.work_phone"/>
+            </div>
+        </div>
+        <!--        <div class="row form-group">
+                    <label for="inputEmail3" class="col-sm-3 control-label ng-binding">Position</label>    
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" ng-model="employee.position_id"/>
+                    </div>
+                </div>-->
+        <div class="row form-group">
+            <label for="inputEmail3" class="col-sm-3 control-label ng-binding">{{$root.$lang.department}}</label>          
+            <div class="col-sm-9">
+                <select class="form-control" ng-model="employee.department_id" 
+                        ng-options="option.name for option in departments">
+                    <option value=''>--</option>
+                </select>
+            </div>
+        </div>
+        <div class="row form-group">
+            <label for="inputEmail3" class="col-sm-3 control-label ng-binding">{{$root.$lang.birthdate}}</label>          
+            <div class="col-sm-3">
+                <p class="input-group">
+                    <input type="text" class="form-control" uib-datepicker-popup="dd-MM-yyyy" ng-model="employee.birthdate" is-open="open_start_datetime" datepicker-options="dateOptions" ng-required="true" close-text="{{$root.$lang.datepicker_close}}"  clear-text="{{$root.$lang.datepicker_clear}}" current-text="{{$root.$lang.datepicker_today}}" ng-focus="open_start_datetime = true" />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="open_start_datetime = true"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </p>
+                <!--<input type="text"  class="form-control"  ng-model="task.duedatetime" datepicker-popup="dd-MM-yyyy"  datepicker-popup="mediumDate"  is-open="openTo" ng-click="openTo = true"  show-button-bar="false" />-->                                
+            </div>
+        </div>
+        <!--        <div class="row form-group">
+                    <label for="inputEmail3" class="col-sm-3 control-label ng-binding">Skill</label>    
+                    <div class="col-sm-6">
+                        <textarea rows="3" cols="50"></textarea>
+                    </div>
+                </div>
+                <div class="row form-group">
+                    <label for="inputEmail3" class="col-sm-3 control-label ng-binding">Interest</label>    
+                    <div class="col-sm-6">
+                        <textarea rows="3" cols="50"></textarea>
+                    </div>
+                </div>-->
     </div>
 
 </div>  
 <div class="modal-footer">    
-    <button type="button" class="btn btn-primary btn-flat" ng-click="saveAuthority()"> <i class="fa fa-save"></i> {{$root.$lang.ok}}</button>
-    <button type="button" class="btn btn-danger btn-flat" ng-click="deleteAuthority()" ng-show="authority"><i class="fa fa-trash"></i> {{$root.$lang.remove}}</button>
+    <button type="button" class="btn btn-primary btn-flat" ng-click="update()"> <i class="fa fa-save"></i> {{$root.$lang.button_update}}</button>
     <button type="button" class="btn btn-default btn-flat" ng-click="cancel()"> <i class="fa fa-remove"></i> {{$root.$lang.button_close}}</button>
 </div>

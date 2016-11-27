@@ -2,6 +2,30 @@ appRoot.factory('commonService', ['apiService', 'taskService', 'projectService',
     function (apiService, taskService, projectService, calendarService, $rootScope) {
 
         return {
+            get: function (controller, id, success, error) {
+                return apiService.get(controller + '/get?id=' + id, {}, success, error);
+            },
+            gets: function (controller, success, error) {
+                return apiService.get(controller + '/gets', {}, success, error);
+            },
+            update: function (controller, data, success, error) {
+                return apiService.post(controller + '/update', data, success, error);
+            },
+            updateUpload: function (controller, data, success, error) {
+                return apiService.upload(controller + '/update-upload', data, success, error);
+            },
+            add: function (controller, data, success, error) {
+                apiService.post(controller + '/add', data, success, error);
+            },
+            addUpload: function (controller, data, success, error) {
+                apiService.upload(controller + '/add-upload', data, success, error);
+            },
+            getLast: function (controller, data, success, error) {
+                apiService.get(controller + '/get-last', data, success, error);
+            },
+            delete: function (controller, data, success, error) {
+                apiService.get(controller + '/delete', data, success, error);
+            },
             getSearchGlobalSuggest: function (params, success, error) {
                 return apiService.post('task/get-search-global-suggestion', params, success, error, 0);
             },

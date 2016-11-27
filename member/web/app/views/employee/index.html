@@ -1,11 +1,11 @@
 <script type="text/ng-template" id="/tabcontent.html">
-    <div ng-repeat="employee in employees" class="item-employee">
+    <div ng-repeat="(index, employee) in employees" class="item-employee">
         <dl>
             <dt>{{employee.fullname}}</dt>
             <dd class="imgleft">
                 <div class="image">
                     <img src="{{employee.image}}" class="img-circle user-image" alt="User Image">
-                    <a ng-click="edit()">Edit</a>
+                    <a class="cursor-pointer" ng-click="edit(employee.id, index)">Edit</a>
                 </div>
                 <div class="info">
                     <p ng-show="employee.is_admin"><a href="#" class="btn btn-info btn-xs">Admin</a></p>

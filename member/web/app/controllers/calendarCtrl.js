@@ -822,7 +822,6 @@ appRoot.controller('editEventCtrl', ['$rootScope', 'data', 'listCalendar', '$sco
             membersData = data.calendars.invitations.departmentAndEmployee.employeeEditList;
         }
         
-        console.log(data.calendars.event.start_time);
         $scope.event = {
             id: data.calendars.event.id,
             var_start_datetime: new Date(data.calendars.event.start_datetime + ' ' + data.calendars.event.start_time),

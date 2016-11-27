@@ -101,7 +101,7 @@ class EmployeeController extends ApiController {
                     'fullname' => $employee->fullname,
                     'email' => $employee->email,
                     'image' => $employee->image,
-                    'is_admin' => $employee->is_admin,
+                    'is_admin' => (boolean)$employee->is_admin,
                     'department' => !empty($employee->department->name) ? $employee->department->name : '',
                     'status' => $employee->status->name,
                 ];
@@ -183,4 +183,49 @@ class EmployeeController extends ApiController {
         return $this->sendResponse(false, "", $objects);
     }
 
+    //Get an employee
+    public function actionGet($id) {
+        $employee = Employee::getById($id, [
+            'id',
+            'department_id',
+            'authority_id',
+            'status_id', 
+            'firstname',
+            'lastname',
+            'email',
+            'is_admin',
+            'birthdate',
+            'gender',
+            'mobile_phone',
+            'work_phone'
+        ], false);
+        
+        $employee['is_admin'] = (boolean)$employee['is_admin'];
+        /////////////////////////
+        $employee['birthdate'] = date('Y-m-d', $employee['birthdate']);
+        
+        return $this->sendResponse(false, "", $employee);
+    }
+    
+    //Update an employee
+    public function actionUpdate() {
+        try {
+            if ($employee = Employee::getById(Yii::$app->request->post('id'))) {
+                $employee->attributes = Yii::$app->request->post();
+                $employee->birthdate = strtotime($employee->birthdate);
+                if ($employee->save() !== false) {
+                    return $this->sendResponse($this->_error, $this->_message, []);
+                }
+                
+                $this->_message = $this->parserMessage($employee->getErrors());
+            }
+            
+            throw new \Exception($this->_message);
+        } catch (\Exception $ex) {
+            $this->_error = true;
+            return $this->sendResponse($this->_error, $this->_message, []);
+        }
+       
+        return $this->sendResponse(false, "", $employee);
+    }
 }

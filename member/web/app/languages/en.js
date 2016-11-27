@@ -82,6 +82,7 @@
             redmind : "Redmind me",
             see_all: "See all",
             update_post_success:'Update post successfully',
+            update_success: 'Update successfully',
             //-----------------------------------------End of common language.----------------------------------
             
             //project
@@ -155,6 +156,7 @@
             authority_added_success:'Authority has been added successfully',
             authority_edited_success:'Authority has been updated successfully',
             authority_deleted_success: 'Deleted authority successfully',
+            authority: 'Authority',
             
             //calendar
             calendar_title : "Calendar",
@@ -294,7 +296,16 @@
             error_calendar_unique : 'Calendar name is exist',
             add_calendar_success : 'Add calendar success',
             update_calendar_success : 'Update calendar success',
-            remove_calendar_success : 'Remove calendar success'
+            remove_calendar_success : 'Remove calendar success',
+            //Employee
+            update_employee: 'Update employee',
+            firstname_cannot_blank: 'First name can not blank',
+            lastname_cannot_blank: 'Last name can not blank',
+            firstname: 'First name',
+            lastname: 'Last name',
+            mobile_phone: 'Mobile phone',
+            work_phone: 'Work phone',
+            birthdate: 'Birth date'
         };
     });
 })(window.angular);

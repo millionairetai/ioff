@@ -89,7 +89,8 @@ class RegistrationForm extends Model {
     public function signup() {
         $this->_employee->firstname = $this->firstName;
         $this->_employee->lastname = $this->lastName;
-        $this->_employee->password_reset_token = '';
+//        $this->_employee->password_reset_token = '';
+        $this->_employee->removePasswordResetToken();
         $this->_employee->setPassword($this->password);
         $this->_employee->generateAuthKey();
 

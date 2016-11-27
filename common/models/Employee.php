@@ -94,7 +94,7 @@ class Employee extends ActiveRecord implements IdentityInterface {
      */
     public function rules() {
         return [
-            [['company_id', 'manager_employee_id', 'authority_id', 'position_id', 'department_id', 'bank_id', 'religion_id', 'marriage_status_id', 'nation_id', 'province_id', 'country_id', 'status_id', 'language_id', 'is_admin', 'birthdate', 'card_issue_id', 'passport_expire', 'passport_issue', 'tax_date_issue', 'start_working_date', 'stop_working_date', 'is_visible', 'last_activity_datetime', 'last_login_datetime', 'datetime_created', 'lastup_datetime', 'lastup_employee_id'], 'integer'],
+            [['company_id', 'manager_employee_id', 'authority_id', 'position_id', 'department_id', 'bank_id', 'religion_id', 'marriage_status_id', 'nation_id', 'province_id', 'country_id', 'status_id', 'language_id', 'birthdate', 'card_issue_id', 'passport_expire', 'passport_issue', 'tax_date_issue', 'start_working_date', 'stop_working_date', 'last_activity_datetime', 'last_login_datetime', 'datetime_created', 'lastup_datetime', 'lastup_employee_id'], 'integer'],
             [['authority_id', 'position_id', 'department_id', 'bank_id', 'religion_id', 'marriage_status_id', 'nation_id', 'province_id', 'country_id', 'status_id', 'firstname', 'password', 'lastname', 'email', 'birthdate'], 'required'],
             [['city_code', 'firstname', 'lastname', 'email', 'work_email'], 'string', 'max' => 99],
             [['password'], 'string', 'max' => 64],
@@ -105,9 +105,9 @@ class Employee extends ActiveRecord implements IdentityInterface {
             [['card_number_id', 'bank_number', 'passport_number', 'zip_code', 'tax_code'], 'string', 'max' => 20],
             [['auth_key'], 'string', 'max' => 32],
             [['email'], 'unique'],
-            [['disabled', 'gender'], 'boolean'],
+            [['disabled', 'gender', 'is_admin'], 'boolean'],
             [['status_id'], 'default', 'value' => self::STATUS_ACTIVE],
-            [['status_id'], 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
+//            [['status_id'], 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
         ];
     }
 
@@ -131,8 +131,8 @@ class Employee extends ActiveRecord implements IdentityInterface {
             'status_id' => Yii::t('app', 'Status ID'),
             'language_id' => Yii::t('app', 'Language ID'),
             'city_code' => Yii::t('app', 'City Code'),
-            'firstname' => Yii::t('app', 'Firstname'),
-            'lastname' => Yii::t('app', 'Lastname'),
+            'firstname' => Yii::t('common', 'First name'),
+            'lastname' => Yii::t('common', 'Last name'),
             'password' => Yii::t('app', 'Password'),
             'email' => Yii::t('app', 'Email'),
             'is_admin' => Yii::t('app', 'Is Admin'),
@@ -497,7 +497,7 @@ class Employee extends ActiveRecord implements IdentityInterface {
      * @return object
      */
     public function getStatus() {
-        return $this->hasOne(Status::className(), ['id' => 'status_id']);
+        return $this->hasOne(Status::className(), ['id' => 'status_id'])->select(['id', 'name']);
     }
     
     /**
@@ -508,7 +508,7 @@ class Employee extends ActiveRecord implements IdentityInterface {
      */
     public static function getEmployeesByStatusName($statusName, $searchName, $itemPerPage, $currentPage = 1, $orderBy = 'datetime_created', $orderType = 'DESC') {
         $employee = Employee::find()
-                ->select(['employee.id', 'email', 'firstname', 'lastname', 'profile_image_path', 'status_id', 'department_id'])
+                ->select(['employee.id', 'email', 'firstname', 'lastname', 'profile_image_path', 'status_id', 'department_id', 'is_admin'])
                 ->joinWith('status', 'department');
 
         if ($statusName) {

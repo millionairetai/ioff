@@ -21,7 +21,24 @@ appRoot.factory('employeeService', ['apiService', '$rootScope', 'alertify',
                 var emailRegExp = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
                 if (email.search(emailRegExp) === -1) {
                     return false;
-            }
+                }
+
+                return true;
+            },
+            validate: function (employee) {
+                var message = '';
+                if (employee.firstname.length == 0) {
+                    message += $rootScope.$lang.firstname_cannot_blank + "<br/>";
+                }
+                
+                if (employee.lastname.length == 0) {
+                    message += $rootScope.$lang.lastname_cannot_blank + "<br/>";
+                }
+
+                if (message.length > 0) {
+                    alertify.error(message);
+                    return false;
+                }
                 
                 return true;
             },

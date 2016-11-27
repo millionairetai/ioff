@@ -311,6 +311,30 @@ appRoot.factory('commonService', ['apiService', 'taskService', 'projectService',
     function (apiService, taskService, projectService, calendarService, $rootScope) {
 
         return {
+            get: function (controller, id, success, error) {
+                return apiService.get(controller + '/get?id=' + id, {}, success, error);
+            },
+            gets: function (controller, success, error) {
+                return apiService.get(controller + '/gets', {}, success, error);
+            },
+            update: function (controller, data, success, error) {
+                return apiService.post(controller + '/update', data, success, error);
+            },
+            updateUpload: function (controller, data, success, error) {
+                return apiService.upload(controller + '/update-upload', data, success, error);
+            },
+            add: function (controller, data, success, error) {
+                apiService.post(controller + '/add', data, success, error);
+            },
+            addUpload: function (controller, data, success, error) {
+                apiService.upload(controller + '/add-upload', data, success, error);
+            },
+            getLast: function (controller, data, success, error) {
+                apiService.get(controller + '/get-last', data, success, error);
+            },
+            delete: function (controller, data, success, error) {
+                apiService.get(controller + '/delete', data, success, error);
+            },
             getSearchGlobalSuggest: function (params, success, error) {
                 return apiService.post('task/get-search-global-suggestion', params, success, error, 0);
             },
@@ -336,10 +360,9 @@ appRoot.factory('controllerService', ['apiService', function (apiService) {
         };
     }]);
 appRoot.factory('departmentService', ['apiService', function (apiService) {
-
         return {
-            allDepartment : function (data,success,error){
-                return apiService.get('department/all',data,success,error);
+            allDepartment: function (data, success, error) {
+                return apiService.get('department/all', data, success, error);
             }
         };
     }]);
@@ -392,7 +415,24 @@ appRoot.factory('employeeService', ['apiService', '$rootScope', 'alertify',
                 var emailRegExp = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
                 if (email.search(emailRegExp) === -1) {
                     return false;
-            }
+                }
+
+                return true;
+            },
+            validate: function (employee) {
+                var message = '';
+                if (employee.firstname.length == 0) {
+                    message += $rootScope.$lang.firstname_cannot_blank + "<br/>";
+                }
+                
+                if (employee.lastname.length == 0) {
+                    message += $rootScope.$lang.lastname_cannot_blank + "<br/>";
+                }
+
+                if (message.length > 0) {
+                    alertify.error(message);
+                    return false;
+                }
                 
                 return true;
             },
@@ -425,7 +465,7 @@ appRoot.factory('employeeService', ['apiService', '$rootScope', 'alertify',
                 }
 
                 return true;
-            }
+            },
         };
     }]);
 appRoot.factory('EventPostService', ['apiService', '$rootScope', 'alertify', function (apiService, $rootScope, alertify) {
@@ -644,6 +684,9 @@ appRoot.factory('statusService', ['apiService', function (apiService) {
     return {
     	getProjectStatus : function (data,success,error){
             apiService.get('status/get-status?type=project', data, success, error);
+        },
+        getEmployeeStatus : function (data,success,error){
+            apiService.get('status/get-status?type=employee', data, success, error);
         }
     };
 }]);

@@ -214,4 +214,21 @@ class AuthorityController extends ApiController {
         return $this->sendResponse($this->_error, $this->_message, '');
     }
     
+    
+    /**
+     * Get all of authorities in authority table.
+     */
+    public function actionGets() {
+        $objects = [];
+        $authorities = Authority::gets(['id', 'name']);
+        foreach($authorities as $item) {
+            $objects[] = [
+                'id' => $item['id'],
+                'name' => $item['name'],
+            ];
+            
+        }
+
+        return $this->sendResponse(false, "", $objects);
+    }
 }

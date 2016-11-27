@@ -225,12 +225,39 @@ class ActiveRecord extends \yii\db\ActiveRecord
      * @param array $columns
      * @return ActiveQuery
      */
-    public static function getById($id, $columns = []) {
+    public static function getById($id, $columns = [], $isReturnObj = true) {
+        $return = self::find();
         if (!empty($columns)) {
-            return self::find($columns)->andWhere(['id' => $id])->andCompanyId()->one();
+            $return = $return->select($columns);
         }
         
-        return self::find()->andWhere(['id' => $id])->andCompanyId()->one();
+        $return->andWhere(['id' => $id])->andCompanyId();
+                
+        if ($isReturnObj) {
+            return $return->one();
+        }
+        
+        return $return->asArray()->one();
+    }
+    
+    /**
+     * Get all row of table of a company
+     * 
+     * @param boolean $isReturnArr
+     * @param array $columns
+     * @return objec|array
+     */
+    public static function gets($columns = [], $isReturnArr = true) {
+        $return = self::find();
+        if (!empty($columns)) {
+            $return = $return->select($columns);
+        }
+        
+        if ($isReturnArr) {
+            return $return->andCompanyId()->asArray()->all();
+        }
+        
+        return $return->andCompanyId()->all();
     }
       
     /**

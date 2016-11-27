@@ -81,6 +81,7 @@
             redmind : "Nhắc nhở",
             see_all: "Xem tất cả",
             update_post_success:'Bài đăng cập nhật thành công',
+            update_success: 'Cập nhật thành công',
             //-----------------------------------------End of common language.----------------------------------
             
             //project
@@ -154,6 +155,7 @@
             authority_added_success: 'Đã thêm quyền thành công',
             authority_edited_success:'Đã cập nhật quyền thành công',
             authority_deleted_success: 'Xóa quyền thành công',
+            authority: 'Quyền',
             
             //calendar
             calendar_title : "Lịch",
@@ -307,7 +309,16 @@
             update_calendar_success : 'Cập nhật thành công',
             remove_calendar_success : 'Xóa lịch thành công',
             my_task : 'Việc của tôi',
-            my_follow_task : 'Việc tôi theo dõi'
+            my_follow_task : 'Việc tôi theo dõi',
+            //Employee
+            update_employee: 'Cập nhật nhân viên',
+            firstname_cannot_blank: 'Họ không thể để trống',
+            lastname_cannot_blank: 'Tên không thể để trống',
+            firstname: 'Họ',
+            lastname: 'Tên',
+            mobile_phone: 'Điện thoại di động',
+            work_phone: 'Điện thoại công sở',
+            birthdate: 'Ngày sinh'
         };
     });
 })(window.angular);

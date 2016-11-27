@@ -24,5 +24,23 @@ class DepartmentController extends ApiController {
 
         return $this->sendResponse(false, "", $objects);
     }
+    
+    //Afterward, we will remove actionAll above.
+    /**
+     * Get all department
+     */
+    public function actionGets() {
+        $objects = [];
+        $array = Department::find()->select(['id', 'name'])->andCompanyId()->all();
+        foreach($array as $item) {
+            $objects[] = [
+                'id' => $item->id,
+                'name' => $item->name,
+            ];
+            
+        }
+
+        return $this->sendResponse(false, "", $objects);
+    }
 
 }

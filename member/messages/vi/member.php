@@ -116,5 +116,5 @@ return [
     'to the terms' => 'với những điều khoản',
     'I agree' => 'Tôi đồng ý',
     'Registration employee' => 'Đăng ký thành viên',
-    'You do not agree to terms' => 'Bạn không đồng ý với những điều khoản',
+    'You do not agree to terms' => 'Bạn bắt buộc phải đồng ý với những điều khoản',
 ];

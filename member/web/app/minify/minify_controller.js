@@ -1072,7 +1072,6 @@ appRoot.controller('editEventCtrl', ['$rootScope', 'data', 'listCalendar', '$sco
             membersData = data.calendars.invitations.departmentAndEmployee.employeeEditList;
         }
         
-        console.log(data.calendars.event.start_time);
         $scope.event = {
             id: data.calendars.event.id,
             var_start_datetime: new Date(data.calendars.event.start_datetime + ' ' + data.calendars.event.start_time),
@@ -1305,8 +1304,8 @@ appRoot.controller('dialogMessage', [ '$rootScope','$scope', '$uibModalInstance'
         
     }]);
 
-appRoot.controller('EmployeeCtrl', ['$scope', '$uibModal', 'employeeService', '$rootScope', 'alertify', 'PER_PAGE', 'MAX_PAGE_SIZE',
-    function ($scope, $uibModal, employeeService, alertify, PER_PAGE, MAX_PAGE_SIZE) {
+appRoot.controller('EmployeeCtrl', ['$scope', '$uibModal', 'employeeService', '$rootScope', 'alertify', 'PER_PAGE', 'MAX_PAGE_SIZE', 'commonService',
+    function ($scope, $uibModal, employeeService, alertify, PER_PAGE, MAX_PAGE_SIZE, commonService) {
 
         $scope.params = {
             page: 1,
@@ -1339,10 +1338,12 @@ appRoot.controller('EmployeeCtrl', ['$scope', '$uibModal', 'employeeService', '$
             all: 0
         };
 
+        $scope.type = '';
         $scope.commonTemplate = '';
         $scope.employees = [];
         $scope.maxPageSize = MAX_PAGE_SIZE;
         $scope.getEmployees = function (type, $event) {
+            $scope.type = type;
             if ($event != '') {
                 $event.preventDefault();
             }
@@ -1407,21 +1408,30 @@ appRoot.controller('EmployeeCtrl', ['$scope', '$uibModal', 'employeeService', '$
                 size: 'lg',
                 keyboard: true,
                 backdrop: 'static'
-//                resolve: {
-//                    authority: function () {
-//                        return authority;
-//                    }
-//                }
             });
         };
 
-        $scope.edit = function (authority, $index) {
+        $scope.edit = function (employeeId, index) {
             var modalInstance = $uibModal.open({
                 templateUrl: 'app/views/employee/edit.html',
                 controller: 'editEmployeeCtrl',
                 size: 'lg',
                 keyboard: true,
-                backdrop: 'static'
+                backdrop: 'static',
+                resolve: {
+                    employee: function ($q, commonService) {
+                        var deferred = $q.defer();
+                        commonService.get('employee', employeeId, function (respone) {
+                            deferred.resolve(respone.objects);
+                        });
+
+                        return deferred.promise;
+                    }
+                }
+            });
+            
+            modalInstance.result.then(function (data) {
+                $scope.getEmployees($scope.type, '');
             });
         };
 
@@ -1454,8 +1464,55 @@ appRoot.controller('InvitationCtrl', ['$scope', '$uibModalInstance', 'employeeSe
         };
     }]);
 
-appRoot.controller('editEmployeeCtrl', ['$scope', '$uibModalInstance', '$rootScope', 'alertify', '$timeout', 'employeeService', '$filter', 'statusService', 'priorityService',
-    function ($scope, $location, $uibModalInstance, $rootScope, alertify, $timeout, employeeService, $filter, statusService, priorityService) {
+appRoot.controller('editEmployeeCtrl', ['$scope', '$uibModalInstance', '$rootScope', 'alertify', '$timeout', 'employeeService', '$filter', 'departmentService', 'employee', 'commonService', 'statusService',
+    function ($scope, $uibModalInstance, $rootScope, alertify, $timeout, employeeService, $filter, departmentService, employee, commonService, statusService) {
+        $scope.employee = employee;
+        //change timestamp birthdate to object datetime.
+        $scope.employee.birthdate = new Date($scope.employee.birthdate);
+        $scope.statuses = [];
+        $scope.departments = [];
+        
+        //get list of department
+        commonService.gets('department', function (response) {
+            $scope.departments = response.objects;
+            if ($scope.departments.length > 0) {
+                angular.forEach($scope.departments, function(val, key) {
+                    if (val.id == $scope.employee.department_id) {
+                        $scope.employee.department_id = val;
+                    }
+                });
+            }
+        });
+
+        //get list of authority
+        commonService.gets('authority', function (response) {
+            $scope.authorities = response.objects;
+            if ($scope.authorities.length > 0) {
+                angular.forEach($scope.authorities, function(val, key) {
+                    if (val.id == $scope.employee.authority_id) {
+                        $scope.employee.authority_id = val;
+                    }
+                });
+            }
+        });
+
+        //status
+        statusService.getEmployeeStatus({}, function (data) {
+            $scope.statuses = data.objects;
+        });
+
+        $scope.update = function () {
+            $scope.employee.department_id = $scope.employee.department_id.id;
+            $scope.employee.authority_id = $scope.employee.authority_id.id;
+            if (employeeService.validate($scope.employee)) {
+                commonService.update('employee', $scope.employee, function (response) {
+                    $scope.employee = response.objects;
+                    alertify.success($rootScope.$lang.update_success);
+                    $uibModalInstance.close($scope.employee);
+                })
+            }
+        }
+
         //cancel
         $scope.cancel = function () {
             $uibModalInstance.dismiss('cancel');
@@ -1608,7 +1665,6 @@ appRoot.controller('addProjectCtrl', ['socketService','$scope', 'projectService'
         $scope.selectMember = function($item, $model){
             $scope.findEmployee('');
         };
-        
         
         //get list status
         statusService.getProjectStatus({}, function (data) {
