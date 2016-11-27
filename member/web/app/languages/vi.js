@@ -82,6 +82,9 @@
             see_all: "Xem tất cả",
             update_post_success:'Bài đăng cập nhật thành công',
             update_success: 'Cập nhật thành công',
+            all: 'Tất cả',
+            edit: 'Cập nhật', 
+            message: 'Tin nhắn',
             //-----------------------------------------End of common language.----------------------------------
             
             //project
@@ -311,6 +314,14 @@
             my_task : 'Việc của tôi',
             my_follow_task : 'Việc tôi theo dõi',
             //Employee
+            employee: 'Nhân viên',
+            invited: 'Được mời',
+            inactive: 'Bị vô hiệu hóa',
+            invite: 'Mời',
+            emails: 'Danh sách email', 
+            separate_multiple_emails: 'Tách các email với nhau bởi dấu phẩy hoặc khoảng trắng',
+            message_invitation: 'Xin hãy gia nhập mạng nội bộ của chúng ta. Đây là nơi mọi người có thể cộng tác dựa trên các dự án, công việc, lập kế hoạch và xây dựng học hỏi kiến thức với nhau.',
+            invite_successfully: 'Mời nhân viên mới thành công',
             update_employee: 'Cập nhật nhân viên',
             firstname_cannot_blank: 'Họ không thể để trống',
             lastname_cannot_blank: 'Tên không thể để trống',
@@ -318,7 +329,10 @@
             lastname: 'Tên',
             mobile_phone: 'Điện thoại di động',
             work_phone: 'Điện thoại công sở',
-            birthdate: 'Ngày sinh'
+            birthdate: 'Ngày sinh',
+            is_invalid: 'không hợp lệ',
+            emails_required: 'Danh sách email không thể bỏ trống',
+            message_required: 'Tin nhắn không thể bỏ trống'
         };
     });
 })(window.angular);

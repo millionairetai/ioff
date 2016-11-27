@@ -2,28 +2,28 @@
     <button type="button" class="close" ng-click="cancel()">×</button>
     <h4 class="modal-title text-danger"> 
         <strong><i class="fa fa-cubes"></i>
-            <span>Invite employees</span>
+            <span>{{$root.$lang.invite}}</span>
         </strong>
     </h4>
 </div>
 <div class="modal-body text-dangers add-authority-box" >    
     <div class="box-body form-horizontal">
         <div class="row form-group">
-            <label for="inputEmail3" class="col-sm-3 control-label ng-binding">Email</label>    
+            <label for="inputEmail3" class="col-sm-3 control-label ng-binding">{{$root.$lang.emails}}</label>    
             <div class="col-sm-9">
-                <textarea type="text" placeholder="Separate multiple e-mails with a comma or space" class="form-control" ng-model="invitation.emails"></textarea>
+                <textarea type="text" placeholder="{{$root.$lang.separate_multiple_emails}}" class="form-control" ng-model="invitation.emails"></textarea>
             </div>
         </div>
         <div class="row form-group">
-            <label for="inputEmail3" class="col-sm-3 control-label ng-binding">Message</label>    
+            <label for="inputEmail3" class="col-sm-3 control-label ng-binding">{{$root.$lang.message}}</label>    
             <div class="col-sm-9">
-                <textarea type="text" class="form-control" ng-model="invitation.message">sss</textarea>
+                <textarea rows="4" type="text" class="form-control" ng-model="invitation.message">sss</textarea>
             </div>
         </div>
     </div>
 
 </div>  
 <div class="modal-footer">    
-    <button type="button" class="btn btn-primary btn-flat" ng-click="invite()"> <i class="fa fa-save"></i>Invite</button>
+    <button type="button" class="btn btn-primary btn-flat" ng-click="invite()"> <i class="fa fa-save"></i>  {{$root.$lang.invite}}</button>
     <button type="button" class="btn btn-default btn-flat" ng-click="cancel()"> <i class="fa fa-remove"></i> {{$root.$lang.button_close}}</button>
 </div>

@@ -1439,10 +1439,10 @@ appRoot.controller('EmployeeCtrl', ['$scope', '$uibModal', 'employeeService', '$
 
     }]);
 
-appRoot.controller('InvitationCtrl', ['$scope', '$uibModalInstance', 'employeeService', '$rootScope', 'alertify', 'dialogMessage',
-    function ($scope, $uibModalInstance, employeeService, $rootScope, alertify, dialogMessage) {
+appRoot.controller('InvitationCtrl', ['$scope', '$uibModalInstance', 'employeeService', '$rootScope', 'alertify', 'dialogMessage', '$rootScope',
+    function ($scope, $uibModalInstance, employeeService, $rootScope, alertify, dialogMessage, $rootScope) {
         $scope.invitation = {
-            message: '     Please join me in our new intranet. This is a place where everyone can collaborate on projects, coordinate tasks and schedules, and build our knowledge base, ',
+            message: $rootScope.$lang.message_invitation,
             emails: ''
         };
 
@@ -1453,7 +1453,7 @@ appRoot.controller('InvitationCtrl', ['$scope', '$uibModalInstance', 'employeeSe
             //Check validation email & Check validation message.
             if (employeeService.validateInvitation(emails, $scope.invitation.message)) {
                 employeeService.invite({emails: emails, message: $scope.invitation.message}, function (response) {
-                    alertify.success('Invite employees successfully');
+                    alertify.success($rootScope.$lang.invite_successfully);
                     $uibModalInstance.close(response.objects);
                 });
             }
@@ -1468,10 +1468,12 @@ appRoot.controller('editEmployeeCtrl', ['$scope', '$uibModalInstance', '$rootSco
     function ($scope, $uibModalInstance, $rootScope, alertify, $timeout, employeeService, $filter, departmentService, employee, commonService, statusService) {
         $scope.employee = employee;
         //change timestamp birthdate to object datetime.
-        $scope.employee.birthdate = new Date($scope.employee.birthdate);
+        if ($scope.employee.birthdate != '') {
+            $scope.employee.birthdate = new Date($scope.employee.birthdate);
+        }
+        
         $scope.statuses = [];
         $scope.departments = [];
-        
         //get list of department
         commonService.gets('department', function (response) {
             $scope.departments = response.objects;

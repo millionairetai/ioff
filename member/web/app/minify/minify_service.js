@@ -439,20 +439,19 @@ appRoot.factory('employeeService', ['apiService', '$rootScope', 'alertify',
             validateInvitation: function (emails, message) {
                 var errorMessage = "";
                 try {
-                    if (message.length == 0) {
-                        errorMessage += $rootScope.$lang.project_name_error_empty + "<br/>";
-                        throw errorMessage;
-                    }
-
                     if (emails.length == 0) {
-                        errorMessage += $rootScope.$lang.project_description_error_empty + "<br/>";
+                        errorMessage += $rootScope.$lang.emails_required + "<br/>";
                         throw errorMessage;
                     }
-
+                    
+                    if (message.length == 0) {
+                        errorMessage += $rootScope.$lang.message_required + "<br/>";
+                        throw errorMessage;
+                    }
                     //Check validation each email.
                     for (var n = 0; n < emails.length; n++) {
                         if (this.isValidEmail(emails[n].trim()) === false) {
-                            errorMessage += 'Email ' + emails[n].trim() + ' is invalid';
+                            errorMessage += 'Email ' + emails[n].trim() + ' ' + $rootScope.$lang.is_invalid;
                             throw errorMessage;
                         }
                     }
@@ -465,7 +464,7 @@ appRoot.factory('employeeService', ['apiService', '$rootScope', 'alertify',
                 }
 
                 return true;
-            },
+            }
         };
     }]);
 appRoot.factory('EventPostService', ['apiService', '$rootScope', 'alertify', function (apiService, $rootScope, alertify) {

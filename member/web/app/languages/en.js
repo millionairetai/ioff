@@ -83,6 +83,9 @@
             see_all: "See all",
             update_post_success:'Update post successfully',
             update_success: 'Update successfully',
+            all: 'All',
+            edit: 'Edit', 
+            message: 'Message',
             //-----------------------------------------End of common language.----------------------------------
             
             //project
@@ -298,6 +301,14 @@
             update_calendar_success : 'Update calendar success',
             remove_calendar_success : 'Remove calendar success',
             //Employee
+            employee: 'Employee',
+            invited: 'Invited',
+            inactive: 'Inactive',
+            invite: 'Invite',
+            emails: 'Emails', 
+            separate_multiple_emails: 'Separate multiple e-mails with a comma or space',
+            message_invitation: 'Please join me in our new intranet. This is a place where everyone can collaborate on projects, coordinate tasks and schedules, and build our knowledge base.',
+            invite_successfully: 'Invite new employees successfully',
             update_employee: 'Update employee',
             firstname_cannot_blank: 'First name can not blank',
             lastname_cannot_blank: 'Last name can not blank',
@@ -305,7 +316,10 @@
             lastname: 'Last name',
             mobile_phone: 'Mobile phone',
             work_phone: 'Work phone',
-            birthdate: 'Birth date'
+            birthdate: 'Birth date',
+            is_invalid: 'is invalid',
+            emails_required: 'Emails can not blank',
+            message_required: 'Message can not blank'
         };
     });
 })(window.angular);

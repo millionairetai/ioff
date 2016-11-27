@@ -5,13 +5,13 @@
             <dd class="imgleft">
                 <div class="image">
                     <img src="{{employee.image}}" class="img-circle user-image" alt="User Image">
-                    <a class="cursor-pointer" ng-click="edit(employee.id, index)">Edit</a>
+                    <a class="cursor-pointer" ng-click="edit(employee.id, index)">{{$root.$lang.edit}}</a>
                 </div>
                 <div class="info">
-                    <p ng-show="employee.is_admin"><a href="#" class="btn btn-info btn-xs">Admin</a></p>
-                    <p ng-show="employee.department">Department: {{employee.department}}</p>
+                    <p ng-show="employee.is_admin"><a class="btn btn-info btn-xs">Admin</a></p>
+                    <p ng-show="employee.department">{{$root.$lang.department}}: {{employee.department}}</p>
                     <p>Email: {{employee.email}}</p>
-                    <p>Status: <a href="#" class="btn btn-success btn-xs">{{employee.status}}</a></p>
+                    <p>{{$root.$lang.status}}: <a class="btn btn-success btn-xs">{{employee.status}}</a></p>
                 </div>
             </dd>
         </dl>
@@ -24,7 +24,7 @@
             Employee manage
         </h1>
         <div class="tool-right">
-            <a class="btn btn-primary btn-flat" ng-click="invite()"><i class="fa fa-plus-square"></i> Invite</a>
+            <a class="btn btn-primary btn-flat" ng-click="invite()"><i class="fa fa-plus-square"></i> {{$root.$lang.invite}}</a>
         </div>
     </section>
     <section class="content">
@@ -45,7 +45,7 @@
                         <div class="col-sm-3">
                             <form class="form-group sidebar-form1" ng-submit="search('all', $event)">
                                 <div class="input-group">
-                                    <input type="text" ng-model="params.searchName" class="form-control" placeholder="Name"/>
+                                    <input type="text" ng-model="params.searchName" class="form-control" placeholder="{{$root.$lang.name}}"/>
                                     <span class="input-group-btn">
                                         <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i></button>
                                     </span>                     
@@ -57,10 +57,10 @@
                     <div class="col-sm-9 pull-left">
                         <div class="nav-tabs-custom">
                             <ul class="nav nav-tabs">
-                                <li class="active nav-item"><a ng-click="getEmployees('active', $event)" href="#active" data-toggle="tab">Employee</a></li>
-                                <li class="nav-item"><a ng-click="getEmployees('invited', $event)" href="#invited" data-toggle="tab">Invited</a></li>
-                                <li class="nav-item"><a ng-click="getEmployees('inactive', $event)" href="#inactive" data-toggle="tab">Inactive</a></li>
-                                <li class="nav-item" id="all_search"><a ng-click="getEmployees('all', $event)" href="#all" data-toggle="tab">All</a></li>
+                                <li class="active nav-item"><a ng-click="getEmployees('active', $event)" href="#active" data-toggle="tab">{{$root.$lang.employee}}</a></li>
+                                <li class="nav-item"><a ng-click="getEmployees('invited', $event)" href="#invited" data-toggle="tab">{{$root.$lang.invited}}</a></li>
+                                <li class="nav-item"><a ng-click="getEmployees('inactive', $event)" href="#inactive" data-toggle="tab">{{$root.$lang.inactive}}</a></li>
+                                <li class="nav-item" id="all_search"><a ng-click="getEmployees('all', $event)" href="#all" data-toggle="tab">{{$root.$lang.all}}</a></li>
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane active" id="active">
