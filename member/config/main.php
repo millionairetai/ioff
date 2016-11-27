@@ -56,7 +56,7 @@ return [
             ],
         ],
         'formatter' => [
-            'dateFormat' => 'dd-mm-yy',
+            'dateFormat' => 'yyyy-MM-dd',
             'decimalSeparator' => ',',
             'thousandSeparator' => ' ',
             'currencyCode' => 'VND',

@@ -201,8 +201,7 @@ class EmployeeController extends ApiController {
         ], false);
         
         $employee['is_admin'] = (boolean)$employee['is_admin'];
-        /////////////////////////
-        $employee['birthdate'] = date('Y-m-d', $employee['birthdate']);
+        $employee['birthdate'] = \Yii::$app->formatter->asDate($employee['birthdate']);
         
         return $this->sendResponse(false, "", $employee);
     }
