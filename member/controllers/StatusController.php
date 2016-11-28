@@ -3,6 +3,7 @@
 namespace member\controllers;
 
 use common\models\Status;
+use common\models\Employee;
 
 class StatusController extends ApiController {
     
@@ -45,13 +46,39 @@ class StatusController extends ApiController {
      */
     public function actionGetStatus() {
         $objects = [];
-        $status = Status::getByOwnerTable(\Yii::$app->request->get('type'));
-        foreach ($status as $item) {
-            $objects[] = [
-                'id' => $item['id'],
-                'name' => $item['name'],
-            ];
+        if ($status = Status::getByOwnerTable(\Yii::$app->request->get('type'))) {
+            foreach ($status as $item) {
+                $objects[] = [
+                    'id' => $item['id'],
+                    'name' => $item['name'],
+                ];
+            }
         }
+        
+        return $this->sendResponse(false, "", $objects);
+    }
+             
+    /**
+     * Get employee status by current employee status
+     */
+    public function actionGetEmployeeStatuses() {
+        $objects = [];
+        if ($currentStatusId = \Yii::$app->request->get('currentStatus')) {
+            if ($status = Status::getEmployeesStatus()) {
+                $currStatusColumnName = $status[$currentStatusId]['column_name'];
+                foreach ($status as $item) {
+                    if ($currStatusColumnName == Employee::COLUNM_NAME_ACTIVE && $item['column_name'] == Employee::COLUNM_NAME_INVITED) continue;
+                    if ($currStatusColumnName == Employee::COLUNM_NAME_INACTIVE && $item['column_name'] == Employee::COLUNM_NAME_INVITED) continue;
+                    if ($currStatusColumnName == Employee::COLUNM_NAME_INVITED && $item['column_name'] != Employee::COLUNM_NAME_INVITED) continue;
+
+                    $objects[] = [
+                        'id' => $item['id'],
+                        'name' => $item['name'],
+                    ];
+                }
+            }
+        }
+        
         return $this->sendResponse(false, "", $objects);
     }
 }

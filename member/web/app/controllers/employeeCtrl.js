@@ -193,7 +193,7 @@ appRoot.controller('editEmployeeCtrl', ['$scope', '$uibModalInstance', '$rootSco
         });
 
         //status
-        statusService.getEmployeeStatus({}, function (data) {
+        statusService.getEmployeesStatus($scope.employee.status_id, function (data) {
             $scope.statuses = data.objects;
         });
 

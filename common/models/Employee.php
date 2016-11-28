@@ -76,7 +76,7 @@ class Employee extends ActiveRecord implements IdentityInterface {
     const COLUNM_NAME_ACTIVE = 'employee.active';
     const COLUNM_NAME_INACTIVE = 'employee.inactive';
     const COLUNM_NAME_INVITED = 'employee.invited';
-    const COLUNM_NAME_DISABLED = 'employee.disabled';
+//    const COLUNM_NAME_DISABLED = 'employee.disabled';
 
     /**
      * @inheritdoc

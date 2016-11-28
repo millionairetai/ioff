@@ -95,4 +95,19 @@ class Status extends \common\components\db\ActiveRecord
                 ->asArray()
                 ->all();;
     }
+    
+    /**
+     * Get employee status
+     * 
+     * param string $ownerTable
+     * @return \yii\db\ActiveQuery
+     */
+    public static function getEmployeesStatus() {
+        return self::find()
+                ->select(['id','name', 'column_name'])
+                ->where(['owner_table' => 'employee'])
+                ->indexBy('id')
+                ->asArray()
+                ->all();;
+    }
 }
