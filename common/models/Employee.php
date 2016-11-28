@@ -78,6 +78,9 @@ class Employee extends ActiveRecord implements IdentityInterface {
     const COLUNM_NAME_INVITED = 'employee.invited';
 //    const COLUNM_NAME_DISABLED = 'employee.disabled';
 
+    //scenario employee
+    const SCENARIO_LOGIN = 'login';
+    const SCENARIO_REGISTER = 'register';
     /**
      * @inheritdoc
      */
@@ -95,7 +98,7 @@ class Employee extends ActiveRecord implements IdentityInterface {
     public function rules() {
         return [
             [['company_id', 'manager_employee_id', 'authority_id', 'position_id', 'department_id', 'bank_id', 'religion_id', 'marriage_status_id', 'nation_id', 'province_id', 'country_id', 'status_id', 'language_id', 'birthdate', 'card_issue_id', 'passport_expire', 'passport_issue', 'tax_date_issue', 'start_working_date', 'stop_working_date', 'last_activity_datetime', 'last_login_datetime', 'datetime_created', 'lastup_datetime', 'lastup_employee_id'], 'integer'],
-            [['authority_id', 'position_id', 'department_id', 'bank_id', 'religion_id', 'marriage_status_id', 'nation_id', 'province_id', 'country_id', 'status_id', 'firstname', 'password', 'lastname', 'email', 'birthdate'], 'required'],
+            [['authority_id', 'position_id', 'department_id', 'bank_id', 'religion_id', 'marriage_status_id', 'nation_id', 'province_id', 'country_id', 'status_id', 'firstname', 'lastname', 'email', 'birthdate'], 'required'],
             [['city_code', 'firstname', 'lastname', 'email', 'work_email'], 'string', 'max' => 99],
             [['password'], 'string', 'max' => 64],
             [['code', 'telephone', 'mobile_phone', 'work_phone', 'card_place_id'], 'string', 'max' => 50],
@@ -107,8 +110,17 @@ class Employee extends ActiveRecord implements IdentityInterface {
             [['email'], 'unique'],
             [['disabled', 'gender', 'is_admin'], 'boolean'],
             [['status_id'], 'default', 'value' => self::STATUS_ACTIVE],
+            [['password'], 'required', 'on' => [self::SCENARIO_LOGIN, self::SCENARIO_REGISTER]],
 //            [['status_id'], 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
         ];
+    }
+    
+    public function fields() {
+        $fields = parent::fields();
+        // remove fields that contain sensitive information
+        unset($fields['auth_key'], $fields['password'], $fields['password_reset_token']);
+        
+        return $fields;
     }
 
     /**

@@ -1468,7 +1468,7 @@ appRoot.controller('editEmployeeCtrl', ['$scope', '$uibModalInstance', '$rootSco
     function ($scope, $uibModalInstance, $rootScope, alertify, $timeout, employeeService, $filter, departmentService, employee, commonService, statusService) {
         $scope.employee = employee;
         //change timestamp birthdate to object datetime.
-        if ($scope.employee.birthdate != '') {
+        if ($scope.employee.birthdate != '' && $scope.employee.birthdate != 0) {
             $scope.employee.birthdate = new Date($scope.employee.birthdate);
         }
         
@@ -1503,15 +1503,15 @@ appRoot.controller('editEmployeeCtrl', ['$scope', '$uibModalInstance', '$rootSco
             $scope.statuses = data.objects;
         });
 
-        $scope.update = function () {
-            $scope.employee.department_id = $scope.employee.department_id.id;
-            $scope.employee.authority_id = $scope.employee.authority_id.id;
-            if ($scope.employee.birthdate == '') {
-                $scope.employee.birthdate = 0;
-            }
-            
-            $scope.employee.authority_id = $scope.employee.authority_id.id;
+        $scope.update = function () {           
             if (employeeService.validate($scope.employee)) {
+                $scope.employee.department_id = angular.isDefined($scope.employee.department_id) ? $scope.employee.department_id.id : 0;
+                $scope.employee.authority_id = angular.isDefined($scope.employee.authority_id.id) ? $scope.employee.authority_id.id : 0;
+                
+                if ($scope.employee.birthdate == '') {
+                    $scope.employee.birthdate = 0;
+                }
+                
                 commonService.update('employee', $scope.employee, function (response) {
                     $scope.employee = response.objects;
                     alertify.success($rootScope.$lang.update_success);
