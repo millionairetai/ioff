@@ -220,13 +220,14 @@ class AuthorityController extends ApiController {
      */
     public function actionGets() {
         $objects = [];
-        $authorities = Authority::gets(['id', 'name']);
-        foreach($authorities as $item) {
-            $objects[] = [
-                'id' => $item['id'],
-                'name' => $item['name'],
-            ];
-            
+        if ($authorities = Authority::gets(['id', 'name'])) {
+            foreach($authorities as $item) {
+                $objects[] = [
+                    'id' => $item['id'],
+                    'name' => $item['name'],
+                ];
+
+            }
         }
 
         return $this->sendResponse(false, "", $objects);

@@ -201,8 +201,7 @@ appRoot.controller('editEmployeeCtrl', ['$scope', '$uibModalInstance', '$rootSco
             if (employeeService.validate($scope.employee)) {
                 $scope.employee.department_id = angular.isDefined($scope.employee.department_id) ? $scope.employee.department_id.id : 0;
                 $scope.employee.authority_id = angular.isDefined($scope.employee.authority_id.id) ? $scope.employee.authority_id.id : 0;
-                
-                if ($scope.employee.birthdate == '') {
+                if ($scope.employee.birthdate == '' || angular.isUndefined($scope.employee.birthdate)) {
                     $scope.employee.birthdate = 0;
                 }
                 

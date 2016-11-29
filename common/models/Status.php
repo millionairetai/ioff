@@ -97,7 +97,7 @@ class Status extends \common\components\db\ActiveRecord
     }
     
     /**
-     * Get employee status
+     * Get employee status by id index
      * 
      * param string $ownerTable
      * @return \yii\db\ActiveQuery

@@ -200,10 +200,13 @@ class EmployeeController extends ApiController {
             'work_phone'
         ], false);
         
-        $employee['is_admin'] = (boolean)$employee['is_admin'];
-        $employee['birthdate'] = !empty($employee['birthdate']) ? \Yii::$app->formatter->asDate($employee['birthdate']) : '';
+        if ($employee) {
+            $employee['is_admin'] = (boolean)$employee['is_admin'];
+            $employee['birthdate'] = !empty($employee['birthdate']) ? \Yii::$app->formatter->asDate($employee['birthdate']) : '';
+            return $this->sendResponse(false, "", $employee);
+        }
         
-        return $this->sendResponse(false, "", $employee);
+        return $this->sendResponse(false, "", []);
     }
     
     //Update an employee
