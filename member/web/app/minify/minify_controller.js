@@ -1379,6 +1379,7 @@ appRoot.controller('EmployeeCtrl', ['$scope', '$uibModal', 'employeeService', '$
 
             employeeService.getEmployeesByStatus($scope.params, function (response) {
                 $scope.employees = response.objects.employees;
+                $scope.reset();
                 switch (type) {
                     case 'active':
                         $scope.totalItems.active = response.objects.totalItems;
@@ -1396,9 +1397,17 @@ appRoot.controller('EmployeeCtrl', ['$scope', '$uibModal', 'employeeService', '$
             });
         };
 
+        $scope.reset = function() {
+            $scope.totalItems.active = 0;
+            $scope.totalItems.invited = 0;
+            $scope.totalItems.inactive = 0;
+            $scope.totalItems.all = 0;
+        }
+        
         //search by task name
         $scope.search = function (type) {
             $scope.getEmployees(type, '');
+            console.log($scope.totalItems);
         }
 
         $scope.invite = function (authority, $index) {
