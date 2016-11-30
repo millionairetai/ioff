@@ -82,6 +82,7 @@
             see_all: "Xem tất cả",
             update_post_success:'Bài đăng cập nhật thành công',
             update_success: 'Cập nhật thành công',
+            add_success: 'Thêm thành công',
             all: 'Tất cả',
             edit: 'Cập nhật', 
             message: 'Tin nhắn',

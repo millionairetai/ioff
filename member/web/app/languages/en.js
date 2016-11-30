@@ -83,6 +83,7 @@
             see_all: "See all",
             update_post_success:'Update post successfully',
             update_success: 'Update successfully',
+            add_success: 'Add successfully',
             all: 'All',
             edit: 'Edit', 
             message: 'Message',

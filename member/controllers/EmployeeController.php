@@ -238,7 +238,7 @@ class EmployeeController extends ApiController {
                 $employee->attributes = Yii::$app->request->post();
                 $employee->birthdate = $employee->birthdate != 0 ?  strtotime($employee->birthdate) : $employee->birthdate;;
                 if (empty($employee->password)) {
-                    $employee->password = Yii::$app->security->generateRandomString(8);
+                    $employee->password = Yii::$app->security->generateRandomString(6);
                 }
                 
                 if ($employee->validate()) {

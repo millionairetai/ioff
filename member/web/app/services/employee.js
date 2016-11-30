@@ -43,7 +43,7 @@ appRoot.factory('employeeService', ['apiService', '$rootScope', 'alertify', 'val
             },            
             validateAdd: function (employee) {
                 var message = '';
-                if (!validateService.email(employee.email)) {
+                if (validateService.email(employee.email) === false) {
                     message += 'Email ' + $rootScope.$lang.is_invalid + "<br/>";
                 }
                 
