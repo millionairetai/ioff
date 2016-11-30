@@ -103,7 +103,7 @@ class EmployeeController extends ApiController {
                     'image' => $employee->image,
                     'is_admin' => (boolean)$employee->is_admin,
                     'department' => !empty($employee->department->name) ? $employee->department->name : '',
-                    'status' => $employee->status->name,
+                    'status' => !empty($employee->status->name) ? $employee->status->name : '',
                 ];
             }
         }
@@ -217,6 +217,44 @@ class EmployeeController extends ApiController {
                 $employee->birthdate = $employee->birthdate != 0 ?  strtotime($employee->birthdate) : $employee->birthdate;
                 if ($employee->save() !== false) {
                     return $this->sendResponse($this->_error, $this->_message, []);
+                }
+                
+                $this->_message = $this->parserMessage($employee->getErrors());
+            }
+            
+            throw new \Exception($this->_message);
+        } catch (\Exception $ex) {
+            $this->_error = true;
+            return $this->sendResponse($this->_error, $this->_message, []);
+        }
+       
+        return $this->sendResponse(false, "", $employee);
+    }
+    
+    //Add an employee
+    public function actionAdd() {
+        try {
+            if ($employee = new Employee()) {
+                $employee->attributes = Yii::$app->request->post();
+                $employee->birthdate = $employee->birthdate != 0 ?  strtotime($employee->birthdate) : $employee->birthdate;;
+                if (empty($employee->password)) {
+                    $employee->password = Yii::$app->security->generateRandomString(8);
+                }
+                
+                if ($employee->validate()) {
+                    $dataSend = [
+                        '{employee name}' => $employee->fullname,
+                        '{account}' => $employee->email,
+                        '{password}' => $employee->password
+                    ];
+                    
+                    $employee->setPassword($employee->password);
+                    $employee->generateAuthKey();
+                    if ($employee->save() !== false) {
+                        //Send email to that employee to annouce.
+                        $employee->sendMail($dataSend, EmailTemplate::getTheme(EmailTemplate::SUCCESS_EMPLOYEE_REGISTRATION));
+                        return $this->sendResponse($this->_error, $this->_message, []);
+                    }
                 }
                 
                 $this->_message = $this->parserMessage($employee->getErrors());

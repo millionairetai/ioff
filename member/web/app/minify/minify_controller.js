@@ -1397,17 +1397,16 @@ appRoot.controller('EmployeeCtrl', ['$scope', '$uibModal', 'employeeService', '$
             });
         };
 
-        $scope.reset = function() {
+        $scope.reset = function () {
             $scope.totalItems.active = 0;
             $scope.totalItems.invited = 0;
             $scope.totalItems.inactive = 0;
             $scope.totalItems.all = 0;
         }
-        
+
         //search by task name
         $scope.search = function (type) {
             $scope.getEmployees(type, '');
-            console.log($scope.totalItems);
         }
 
         $scope.invite = function (authority, $index) {
@@ -1438,14 +1437,27 @@ appRoot.controller('EmployeeCtrl', ['$scope', '$uibModal', 'employeeService', '$
                     }
                 }
             });
-            
+
+            modalInstance.result.then(function (data) {
+                $scope.getEmployees($scope.type, '');
+            });
+        };
+
+        $scope.add = function () {
+            var modalInstance = $uibModal.open({
+                templateUrl: 'app/views/employee/add.html',
+                controller: 'addEmployeeCtrl',
+                size: 'lg',
+                keyboard: true,
+                backdrop: 'static',
+            });
+
             modalInstance.result.then(function (data) {
                 $scope.getEmployees($scope.type, '');
             });
         };
 
         $scope.getEmployees('active', '');
-
     }]);
 
 appRoot.controller('InvitationCtrl', ['$scope', '$uibModalInstance', 'employeeService', '$rootScope', 'alertify', 'dialogMessage', '$rootScope',
@@ -1480,14 +1492,14 @@ appRoot.controller('editEmployeeCtrl', ['$scope', '$uibModalInstance', '$rootSco
         if ($scope.employee.birthdate != '' && $scope.employee.birthdate != 0) {
             $scope.employee.birthdate = new Date($scope.employee.birthdate);
         }
-        
+
         $scope.statuses = [];
         $scope.departments = [];
         //get list of department
         commonService.gets('department', function (response) {
             $scope.departments = response.objects;
             if ($scope.departments.length > 0) {
-                angular.forEach($scope.departments, function(val, key) {
+                angular.forEach($scope.departments, function (val, key) {
                     if (val.id == $scope.employee.department_id) {
                         $scope.employee.department_id = val;
                     }
@@ -1499,7 +1511,7 @@ appRoot.controller('editEmployeeCtrl', ['$scope', '$uibModalInstance', '$rootSco
         commonService.gets('authority', function (response) {
             $scope.authorities = response.objects;
             if ($scope.authorities.length > 0) {
-                angular.forEach($scope.authorities, function(val, key) {
+                angular.forEach($scope.authorities, function (val, key) {
                     if (val.id == $scope.employee.authority_id) {
                         $scope.employee.authority_id = val;
                     }
@@ -1512,16 +1524,72 @@ appRoot.controller('editEmployeeCtrl', ['$scope', '$uibModalInstance', '$rootSco
             $scope.statuses = data.objects;
         });
 
-        $scope.update = function () {           
+        $scope.update = function () {
             if (employeeService.validate($scope.employee)) {
                 $scope.employee.department_id = angular.isDefined($scope.employee.department_id) ? $scope.employee.department_id.id : 0;
                 $scope.employee.authority_id = angular.isDefined($scope.employee.authority_id.id) ? $scope.employee.authority_id.id : 0;
                 if ($scope.employee.birthdate == '' || angular.isUndefined($scope.employee.birthdate)) {
                     $scope.employee.birthdate = 0;
                 }
-                
+
                 commonService.update('employee', $scope.employee, function (response) {
                     $scope.employee = response.objects;
+                    alertify.success($rootScope.$lang.update_success);
+                    $uibModalInstance.close($scope.employee);
+                })
+            }
+        }
+
+        //cancel
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
+    }]);
+
+appRoot.controller('addEmployeeCtrl', ['$scope', '$uibModalInstance', '$rootScope', 'alertify', '$timeout', 'employeeService', '$filter', 'departmentService', 'commonService', 'statusService',
+    function ($scope, $uibModalInstance, $rootScope, alertify, $timeout, employeeService, $filter, departmentService, commonService, statusService) {
+        $scope.employee = {
+            email: null,
+            firstname: '',
+            lastname: '',
+            authority_id: 0,
+            department_id: 0,
+            status_id: 0,
+            is_admin: 0,
+            mobile_phone: '',
+            work_phone: '',
+            is_make_password_auto: true
+        };
+        
+        $scope.statuses = [];
+        $scope.departments = [];
+        //get list of department
+        commonService.gets('department', function (response) {
+            $scope.departments = response.objects;
+        });
+
+        //get list of authority
+        commonService.gets('authority', function (response) {
+            $scope.authorities = response.objects;
+        });
+
+        //status
+        statusService.getEmployeesStatus(null, function (data) {
+            $scope.statuses = data.objects;
+            if ($scope.statuses.length > 0) {
+                $scope.employee.status_id = $scope.statuses[0].id;
+            }
+        });
+
+        $scope.add = function () {
+            if (employeeService.validateAdd($scope.employee)) {
+//                $scope.employee.department_id = angular.isDefined($scope.employee.department_id) ? $scope.employee.department_id.id : 0;
+//                $scope.employee.authority_id = angular.isDefined($scope.employee.authority_id.id) ? $scope.employee.authority_id.id : 0;
+                if ($scope.employee.birthdate == '' || angular.isUndefined($scope.employee.birthdate)) {
+                    $scope.employee.birthdate = 0;
+                }
+                
+                commonService.add('employee', $scope.employee, function (response) {
                     alertify.success($rootScope.$lang.update_success);
                     $uibModalInstance.close($scope.employee);
                 })

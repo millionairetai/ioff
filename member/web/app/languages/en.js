@@ -310,6 +310,7 @@
             message_invitation: 'Please join me in our new intranet. This is a place where everyone can collaborate on projects, coordinate tasks and schedules, and build our knowledge base.',
             invite_successfully: 'Invite new employees successfully',
             update_employee: 'Update employee',
+            add_employee: 'Add employee',
             firstname_cannot_blank: 'First name can not blank',
             lastname_cannot_blank: 'Last name can not blank',
             firstname: 'First name',
@@ -321,7 +322,9 @@
             emails_required: 'Emails can not blank',
             message_required: 'Message can not blank',
             employee_manage: 'Employee manage',
-            employee_list: 'Employee list'
+            employee_list: 'Employee list',
+            make_password_auto: 'Make password auto',
+            password_greater_6: 'Password must be greater than 6 characters'
         };
     });
 })(window.angular);

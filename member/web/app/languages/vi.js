@@ -323,6 +323,7 @@
             message_invitation: 'Xin hãy gia nhập mạng nội bộ của chúng ta. Đây là nơi mọi người có thể cộng tác dựa trên các dự án, công việc, lập kế hoạch và xây dựng học hỏi kiến thức với nhau.',
             invite_successfully: 'Mời nhân viên mới thành công',
             update_employee: 'Cập nhật nhân viên',
+            add_employee: 'Thêm nhân viên',
             firstname_cannot_blank: 'Họ không thể để trống',
             lastname_cannot_blank: 'Tên không thể để trống',
             firstname: 'Họ',
@@ -334,7 +335,9 @@
             emails_required: 'Danh sách email không thể bỏ trống',
             message_required: 'Tin nhắn không thể bỏ trống',
             employee_manage: 'Quản lý nhân viên',
-            employee_list: 'Danh sách nhân viên'
+            employee_list: 'Danh sách nhân viên',
+            make_password_auto: 'Tự động tạo mật khẩu',
+            password_greater_6: 'Mật khẩu phải lớn hơn 6 kí tự'            
         };
     });
 })(window.angular);

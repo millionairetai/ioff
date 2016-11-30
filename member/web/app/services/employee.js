@@ -1,5 +1,5 @@
-appRoot.factory('employeeService', ['apiService', '$rootScope', 'alertify',
-    function (apiService, $rootScope, alertify) {
+appRoot.factory('employeeService', ['apiService', '$rootScope', 'alertify', 'validateService',
+    function (apiService, $rootScope, alertify, validateService) {
         return {
             searchEmployee: function (data, success, error) {
                 return apiService.post('employee/search', data, success, error);
@@ -32,6 +32,31 @@ appRoot.factory('employeeService', ['apiService', '$rootScope', 'alertify',
                 
                 if (employee.lastname.length == 0) {
                     message += $rootScope.$lang.lastname_cannot_blank + "<br/>";
+                }
+                
+                if (message.length > 0) {
+                    alertify.error(message);
+                    return false;
+                }
+                
+                return true;
+            },            
+            validateAdd: function (employee) {
+                var message = '';
+                if (!validateService.email(employee.email)) {
+                    message += 'Email ' + $rootScope.$lang.is_invalid + "<br/>";
+                }
+                
+                if (employee.firstname.length == 0) {
+                    message += $rootScope.$lang.firstname_cannot_blank + "<br/>";
+                }
+                
+                if (employee.lastname.length == 0) {
+                    message += $rootScope.$lang.lastname_cannot_blank + "<br/>";
+                }
+                
+                if (angular.isDefined(employee.password) && employee.password.length > 0 && employee.password.length < 6) {
+                    message += $rootScope.$lang.password_greater_6 + "<br/>";
                 }
 
                 if (message.length > 0) {

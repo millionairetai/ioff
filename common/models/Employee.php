@@ -98,19 +98,20 @@ class Employee extends ActiveRecord implements IdentityInterface {
     public function rules() {
         return [
             [['company_id', 'manager_employee_id', 'authority_id', 'position_id', 'department_id', 'bank_id', 'religion_id', 'marriage_status_id', 'nation_id', 'province_id', 'country_id', 'status_id', 'language_id', 'birthdate', 'card_issue_id', 'passport_expire', 'passport_issue', 'tax_date_issue', 'start_working_date', 'stop_working_date', 'last_activity_datetime', 'last_login_datetime', 'datetime_created', 'lastup_datetime', 'lastup_employee_id'], 'integer'],
-            [['authority_id', 'position_id', 'department_id', 'bank_id', 'religion_id', 'marriage_status_id', 'nation_id', 'province_id', 'country_id', 'status_id', 'firstname', 'lastname', 'email', 'birthdate'], 'required'],
+            [['authority_id',  'status_id', 'firstname', 'lastname', 'email'], 'required'],
             [['city_code', 'firstname', 'lastname', 'email', 'work_email'], 'string', 'max' => 99],
-            [['password'], 'string', 'max' => 64],
             [['code', 'telephone', 'mobile_phone', 'work_phone', 'card_place_id'], 'string', 'max' => 50],
             [['card_number'], 'string', 'max' => 30],
             [['language_code'], 'string', 'max' => 10],
             [['street_address_1', 'street_address_2', 'passport_place', 'tax_department', 'profile_image_path', 'password_reset_token', 'last_ip_address'], 'string', 'max' => 255],
             [['card_number_id', 'bank_number', 'passport_number', 'zip_code', 'tax_code'], 'string', 'max' => 20],
             [['auth_key'], 'string', 'max' => 32],
-            [['email'], 'unique'],
+            [['email', 'work_email'], 'email'],
+            ['email', 'unique', 'targetClass' => '\common\models\Employee'],
             [['disabled', 'gender', 'is_admin'], 'boolean'],
             [['status_id'], 'default', 'value' => self::STATUS_ACTIVE],
             [['password'], 'required', 'on' => [self::SCENARIO_LOGIN, self::SCENARIO_REGISTER]],
+            [['password'], 'string', 'length' => [6, 64]],
 //            [['status_id'], 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
         ];
     }

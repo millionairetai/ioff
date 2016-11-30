@@ -392,8 +392,8 @@ appRoot.factory('dialogMessage', ['$rootScope', "$uibModal", function ($rootScop
     }]);
 
 
-appRoot.factory('employeeService', ['apiService', '$rootScope', 'alertify',
-    function (apiService, $rootScope, alertify) {
+appRoot.factory('employeeService', ['apiService', '$rootScope', 'alertify', 'validateService',
+    function (apiService, $rootScope, alertify, validateService) {
         return {
             searchEmployee: function (data, success, error) {
                 return apiService.post('employee/search', data, success, error);
@@ -426,6 +426,31 @@ appRoot.factory('employeeService', ['apiService', '$rootScope', 'alertify',
                 
                 if (employee.lastname.length == 0) {
                     message += $rootScope.$lang.lastname_cannot_blank + "<br/>";
+                }
+                
+                if (message.length > 0) {
+                    alertify.error(message);
+                    return false;
+                }
+                
+                return true;
+            },            
+            validateAdd: function (employee) {
+                var message = '';
+                if (!validateService.email(employee.email)) {
+                    message += 'Email ' + $rootScope.$lang.is_invalid + "<br/>";
+                }
+                
+                if (employee.firstname.length == 0) {
+                    message += $rootScope.$lang.firstname_cannot_blank + "<br/>";
+                }
+                
+                if (employee.lastname.length == 0) {
+                    message += $rootScope.$lang.lastname_cannot_blank + "<br/>";
+                }
+                
+                if (angular.isDefined(employee.password) && employee.password.length > 0 && employee.password.length < 6) {
+                    message += $rootScope.$lang.password_greater_6 + "<br/>";
                 }
 
                 if (message.length > 0) {
@@ -931,7 +956,7 @@ appRoot.factory('validateService', ['apiService', function (apiService) {
                 return re.test(val);
             },
             email: function (email) {
-                return this.run(email, /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/);
+                return this.run(email, '/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/');
             },
             date: function (date) {
                 return this.run(date, '/^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[1,3-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/');
