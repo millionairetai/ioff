@@ -3,7 +3,7 @@
 return [
     'project_title' => 'Tiêu đề',
     'project_description' => 'Mô tả',
-    'I forgot my password' => 'Quên mật khẩu?',
+    'Forgot password' => 'Quên mật khẩu?',
     'Username' => 'Tên đăng nhập',
     'Password' => 'Mật khẩu',
     'Remember me' => 'Ghi nhớ?',

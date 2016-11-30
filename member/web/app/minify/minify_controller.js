@@ -1309,7 +1309,7 @@ appRoot.controller('EmployeeCtrl', ['$scope', '$uibModal', 'employeeService', '$
 
         $scope.params = {
             page: 1,
-            limit: 5,
+            limit: 12,
             searchName: '',
             orderBy: '',
             orderType: '',
@@ -1583,14 +1583,12 @@ appRoot.controller('addEmployeeCtrl', ['$scope', '$uibModalInstance', '$rootScop
 
         $scope.add = function () {
             if (employeeService.validateAdd($scope.employee)) {
-//                $scope.employee.department_id = angular.isDefined($scope.employee.department_id) ? $scope.employee.department_id.id : 0;
-//                $scope.employee.authority_id = angular.isDefined($scope.employee.authority_id.id) ? $scope.employee.authority_id.id : 0;
                 if ($scope.employee.birthdate == '' || angular.isUndefined($scope.employee.birthdate)) {
                     $scope.employee.birthdate = 0;
                 }
                 
                 commonService.add('employee', $scope.employee, function (response) {
-                    alertify.success($rootScope.$lang.update_success);
+                    alertify.success($rootScope.$lang.add_success);
                     $uibModalInstance.close($scope.employee);
                 })
             }

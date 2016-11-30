@@ -3,7 +3,7 @@
 return [
     'project_title' => 'Title',
     'project_description' => 'Description',
-    'I forgot my password' => 'I forgot my password?',
+    'Forgot password' => 'Forgot password',
     'Username' => 'Username',
     'Password' => 'Password',
     'Remember me' => 'Remember me',

@@ -8,6 +8,8 @@ use common\models\LoginForm;
 use yii\helpers\Url;
 use common\models\Employee;
 use member\models\RegistrationForm;
+use member\models\PasswordResetRequestForm;
+use member\models\ResetPasswordForm;
 
 /**
  * index controller
@@ -73,12 +75,25 @@ class IndexController extends Controller {
     }
 
     /*
-     * Forget password
+     * Forgot password
      */
-    public function actionForgetPassword() {
+    public function actionForgotPassword() {
         if (\Yii::$app->user->isGuest) {
             $this->layout = "no_login";
-            return $this->render('forget_password', []);
+            
+            $model = new PasswordResetRequestForm();
+            if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+                if ($model->sendEmail()) {
+                    Yii::$app->session->setFlash('success', 'Check your email for further instructions.');
+                    return $this->goHome();
+                } else {
+                    Yii::$app->session->setFlash('error', 'Sorry, we are unable to reset password for email provided.');
+                }
+            }
+
+            return $this->render('forget_password', [
+                        'model' => $model,
+            ]);
         }
 
         return $this->redirect('/');
@@ -87,10 +102,24 @@ class IndexController extends Controller {
     /*
      * Reset password
      */
-    public function actionResetPassword() {
+    public function actionResetPassword($token) {
         if (\Yii::$app->user->isGuest) {
             $this->layout = "no_login";
-            return $this->render('reset_password', []);
+            
+            try {
+                $model = new ResetPasswordForm($token);
+            } catch (InvalidParamException $e) {
+                throw new BadRequestHttpException($e->getMessage());
+            }
+
+            if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
+                Yii::$app->session->setFlash('success', 'New password was saved.');
+                return $this->goHome();
+            }
+
+            return $this->render('reset_password', [
+                'model' => $model,
+            ]);
         }
 
         return $this->redirect('/');

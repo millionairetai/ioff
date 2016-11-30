@@ -1,10 +1,13 @@
 <?php
 
 use yii\widgets\ActiveForm;
+use yii\bootstrap\Html;
+
+$this->title = 'Request password reset';
 ?>
 <div class="container">
     <div class="forget-password">
-        <form class="form-horizontal" role="form">
+        <?php $form = ActiveForm::begin(['id' => 'request-password-reset-form']); ?>
             <div class="box box-solid">
                 <div class="box-header with-border">
                     <h3>Tìm tài khoản của bạn</h3>
@@ -16,17 +19,16 @@ use yii\widgets\ActiveForm;
                     <div class="form-group">
                         <label for="inputEmail" class="col-xs-2 control-label"><i class="fa fa-envelope"></i></label>
                         <div class="col-xs-7 no-padding">
-                            <input type="email" class="form-control" id="inputEmail" placeholder="Email">
+                            <?= $form->field($model, 'email')->textInput(['autofocus' => true, 'placeholder' => 'Email'])->label(false) ?>
                         </div>
                     </div>
                 </div>
                 <div class="box-footer">
                     <div class="pull-right">
-                        <button type="submit" class="btn btn-primary btn-flat">Tìm kiếm</button>
-                        <button type="submit" class="btn btn-danger btn-flat">Hủy</button>
+                        <?= Html::submitButton('Send', ['class' => 'btn btn-primary btn-flat']) ?>
                     </div>
                 </div>
             </div>
-        </form>
+        <?php ActiveForm::end(); ?>
     </div>
 </div>

@@ -30,12 +30,12 @@ use yii\widgets\ActiveForm;
             </div>
             <!-- /.col -->
             <div class="col-xs-4">
-                <button type="submit" class="btn btn-primary btn-block btn-flat">Login</button>
+                <button type="submit" class="btn btn-primary btn-block btn-flat"><?= Yii::t('common', 'Login') ?></button>
             </div>
             <!-- /.col -->
         </div>
         <?php ActiveForm::end(); ?>
-        <div class="text-center" style="margin: 10px 0px 0px 0px;"><a href="#" >I forgot my password</a></div>
+        <div class="text-center" style="margin: 10px 0px 0px 0px;"><a href="/index/forgot-password" ><?= Yii::t('common', 'Forgot password') ?>?</a></div>
          
     </div><!-- /.login-box-body -->
 </div><!-- /.login-box -->
