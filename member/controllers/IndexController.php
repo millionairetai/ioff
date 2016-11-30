@@ -44,6 +44,9 @@ class IndexController extends Controller {
         if (\Yii::$app->user->isGuest) {
             $this->layout = "no_login";	
             $registration = new RegistrationForm();
+            //////
+            return $this->render('registration', ['registration' => $registration]);
+            /////
             //Check if those are fit with invited conditions		
             if ($registration->getInvitedEmployee($email, $token)) {					
                 //Validate firstname, lastname and password match re-password.													
