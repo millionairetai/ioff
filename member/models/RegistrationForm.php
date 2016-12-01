@@ -7,7 +7,7 @@ use yii\base\Model;
 use common\models\Employee;
 use common\models\Status;
 use common\models\EmailTemplate;
-
+use common\models\Activity;
 
 /**
  * Registration form
@@ -89,18 +89,35 @@ class RegistrationForm extends Model {
     public function signup() {
         $this->_employee->firstname = $this->firstName;
         $this->_employee->lastname = $this->lastName;
-//        $this->_employee->password_reset_token = '';
         $this->_employee->removePasswordResetToken();
         $this->_employee->setPassword($this->password);
         $this->_employee->generateAuthKey();
-
-        //Update again status to active
-        if (!$status = Status::getByOwnerTableAndColumnName('employee', Employee::COLUNM_NAME_ACTIVE)) {
-            return false;
-        }
+        $transaction = \Yii::$app->db->beginTransaction();
         
-        $this->_employee->status_id = $status['id'];
-        if ($this->_employee->save(false)) {
+        try {
+            //Update again status to active
+            if (!$status = Status::getByOwnerTableAndColumnName('employee', Employee::COLUNM_NAME_ACTIVE)) {
+                throw new Exception('Can not get status');
+            }
+
+            $this->_employee->status_id = $status['id'];
+            if (!$this->_employee->save(false)) { 
+                throw new \Exception('Can not save employee');
+            }
+            
+            //Write in activity table.
+            $activity = new Activity();
+            $activity->company_id = $this->_employee->company_id;
+            $activity->owner_id = $this->_employee->id;
+            $activity->owner_table = Activity::TABLE_EMPLOYEE;
+            $activity->parent_employee_id = 0;
+            $activity->employee_id = 0;
+            $activity->type = Activity::TYPE_REGISTER_ACCOUNT;
+            $activity->content = $this->_employee->fullname . ' join our intranet';
+            if (!$activity->save()) {
+                throw new \Exception('Save record to table Activity fail');
+            }
+
             $this->_employee->password = $this->password;
             //send email
             $dataSend = [
@@ -108,11 +125,15 @@ class RegistrationForm extends Model {
                 '{account}' => $this->email,
                 '{password}' => $this->password,
             ];
-            
-            $this->_employee->sendMail($dataSend, EmailTemplate::getTheme(EmailTemplate::SUCCESS_EMPLOYEE_REGISTRATION));
-            return $this->_employee;
-        }
 
+            $this->_employee->sendMail($dataSend, EmailTemplate::getTheme(EmailTemplate::SUCCESS_EMPLOYEE_REGISTRATION));
+            $transaction->commit();
+            return $this->_employee;
+        } catch (\Exception $ex) {
+            $transaction->rollBack();
+            return false;
+        }
+        
         return false;
     }
 

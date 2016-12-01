@@ -592,7 +592,7 @@ class Employee extends ActiveRecord implements IdentityInterface {
         }
         
         return self::find()
-                ->select([Employee::tableName() . '.id', 'email', 'status_id'])
+                ->select([Employee::tableName() . '.id', 'email', 'status_id', Employee::tableName() . '.company_id'])
                 ->leftJoin(Status::tableName(), Employee::tableName() . '.status_id=' . Status::tableName() . '.id')
                 ->where([
                     Employee::tableName() . '.email' => $email, 

@@ -28,6 +28,7 @@ class Activity extends \common\components\db\ActiveRecord
     const TABLE_PROJECT = "project";  
     const TABLE_EVENT = "event"; 
     const TABLE_TASK = "task"; 
+    const TABLE_EMPLOYEE = "employee"; 
     
     //const for type of activity
     const TYPE_CREATE_TASK = 'create_task';
@@ -39,6 +40,7 @@ class Activity extends \common\components\db\ActiveRecord
     const TYPE_CREATE_PROJECT = 'create_project';
     const TYPE_CREATE_EDIT_PROJECT = 'edit_project';
     const TYPE_CREATE_PROJECT_POST = 'create_project_post';
+    const TYPE_REGISTER_ACCOUNT = 'register_account';
     
     /**
      * @inheritdoc
