@@ -108,26 +108,26 @@ class IndexController extends Controller {
         if (\Yii::$app->user->isGuest) {
             $this->layout = "no_login";
             
-            $error = false;
+            $isNoForm = false;
             try {
                 $model = new ResetPasswordForm($token);
             } catch (\Exception $e) {
-                $error = true;
+                $isNoForm = true;
                 Yii::$app->session->setFlash('error', Yii::t('member', 'token is invalid'));
                 
                 return $this->render('reset_password', [
-                    'error' => $error,
+                    'isNoForm' => $isNoForm,
                 ]);
             }
 
             if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
-                Yii::$app->session->setFlash('success', 'New password was saved.');
-                return $this->goHome();
+                $isNoForm = true;
+                Yii::$app->session->setFlash('success', Yii::t('member', 'retrieve password success') . '. <a href="/index/login">' . Yii::t('member', 'Login') . '</a>');
             }
 
             return $this->render('reset_password', [
                 'model' => $model,
-                'error' => $error,
+                'isNoForm' => $isNoForm,
             ]);
         }
 

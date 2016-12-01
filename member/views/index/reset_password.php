@@ -11,7 +11,7 @@ use common\widgets\Alert;
         </div>
         <div class="box-body">
             <?= Alert::widget() ?>
-            <?php if (!$error) :  ?>
+            <?php if (!$isNoForm) :  ?>
             <div class="col-md-4">
                 <div class="box-profile">
                     <img class="profile-user-img img-responsive img-circle" src="<?= $model->employee->image ?>" alt="User profile picture">

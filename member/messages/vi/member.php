@@ -129,4 +129,5 @@ return [
     'new password' => 'Mật khẩu mới', 
     'renew password' => 'Nhập lại mật khẩu mới', 
     'token is invalid' => 'Token không hợp lệ',
+    'retrieve password success' => 'Chúc mừng bạn đã lấy lại được mật khẩu thành công',
 ];

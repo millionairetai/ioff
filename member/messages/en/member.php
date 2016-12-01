@@ -136,4 +136,5 @@ return [
     'new password' => 'New password', 
     'renew password' => 'Re-input new password', 
     'token is invalid' => 'Token is invalid',
+    'retrieve password success' => 'Congratulation! You change password successfully',    
 ];
