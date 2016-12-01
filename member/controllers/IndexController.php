@@ -80,7 +80,6 @@ class IndexController extends Controller {
     public function actionForgotPassword() {
         if (\Yii::$app->user->isGuest) {
             $this->layout = "no_login";
-            
             $requestSuccess = false;
             $model = new PasswordResetRequestForm();
             if ($model->load(Yii::$app->request->post()) && $model->validate()) {
@@ -106,18 +105,14 @@ class IndexController extends Controller {
      */
     public function actionResetPassword($token) {
         if (\Yii::$app->user->isGuest) {
-            $this->layout = "no_login";
-            
+            $this->layout = "no_login";         
             $isNoForm = false;
             try {
                 $model = new ResetPasswordForm($token);
             } catch (\Exception $e) {
                 $isNoForm = true;
                 Yii::$app->session->setFlash('error', Yii::t('member', 'token is invalid'));
-                
-                return $this->render('reset_password', [
-                    'isNoForm' => $isNoForm,
-                ]);
+                return $this->render('reset_password', ['isNoForm' => $isNoForm,]);
             }
 
             if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {

@@ -48,6 +48,7 @@ return [
     'terms' => 'những điều khoản', 
     'Agree' => 'Đồng ý',
     'Passwords do not match together' => 'Mật khẩu không khớp với nhau',
+    'send' => 'Gửi',
     
     //Calendar
     'event_id' => 'Mã sự kiện',

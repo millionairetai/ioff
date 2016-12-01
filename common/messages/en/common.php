@@ -48,6 +48,7 @@ return [
     'terms' => 'terms', 
     'Agree' => 'Agree',    
     'Passwords do not match together' => 'Passwords do not match together',    
+    'send' => 'Send',
     
     //calendar
     'event_id' => 'Event id',

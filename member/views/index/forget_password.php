@@ -4,7 +4,9 @@ use yii\widgets\ActiveForm;
 use yii\bootstrap\Html;
 
 $this->title = Yii::t('member', 'request password reset');
+
 ?>
+
 <div class="container">
     <div class="forget-password">
         <?php $form = ActiveForm::begin(['id' => 'request-password-reset-form']); ?>
@@ -40,7 +42,7 @@ $this->title = Yii::t('member', 'request password reset');
             <div class="box-footer">
                 <?php if (!$requestSuccess): ?>
                 <div class="pull-right">
-                    <?= Html::submitButton('Send', ['class' => 'btn btn-primary btn-flat']) ?>
+                    <?= Html::submitButton(Yii::t('common', 'send'), ['class' => 'btn btn-primary btn-flat']) ?>
                 </div>
                 <?php endif; ?>
             </div>

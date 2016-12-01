@@ -117,7 +117,7 @@ return [
     'I agree' => 'Tôi đồng ý',
     'Registration employee' => 'Đăng ký thành viên',
     'You do not agree to terms' => 'Bạn bắt buộc phải đồng ý với những điều khoản',
-    'request password reset' => 'Request password reset', 
+    'request password reset' => 'Lấy lại mật khẩu', 
     'retrieve password' => 'Lấy lại mật khẩu',
     'label request password reset' => 'Chúng tôi có thể giúp bạn lấy lại mật khẩu bằng địa chỉ email được liên kết với tài khoản của bạn.',
     'There is no user with such email' => 'Không có người dùng nào có email này',

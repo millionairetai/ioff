@@ -56,11 +56,12 @@ class PasswordResetRequestForm extends Model {
         //Make link to reset password
         $dataSend = [
             '{employee name}' => $employee->fullname,
-            '{account}' => $employee->email,
-            '{password}' => $employee->password
+            '{link}' => \Yii::$app->params['domain'] . '/index/reset-password?token=' . $employee->password_reset_token,
+            '{support email}' => \Yii::$app->params['support_email'],
+            '{service}' => \Yii::$app->params['service']
         ];
 
-        return $employee->sendMail($dataSend, EmailTemplate::getTheme(EmailTemplate::SUCCESS_EMPLOYEE_REGISTRATION));
+        return $employee->sendMail($dataSend, EmailTemplate::getTheme(EmailTemplate::REQUEST_PASSWORD_AGAIN));
     }
 
 }
