@@ -2,13 +2,16 @@
 
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
+use common\widgets\Alert;
 ?>
 <div class="container">
     <div class="box reset-password">
         <div class="box-header with-border">
-            <h3 class="text-center box-title">Thay đổi mật khẩu </h3>
+            <h3 class="text-center box-title"><?= Yii::t('member', 'change passowrd') ?> </h3>
         </div>
         <div class="box-body">
+            <?= Alert::widget() ?>
+            <?php if (!$error) :  ?>
             <div class="col-md-4">
                 <div class="box-profile">
                     <img class="profile-user-img img-responsive img-circle" src="<?= $model->employee->image ?>" alt="User profile picture">
@@ -18,21 +21,21 @@ use yii\bootstrap\ActiveForm;
             <div class="col-md-8">
                 <?php $form = ActiveForm::begin(['id' => 'reset-password-form']); ?>
                     <div class="form-group has-feedback">
-                        <?= $form->field($model, 'password')->passwordInput(['autofocus' => true, 'placeholder' => "Mật khẩu mới"])->label(false) ?>
+                        <?= $form->field($model, 'password')->passwordInput(['autofocus' => true, 'placeholder' => Yii::t('member', 'new password')])->label(false) ?>
                         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                     </div>
                     <div class="form-group has-feedback">
-                        <?= $form->field($model, 'rePassword')->passwordInput(['autofocus' => true, 'placeholder' => "Nhập lại mật khẩu mới"])->label(false) ?>
+                        <?= $form->field($model, 'rePassword')->passwordInput(['autofocus' => true, 'placeholder' => Yii::t('member', 'renew password')])->label(false) ?>
                         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                     </div>
                     <div class="form-group">
                         <div class="pull-right">
-                            <?= Html::submitButton('Save', ['class' => 'btn btn-primary btn-flat']) ?>
-<!--                            <button type="submit" class="btn btn-primary btn-flat">Thay đổi</button>-->
+                            <?= Html::submitButton(Yii::t('common', 'Save'), ['class' => 'btn btn-primary btn-flat']) ?>
                         </div>
                     </div>
             <?php ActiveForm::end(); ?>
             </div>
+            <?php endif;  ?>
         </div>
     </div>
 </div>

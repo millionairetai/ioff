@@ -81,18 +81,20 @@ class IndexController extends Controller {
         if (\Yii::$app->user->isGuest) {
             $this->layout = "no_login";
             
+            $requestSuccess = false;
             $model = new PasswordResetRequestForm();
             if ($model->load(Yii::$app->request->post()) && $model->validate()) {
                 if ($model->sendEmail()) {
-                    Yii::$app->session->setFlash('success', 'Check your email for further instructions.');
-                    return $this->goHome();
+                    $requestSuccess = true;
                 } else {
-                    Yii::$app->session->setFlash('error', 'Sorry, we are unable to reset password for email provided.');
+                    $requestSuccess = false;
+                    Yii::$app->session->setFlash('error', Yii::t('member', 'Sorry, we are unable to reset password for email provided'));
                 }
             }
 
             return $this->render('forget_password', [
-                        'model' => $model,
+                'model' => $model,
+                'requestSuccess' => $requestSuccess,
             ]);
         }
 
@@ -106,10 +108,16 @@ class IndexController extends Controller {
         if (\Yii::$app->user->isGuest) {
             $this->layout = "no_login";
             
+            $error = false;
             try {
                 $model = new ResetPasswordForm($token);
-            } catch (InvalidParamException $e) {
-                throw new BadRequestHttpException($e->getMessage());
+            } catch (\Exception $e) {
+                $error = true;
+                Yii::$app->session->setFlash('error', Yii::t('member', 'token is invalid'));
+                
+                return $this->render('reset_password', [
+                    'error' => $error,
+                ]);
             }
 
             if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
@@ -119,6 +127,7 @@ class IndexController extends Controller {
 
             return $this->render('reset_password', [
                 'model' => $model,
+                'error' => $error,
             ]);
         }
 

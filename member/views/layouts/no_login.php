@@ -29,13 +29,9 @@ AppAsset::register($this);
     </head>
     <body class="hold-transition login-page">
         <?php $this->beginBody() ?>
+        <?= Alert::widget() ?>
         <?php echo $content?>
         <?php $this->endBody() ?>
     </body>
-    <script>
-        $('#loginform-rememberme').iCheck({
-              checkboxClass: 'icheckbox_square-blue',
-        });
-    </script>
 </html>
 <?php $this->endPage() ?>
