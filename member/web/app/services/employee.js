@@ -16,6 +16,12 @@ appRoot.factory('employeeService', ['apiService', '$rootScope', 'alertify', 'val
             invite: function (data, success, error) {
                 return apiService.post('employee/invite', data, success, error);
             },
+            getProfile: function (data, success, error) {
+                return apiService.get('employee/get-profile', data, success, error);
+            },
+            updateProfile: function (data, success, error) {
+                return apiService.get('employee/update-profile', data, success, error);
+            },
             isValidEmail: function (email) {
                 var emailRegExp = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
                 if (email.search(emailRegExp) === -1) {

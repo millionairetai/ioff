@@ -1,0 +1,67 @@
+<div class="modal-header dialog-header-wait">
+    <button type="button" class="close" ng-click="cancel()">×</button>
+    <h4 class="modal-title text-danger"> 
+        <strong><i class="fa fa-cubes"></i>
+            <span>{{$root.$lang.update_employee}}</span>
+        </strong>
+    </h4>
+</div>
+<div class="modal-body text-dangers" >    
+    <div class="box-body form-horizontal">
+        <div class="row form-group">
+            <label for="inputEmail3" class="col-sm-3 control-label ng-binding">{{$root.$lang.firstname}}</label>    
+            <div class="col-sm-9">
+                <input type="text" class="form-control" ng-model="employee.firstname"/>
+            </div>
+        </div>
+        <div class="row form-group">
+            <label for="inputEmail3" class="col-sm-3 control-label ng-binding">{{$root.$lang.lastname}}</label>    
+            <div class="col-sm-9">
+                <input type="text" class="form-control" ng-model="employee.lastname"/>
+            </div>
+        </div>
+        <div class="row form-group">
+            <label for="inputEmail3" class="col-sm-3 control-label ng-binding">{{$root.$lang.mobile_phone}}</label>    
+            <div class="col-sm-9">
+                <input type="text" class="form-control" ng-model="employee.mobile_phone"/>
+            </div>
+        </div>
+        <div class="row form-group">
+            <label for="inputEmail3" class="col-sm-3 control-label ng-binding">{{$root.$lang.work_phone}}</label>    
+            <div class="col-sm-9">
+                <input type="text" class="form-control" ng-model="employee.work_phone"/>
+            </div>
+        </div>
+        <div class="row form-group">
+            <label for="inputEmail3" class="col-sm-3 control-label ng-binding">{{$root.$lang.department}}</label>          
+            <div class="col-sm-9">
+                <select class="form-control" ng-model="employee.department_id" 
+                        ng-options="option.name for option in departments">
+                    <option value=''>--</option>
+                </select>
+            </div>
+        </div>
+        <div class="row form-group">
+            <label for="inputEmail3" class="col-sm-3 control-label ng-binding">{{$root.$lang.birthdate}}</label>          
+            <div class="col-sm-3">
+                <p class="input-group">
+                    <input type="text" class="form-control" uib-datepicker-popup="dd-MM-yyyy" ng-model="employee.birthdate" is-open="open_start_datetime" datepicker-options="dateOptions" ng-required="true" close-text="{{$root.$lang.datepicker_close}}"  clear-text="{{$root.$lang.datepicker_clear}}" current-text="{{$root.$lang.datepicker_today}}" ng-focus="open_start_datetime = true" />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="open_start_datetime = true"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </p>
+            </div>
+        </div>
+        <div class="row form-group">
+            <label for="inputEmail3" class="col-sm-3 control-label ng-binding">Address</label>    
+            <div class="col-sm-9">
+                <input type="text" class="form-control" ng-model="employee.street_address_1"/>
+            </div>
+        </div>
+    </div>
+
+</div>  
+<div class="modal-footer">    
+    <button type="button" class="btn btn-primary btn-flat" ng-click="update()"> <i class="fa fa-save"></i> {{$root.$lang.button_update}}</button>
+    <button type="button" class="btn btn-default btn-flat" ng-click="cancel()"> <i class="fa fa-remove"></i> {{$root.$lang.button_close}}</button>
+</div>

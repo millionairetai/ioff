@@ -396,6 +396,15 @@ class Employee extends ActiveRecord implements IdentityInterface {
     public function getFullName() {
         return $this->firstname . ' ' . $this->lastname;
     }
+        
+    /**
+     * Get employee fullName
+     * 
+     * @return string
+     */
+    public function getGender() {
+        return $this->gender ? Yii::t('common', 'male') : Yii::t('common', 'female');
+    }
 
 //    public function getAssignedTasks() {
 //        return $this->hasMany(Task::className(), ['id' => 'task_id'])->viaTable('task_assignment', ['employee_id' => 'id'])->joinWith(['company' => function($query) {

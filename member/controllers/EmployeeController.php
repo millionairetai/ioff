@@ -268,4 +268,82 @@ class EmployeeController extends ApiController {
        
         return $this->sendResponse(false, "", $employee);
     }
+    
+    //Get an employee
+    public function actionGetProfile($employeeId) {
+        $profile = [];
+        try {
+            if ($employee = Employee::getById($employeeId)) {
+                //Check condition to get info.
+                $profile =[
+                    'id'=> $employee->id,
+                    'department_id' => $employee->department_id,
+                    'department' => $employee->department->name,
+//                    'authority_id',
+                    'status' => $employee->status->name,
+                    'fullname' => $employee->fullname,
+                    'firstname' => $employee->firstname,
+                    'lastname' => $employee->lastname,
+                    'email' => $employee->email,
+                    'is_admin' => $employee->is_admin,
+                    'birthdate' => $employee->birthdate,
+                    'status' => $employee->status->name,
+                    'mobile_phone' => $employee->mobile_phone,
+                    'work_phone' => $employee->work_phone,
+                    'image' => $employee->image,
+                    'birthdate' => (!empty($employee->birthdate) ? \Yii::$app->formatter->asDate($employee->birthdate) : ''),
+//                    'gender' => $employee->gender,
+                    'address' => $employee->street_address_1,
+                ];
+            } else {
+                throw new \Exception($this->_message);
+            }
+        } catch (\Exception $ex) {
+            $this->_error = true;
+            return $this->sendResponse($this->_error, $this->_message, []);
+        }
+       
+        return $this->sendResponse(false, "", $profile);
+    }
+    
+    //Update an employee
+    public function actionUpdateProfile() {
+        try {
+            if ($employee = Employee::getById(Yii::$app->request->get('id'))) {
+                $employee->attributes = Yii::$app->request->get();
+                $employee->birthdate = ($employee->birthdate != 0 && $employee->birthdate != '') ?  strtotime($employee->birthdate) : 0;
+                if ($employee->save() !== false) {
+                    $profile =[
+                        'id'=> $employee->id,
+                        'department_id' => $employee->department_id,
+                        'department' => $employee->department->name,
+                        'status' => $employee->status->name,
+                        'fullname' => $employee->fullname,
+                        'firstname' => $employee->firstname,
+                        'lastname' => $employee->lastname,
+                        'email' => $employee->email,
+                        'is_admin' => $employee->is_admin,
+                        'birthdate' => $employee->birthdate,
+                        'status' => $employee->status->name,
+                        'mobile_phone' => $employee->mobile_phone,
+                        'work_phone' => $employee->work_phone,
+                        'image' => $employee->image,
+                        'birthdate' => (!empty($employee->birthdate) ? \Yii::$app->formatter->asDate($employee->birthdate) : ''),
+    //                    'gender' => $employee->gender,
+                        'address' => $employee->street_address_1,
+                    ];
+                    return $this->sendResponse($this->_error, $this->_message, $profile);
+                }
+                
+                $this->_message = $this->parserMessage($employee->getErrors());
+            }
+            
+            throw new \Exception($this->_message);
+        } catch (\Exception $ex) {
+            $this->_error = true;
+            return $this->sendResponse($this->_error, $this->_message, []);
+        }
+       
+        return $this->sendResponse(false, "", $employee);
+    }
 }

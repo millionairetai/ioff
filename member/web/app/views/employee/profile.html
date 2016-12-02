@@ -5,25 +5,28 @@
                 <!-- Profile Image -->
                 <div class="box box-solid">
                     <div class="box-body box-profile">
-                        <img class="profile-user-img img-responsive img-circle" src="http://company.iofficez.dev/flies/employee/11.jpg" alt="User profile picture">
+                        <img class="profile-user-img img-responsive img-circle" src="{{employee.image}}" alt="User profile picture">
 
-                        <h3 class="profile-username text-center">Nina Mcintire</h3>
+                        <h3 class="profile-username text-center">{{employee.fullname}}</h3>
 
-                        <p class="text-muted text-center">Software Engineer</p>
+                        <p class="text-muted text-center">{{employee.email}}</p>
 
                         <ul class="list-group list-group-unbordered">
                             <li class="list-group-item">
-                                <b>Followers</b> <a class="pull-right">1,322</a>
+                                <b>My project</b> <a class="pull-right">13,287</a>
                             </li>
                             <li class="list-group-item">
-                                <b>Following</b> <a class="pull-right">543</a>
+                                <b>My Task</b> <a class="pull-right">1,322</a>
                             </li>
                             <li class="list-group-item">
-                                <b>Friends</b> <a class="pull-right">13,287</a>
+                                <b>My Following task</b> <a class="pull-right">543</a>
+                            </li>
+                            <li class="list-group-item">
+                                <b>My event</b> <a class="pull-right">13,287</a>
                             </li>
                         </ul>
 
-                        <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>
+                        <a class="btn btn-primary btn-block" ng-click="update()"><b>{{$root.$lang.edit}}</b></a>
                     </div>
                     <!-- /.box-body -->
                 </div>
@@ -36,35 +39,35 @@
                     </div>
                     <!-- /.box-header -->
                     <div class="box-body">
-                        <strong><i class="fa fa-book margin-r-5"></i> Education</strong>
+                        <strong ng-show="employee.is_admin"><i class="fa fa-book margin-r-5"></i> Admin</strong>
+                        <p class="text-muted" ng-show="employee.is_admin">
+                            &nbsp;&nbsp;&nbsp;<i class="fa fa-chevron-circle-down margin-r-5"></i>
+                        </p>
 
+                        <strong><i class="fa fa-book margin-r-5"></i> Department</strong>
                         <p class="text-muted">
-                            B.S. in Computer Science from the University of Tennessee at Knoxville
+                            {{employee.department}}
                         </p>
 
-                        <hr>
+                        <strong><i class="fa fa-birthday-cake margin-r-5"></i> Birthdate</strong>
 
-                        <strong><i class="fa fa-map-marker margin-r-5"></i> Location</strong>
+                        <p class="text-muted">{{employee.birthdate}}</p>
 
-                        <p class="text-muted">Malibu, California</p>
+                        <strong><i class="fa fa-chevron-circle-down margin-r-5"></i> Status</strong>
 
-                        <hr>
+                        <p class="text-muted"><span class="label label-success">{{employee.status}}</span></p>
 
-                        <strong><i class="fa fa-pencil margin-r-5"></i> Skills</strong>
+                        <strong><i class="fa fa-mobile margin-r-5"></i> Mobile phone</strong>
 
-                        <p>
-                            <span class="label label-danger">UI Design</span>
-                            <span class="label label-success">Coding</span>
-                            <span class="label label-info">Javascript</span>
-                            <span class="label label-warning">PHP</span>
-                            <span class="label label-primary">Node.js</span>
-                        </p>
+                        <p class="text-muted">{{employee.mobile_phone}}</p>
 
-                        <hr>
+                        <strong><i class="fa fa-phone margin-r-5"></i> Work phone</strong>
 
-                        <strong><i class="fa fa-file-text-o margin-r-5"></i> Notes</strong>
+                        <p class="text-muted">{{employee.work_phone}}</p>
 
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam fermentum enim neque.</p>
+                        <strong ng-show="employee.address"><i class="fa fa-map-marker margin-r-5"></i> Address</strong>
+
+                        <p ng-show="employee.address">{{employee.address}}</p>
                     </div>
                     <!-- /.box-body -->
                 </div>

@@ -1309,7 +1309,7 @@ appRoot.controller('EmployeeCtrl', ['$scope', '$uibModal', 'employeeService', '$
 
         $scope.params = {
             page: 1,
-            limit: 12,
+            limit: 5,
             searchName: '',
             orderBy: '',
             orderType: '',
@@ -1600,10 +1600,83 @@ appRoot.controller('addEmployeeCtrl', ['$scope', '$uibModalInstance', '$rootScop
         };
     }]);
 
-appRoot.controller('profileCtrl', ['$scope', '$rootScope', 'alertify', '$timeout', '$filter',
-    function ($scope, $location, $rootScope, alertify, $timeout, $filter) {
+appRoot.controller('profileCtrl', ['$scope','$rootScope', 'alertify', '$timeout', '$filter', 'commonService', '$routeParams', 'employeeService', '$uibModal', 
+    function ($scope, $rootScope, alertify, $timeout, $filter, commonService, $routeParams, employeeService, $uibModal) {
+        var employeeId = $routeParams.employeeId;
+        employeeService.getProfile({employeeId : employeeId}, function (respone) {
+            $scope.employee = respone.objects;
+        });
+        
+        
+        $scope.update = function (employeeId) {
+            var modalInstance = $uibModal.open({
+                templateUrl: 'app/views/employee/editProfile.html',
+                controller: 'updateProfileCtrl',
+                size: 'lg',
+                keyboard: true,
+                backdrop: 'static',
+                resolve: {
+                    employee: {
+                        id: $scope.employee.id,
+                        firstname: $scope.employee.firstname,
+                        lastname: $scope.employee.lastname,
+                        birthdate: $scope.employee.birthdate,
+                        department_id: $scope.employee.department_id,
+                        mobile_phone: $scope.employee.mobile_phone,
+                        work_phone: $scope.employee.work_phone,
+                        street_address_1: $scope.employee.address
+                    }
+                }
+            });
 
-    }]);//
+            modalInstance.result.then(function (data) {
+                $scope.employee = angular.extend($scope.employee, data);
+            });
+        };
+        
+    }]);
+
+appRoot.controller('updateProfileCtrl', ['$scope','$rootScope', 'alertify', '$timeout', '$filter', 'commonService', '$routeParams', 'employeeService', '$uibModalInstance', 'employee', 
+    function ($scope, $rootScope, alertify, $timeout, $filter, commonService, $routeParams, employeeService, $uibModalInstance, employee) {
+        $scope.employee = employee;
+        $scope.employee.street_address_1 = $scope.employee.address;
+        //change timestamp birthdate to object datetime.
+        if ($scope.employee.birthdate != '' && $scope.employee.birthdate != 0) {
+            $scope.employee.birthdate = new Date($scope.employee.birthdate);
+        }
+        
+        //get list of department
+        $scope.departments = [];
+        commonService.gets('department', function (response) {
+            $scope.departments = response.objects;
+            if ($scope.departments.length > 0) {
+                angular.forEach($scope.departments, function (val, key) {
+                    if (val.id == $scope.employee.department_id) {
+                        $scope.employee.department_id = val;
+                    }
+                });
+            }
+        });
+        
+        $scope.update = function () {
+            if (employeeService.validate($scope.employee)) {
+                $scope.employee.department_id = angular.isObject($scope.employee.department_id) ? $scope.employee.department_id.id : 0;
+                if ($scope.employee.birthdate == '' || angular.isUndefined($scope.employee.birthdate)) {
+                    $scope.employee.birthdate = 0;
+                }
+
+                employeeService.updateProfile($scope.employee, function (response) {
+                    alertify.success($rootScope.$lang.update_success);
+                    $uibModalInstance.close(response.objects);
+                })
+            }
+        }
+        
+        //cancel
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
+}]);//
 appRoot.controller('homeCtrl', ['$scope','dialogMessage','alertify',function($scope,dialogMessage,alertify) {
     
     $scope.errorDialog = function(){
