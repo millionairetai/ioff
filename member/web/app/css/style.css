@@ -1050,6 +1050,9 @@ div.task-creator{
     padding: 30px;
     border: 1px solid #ddd;
 }
+.register-box .checkbox.icheck>label>div{
+    display: inline-block;
+}
 /* Reponsive registration*/
 @media (max-width:768px){
     .register-box{
