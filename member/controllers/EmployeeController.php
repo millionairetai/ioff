@@ -308,22 +308,20 @@ class EmployeeController extends ApiController {
     //Update an employee
     public function actionUpdateProfile() {
         try {
-            if ($employee = Employee::getById(Yii::$app->request->get('id'))) {
-                $employee->attributes = Yii::$app->request->get();
+            if ($employee = Employee::getById(Yii::$app->request->post('id'))) {
+                $employee->attributes = Yii::$app->request->post();
                 $employee->birthdate = ($employee->birthdate != 0 && $employee->birthdate != '') ?  strtotime($employee->birthdate) : 0;
                 if ($employee->save() !== false) {
-                    $profile =[
-                        'id'=> $employee->id,
+                    $profile = [
+                        'id' => $employee->id,
                         'department_id' => $employee->department_id,
-                        'department' => $employee->department->name,
-                        'status' => $employee->status->name,
+                        'department' => !empty($employee->department->name) ? $employee->department->name : '',
+                        'status' => !empty($employee->status->name) ? $employee->status->name : '',
                         'fullname' => $employee->fullname,
                         'firstname' => $employee->firstname,
                         'lastname' => $employee->lastname,
                         'email' => $employee->email,
                         'is_admin' => $employee->is_admin,
-                        'birthdate' => $employee->birthdate,
-                        'status' => $employee->status->name,
                         'mobile_phone' => $employee->mobile_phone,
                         'work_phone' => $employee->work_phone,
                         'image' => $employee->image,
@@ -340,6 +338,7 @@ class EmployeeController extends ApiController {
             throw new \Exception($this->_message);
         } catch (\Exception $ex) {
             $this->_error = true;
+            $this->_message = $ex->getMessage();
             return $this->sendResponse($this->_error, $this->_message, []);
         }
        

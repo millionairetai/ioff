@@ -338,7 +338,9 @@
             employee_manage: 'Quản lý nhân viên',
             employee_list: 'Danh sách nhân viên',
             make_password_auto: 'Tự động tạo mật khẩu',
-            password_greater_6: 'Mật khẩu phải lớn hơn 6 kí tự'            
+            password_greater_6: 'Mật khẩu phải lớn hơn 6 kí tự',
+            about_me: 'Về tôi',
+            address: 'Địa chỉ'
         };
     });
 })(window.angular);

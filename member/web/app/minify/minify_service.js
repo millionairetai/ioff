@@ -414,7 +414,7 @@ appRoot.factory('employeeService', ['apiService', '$rootScope', 'alertify', 'val
                 return apiService.get('employee/get-profile', data, success, error);
             },
             updateProfile: function (data, success, error) {
-                return apiService.get('employee/update-profile', data, success, error);
+                return apiService.post('employee/update-profile', data, success, error);
             },
             isValidEmail: function (email) {
                 var emailRegExp = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;

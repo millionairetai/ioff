@@ -325,7 +325,9 @@
             employee_manage: 'Employee manage',
             employee_list: 'Employee list',
             make_password_auto: 'Make password auto',
-            password_greater_6: 'Password must be greater than 6 characters'
+            password_greater_6: 'Password must be greater than 6 characters',
+            about_me: 'About Me',
+            address: 'Address'
         };
     });
 })(window.angular);

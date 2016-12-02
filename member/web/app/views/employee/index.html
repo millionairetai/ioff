@@ -1,7 +1,7 @@
 <script type="text/ng-template" id="/tabcontent.html">
     <div ng-repeat="(index, employee) in employees" class="item-employee">
         <dl>
-            <dt>{{employee.fullname}}</dt>
+        <dt><a href="#/viewEmployee/{{employee.id}}">{{employee.fullname}}</a></dt>
             <dd class="imgleft">
                 <div class="image">
                     <img src="{{employee.image}}" class="img-circle user-image" alt="User Image">
