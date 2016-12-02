@@ -43,9 +43,8 @@ $this->title = Yii::t('member', 'Registration employee');
                         <label class="">
                             <div aria-checked="false" aria-disabled="false">
                                 <?php echo $form->field($registration, 'agree', ['template' => '{input}'])->label(false)->checkbox(); ?>
-<!--                                    <input type="checkbox" style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: -20%; left: -20%; display: block; width: 140%; height: 140%; margin: 0px; padding: 0px; background: rgb(255, 255, 255); border: 0px; opacity: 0;"></ins>-->
                             </div> 
-                            <a href="#"><?= Yii::t('member', 'to the terms') ?></a>
+                            <a href="<?= Yii::$app->params['frontendDomain'] ?>/index/term"><?= Yii::t('member', 'to the terms') ?></a>
                         </label>
                     </div>
                 </div>

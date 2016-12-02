@@ -294,11 +294,13 @@ appRoot.controller('addEmployeeCtrl', ['$scope', '$uibModalInstance', '$rootScop
         };
     }]);
 
-appRoot.controller('profileCtrl', ['$scope','$rootScope', 'alertify', '$timeout', '$filter', 'commonService', '$routeParams', 'employeeService', '$uibModal', 
-    function ($scope, $rootScope, alertify, $timeout, $filter, commonService, $routeParams, employeeService, $uibModal) {
+appRoot.controller('profileCtrl', ['$scope','$rootScope', 'alertify', '$timeout', '$filter', 'commonService', '$routeParams', 'employeeService', '$uibModal', '$location', 
+    function ($scope, $rootScope, alertify, $timeout, $filter, commonService, $routeParams, employeeService, $uibModal, $location) {
         var employeeId = $routeParams.employeeId;
-        employeeService.getProfile({employeeId : employeeId}, function (respone) {
+        employeeService.getProfile({employeeId : employeeId}, function (respone) {            
             $scope.employee = respone.objects;
+        }, function(respone) {
+            $location.path('/');
         });
         
         
