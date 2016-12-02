@@ -293,7 +293,7 @@ class EmployeeController extends ApiController {
                     'image' => $employee->image,
                     'birthdate' => (!empty($employee->birthdate) ? \Yii::$app->formatter->asDate($employee->birthdate) : ''),
 //                    'gender' => $employee->gender,
-                    'address' => $employee->street_address_1,
+                    'street_address_1' => $employee->street_address_1,
                 ];
             } else {
                 throw new \Exception($this->_message);
@@ -330,7 +330,7 @@ class EmployeeController extends ApiController {
                         'image' => $employee->image,
                         'birthdate' => (!empty($employee->birthdate) ? \Yii::$app->formatter->asDate($employee->birthdate) : ''),
     //                    'gender' => $employee->gender,
-                        'address' => $employee->street_address_1,
+                        'street_address_1' => $employee->street_address_1,
                     ];
                     return $this->sendResponse($this->_error, $this->_message, $profile);
                 }

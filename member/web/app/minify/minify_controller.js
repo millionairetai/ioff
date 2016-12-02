@@ -1624,7 +1624,7 @@ appRoot.controller('profileCtrl', ['$scope','$rootScope', 'alertify', '$timeout'
                         department_id: $scope.employee.department_id,
                         mobile_phone: $scope.employee.mobile_phone,
                         work_phone: $scope.employee.work_phone,
-                        street_address_1: $scope.employee.address
+                        street_address_1: $scope.employee.street_address_1
                     }
                 }
             });
@@ -1639,7 +1639,6 @@ appRoot.controller('profileCtrl', ['$scope','$rootScope', 'alertify', '$timeout'
 appRoot.controller('updateProfileCtrl', ['$scope','$rootScope', 'alertify', '$timeout', '$filter', 'commonService', '$routeParams', 'employeeService', '$uibModalInstance', 'employee', 
     function ($scope, $rootScope, alertify, $timeout, $filter, commonService, $routeParams, employeeService, $uibModalInstance, employee) {
         $scope.employee = employee;
-        $scope.employee.street_address_1 = $scope.employee.address;
         //change timestamp birthdate to object datetime.
         if ($scope.employee.birthdate != '' && $scope.employee.birthdate != 0) {
             $scope.employee.birthdate = new Date($scope.employee.birthdate);
