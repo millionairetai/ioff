@@ -10,6 +10,7 @@ use common\models\EmailTemplate;
 use yii\validators\EmailValidator;
 use common\models\Status;
 use common\models\ProjectEmployee;
+use member\models\ChangePasswordForm;
 
 class EmployeeController extends ApiController {
 
@@ -343,5 +344,25 @@ class EmployeeController extends ApiController {
         }
        
         return $this->sendResponse(false, "", $employee);
+    }
+    
+    //Change password an employee
+    public function actionChangePassword() {
+        try {
+            $model = new ChangePasswordForm();
+            $model->attributes = Yii::$app->request->post();
+            if ($model->changePassword(Yii::$app->request->post('id'))) {
+                return $this->sendResponse(false, "", []);
+            } else {
+                $this->_message = $this->parserMessage($model->getErrors());
+            }
+            throw new \Exception($this->_message);
+        } catch (\Exception $ex) {
+            $this->_error = true;
+            $this->_message = $ex->getMessage();
+            return $this->sendResponse($this->_error, $this->_message, []);
+        }
+       
+        return $this->sendResponse(false, "", []);
     }
 }

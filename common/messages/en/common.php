@@ -49,7 +49,10 @@ return [
     'Agree' => 'Agree',    
     'Passwords do not match together' => 'Passwords do not match together',    
     'send' => 'Send',
-    
+    'Current password' => 'Current password',
+    'New password' => 'New password',
+    'ReNew Password' => 'ReNew Password',
+    'Current password wrong' => 'Current password wrong',
     //calendar
     'event_id' => 'Event id',
     'event_company_id' => 'Company id',

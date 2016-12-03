@@ -49,6 +49,10 @@ return [
     'Agree' => 'Đồng ý',
     'Passwords do not match together' => 'Mật khẩu không khớp với nhau',
     'send' => 'Gửi',
+    'Current password' => 'Mật khẩu hiện tại',
+    'New password' => 'Mật khẩu mới',
+    'ReNew Password' => 'Nhập lại mật khẩu mới',
+    'Current password wrong' => 'Mật khẩu hiện tại không đúng',
     
     //Calendar
     'event_id' => 'Mã sự kiện',

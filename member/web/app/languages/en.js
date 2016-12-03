@@ -34,6 +34,8 @@
             remove: 'Remove',
             no_authoirty_function: 'You do not have authority to access this functionality',
             name_less_than_255_character: 'Name must less than 255 characters',
+            address: 'Address',
+            change: 'Change',
             
             //date picker
             datepicker_close : "Close",
@@ -327,7 +329,11 @@
             make_password_auto: 'Make password auto',
             password_greater_6: 'Password must be greater than 6 characters',
             about_me: 'About Me',
-            address: 'Address'
+            address: 'Address',
+            change_password: 'Change password',
+            current_password: 'Current password',
+            new_password: 'New password',
+            renew_password: 'Re-New password'
         };
     });
 })(window.angular);

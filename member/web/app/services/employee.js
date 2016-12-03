@@ -22,6 +22,9 @@ appRoot.factory('employeeService', ['apiService', '$rootScope', 'alertify', 'val
             updateProfile: function (data, success, error) {
                 return apiService.post('employee/update-profile', data, success, error);
             },
+            changePassword: function (data, success, error) {
+                return apiService.post('employee/change-password', data, success, error);
+            },
             isValidEmail: function (email) {
                 var emailRegExp = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
                 if (email.search(emailRegExp) === -1) {

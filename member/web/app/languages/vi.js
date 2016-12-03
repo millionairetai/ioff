@@ -34,6 +34,8 @@
             remove: 'Xóa',
             no_authoirty_function: 'Bạn không có quyền để truy cập chứng năng này',
             name_less_than_255_character: 'Tên phải nhỏ hơn 255 kí tự', 
+            address: 'Địa chỉ',
+            change: 'Thay đổi',
             
             //date picker
             datepicker_close : "Đóng",
@@ -340,7 +342,10 @@
             make_password_auto: 'Tự động tạo mật khẩu',
             password_greater_6: 'Mật khẩu phải lớn hơn 6 kí tự',
             about_me: 'Về tôi',
-            address: 'Địa chỉ'
+            change_password: 'Thay đổi mật khẩu',
+            current_password: 'Mật khẩu hiện tại',
+            new_password: 'Mật khẩu mới',
+            renew_password: 'Nhập lại mật khẩu mới'
         };
     });
 })(window.angular);

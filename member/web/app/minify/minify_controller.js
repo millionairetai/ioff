@@ -1609,7 +1609,6 @@ appRoot.controller('profileCtrl', ['$scope','$rootScope', 'alertify', '$timeout'
             $location.path('/');
         });
         
-        
         $scope.update = function (employeeId) {
             var modalInstance = $uibModal.open({
                 templateUrl: 'app/views/employee/editProfile.html',
@@ -1633,6 +1632,21 @@ appRoot.controller('profileCtrl', ['$scope','$rootScope', 'alertify', '$timeout'
 
             modalInstance.result.then(function (data) {
                 $scope.employee = angular.extend($scope.employee, data);
+            });
+        };
+        
+        $scope.changePassword = function () {
+            var modalInstance = $uibModal.open({
+                templateUrl: 'app/views/employee/changePassword.html',
+                controller: 'changePasswordCtrl',
+                size: 'lg',
+                keyboard: true,
+                backdrop: 'static',
+                resolve: {
+                    employee: {
+                        id: $scope.employee.id,
+                    }
+                }
             });
         };
         
@@ -1671,6 +1685,30 @@ appRoot.controller('updateProfileCtrl', ['$scope','$rootScope', 'alertify', '$ti
                     $uibModalInstance.close(response.objects);
                 })
             }
+        }
+        
+        //cancel
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
+}]);
+
+appRoot.controller('changePasswordCtrl', ['$scope','$rootScope', 'alertify',  'commonService', 'employeeService', '$uibModalInstance', 'employee', 
+    function ($scope, $rootScope, alertify, commonService, employeeService, $uibModalInstance, employee) {
+        $scope.employee = {
+            oldPassword: '', 
+            newPassword: '',
+            rePassword: ''
+        };
+        
+        angular.merge($scope.employee, employee);
+        $scope.changePassword = function () {
+//            if (employeeService.validate($scope.employee)) {
+                employeeService.changePassword($scope.employee, function (response) {
+                    alertify.success($rootScope.$lang.update_success);
+                    $uibModalInstance.close(response.objects);
+                })
+//            }
         }
         
         //cancel
