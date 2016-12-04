@@ -11,6 +11,8 @@ use yii\validators\EmailValidator;
 use common\models\Status;
 use common\models\ProjectEmployee;
 use member\models\ChangePasswordForm;
+use common\models\File;
+use yii\validators\ImageValidator;
 
 class EmployeeController extends ApiController {
 
@@ -364,5 +366,22 @@ class EmployeeController extends ApiController {
         }
        
         return $this->sendResponse(false, "", []);
+    }
+    
+    //Change password an employee
+    public function actionChangeAvatar() {
+        try {
+            $file = File::changeAvatar(current($_FILES));
+            if ($file === false) {
+                $this->_message = 'Can not upload data';
+                throw new \Exception($this->_message);
+            }
+        } catch (\Exception $ex) {
+            $this->_error = true;
+            $this->_message = $ex->getMessage();
+            return $this->sendResponse($this->_error, $this->_message, []);
+        }
+       
+        return $this->sendResponse(false, "", ['image' => $file->image]);
     }
 }

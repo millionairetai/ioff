@@ -31,6 +31,7 @@ class File extends \common\components\db\ActiveRecord {
     const TABLE_PROJECT_POST = 'project_post';
     const TABLE_EVENT_POST = 'event_post';
     const TABLE_TASK_POST = 'task_post';
+    const TABLE_EMPLOYEE = 'employee';
 
     /**
      * @inheritdoc
@@ -141,8 +142,8 @@ class File extends \common\components\db\ActiveRecord {
                 if ($table == self::TABLE_EVENT || $table == self::TABLE_EVENT_POST) {
                     $employeeSpace->space_calendar += $size;
                 }
-                
-                if($table == self::TABLE_TASK) {
+
+                if ($table == self::TABLE_TASK) {
                     $employeeSpace->space_task += $size;
                 }
 
@@ -284,7 +285,7 @@ class File extends \common\components\db\ActiveRecord {
                 $employeeSpace->space_task = $employeeSpace->space_task >= 0 ? $employeeSpace->space_task : 0;
                 $employeeSpace->space_total = $employeeSpace->space_total - $file->file_size;
                 $employeeSpace->space_total = $employeeSpace->space_total >= 0 ? $employeeSpace->space_total : 0;
-                
+
                 //write logs project post
                 $taskPost = new TaskPost();
                 $taskPost->task_id = $file->owner_id;
@@ -299,13 +300,13 @@ class File extends \common\components\db\ActiveRecord {
                 break;
 
             case 'event':
-            case 'event_post':              
+            case 'event_post':
                 //subtract space_calendar in employe_space.
                 $employeeSpace->space_calendar = $employeeSpace->space_calendar - $file->file_size;
                 $employeeSpace->space_calendar = $employeeSpace->space_calendar >= 0 ? $employeeSpace->space_calendar : 0;
                 $employeeSpace->space_total = $employeeSpace->space_total - $file->file_size;
                 $employeeSpace->space_total = $employeeSpace->space_total >= 0 ? $employeeSpace->space_project : 0;
-                
+
                 //write logs event post
                 $eventPost = new EventPost();
                 $eventPost->event_id = $file->owner_id;
@@ -388,5 +389,63 @@ class File extends \common\components\db\ActiveRecord {
         }
         return $fileList;
     }
-                
+
+    /**
+     * Upload avatar for employee
+     * 
+     * @param resource $files path of folder
+     * @return boolean
+     */
+    public static function changeAvatar($file) {
+        if (empty($file)) {
+            return false;
+        }
+        
+        $employeeId = \Yii::$app->user->getId();
+        $allow = array('image/jpeg', 'image/pjpeg', 'image/gif', 'image/png');
+        if (!$employeeSpace = EmployeeSpace::getByEmployeeId($employeeId)) {
+            $employeeSpace = new EmployeeSpace();
+            $employeeSpace->employee_id = $employeeId;
+            $employeeSpace->space_total = 0;
+        }
+
+        $company = Company::find(['total_storage'])->where(Yii::$app->user->identity->company_id)->one();
+        //loop file and upload
+        $fileName = $file["name"];
+        $type = $file["type"];
+        $size = $file["size"];
+        $temp = $file["tmp_name"];
+        $error = $file["error"];
+        $extension = end(explode('.', $fileName));
+        $path =  \Yii::$app->params['PathUpload'] . '/' . Yii::$app->user->identity->company_id . '/avatar/';
+        $fileEncodeName = md5($employeeId . uniqid()) . "." . $extension;
+        if ($error > 0) {
+            $message = $error;
+        } else {
+            if (!@move_uploaded_file($temp, $path . $fileEncodeName)) {
+                throw new \Exception('Can not upload file:' . $fileEncodeName);
+            }
+
+            $employeeSpace->space_total += $size;
+            $company->total_storage += $size;
+        }
+
+        if ($employee = Employee::getById($employeeId)) {
+            $employee->profile_image_path = $fileEncodeName;
+            if ($employee->save() === false) {
+                throw new \Exception('Save record to table Employee fail');
+            }
+        }
+        
+        if ($employeeSpace->save(false) === false) {
+            throw new \Exception('Save record to table Employee Space fail');
+        }
+
+//        if (!$company->save(false) === false) {
+//            throw new \Exception('Save record to table company fail');
+//        }
+
+        return $employee;
+    }
+
 }

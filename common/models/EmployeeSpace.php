@@ -74,4 +74,14 @@ class EmployeeSpace extends \common\components\db\ActiveRecord
             'disabled' => 'Disabled',
         ];
     }
+                    
+    /**
+     * Get by employee id
+     * 
+     * @param integer $employeeId
+     * @return object
+     */
+    public static function getByEmployeeId($employeeId) {
+        return self::find()->andCompanyId()->andWhere(['employee_id' => $employeeId])->one();
+    }
 }

@@ -1600,8 +1600,8 @@ appRoot.controller('addEmployeeCtrl', ['$scope', '$uibModalInstance', '$rootScop
         };
     }]);
 
-appRoot.controller('profileCtrl', ['$scope','$rootScope', 'alertify', '$timeout', '$filter', 'commonService', '$routeParams', 'employeeService', '$uibModal', '$location', 
-    function ($scope, $rootScope, alertify, $timeout, $filter, commonService, $routeParams, employeeService, $uibModal, $location) {
+appRoot.controller('profileCtrl', ['$scope','$rootScope', 'alertify', '$timeout', '$filter', 'commonService', '$routeParams', 'employeeService', '$uibModal', '$location', '$window',
+    function ($scope, $rootScope, alertify, $timeout, $filter, commonService, $routeParams, employeeService, $uibModal, $location, $window) {
         var employeeId = $routeParams.employeeId;
         employeeService.getProfile({employeeId : employeeId}, function (respone) {            
             $scope.employee = respone.objects;
@@ -1647,6 +1647,26 @@ appRoot.controller('profileCtrl', ['$scope','$rootScope', 'alertify', '$timeout'
                         id: $scope.employee.id,
                     }
                 }
+            });
+        };
+        
+        $scope.changeProfile = function () {
+            var modalInstance = $uibModal.open({
+                templateUrl: 'app/views/employee/changeProfile.html',
+                controller: 'changeProfileCtrl',
+                size: 'lg',
+                keyboard: true,
+                backdrop: 'static',
+                resolve: {
+                    employee: {
+                        id: $scope.employee.id,
+                    }
+                }
+            });
+            
+            modalInstance.result.then(function (data) {
+                $scope.employee.image = data;
+                $window.location.reload();
             });
         };
         
@@ -1703,12 +1723,50 @@ appRoot.controller('changePasswordCtrl', ['$scope','$rootScope', 'alertify',  'c
         
         angular.merge($scope.employee, employee);
         $scope.changePassword = function () {
-//            if (employeeService.validate($scope.employee)) {
-                employeeService.changePassword($scope.employee, function (response) {
-                    alertify.success($rootScope.$lang.update_success);
+            employeeService.changePassword($scope.employee, function (response) {
+                alertify.success($rootScope.$lang.update_success);
                     $uibModalInstance.close(response.objects);
-                })
-//            }
+            })
+        }
+        
+        //cancel
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
+}]);
+
+
+appRoot.controller('changeProfileCtrl', ['$scope','$rootScope', 'alertify', 'employeeService', '$uibModalInstance', 
+    function ($scope, $rootScope, alertify, employeeService, $uibModalInstance) {
+        $scope.file = [];
+        //add file
+        $scope.addFile = function (files) {
+            $scope.$apply(function () {
+                $scope.file = files[0];
+            });
+        };
+        
+        $scope.previewFile = function() {
+            var preview = document.querySelector('#previewAvatar');
+            var file    = document.querySelector('input[type=file]').files[0];
+            var reader  = new FileReader();
+
+            reader.addEventListener("load", function () {
+              preview.src = reader.result;
+            }, false);
+
+            if (file) {
+              reader.readAsDataURL(file);
+            }
+        }
+        
+        $scope.changeProfile = function () {
+            var fd = new FormData();
+            fd.append("file", $scope.file);
+            employeeService.changeAvatar(fd, function (response) {
+                alertify.success($rootScope.$lang.update_success);
+                $uibModalInstance.close(response.objects.image);
+            })
         }
         
         //cancel
