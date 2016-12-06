@@ -259,6 +259,21 @@ class ActiveRecord extends \yii\db\ActiveRecord
         
         return $return->andCompanyId()->all();
     }
+    
+    /**
+     * Get by params
+     * 
+     * @param array $params
+     * @param array $columnName - list of column name in table
+     * @return Active Record
+     */
+    public static function getByParams($params, $columnName = []) { 
+        if (!empty($columnName)) {
+            return self::find()->select($columnName)->where($params)->one();
+        }
+        
+        return self::find()->where($params)->one();
+    }
       
     /**
      * Check if record is exist by <> id and equal name.
@@ -274,7 +289,48 @@ class ActiveRecord extends \yii\db\ActiveRecord
                         ->andCompanyId()
                         ->exists(); 
     }
+    
+    /**
+     * Insert array consist of 
+     *          (key - column_name of table, val - value of column_name which is inserted)
+     * 
+     * @param array $insertArr
+     * @return boolean
+     */
+    public function insertByArr($insertArr) {
+        if (empty($insertArr)) {
+            return false;
+        }
         
+        foreach ($insertArr as $key => $val) {
+            $this->$key = $val;
+        }    
+        
+        if ($this->insert() !== false) {
+            return true;
+        }
+        
+        return false;
+    }
+
+    /**
+     * Update array consist of 
+     *          (key - column_name of table, val - value of column_name which is updated)
+     * 
+     * @param array $updateArr
+     * @return boolean
+     */    public function updateByArr($updateArr, $id) {
+        if (empty($updateArr) || $id) {
+            return false;
+        }
+        
+        foreach ($updateArr as $key => $val) {
+            $this->$key = $val;
+        }    
+
+        return self::updateAll($updateArr, "id = {$id}");
+    }
+    
     /**
      * BatchInsert
      * 

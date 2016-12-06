@@ -333,7 +333,9 @@
             change_password: 'Change password',
             current_password: 'Current password',
             new_password: 'New password',
-            renew_password: 'Re-New password'
+            renew_password: 'Re-New password',
+            please_choose_png_gif_jpg_file: 'Please choose png, gif, jpg file', 
+            change_profile_avatar: 'Change avatar profile'
         };
     });
 })(window.angular);

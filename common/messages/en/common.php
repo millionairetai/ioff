@@ -53,6 +53,7 @@ return [
     'New password' => 'New password',
     'ReNew Password' => 'ReNew Password',
     'Current password wrong' => 'Current password wrong',
+    'Can not upload data' => 'Can not upload data',
     //calendar
     'event_id' => 'Event id',
     'event_company_id' => 'Company id',

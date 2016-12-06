@@ -53,7 +53,7 @@ return [
     'New password' => 'Mật khẩu mới',
     'ReNew Password' => 'Nhập lại mật khẩu mới',
     'Current password wrong' => 'Mật khẩu hiện tại không đúng',
-    
+    'Can not upload data' => 'Không thể upload dữ liệu',
     //Calendar
     'event_id' => 'Mã sự kiện',
     'event_company_id' => 'Công ty',

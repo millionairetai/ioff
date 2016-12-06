@@ -393,7 +393,7 @@ class File extends \common\components\db\ActiveRecord {
     /**
      * Upload avatar for employee
      * 
-     * @param resource $files path of folder
+     * @param resource $file path of folder
      * @return boolean
      */
     public static function changeAvatar($file) {
@@ -402,34 +402,55 @@ class File extends \common\components\db\ActiveRecord {
         }
         
         $employeeId = \Yii::$app->user->getId();
-        $allow = array('image/jpeg', 'image/pjpeg', 'image/gif', 'image/png');
-        if (!$employeeSpace = EmployeeSpace::getByEmployeeId($employeeId)) {
-            $employeeSpace = new EmployeeSpace();
-            $employeeSpace->employee_id = $employeeId;
-            $employeeSpace->space_total = 0;
-        }
-
-        $company = Company::find(['total_storage'])->where(Yii::$app->user->identity->company_id)->one();
-        //loop file and upload
         $fileName = $file["name"];
         $type = $file["type"];
         $size = $file["size"];
         $temp = $file["tmp_name"];
         $error = $file["error"];
         $extension = end(explode('.', $fileName));
-        $path =  \Yii::$app->params['PathUpload'] . '/' . Yii::$app->user->identity->company_id . '/avatar/';
+        $path = Yii::$app->user->identity->company_id . DIRECTORY_SEPARATOR . 'avatar' . DIRECTORY_SEPARATOR;
         $fileEncodeName = md5($employeeId . uniqid()) . "." . $extension;
         if ($error > 0) {
-            $message = $error;
-        } else {
-            if (!@move_uploaded_file($temp, $path . $fileEncodeName)) {
-                throw new \Exception('Can not upload file:' . $fileEncodeName);
+            return false;
+        } 
+        
+        if (!@move_uploaded_file($temp, \Yii::$app->params['PathUpload'] . DIRECTORY_SEPARATOR . $path . $fileEncodeName)) {
+            throw new \Exception('Can not upload file:' . $fileEncodeName);
+        }
+        
+        //Delete the old avatar file and record.
+        if ($file = self::getByParams(['owner_id' => $employeeId, 'employee_id' => $employeeId, 'owner_object' => 'employee'])) {
+            @unlink(\Yii::$app->params['PathUpload'] . DIRECTORY_SEPARATOR . $file->path);
+            if ($file->delete() === false) {
+                throw new \Exception('Can not delete avatar');
             }
+        }
+        
+        $insertArr = [
+            'owner_id' => $employeeId,
+            'employee_id' => $employeeId,
+            'owner_object' => 'employee',
+            'name' => $fileName,
+            'path' => $path . $fileEncodeName,
+            'is_image' => true,
+            'file_type' => $extension,
+            'file_size' => $size,
+            'encoded_name' => $fileEncodeName,        
+        ];
 
-            $employeeSpace->space_total += $size;
-            $company->total_storage += $size;
+        if ((new File())->insertByArr($insertArr) === false) {
+            throw new \Exception('Save record to table File fail');
+        }
+        
+        if (!$employeeSpace = EmployeeSpace::getByEmployeeId($employeeId)) {
+            $employeeSpace = new EmployeeSpace();
+            $employeeSpace->employee_id = $employeeId;
+            $employeeSpace->space_total = 0;
         }
 
+        $company = Company::find()->select(['total_storage'])->where(Yii::$app->user->identity->company_id)->one();
+        $employeeSpace->space_total += $size;
+        $company->total_storage += $size;
         if ($employee = Employee::getById($employeeId)) {
             $employee->profile_image_path = $fileEncodeName;
             if ($employee->save() === false) {
@@ -441,11 +462,11 @@ class File extends \common\components\db\ActiveRecord {
             throw new \Exception('Save record to table Employee Space fail');
         }
 
-//        if (!$company->save(false) === false) {
-//            throw new \Exception('Save record to table company fail');
-//        }
+        if ($company->save(false) === false) {
+            throw new \Exception('Save record to table company fail');
+        }
 
-        return $employee;
+        return true;
     }
 
 }

@@ -136,5 +136,7 @@ return [
     'new password' => 'New password', 
     'renew password' => 'Re-input new password', 
     'token is invalid' => 'Token is invalid',
-    'retrieve password success' => 'Congratulation! You change password successfully',    
+    'retrieve password success' => 'Congratulation! You change password successfully',  
+    'You must select at least one jpeg, gif, png image file' => 'Bạn phải chọn ít nhất một file jpeg, gif, png',
+    'Only accept jpeg, gif, png image' => 'Chỉ chấp nhận file ảnh jpeg, gif, png',
 ];

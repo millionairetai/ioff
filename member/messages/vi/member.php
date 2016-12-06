@@ -130,4 +130,7 @@ return [
     'renew password' => 'Nhập lại mật khẩu mới', 
     'token is invalid' => 'Token không hợp lệ',
     'retrieve password success' => 'Chúc mừng bạn đã lấy lại được mật khẩu thành công',
+    'You must select at least one jpeg, gif, png image file' => 'You must select at least one jpeg, gif, png image file',
+    'Only accept jpeg, gif, png image' => 'Only accept jpeg, gif, png image',
+    
 ];

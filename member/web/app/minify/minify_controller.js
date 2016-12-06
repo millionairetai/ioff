@@ -1309,7 +1309,7 @@ appRoot.controller('EmployeeCtrl', ['$scope', '$uibModal', 'employeeService', '$
 
         $scope.params = {
             page: 1,
-            limit: 5,
+            limit: 12,
             searchName: '',
             orderBy: '',
             orderType: '',
@@ -1560,7 +1560,7 @@ appRoot.controller('addEmployeeCtrl', ['$scope', '$uibModalInstance', '$rootScop
             work_phone: '',
             is_make_password_auto: true
         };
-        
+
         $scope.statuses = [];
         $scope.departments = [];
         //get list of department
@@ -1586,7 +1586,7 @@ appRoot.controller('addEmployeeCtrl', ['$scope', '$uibModalInstance', '$rootScop
                 if ($scope.employee.birthdate == '' || angular.isUndefined($scope.employee.birthdate)) {
                     $scope.employee.birthdate = 0;
                 }
-                
+
                 commonService.add('employee', $scope.employee, function (response) {
                     alertify.success($rootScope.$lang.add_success);
                     $uibModalInstance.close($scope.employee);
@@ -1600,15 +1600,15 @@ appRoot.controller('addEmployeeCtrl', ['$scope', '$uibModalInstance', '$rootScop
         };
     }]);
 
-appRoot.controller('profileCtrl', ['$scope','$rootScope', 'alertify', '$timeout', '$filter', 'commonService', '$routeParams', 'employeeService', '$uibModal', '$location', '$window',
+appRoot.controller('profileCtrl', ['$scope', '$rootScope', 'alertify', '$timeout', '$filter', 'commonService', '$routeParams', 'employeeService', '$uibModal', '$location', '$window',
     function ($scope, $rootScope, alertify, $timeout, $filter, commonService, $routeParams, employeeService, $uibModal, $location, $window) {
         var employeeId = $routeParams.employeeId;
-        employeeService.getProfile({employeeId : employeeId}, function (respone) {            
+        employeeService.getProfile({employeeId: employeeId}, function (respone) {
             $scope.employee = respone.objects;
-        }, function(respone) {
+        }, function (respone) {
             $location.path('/');
         });
-        
+
         $scope.update = function (employeeId) {
             var modalInstance = $uibModal.open({
                 templateUrl: 'app/views/employee/editProfile.html',
@@ -1634,7 +1634,7 @@ appRoot.controller('profileCtrl', ['$scope','$rootScope', 'alertify', '$timeout'
                 $scope.employee = angular.extend($scope.employee, data);
             });
         };
-        
+
         $scope.changePassword = function () {
             var modalInstance = $uibModal.open({
                 templateUrl: 'app/views/employee/changePassword.html',
@@ -1649,7 +1649,7 @@ appRoot.controller('profileCtrl', ['$scope','$rootScope', 'alertify', '$timeout'
                 }
             });
         };
-        
+
         $scope.changeProfile = function () {
             var modalInstance = $uibModal.open({
                 templateUrl: 'app/views/employee/changeProfile.html',
@@ -1663,23 +1663,23 @@ appRoot.controller('profileCtrl', ['$scope','$rootScope', 'alertify', '$timeout'
                     }
                 }
             });
-            
+
             modalInstance.result.then(function (data) {
                 $scope.employee.image = data;
                 $window.location.reload();
             });
         };
-        
+
     }]);
 
-appRoot.controller('updateProfileCtrl', ['$scope','$rootScope', 'alertify', '$timeout', '$filter', 'commonService', '$routeParams', 'employeeService', '$uibModalInstance', 'employee', 
+appRoot.controller('updateProfileCtrl', ['$scope', '$rootScope', 'alertify', '$timeout', '$filter', 'commonService', '$routeParams', 'employeeService', '$uibModalInstance', 'employee',
     function ($scope, $rootScope, alertify, $timeout, $filter, commonService, $routeParams, employeeService, $uibModalInstance, employee) {
         $scope.employee = employee;
         //change timestamp birthdate to object datetime.
         if ($scope.employee.birthdate != '' && $scope.employee.birthdate != 0) {
             $scope.employee.birthdate = new Date($scope.employee.birthdate);
         }
-        
+
         //get list of department
         $scope.departments = [];
         commonService.gets('department', function (response) {
@@ -1692,7 +1692,7 @@ appRoot.controller('updateProfileCtrl', ['$scope','$rootScope', 'alertify', '$ti
                 });
             }
         });
-        
+
         $scope.update = function () {
             if (employeeService.validate($scope.employee)) {
                 $scope.employee.department_id = angular.isObject($scope.employee.department_id) ? $scope.employee.department_id.id : 0;
@@ -1706,61 +1706,81 @@ appRoot.controller('updateProfileCtrl', ['$scope','$rootScope', 'alertify', '$ti
                 })
             }
         }
-        
+
         //cancel
         $scope.cancel = function () {
             $uibModalInstance.dismiss('cancel');
         };
-}]);
+    }]);
 
-appRoot.controller('changePasswordCtrl', ['$scope','$rootScope', 'alertify',  'commonService', 'employeeService', '$uibModalInstance', 'employee', 
+appRoot.controller('changePasswordCtrl', ['$scope', '$rootScope', 'alertify', 'commonService', 'employeeService', '$uibModalInstance', 'employee',
     function ($scope, $rootScope, alertify, commonService, employeeService, $uibModalInstance, employee) {
         $scope.employee = {
-            oldPassword: '', 
+            oldPassword: '',
             newPassword: '',
             rePassword: ''
         };
-        
+
         angular.merge($scope.employee, employee);
         $scope.changePassword = function () {
             employeeService.changePassword($scope.employee, function (response) {
                 alertify.success($rootScope.$lang.update_success);
-                    $uibModalInstance.close(response.objects);
+                $uibModalInstance.close(response.objects);
             })
         }
-        
+
         //cancel
         $scope.cancel = function () {
             $uibModalInstance.dismiss('cancel');
         };
-}]);
+    }]);
 
-
-appRoot.controller('changeProfileCtrl', ['$scope','$rootScope', 'alertify', 'employeeService', '$uibModalInstance', 
-    function ($scope, $rootScope, alertify, employeeService, $uibModalInstance) {
+appRoot.controller('changeProfileCtrl', ['$scope', '$rootScope', 'alertify', 'employeeService', '$uibModalInstance', 'validateService',
+    function ($scope, $rootScope, alertify, employeeService, $uibModalInstance, validateService) {
         $scope.file = [];
         //add file
         $scope.addFile = function (files) {
             $scope.$apply(function () {
-                $scope.file = files[0];
+                try {
+                    console.log(validateService.avatar(files[0]));
+                    if (!validateService.maxSizeUpload(files[0])) {
+                        throw $rootScope.$lang.max_size;
+                    }
+
+                    if (!validateService.avatar(files[0])) {
+                        throw $rootScope.$lang.please_choose_png_gif_jpg_file;
+                    } 
+                    
+                    $scope.file = files[0];
+                }
+                catch (error) {
+                    console.log(error);
+                    $scope.file = [];
+                    alertify.error(error);
+                }  
             });
         };
-        
-        $scope.previewFile = function() {
+
+        $scope.previewFile = function () {
             var preview = document.querySelector('#previewAvatar');
-            var file    = document.querySelector('input[type=file]').files[0];
-            var reader  = new FileReader();
+            var file = document.querySelector('input[type=file]').files[0];
+            var reader = new FileReader();
 
             reader.addEventListener("load", function () {
-              preview.src = reader.result;
+                preview.src = reader.result;
             }, false);
 
             if (file) {
-              reader.readAsDataURL(file);
+                reader.readAsDataURL(file);
             }
         }
-        
+
         $scope.changeProfile = function () {
+            if ($scope.file.length <= 0) {
+                alertify.error($rootScope.$lang.please_choose_png_gif_jpg_file);
+                return; 
+            }
+            
             var fd = new FormData();
             fd.append("file", $scope.file);
             employeeService.changeAvatar(fd, function (response) {
@@ -1768,12 +1788,12 @@ appRoot.controller('changeProfileCtrl', ['$scope','$rootScope', 'alertify', 'emp
                 $uibModalInstance.close(response.objects.image);
             })
         }
-        
+
         //cancel
         $scope.cancel = function () {
             $uibModalInstance.dismiss('cancel');
         };
-}]);//
+    }]);//
 appRoot.controller('homeCtrl', ['$scope','dialogMessage','alertify',function($scope,dialogMessage,alertify) {
     
     $scope.errorDialog = function(){

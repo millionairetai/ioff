@@ -345,7 +345,9 @@
             change_password: 'Thay đổi mật khẩu',
             current_password: 'Mật khẩu hiện tại',
             new_password: 'Mật khẩu mới',
-            renew_password: 'Nhập lại mật khẩu mới'
+            renew_password: 'Nhập lại mật khẩu mới',
+            please_choose_png_gif_jpg_file: 'Xin chọn file png, gif, jpg', 
+            change_profile_avatar: 'Thay đổi ảnh đại diện'
         };
     });
 })(window.angular);

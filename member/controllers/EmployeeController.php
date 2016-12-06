@@ -371,14 +371,23 @@ class EmployeeController extends ApiController {
     //Change password an employee
     public function actionChangeAvatar() {
         try {
-            $file = File::changeAvatar(current($_FILES));
+            $file = current($_FILES);
+            if (empty($file)) {
+                throw new \Exception(Yii::t('member', 'You must select at least one jpeg, gif, png image file'));
+            }
+            
+            if(!in_array($file['type'], ['image/jpeg', 'image/pjpeg', 'image/gif', 'image/png']) ) {
+                throw new \Exception(Yii::t('member', 'Only accept jpeg, gif, png image'));
+            }
+            
+            $file = File::changeAvatar($file);
             if ($file === false) {
-                $this->_message = 'Can not upload data';
+                $this->_message = Yii::t('common', 'Can not upload data');
                 throw new \Exception($this->_message);
             }
         } catch (\Exception $ex) {
             $this->_error = true;
-            $this->_message = $ex->getMessage();
+            $this->_message = Yii::t('common', 'Can not upload data');
             return $this->sendResponse($this->_error, $this->_message, []);
         }
        
