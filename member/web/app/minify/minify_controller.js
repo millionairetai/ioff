@@ -1742,7 +1742,6 @@ appRoot.controller('changeProfileCtrl', ['$scope', '$rootScope', 'alertify', 'em
         $scope.addFile = function (files) {
             $scope.$apply(function () {
                 try {
-                    console.log(validateService.avatar(files[0]));
                     if (!validateService.maxSizeUpload(files[0])) {
                         throw $rootScope.$lang.max_size;
                     }
@@ -1754,7 +1753,6 @@ appRoot.controller('changeProfileCtrl', ['$scope', '$rootScope', 'alertify', 'em
                     $scope.file = files[0];
                 }
                 catch (error) {
-                    console.log(error);
                     $scope.file = [];
                     alertify.error(error);
                 }  

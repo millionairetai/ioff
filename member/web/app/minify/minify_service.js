@@ -988,7 +988,6 @@ appRoot.factory('validateService', ['apiService', function (apiService) {
             },
             avatar: function(file) {
                 return this.run(file.type, /^(image\/gif)|(image\/jpg)|(image\/jpeg)|(image\/pjpeg)|(image\/png)$/);
-//                return file.type.match(/^(image\/gif)|(image\/jpg)|(image\/jpeg)||(image\/pjpeg)|(image\/png)$/i);
             }
         };
     }]);
