@@ -411,6 +411,10 @@ class File extends \common\components\db\ActiveRecord {
             return false;
         } 
         
+        if (!FileHelper::createDirectory(\Yii::$app->params['PathUpload'] . DIRECTORY_SEPARATOR . $path)) {
+            throw new \Exception('Can not create folder:' . \Yii::$app->params['PathUpload'] . DIRECTORY_SEPARATOR . $path);
+        }
+        
         if (!@move_uploaded_file($temp, \Yii::$app->params['PathUpload'] . DIRECTORY_SEPARATOR . $path . $fileEncodeName)) {
             throw new \Exception('Can not upload file:' . $fileEncodeName);
         }
