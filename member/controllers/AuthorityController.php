@@ -232,4 +232,21 @@ class AuthorityController extends ApiController {
 
         return $this->sendResponse(false, "", $objects);
     }
+    
+    /**
+     * Get all of authorities in authority table.
+     */
+    public function actionGetEmployeeAuth() {
+        $objects = [];
+        if ($authorities = Authority::getAuthByEmployeeId(Yii::$app->user->identity->id)) {
+            foreach($authorities as $key => $val) {
+                $objects[$val['controller_name']][$val['action_name']] = [
+                    'url' => $val['url'],
+                ];
+
+            }
+        }
+
+        return $this->sendResponse(false, "", $objects);
+    }
 }

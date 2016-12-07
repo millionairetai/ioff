@@ -87,5 +87,23 @@ class Authority extends \common\components\db\ActiveRecord {
 
         return $authorities->offset($offset)->limit($limit)->orderBy($orderBy . ' ' . $orderType)->asArray()->all();
     }
+    
+    /**
+     * Get employee auth by employee id.
+     * 
+     * @param interger $employeeId
+     * @return array|null
+     */
+    public static function getAuthByEmployeeId($employeeId) {
+        return Employee::find()
+            ->select(['action.name AS action_name', 'url', 'controller.name AS controller_name'])
+            ->leftJoin('authority', 'authority.id = employee.authority_id')
+            ->leftJoin('authority_assigment', 'authority.id = authority_assigment.authority_id')
+            ->leftJoin('action', 'authority_assigment.action_id = action.id')
+            ->leftJoin('controller', 'action.controller_id = controller.id')
+            ->where(["employee.id" => $employeeId])
+            ->asArray()
+            ->all();
+    }
 
 }
