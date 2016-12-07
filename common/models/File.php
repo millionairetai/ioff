@@ -3,6 +3,7 @@
 namespace common\models;
 
 use Yii;
+use yii\helpers\FileHelper;
 
 /**
  * This is the model class for table "file".
@@ -391,16 +392,12 @@ class File extends \common\components\db\ActiveRecord {
     }
 
     /**
-     * Upload avatar for employee
+     * Change avatar for employee
      * 
-     * @param resource $file path of folder
+     * @param resource $file
      * @return boolean
      */
     public static function changeAvatar($file) {
-        if (empty($file)) {
-            return false;
-        }
-        
         $employeeId = \Yii::$app->user->getId();
         $fileName = $file["name"];
         $type = $file["type"];
@@ -419,7 +416,7 @@ class File extends \common\components\db\ActiveRecord {
         }
         
         //Delete the old avatar file and record.
-        if ($file = self::getByParams(['owner_id' => $employeeId, 'employee_id' => $employeeId, 'owner_object' => 'employee'])) {
+        if ($file = self::getByParams(['owner_id' => $employeeId, 'employee_id' => $employeeId, 'owner_object' => self::TABLE_EMPLOYEE])) {
             @unlink(\Yii::$app->params['PathUpload'] . DIRECTORY_SEPARATOR . $file->path);
             if ($file->delete() === false) {
                 throw new \Exception('Can not delete avatar');
@@ -429,7 +426,7 @@ class File extends \common\components\db\ActiveRecord {
         $insertArr = [
             'owner_id' => $employeeId,
             'employee_id' => $employeeId,
-            'owner_object' => 'employee',
+            'owner_object' => self::TABLE_EMPLOYEE,
             'name' => $fileName,
             'path' => $path . $fileEncodeName,
             'is_image' => true,
@@ -439,7 +436,7 @@ class File extends \common\components\db\ActiveRecord {
         ];
 
         if ((new File())->insertByArr($insertArr) === false) {
-            throw new \Exception('Save record to table File fail');
+            throw new \Exception('Insert record to File table fail');
         }
         
         if (!$employeeSpace = EmployeeSpace::getByEmployeeId($employeeId)) {
@@ -448,7 +445,7 @@ class File extends \common\components\db\ActiveRecord {
             $employeeSpace->space_total = 0;
         }
 
-        $company = Company::find()->select(['total_storage'])->where(Yii::$app->user->identity->company_id)->one();
+        $company = Company::find()->select(['total_storage', 'id'])->where(Yii::$app->user->identity->company_id)->one();
         $employeeSpace->space_total += $size;
         $company->total_storage += $size;
         if ($employee = Employee::getById($employeeId)) {
@@ -466,7 +463,7 @@ class File extends \common\components\db\ActiveRecord {
             throw new \Exception('Save record to table company fail');
         }
 
-        return true;
+        return $employee;
     }
 
 }
