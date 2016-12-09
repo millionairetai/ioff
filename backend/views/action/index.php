@@ -24,12 +24,21 @@ use yii\grid\SerialColumn;
             'filterModel' => $model,
             'columns' => [
                 ['class' => 'yii\grid\SerialColumn'],
+                'controller_column_name',
+                'column_name',
+                'is_display_menu',
+                'is_check',
+                'url',
                 [
-                    'label' => 'Controller name',
-                    'value' => 'controller.name',
+                    'attribute' => 'translated_text',
+//                    'value' => 'translation.translated_text'
                 ],
-                'name',
-                'description',
+                [
+                    'attribute' => 'language_id',
+                    'value' => 'language.name',
+                    'filter' => yii\helpers\ArrayHelper::map(common\models\Language::find()->asArray()->all(), 'id', 'name')
+                ],
+//                'description',
                 [
                     'options' => ['style' => 'width:50px'],
                     'class' => 'yii\grid\ActionColumn',

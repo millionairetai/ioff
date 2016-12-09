@@ -15,6 +15,9 @@ appRoot.factory('authorityService', ['apiService', '$http', function (apiService
             },
             delete: function (data, success, error) {
                 apiService.post('authority/delete', data, success, error);
+            },
+            getEmployeeAuth: function (data, success, error) {
+                apiService.post('authority/get-employee-auth', data, success, error);
             }
         };
     }]);

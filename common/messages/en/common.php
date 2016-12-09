@@ -7,7 +7,7 @@ return [
     'Username' => 'Username',
     'Password' => 'Password',
     'Remember me' => 'Remember me',
-    'Login' => 'Login',
+    'Login' => 'Login',    
     'Incorrect username or password' => 'Incorrect username or password',
     'Oops! Page not found.'=>'Oops! Page not found.',
     'We could not find the page you were looking for.'=>'We could not find the page you were looking for.',
