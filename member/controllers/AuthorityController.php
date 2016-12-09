@@ -240,8 +240,9 @@ class AuthorityController extends ApiController {
         $objects = [];
         if ($authorities = Authority::getAuthByEmployeeId(Yii::$app->user->identity->id)) {
             foreach($authorities as $key => $val) {
-                $objects[$val['controller_name']][$val['action_name']] = [
+                $objects[$val['controller_url_name']][$val['action_url_name']] = [
                     'url' => $val['url'],
+                    'is_display_menu' => $val['is_display_menu'],
                 ];
 
             }

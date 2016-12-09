@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use common\models\Controller;
 use common\models\Package;
+use common\models\Language;
 ?>
 <div class="box box-primary">
     <div class="box-header">
@@ -26,10 +27,16 @@ use common\models\Package;
     ?>
 
     <div class="box-body">
-        <?= $form->field($model, 'name')->textInput() ?>
+        <?= $form->field($model, 'url_name')->textInput() ?>
+        <?= $form->field($model, 'translated_text')->textInput() ?>
         <?=
             $form->field($model, 'package_id')->dropdownList(
                     Package::find()->select(['name', 'id'])->indexBy('id')->column(), ['prompt' => 'Select package']
+            );
+        ?>
+        <?=
+            $form->field($model, 'language_id')->dropdownList(
+                    Language::find()->select(['name', 'id'])->indexBy('id')->column(), ['prompt' => 'Select language']
             );
         ?>
         <?=

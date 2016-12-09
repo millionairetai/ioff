@@ -23,6 +23,10 @@ use common\models\Controller;
  */
 class Action extends \backend\components\db\ActiveRecord {
 
+        public $translated_text;
+        public $controller_column_name;
+        public $language_id;
+
     /**
      * @inheritdoc
      */
@@ -35,9 +39,9 @@ class Action extends \backend\components\db\ActiveRecord {
      */
     public function rules() {
         return [
-            [['controller_id', 'datetime_created', 'lastup_datetime', 'created_employee_id', 'lastup_employee_id'], 'integer'],
-            [['name'], 'required'],
-            [['description', 'url'], 'string'],
+            [['controller_id', 'datetime_created', 'lastup_datetime', 'created_employee_id', 'lastup_employee_id', 'language_id'], 'integer'],
+            [['column_name', 'translated_text', 'language_id'], 'required'],
+            [['description', 'url', 'controller_column_name'], 'string'],
             [['is_display_menu', 'disabled'], 'boolean'],
             [['name'], 'string', 'max' => 255]
         ];
@@ -67,8 +71,10 @@ class Action extends \backend\components\db\ActiveRecord {
      * @return ActiveDataProvider
      */
     public function search($params) {
-        $query = static::find();
-        $query->joinWith(['controller']);
+        $query = self::find()
+                ->select(['action.id', 'package_name', 'action.description', 'translated_text', 'language_id', 'action.column_name', 'controller.url_name AS controller_column_name'])
+                ->leftJoin('controller', 'controller.id=action.controller_id')
+                ->leftJoin('translation', 'translation.owner_id=action.id AND owner_table="action"');
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -79,7 +85,9 @@ class Action extends \backend\components\db\ActiveRecord {
             return $dataProvider;
         }
 
-        $query->andFilterWhere(['like', 'action.name', $this->name]);
+        $query->andFilterWhere(['like', 'controller.url_name', $this->controller_column_name]);
+        $query->andFilterWhere(['like', 'translation.language_id', $this->language_id]);
+        $query->andFilterWhere(['like', 'action.column_name', $this->column_name]);
         $query->andFilterWhere(['like', 'action.description', $this->description]);
 
         return $dataProvider;
@@ -90,6 +98,11 @@ class Action extends \backend\components\db\ActiveRecord {
      */
     public function getController() {
         return $this->hasOne(Controller::className(), ['id' => 'controller_id']);
+    }
+    
+        
+    public function getLanguage() {
+        return $this->hasOne(Language::className(), ['id' => 'language_id']);
     }
 
 }

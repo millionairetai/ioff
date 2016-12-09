@@ -3,6 +3,7 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use common\models\Controller;
+use common\models\Language;
 ?>
 <div class="box box-primary">
     <div class="box-header">
@@ -25,12 +26,14 @@ use common\models\Controller;
     ?>
 
     <div class="box-body">
-        <?= $form->field($model, 'name')->textInput() ?>
         <?=
             $form->field($model, 'controller_id')->dropdownList(
-                    Controller::find()->select(['name', 'id'])->indexBy('id')->column(), ['prompt' => 'Select controller']
+                    Controller::find()->select(['url_name', 'id'])->indexBy('id')->column(), ['prompt' => 'Select controller']
             );
         ?>
+        <?= $form->field($model, 'column_name')->textInput() ?>
+        <?= $form->field($model, 'url')->textInput() ?>
+        <?= $form->field($model, 'translated_text')->textInput() ?>
         <?=
             $form->field($model, 'description')->textarea(
                     [
@@ -38,6 +41,11 @@ use common\models\Controller;
                         'class' => 'textarea',
                         'style' => 'width: 100%; height: 150px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px'
             ]);
+        ?>
+                <?=
+            $form->field($model, 'language_id')->dropdownList(
+                    Language::find()->select(['name', 'id'])->indexBy('id')->column(), ['prompt' => 'Select language']
+            );
         ?>
     </div>
 

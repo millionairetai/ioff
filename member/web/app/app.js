@@ -19,17 +19,25 @@ appRoot.controller('iofficezCtrl', ['$scope', function ($scope) {
 // run project
 appRoot.run(function ($rootScope, socketService, notifyService, taskService, commonService, $sce, authorityService) {
     authorityService.getEmployeeAuth({}, function (respone) {
-            $rootScope.auth = respone.objects;
-            console.log($rootScope.auth);
-        });
+        $rootScope.auth = respone.objects;
+        console.log($rootScope.auth);
+    });
         
-    $rootScope.isHaveAuth = function (url) {
-        if ($rootScope.auth.action.url == url) {
-            return true;
+    $rootScope.isAuth = function (url) {
+        var segment = url.split('/');
+        for (var key in $rootScope.auth) {
+            if (key == segment[0]) {
+                for (var keyChild in $rootScope.auth[key]) {
+                    if (keyChild == segment[1] ) {
+                        return true;
+                    }
+                }
+            }
         }
         
         return false;
     }
+    
     //init
     notifyService.countNotification({}, function (respone) {
         $rootScope.sum_notify = respone.objects;

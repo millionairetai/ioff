@@ -28,7 +28,7 @@ use yii\widgets\ActiveForm;
         </div>
         <?php ActiveForm::end(); ?>
 
-        <div class="text-center" style="margin: 10px 0px 0px 0px;"><a href="#" ><?php echo \Yii::t('common', 'I forgot my password'); ?></a></div><br>
+        <div class="text-center" style="margin: 10px 0px 0px 0px;"><a href="#" ><?php echo \Yii::t('common', 'Forgot password'); ?></a></div><br>
        
     </div><!-- /.login-box-body -->
 </div><!-- /.login-box -->

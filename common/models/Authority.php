@@ -96,7 +96,7 @@ class Authority extends \common\components\db\ActiveRecord {
      */
     public static function getAuthByEmployeeId($employeeId) {
         return Employee::find()
-            ->select(['action.name AS action_name', 'url', 'controller.name AS controller_name'])
+            ->select(['action.url_name AS action_url_name', 'url', 'controller.url_name AS controller_url_name', 'is_display_menu'])
             ->leftJoin('authority', 'authority.id = employee.authority_id')
             ->leftJoin('authority_assigment', 'authority.id = authority_assigment.authority_id')
             ->leftJoin('action', 'authority_assigment.action_id = action.id')
