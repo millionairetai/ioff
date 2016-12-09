@@ -32,8 +32,8 @@ class ActionController extends \yii\web\Controller {
                 $this->_model->description = $action['description'];
                 $this->_model->column_name = $action['column_name'];
                 $this->_model->url = $action['url'];
-                $this->_model->is_display_menu = 1;
-                $this->_model->is_check = 1;
+                $this->_model->is_display_menu = $action['is_display_menu'];
+                $this->_model->is_check = $action['is_check'];
                 if ($this->_model->save(false) === false) {
                     throw new \Exception('Can not savecontroller ');
                 }

@@ -34,6 +34,8 @@ use common\models\Language;
         <?= $form->field($model, 'column_name')->textInput() ?>
         <?= $form->field($model, 'url')->textInput() ?>
         <?= $form->field($model, 'translated_text')->textInput() ?>
+        <?= $form->field($model, 'is_check')->checkBox() ?>
+        <?= $form->field($model, 'is_display_menu')->checkBox() ?>
         <?=
             $form->field($model, 'description')->textarea(
                     [
