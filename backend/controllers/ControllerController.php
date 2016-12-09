@@ -29,7 +29,7 @@ class ControllerController extends \yii\web\Controller {
                 //Save into controller table.
                 $this->_model->package_id = $controller['package_id'];
                 $this->_model->description = $controller['description'];
-                $this->_model->url_name = $controller['url_name'];
+                $this->_model->column_name = $controller['column_name'];
                 $this->_model->package_name = \common\models\Package::findOne($controller['package_id'])->name;
                 if ($this->_model->save(false) === false) {
                     throw new \Exception('Can not savecontroller ');

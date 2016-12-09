@@ -15,6 +15,7 @@ use common\models\Controller;
  * @property string $description
  * @property string $url
  * @property boolean $is_display_menu
+ * @property boolean $is_check
  * @property string $datetime_created
  * @property string $lastup_datetime
  * @property string $created_employee_id
@@ -42,7 +43,7 @@ class Action extends \backend\components\db\ActiveRecord {
             [['controller_id', 'datetime_created', 'lastup_datetime', 'created_employee_id', 'lastup_employee_id', 'language_id'], 'integer'],
             [['column_name', 'translated_text', 'language_id'], 'required'],
             [['description', 'url', 'controller_column_name'], 'string'],
-            [['is_display_menu', 'disabled'], 'boolean'],
+            [['is_display_menu', 'disabled', 'is_check'], 'boolean'],
             [['name'], 'string', 'max' => 255]
         ];
     }
@@ -72,7 +73,8 @@ class Action extends \backend\components\db\ActiveRecord {
      */
     public function search($params) {
         $query = self::find()
-                ->select(['action.id', 'package_name', 'action.description', 'translated_text', 'language_id', 'action.column_name', 'controller.url_name AS controller_column_name'])
+                ->select(['action.id', 'url', 'is_display_menu', 'is_check', 'package_name', 'action.description', 
+                    'translated_text', 'language_id', 'action.column_name', 'controller.column_name AS controller_column_name'])
                 ->leftJoin('controller', 'controller.id=action.controller_id')
                 ->leftJoin('translation', 'translation.owner_id=action.id AND owner_table="action"');
 
@@ -85,7 +87,7 @@ class Action extends \backend\components\db\ActiveRecord {
             return $dataProvider;
         }
 
-        $query->andFilterWhere(['like', 'controller.url_name', $this->controller_column_name]);
+        $query->andFilterWhere(['like', 'controller.column_name', $this->controller_column_name]);
         $query->andFilterWhere(['like', 'translation.language_id', $this->language_id]);
         $query->andFilterWhere(['like', 'action.column_name', $this->column_name]);
         $query->andFilterWhere(['like', 'action.description', $this->description]);

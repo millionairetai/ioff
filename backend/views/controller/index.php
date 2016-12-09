@@ -22,12 +22,8 @@ use yii\grid\GridView;
             'dataProvider' => $dataProvider,
             'filterModel' => $model,
             'columns' => [
-                'url_name',
+                'column_name',
 //                'id',
-//        [
-//            'label' => 'Translate Name',
-//            'value' => 'translation.translated_text',
-//        ],
 //                ['attribute' => 'translated_text', 'value' => 'translation.translated_text'],
                 [
                     'attribute' => 'translated_text',

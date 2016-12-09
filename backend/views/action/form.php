@@ -28,7 +28,7 @@ use common\models\Language;
     <div class="box-body">
         <?=
             $form->field($model, 'controller_id')->dropdownList(
-                    Controller::find()->select(['url_name', 'id'])->indexBy('id')->column(), ['prompt' => 'Select controller']
+                    Controller::find()->select(['column_name', 'id'])->indexBy('id')->column(), ['prompt' => 'Select controller']
             );
         ?>
         <?= $form->field($model, 'column_name')->textInput() ?>

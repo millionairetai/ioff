@@ -27,7 +27,7 @@ use common\models\Language;
     ?>
 
     <div class="box-body">
-        <?= $form->field($model, 'url_name')->textInput() ?>
+        <?= $form->field($model, 'column_name')->textInput() ?>
         <?= $form->field($model, 'translated_text')->textInput() ?>
         <?=
             $form->field($model, 'package_id')->dropdownList(

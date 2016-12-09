@@ -37,9 +37,9 @@ class Controller extends \backend\components\db\ActiveRecord {
     public function rules() {
         return [
             [['package_id', 'language_id', 'datetime_created', 'lastup_datetime', 'created_employee_id', 'lastup_employee_id'], 'integer'],
-            [[ 'package_id', 'translated_text', 'url_name', 'language_id'], 'required'],
+            [[ 'package_id', 'translated_text', 'column_name', 'language_id'], 'required'],
             [['disabled'], 'boolean'],
-            [['url_name', 'description'], 'string', 'max' => 255],
+            [['column_name', 'description'], 'string', 'max' => 255],
             [['package_name'], 'string', 'max' => 50],
             [['translated_text'], 'safe'], //!!!
         ];
@@ -52,7 +52,7 @@ class Controller extends \backend\components\db\ActiveRecord {
         return [
             'id' => Yii::t('backend', 'ID'),
             'package_id' => Yii::t('backend', 'Package'),
-            'name' => Yii::t('backend', 'Name'),
+            'column name' => Yii::t('backend', 'Column name'),
             'description' => Yii::t('backend', 'Description'),
             'package_name' => Yii::t('backend', 'Package Name'),
             'datetime_created' => Yii::t('backend', 'Datetime Created'),
@@ -69,7 +69,7 @@ class Controller extends \backend\components\db\ActiveRecord {
      */
     public function search($params) {
         $query = static::find()
-                ->select(['controller.id', 'package_name', 'description', 'translated_text', 'language_id', 'url_name'])
+                ->select(['controller.id', 'package_name', 'description', 'translated_text', 'language_id', 'column_name'])
                 ->leftJoin('translation', 'translation.owner_id=controller.id AND owner_table="controller"');
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -79,7 +79,7 @@ class Controller extends \backend\components\db\ActiveRecord {
             return $dataProvider;
         }
         
-        $query->andFilterWhere(['like', 'url_name', $this->url_name]);
+        $query->andFilterWhere(['like', 'column_name', $this->column_name]);
         $query->andFilterWhere(['like', 'language_id', $this->language_id]);
         $query->andFilterWhere(['like', 'translation.translated_text', $this->translated_text]);
         $query->andFilterWhere(['like', 'package_name', $this->package_name]);
