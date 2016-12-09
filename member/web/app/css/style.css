@@ -1377,3 +1377,31 @@ div.task-creator{
     width: 25px;
     height: 25px;
 }
+/* Change avatar */
+.box-profile>a.change-avatar{
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    display: table-cell;
+    width: 100px;
+    height: 100px;
+    vertical-align: middle;
+    text-align: center;
+    margin-left: -50px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.4);
+    color: #eee;
+    opacity: 0.01;
+    cursor: pointer;
+    -webkit-transition: all 0.3s; /* Safari */
+    transition: all 0.3s;
+}
+.box-profile>a.change-avatar i{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+.box-profile>a.change-avatar:hover{
+    opacity: 1;
+}
