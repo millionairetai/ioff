@@ -29,15 +29,6 @@ use yii\grid\SerialColumn;
                 'is_display_menu',
                 'is_check',
                 'url',
-                [
-                    'attribute' => 'translated_text',
-//                    'value' => 'translation.translated_text'
-                ],
-                [
-                    'attribute' => 'language_id',
-                    'value' => 'language.name',
-                    'filter' => yii\helpers\ArrayHelper::map(common\models\Language::find()->asArray()->all(), 'id', 'name')
-                ],
 //                'description',
                 [
                     'options' => ['style' => 'width:50px'],

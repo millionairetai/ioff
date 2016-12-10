@@ -23,21 +23,7 @@ use yii\grid\GridView;
             'filterModel' => $model,
             'columns' => [
                 'column_name',
-//                'id',
-//                ['attribute' => 'translated_text', 'value' => 'translation.translated_text'],
-                [
-                    'attribute' => 'translated_text',
-//                    'value' => 'translation.translated_text'
-                ],
-                [
-                    'attribute' => 'language_id',
-                    'value' => 'language.name',
-                    'filter' => yii\helpers\ArrayHelper::map(common\models\Language::find()->asArray()->all(), 'id', 'name')
-                ],
-//                'translation.translated_text',
                 'package_name',
-//                'language_id',
-//                'description',
                 [
 //                    'header' => 'Action',
                     'options' => ['style' => 'width:50px'],

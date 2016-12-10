@@ -21,9 +21,6 @@ use yii\data\ActiveDataProvider;
  */
 class Controller extends \backend\components\db\ActiveRecord {
 
-    public $translated_text;
-    public $language_id;
-    
     /**
      * @inheritdoc
      */
@@ -36,12 +33,11 @@ class Controller extends \backend\components\db\ActiveRecord {
      */
     public function rules() {
         return [
-            [['package_id', 'language_id', 'datetime_created', 'lastup_datetime', 'created_employee_id', 'lastup_employee_id'], 'integer'],
-            [[ 'package_id', 'translated_text', 'column_name', 'language_id'], 'required'],
+            [['package_id', 'datetime_created', 'lastup_datetime', 'created_employee_id', 'lastup_employee_id'], 'integer'],
+            [[ 'package_id', 'column_name'], 'required'],
             [['disabled'], 'boolean'],
             [['column_name', 'description'], 'string', 'max' => 255],
-            [['package_name'], 'string', 'max' => 50],
-            [['translated_text'], 'safe'], //!!!
+            [['package_name'], 'string', 'max' => 50],//!!!
         ];
     }
 
@@ -69,7 +65,7 @@ class Controller extends \backend\components\db\ActiveRecord {
      */
     public function search($params) {
         $query = static::find()
-                ->select(['controller.id', 'package_name', 'description', 'translated_text', 'language_id', 'column_name'])
+                ->select(['controller.id', 'package_name', 'description', 'column_name'])
                 ->leftJoin('translation', 'translation.owner_id=controller.id AND owner_table="controller"');
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -80,18 +76,8 @@ class Controller extends \backend\components\db\ActiveRecord {
         }
         
         $query->andFilterWhere(['like', 'column_name', $this->column_name]);
-        $query->andFilterWhere(['like', 'language_id', $this->language_id]);
-        $query->andFilterWhere(['like', 'translation.translated_text', $this->translated_text]);
         $query->andFilterWhere(['like', 'package_name', $this->package_name]);
         $query->andFilterWhere(['like', 'description', $this->description]);
         return $dataProvider;
-    }
-    
-    public function getTranslation() {
-        return $this->hasOne(Translation::className(), ['owner_id' => 'id'])->where(['owner_table' => "controller"]);
-    }
-    
-    public function getLanguage() {
-        return $this->hasOne(Language::className(), ['id' => 'language_id']);
     }
 }

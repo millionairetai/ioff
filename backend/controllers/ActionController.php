@@ -6,7 +6,6 @@ use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use common\models\Action;
-use common\models\Translation;
 
 class ActionController extends \yii\web\Controller {
 
@@ -23,36 +22,12 @@ class ActionController extends \yii\web\Controller {
     }
 
     public function actionAdd() {
-        try {
             $action = \Yii::$app->request->post('Action');
             if (isset($action)) {
-                $transaction = \Yii::$app->db->beginTransaction();
-                //Save into controller table.
-                $this->_model->controller_id = $action['controller_id'];
-                $this->_model->description = $action['description'];
-                $this->_model->column_name = $action['column_name'];
-                $this->_model->url = $action['url'];
-                $this->_model->is_display_menu = $action['is_display_menu'];
-                $this->_model->is_check = $action['is_check'];
-                if ($this->_model->save(false) === false) {
-                    throw new \Exception('Can not savecontroller ');
+                $this->_model->attributes = $action;
+                if ($this->_model->save()) {
+                    return $this->redirect(['action/index']);
                 }
-                
-                //Save into translation.
-                $translation = new Translation();
-                $translation->owner_id = $this->_model->id;
-                $translation->language_id = $action['language_id'];
-                $translation->owner_table = 'action';
-                $translation->translated_text = $action['translated_text'];
-                if ($translation->save(false) === false) {
-                    throw new \Exception('Can not save translation');
-                }
-                
-                $transaction->commit();
-                return $this->redirect(['action/index']);
-            }
-        } catch (\Exception $ex) {
-            $transaction->rollBack();
         }
         
         return $this->render('form', ['model' => $this->_model]);
