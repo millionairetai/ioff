@@ -5,7 +5,7 @@
  * @license http://www.yiiframework.com/license/
  */
 
-namespace common\components\db\mysql;
+namespace backend\components\db\mysql;
 
 use yii\db\Expression;
 use yii\db\TableSchema;

@@ -2,6 +2,13 @@
 
 $config = [
     'components' => [
+        'db' => [
+            'class' => 'backend\components\db\Connection',
+            'dsn' => 'mysql:host=localhost;dbname=iofficez_change',
+            'username' => 'root',
+            'password' => '',
+            'charset' => 'utf8',
+        ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => '9WBwz6xMNmH8euMyj_dxn9Q6c4935up5',

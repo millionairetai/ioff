@@ -34,6 +34,11 @@ use yii\helpers\Url;
               </a>
             </li>
             <li>
+              <a href="/translation/index">
+                <i class="fa fa-empire"></i> <span>Văn bản dịch</span> 
+              </a>
+            </li>
+            <li>
                 <a href="<?php echo Url::to('/index/logout')?>">
                 <i class="fa fa-sign-out"></i> <span>Đăng xuất</span> 
               </a>

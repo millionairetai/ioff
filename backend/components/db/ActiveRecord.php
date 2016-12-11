@@ -7,7 +7,6 @@ use yii\behaviors\TimestampBehavior;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\AttributeBehavior;
 use yii\web\User;
-use common\models\Employee;
 
 class ActiveRecord extends \yii\db\ActiveRecord {
 
@@ -115,5 +114,25 @@ class ActiveRecord extends \yii\db\ActiveRecord {
                 return date('d-m-y H:i', $this->datetime_created);
             },
         ];
+    }
+     
+    /**
+     * BatchInsert
+     * 
+     * @param array $dataInsert
+     * @return boolean
+     */
+    public static function batchInsert($dataInsert, $columns = []) {
+        if (!empty($dataInsert)) {
+            if (empty($columns)) {
+                $columns = array_keys($dataInsert[0]);
+            }
+            
+            if (!\Yii::$app->db->createCommand()->batchInsert(self::tableName(), $columns, $dataInsert)->execute()) {
+                throw new \Exception('Save record to' . self::tableName() . ' table fail');
+            }
+        }
+        
+        return true;
     }
 }

@@ -10,5 +10,6 @@ return [
     'Company list' => 'Danh sách công ty',
     'Add company' => 'Thêm công ty',
     'Update company' => 'Cập nhật công ty',    
-
+    'Owner Table' => 'Bảng sở hữu',
+    'Translated text' => 'Văn bản dịch',
 ];

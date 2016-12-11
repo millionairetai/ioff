@@ -1,9 +1,9 @@
 <?php
 
-namespace common\components\db\mysql;
+namespace backend\components\db\mysql;
 
 use yii\db\Exception;
-use common\components\db\ActiveRecord;
+use backend\components\db\ActiveRecord;
 
 /**
  * QueryBuilder is the query builder for MySQL databases.
@@ -137,9 +137,8 @@ class QueryBuilder extends \yii\db\mysql\QueryBuilder
     public function batchInsert($table, $columns, $rows)
     {
         $unixtime = time();
-        $companyId = \Yii::$app->user->getCompanyId();
         $employeeId = \Yii::$app->user->getId();
-        $columns = array_merge($columns, ['company_id', 'datetime_created', 'lastup_datetime', 'created_employee_id', 'lastup_employee_id', 'disabled']);
+        $columns = array_merge($columns, ['datetime_created', 'lastup_datetime', 'created_employee_id', 'lastup_employee_id', 'disabled']);
         $schema = $this->db->getSchema();
         
         if (($tableSchema = $schema->getTableSchema($table)) !== null) {
@@ -164,8 +163,7 @@ class QueryBuilder extends \yii\db\mysql\QueryBuilder
                 }
                 $vs[] = $value;
             }
-            
-            $vs[]=$companyId;
+
             $vs[]=$unixtime;
             $vs[]=$unixtime;
             $vs[]=$employeeId;

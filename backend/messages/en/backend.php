@@ -10,5 +10,6 @@ return [
     'Company list' => 'Company list',
     'Add company' => 'Add company',
     'Update company' => 'Update company',
-    
+    'Owner Table' => 'Owner Table',
+    'Translated text' => 'Translated text',
 ];

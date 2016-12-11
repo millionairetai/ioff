@@ -7,3 +7,8 @@ jQuery('.show-form-search').click(function () {
     }
     open = !open;
 });
+
+$('#translation-owner_table').on('change', function() {
+    $('#translation-form').submit();
+  
+})
