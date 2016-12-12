@@ -233,7 +233,7 @@ class Task extends \common\components\db\ActiveRecord {
                 ->select('task_id')
                 ->where(['employee_id' => \Yii::$app->user->identity->id]);
 
-        $tasks = Task::find(['id', 'company_id', 'company_id', 'priority_id', 'status_id', 'parent_id', 'employee_id',
+        $tasks = self::find(['id', 'company_id', 'company_id', 'priority_id', 'status_id', 'parent_id', 'employee_id',
                             'name', 'description', 'description_parse', 'start_datetime', 'duedatetime', 'estimate_hour', 'worked_hour',
                             'completed_percent', 'is_public'])
                         ->with('creator', 'assignees', 'followers')
@@ -485,20 +485,29 @@ class Task extends \common\components\db\ActiveRecord {
     /**
      * Get list task of employees login
      */
-    public static function getMyTaskForPopup($itemPerPage = 10, $currentPage = 1) {
+    public static function getMyTaskForDropdown($currentPage = 1, $itemPerPage = 10) {
         $subTaskAssiQuery = TaskAssignment::find()
                     ->select('task_id')
                     ->where(['employee_id' => \Yii::$app->user->identity->id]);
-        return self::find()
+
+        $myTasks = self::find()
                     ->select(['task.id', 'task.name', 'completed_percent'])
                     ->leftJoin('status', 'task.status_id=status.id')
                     ->andWhere(['task.id' => $subTaskAssiQuery])
                     ->andWhere(['not in', Status::tableName() . '.column_name', ['task.completed', 'task.closed']])
                     ->andCompanyId(false, 'task')
-                    ->orderBy('task.datetime_created DESC')
+                    ->orderBy('task.datetime_created DESC');
+        
+        
+        $totalCount = $myTasks->count();
+        $myTasks = $myTasks->offset(($currentPage - 1) * $itemPerPage)
                     ->limit($itemPerPage)
-                    ->offset(($currentPage - 1) * $itemPerPage)
                     ->asArray()
                     ->all();
+        
+         return [
+            'collection' => $myTasks,
+            'totalCount' => $totalCount,
+        ];
     }    
 }

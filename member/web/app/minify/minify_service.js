@@ -835,7 +835,7 @@ appRoot.factory('taskService', ['apiService','$rootScope','alertify', function (
                 apiService.get('task/get-tasks',data,success,error);
             },
             getTaskForDropdown: function(data,success,error) {
-                apiService.post('task/get-task-for-dropdown',data,success,error, 0);
+                apiService.post('task/get-task-for-dropdown',data,success,error, false);
             },
             getSearchGlobalTasks:  function(data,success,error) {
                 apiService.post('task/get-search-global-tasks',data,success,error);

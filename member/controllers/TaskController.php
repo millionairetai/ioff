@@ -353,11 +353,10 @@ class TaskController extends ApiController {
      * Get task list follower for currrent login employee.
      */
     public function actionGetTaskForDropdown() {
-        $itemPerPage = \Yii::$app->request->get('limit');
-        $currentPage = \Yii::$app->request->get('page');
-        $searchText = \Yii::$app->request->get('searchText');
+        $objects = [];
         try {
-            $result = Task::getTasks(10, 1, '');
+            $result = Task::getMyTaskForDropdown(\Yii::$app->request->post('currentPage'), 10);
+            
         } catch (\Exception $e) {
             $result = [
                 'collection' => [],
@@ -365,10 +364,9 @@ class TaskController extends ApiController {
             ];
         }
 
-        $objects = [];
-        $objects['collection'] = $result['collection'];
-        $objects['totalItems'] = (int) $result['totalCount'];
-        return $this->sendResponse(false, '', $objects);
+//        $objects['collection'] = $result;
+//        $objects['totalItems'] = (int) $result['totalCount'];
+        return $this->sendResponse(false, '', $result);
     }
 
     public function actionGetSearchGlobalSuggestion() {

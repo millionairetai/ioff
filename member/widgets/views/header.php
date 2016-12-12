@@ -104,15 +104,15 @@
                 <li class="dropdown tasks-menu">
                     <a class="dropdown-toggle cursor-pointer" data-toggle="dropdown" ng-click="getTaskForDropdown()">
                         <i class="fa fa-flag-o"></i>
-                        <span class="label label-danger">9</span>
+                        <span class="label label-danger">{{myTasks.total}}</span>
                     </a>
                     <ul class="dropdown-menu">
                         <li class="header">Bạn có 9 công việc</li>
                         <li>
                             <!-- inner menu: contains the actual data -->
                             <ul class="menu" scrolly="getTaskForDropdown()">
-                                <li ng-repeat="task in taskDropdown"><!-- Task item -->
-                                    <a href="#">
+                                <li ng-repeat="task in myTasks.task"><!-- Task item -->
+                                    <a href="#/viewTask/{{task.id}}">
                                         <h3>
                                             {{task.name}}
                                             <small class="pull-right">{{task.completed_percent}}%</small>
