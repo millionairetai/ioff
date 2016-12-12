@@ -1740,10 +1740,7 @@ appRoot.controller('changeProfileCtrl', ['$scope', '$rootScope', 'alertify', 'em
         $scope.file = [];
         //add file
         $scope.addFile = function (files) {
-            
             $scope.$apply(function () {
-                console.log($rootScope.isHaveAuth('Default/indexjj'));
-            console.log($rootScope.auth.Default.index);
                 try {
                     if (!validateService.maxSizeUpload(files[0])) {
                         throw $rootScope.$lang.max_size;

@@ -95,13 +95,33 @@ class Authority extends \common\components\db\ActiveRecord {
      * @return array|null
      */
     public static function getAuthByEmployeeId($employeeId) {
+        $query = (new \yii\db\Query())
+                        ->select(['action.column_name AS action_column_name', 'url', 'controller.column_name AS controller_column_name', 'is_display_menu'])
+                        ->from('employee')
+                        ->leftJoin('authority', 'authority.id = employee.authority_id')
+                        ->leftJoin('authority_assignment', 'authority.id = authority_assignment.authority_id')
+                        ->leftJoin('action', 'authority_assignment.action_id = action.id')
+                        ->leftJoin('controller', 'action.controller_id = controller.id')
+                        ->where(['employee.id' => $employeeId,]) 
+                        ->andWhere(['!=', 'action.is_check', self::VAL_FALSE])
+                        ->union((new \yii\db\Query())
+                        ->select(['action.column_name AS action_column_name', 'url', 'controller.column_name AS controller_column_name', 'is_display_menu'])
+                        ->from('action')
+                        ->leftJoin('controller', 'action.controller_id = controller.id')
+                        ->where(['action.is_check'=> 0]), false);
+
+        $sql = $query->createCommand()->getRawSql();
+        return self::findBySql($sql)->asArray()->all();
+        
+        
         return Employee::find()
-            ->select(['action.column_name AS action_column_name', 'url', 'controller.column_name AS controller_column_name', 'is_display_menu'])
+            ->select(['action.column_name AS action_column_name', 'url', 'controller.column_name AS controller_column_name', 'is_display_menu', 'authority.name AS authority_name'])
             ->leftJoin('authority', 'authority.id = employee.authority_id')
-            ->leftJoin('authority_assigment', 'authority.id = authority_assigment.authority_id')
-            ->leftJoin('action', 'authority_assigment.action_id = action.id')
+            ->leftJoin('authority_assignment', 'authority.id = authority_assignment.authority_id')
+            ->leftJoin('action', 'authority_assignment.action_id = action.id')
             ->leftJoin('controller', 'action.controller_id = controller.id')
             ->where(["employee.id" => $employeeId])
+            ->orFilterWhere(['action.is_check'=> 0])
             ->asArray()
             ->all();
     }

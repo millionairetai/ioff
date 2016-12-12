@@ -17,14 +17,14 @@ use Yii;
  * @property string $lastup_employee_id
  * @property boolean $disabled
  */
-class AuthorityAssigment extends \common\components\db\ActiveRecord
+class AuthorityAssignment extends \common\components\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'authority_assigment';
+        return 'authority_assignment';
     }
 
     /**
