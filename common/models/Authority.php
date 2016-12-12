@@ -104,26 +104,30 @@ class Authority extends \common\components\db\ActiveRecord {
                         ->leftJoin('controller', 'action.controller_id = controller.id')
                         ->where(['employee.id' => $employeeId,]) 
                         ->andWhere(['!=', 'action.is_check', self::VAL_FALSE])
-                        ->union((new \yii\db\Query())
+                    ->union((new \yii\db\Query())
                         ->select(['action.column_name AS action_column_name', 'url', 'controller.column_name AS controller_column_name', 'is_display_menu'])
                         ->from('action')
                         ->leftJoin('controller', 'action.controller_id = controller.id')
-                        ->where(['action.is_check'=> 0]), false);
+                        ->where(['action.is_check'=> self::VAL_FALSE]), false);
 
-        $sql = $query->createCommand()->getRawSql();
-        return self::findBySql($sql)->asArray()->all();
-        
-        
+        return self::findBySql($query->createCommand()->getRawSql())->asArray()->all();
+    }
+
+    /**
+     * Get employee auth by employee id.
+     * 
+     * @param interger $employeeId
+     * @return array|boolean
+     */
+    public static function getAuthByEmployeeIdAndIsCheckTrue($employeeId) {
         return Employee::find()
-            ->select(['action.column_name AS action_column_name', 'url', 'controller.column_name AS controller_column_name', 'is_display_menu', 'authority.name AS authority_name'])
+            ->select(['action.column_name AS action_column_name', 'url', 'controller.column_name AS controller_column_name', 'is_display_menu'])
             ->leftJoin('authority', 'authority.id = employee.authority_id')
             ->leftJoin('authority_assignment', 'authority.id = authority_assignment.authority_id')
             ->leftJoin('action', 'authority_assignment.action_id = action.id')
             ->leftJoin('controller', 'action.controller_id = controller.id')
-            ->where(["employee.id" => $employeeId])
-            ->orFilterWhere(['action.is_check'=> 0])
+            ->where(["employee.id" => $employeeId, 'action.is_check' => self::VAL_TRUE])
             ->asArray()
             ->all();
     }
-
 }

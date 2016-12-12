@@ -37,7 +37,7 @@ use yii\helpers\Url;
                     <i class="fa fa-user"></i> <span>Employee</span> 
                 </a>
             </li>
-            <li>
+            <li ng-show="$root.auth.authority.index">
                 <a href="#authority">
                     <i class="fa fa-group"></i> <span>Authorities</span> 
                 </a>

@@ -2,7 +2,7 @@
     <h1>
         {{$root.$lang.task_manage}}
     </h1>
-    <div class="tool-right">
+    <div ng-show="$root.auth.task.add" class="tool-right">
         <a class="btn btn-primary btn-flat" ng-click="add()"><i class="fa fa-plus-square"></i> {{$root.$lang.task_add}}</a>
     </div>
 </section>

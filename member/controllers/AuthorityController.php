@@ -238,7 +238,7 @@ class AuthorityController extends ApiController {
      */
     public function actionGetEmployeeAuth() {
         $objects = [];
-        if ($authorities = Authority::getAuthByEmployeeId(Yii::$app->user->identity->id)) {
+        if ($authorities = Authority::getAuthByEmployeeIdAndIsCheckTrue(Yii::$app->user->identity->id)) {
             foreach($authorities as $key => $val) {
                 $objects[$val['controller_column_name']][$val['action_column_name']] = [
                     'url' => $val['url'],

@@ -3,7 +3,7 @@
         <h1>
             {{$root.$lang.authority_manage}}
         </h1>
-        <div class="tool-right">
+        <div ng-show="$root.auth.authority.add" class="tool-right">
             <a class="btn btn-flat btn-primary" ng-click="add()"><i class="fa fa-plus-square"></i> {{$root.$lang.authority_add}}</a>
         </div>
     </section>
@@ -81,7 +81,7 @@
                             <td>{{item.name}}</td>
                             <td>{{item.lastup_datetime * 1000| date:'dd-MM-yyyy'}}</td>
                             <td>{{item.firstname}} {{item.lastname}}</td>
-                            <td><i class="fa fa-edit cursor-pointer" ng-click="add(item, $index)"></i></td>
+                            <td><i ng-show="$root.auth.authority.edit" class="fa fa-edit cursor-pointer" ng-click="add(item, $index)"></i></td>
                         </tr>
                     </table>
 

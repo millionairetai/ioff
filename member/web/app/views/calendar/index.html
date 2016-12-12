@@ -36,12 +36,12 @@
                 <!-- Add the bg color to the header using any of the bg-* classes -->
                 <div class="widget-user-header bg-yellow" style=" padding: 10px 20px;">
                     {{$root.$lang.calendar_title}}
-                        <div class="btn-group fc-right pull-right">
-                            <a href="javascript:void(0)" class="text-white" ng-click="addCalendar()">
-                                <i class="fa fa-plus"></i> {{$root.$lang.add}}
-                            </a>
-                </div>
+                    <div ng-show="$root.auth.calendar.add_calendar" class="btn-group fc-right pull-right">
+                        <a href="javascript:void(0)" class="text-white" ng-click="addCalendar()">
+                            <i class="fa fa-plus"></i> {{$root.$lang.add}}
+                        </a>
                     </div>
+                </div>
                 <div class="box-footer no-padding">
                     <ul class="list-calendar-title">
                         <li>
@@ -51,56 +51,56 @@
                             <a><input type="checkbox" checklist-model="chooseMyFollowTask" checklist-value="true" icheck ng-change="checkCalendar()"> {{$root.$lang.my_follow_task}} <span class="pull-right badge bg-blue">{{myFollowTask.length}}</span></a>
                         </li>
                         <li ng-repeat="calendar in calendars">
-                                <input type="checkbox" checklist-model="chooseCalendar" checklist-value="calendar.id" icheck ng-change="checkCalendar()"> {{calendar.name}}
-                                <div class="btn-group pull-right">
-                                    <button type="button" class="btn btn-list-tool dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-                                        <i class="fa fa-bars"></i>
-                                    </button>
-                                    <ul class="dropdown-menu pull-right" role="menu">
-                                        <li><a ng-click="editCalendar(calendar, $index)" class="fa">{{$root.$lang.button_update}}</a></li>
-                                        <li><a ng-click="deleteCalendar($index, calendar.id)">{{$root.$lang.remove}}</a></li>
-                                    </ul>
-                                </div>
-                                <span class="pull-right badge bg-blue">{{calendar.count}}</span>
+                            <input type="checkbox" checklist-model="chooseCalendar" checklist-value="calendar.id" icheck ng-change="checkCalendar()"> {{calendar.name}}
+                            <div ng-show="$root.auth.calendar.delete_calendar && $root.auth.calendar.edit_calendar" class="btn-group pull-right">
+                                <button type="button" class="btn btn-list-tool dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                                    <i class="fa fa-bars"></i>
+                                </button>
+                                <ul class="dropdown-menu pull-right" role="menu">
+                                    <li ng-show="$root.auth.calendar.edit_calendar"><a ng-click="editCalendar(calendar, $index)" class="fa">{{$root.$lang.button_update}}</a></li>
+                                    <li ng-show="$root.auth.calendar.delete_calendar"><a ng-click="deleteCalendar($index, calendar.id)">{{$root.$lang.remove}}</a></li>
+                                </ul>
+                            </div>
+                            <span class="pull-right badge bg-blue">{{calendar.count}}</span>
                         </li>
                     </ul>
                 </div>
             </div>
             <div class="box box-warning box-solid" event-fixed>
-                    <div class="box-header with-border">
-                        <h3 class="box-title">Upcoming Event</h3>
+                <div class="box-header with-border">
+                    <h3 class="box-title">Upcoming Event</h3>
 
-                        <div class="box-tools pull-right">
-                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                            </button>
-                        </div>
-                        <!-- /.box-tools -->
+                    <div class="box-tools pull-right">
+                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                        </button>
                     </div>
-                    <!-- /.box-header -->
-                    <div class="box-body no-padding">
-                        <div class="item-event">
-                            <span class="fa fa-calendar"></span>
-                            <dl>
-                                <dt>Event name</dt>
-                                <dd>
-                                    30/09/2016
-                                </dd>
-                            </dl>
-                        </div>
-                        <div class="item-event">
-                            <span class="fa fa-calendar"></span>
-                            <dl>
-                                <dt>Event name</dt>
-                                <dd>
-                                    30/09/2016
-                                </dd>
-                            </dl>
-                        </div>
-                    </div>
-                    <!-- /.box-body -->
+                    <!-- /.box-tools -->
                 </div>
+                <!-- /.box-header -->
+                <div class="box-body no-padding">
+                    <div class="item-event">
+                        <span class="fa fa-calendar"></span>
+                        <dl>
+                            <dt>Event name</dt>
+                            <dd>
+                                30/09/2016
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="item-event">
+                        <span class="fa fa-calendar"></span>
+                        <dl>
+                            <dt>Event name</dt>
+                            <dd>
+                                30/09/2016
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+                <!-- /.box-body -->
+            </div>
         </div >
-        </div >
-        <div class="clearfix"></div>
-    </div>
+    </div >
+    <div class="clearfix"></div>
+</div>
 </section>
