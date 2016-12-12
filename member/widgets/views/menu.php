@@ -7,64 +7,59 @@ use yii\helpers\Url;
     <section class="sidebar">
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu">
-            <li class="treeview">
-                <a href="#home">
-                    <i class="fa fa-dashboard"></i> <span>Dashboard</span> <i class="fa fa-angle-left pull-right"></i>
-                </a>
-            </li>
             <li>
                 <a href="#activity">
-                    <i class="fa fa-thumbs-up"></i> <span>Activity</span> 
+                    <i class="fa fa-thumbs-up"></i> <span>{{$root.$lang.activity}}</span> 
                 </a>
             </li>
             <li>
                 <a href="#project">
-                    <i class="fa fa-th"></i> <span>Project</span> 
+                    <i class="fa fa-th"></i> <span>{{$root.$lang.project}}</span> 
                 </a>
             </li>
             <li>
                 <a href="#task">
-                    <i class="fa fa-tasks"></i> <span>Task</span> 
+                    <i class="fa fa-tasks"></i> <span>{{$root.$lang.task}}</span> 
                 </a>
             </li>
             <li>
                 <a href="#calendar">
-                    <i class="fa fa-calendar"></i> <span>Calendar</span> 
+                    <i class="fa fa-calendar"></i> <span>{{$root.$lang.calendar_title}}</span> 
                 </a>
             </li>
             <li>
                 <a href="#employee">
-                    <i class="fa fa-user"></i> <span>Employee</span> 
+                    <i class="fa fa-user"></i> <span>{{$root.$lang.employee}}</span> 
                 </a>
             </li>
             <li ng-show="$root.auth.authority.index">
                 <a href="#authority">
-                    <i class="fa fa-group"></i> <span>Authorities</span> 
+                    <i class="fa fa-group"></i> <span>{{$root.$lang.authority}}</span> 
                 </a>
             </li>
             <li>
                 <a href="#company">
-                    <i class="fa fa-star-o"></i> <span>Company</span> 
+                    <i class="fa fa-star-o"></i> <span>{{$root.$lang.company}}</span> 
                 </a>
             </li>
             <li>
                 <a href="#company">
-                    <i class="fa fa-bars"></i> <span>Department</span> 
+                    <i class="fa fa-bars"></i> <span>{{$root.$lang.department}}</span> 
                 </a>
             </li>
             <li>
                 <a href="#report">
-                    <i class="fa fa-line-chart"></i> <span>Report</span> 
+                    <i class="fa fa-line-chart"></i> <span>{{$root.$lang.report}}</span> 
                 </a>
             </li>
             <li>
                 <a href="#company">
-                    <i class="fa fa-file"></i> <span>File</span> 
+                    <i class="fa fa-file"></i> <span>{{$root.$lang.file}}</span> 
                 </a>
             </li>
             <li>
                 <a href="#company">
-                    <i class="fa fa-cc-mastercard"></i> <span>Invoice</span> 
+                    <i class="fa fa-cc-mastercard"></i> <span>{{$root.$lang.invoice}}</span> 
                 </a>
             </li>
             <li>

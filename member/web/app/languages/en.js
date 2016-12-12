@@ -89,6 +89,7 @@
             all: 'All',
             edit: 'Edit', 
             message: 'Message',
+            activity: 'Activity',
             //-----------------------------------------End of common language.----------------------------------
             
             //project
@@ -335,7 +336,13 @@
             new_password: 'New password',
             renew_password: 'Re-New password',
             please_choose_png_gif_jpg_file: 'Please choose png, gif, jpg file', 
-            change_profile_avatar: 'Change avatar profile'
+            change_profile_avatar: 'Change avatar profile',
+            //company
+            company: 'Company',
+            //Report
+            report: 'Report',
+            //Invoice
+            invoice: 'Invoice'
         };
     });
 })(window.angular);

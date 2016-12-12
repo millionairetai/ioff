@@ -88,6 +88,7 @@
             all: 'Tất cả',
             edit: 'Cập nhật', 
             message: 'Tin nhắn',
+            activity: 'Hoạt động',
             //-----------------------------------------End of common language.----------------------------------
             
             //project
@@ -347,7 +348,13 @@
             new_password: 'Mật khẩu mới',
             renew_password: 'Nhập lại mật khẩu mới',
             please_choose_png_gif_jpg_file: 'Xin chọn file png, gif, jpg', 
-            change_profile_avatar: 'Thay đổi ảnh đại diện'
+            change_profile_avatar: 'Thay đổi ảnh đại diện',
+            //company
+            company: 'Công ty',
+            //Report
+            report: 'Báo cáo',
+            //Invoice
+            invoice: 'Hóa đơn'
         };
     });
 })(window.angular);
