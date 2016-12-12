@@ -36,7 +36,7 @@
                         <ul class="list-action show-on-mobile">
                             <li ng-repeat="item in controller.actions">
                                 <div class="checkbox">
-                                    <input type="checkbox" ng-model="item.isChecked" icheck ng-change="selectAction(controllerId, $index)"/> {{item.name}}
+                                    <input type="checkbox" ng-model="item.isChecked" icheck ng-change="selectAction(controllerId, $index)"/> {{item.translated_text}}
                                 </div>
                             </li>
                         </ul>

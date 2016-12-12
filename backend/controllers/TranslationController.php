@@ -7,7 +7,6 @@ use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use common\models\Language;
 use common\models\Action;
-use common\models\Controler;
 use common\models\Status;
 use common\models\Priority;
 use common\models\Translation;
@@ -43,10 +42,10 @@ class TranslationController extends \yii\web\Controller {
                 $this->_model->attributes = $controller;   
                 switch ($ownerTable) {
                     case 'action':
-                        $ownerIds = \common\models\Action::find()->select(['column_name', 'id'])->indexBy('id')->column();
+                        $ownerIds = Action::getControllerPlusAction();
                         break;
                     case 'controller':
-                        $ownerIds = \common\models\Controller::find()->select(['column_name', 'id'])->indexBy('id')->column();
+                        $ownerIds = \common\models\Controller::gets();
                         break;
                 }
                 

@@ -4,7 +4,7 @@ namespace member\controllers;
 
 use Yii;
 use common\models\Authority;
-use common\models\AuthorityAssigment;
+use common\models\AuthorityAssignment;
 use common\models\Employee;
 
 class AuthorityController extends ApiController {
@@ -43,8 +43,8 @@ class AuthorityController extends ApiController {
                 }
 
                 if (!Yii::$app->db->createCommand()->batchInsert(
-                                AuthorityAssigment::tableName(), ['authority_id', 'action_id'], $actions)->execute()) {
-                    throw new \Exception('BatchInsert to AuthorityAssigment table fail');
+                                AuthorityAssignment::tableName(), ['authority_id', 'action_id'], $actions)->execute()) {
+                    throw new \Exception('BatchInsert to AuthorityAssignment table fail');
                 }
             }
 
@@ -89,7 +89,7 @@ class AuthorityController extends ApiController {
             }
 
             if (!empty($request['actions'])) {
-                if (!AuthorityAssigment::deleteAll('authority_id=' . $model->id)) {
+                if (!AuthorityAssignment::deleteAll('authority_id=' . $model->id)) {
                     throw new \Exception('Delete all authority_assignment fail');
                 }
 
@@ -102,7 +102,7 @@ class AuthorityController extends ApiController {
                 }
 
                 if (!Yii::$app->db->createCommand()->batchInsert(
-                                AuthorityAssigment::tableName(), ['authority_id', 'action_id'], $actions)->execute()) {
+                                AuthorityAssignment::tableName(), ['authority_id', 'action_id'], $actions)->execute()) {
                     throw new \Exception('BatchInsert to authority_assignment table fail');
                 }
             }
@@ -159,7 +159,7 @@ class AuthorityController extends ApiController {
         $assignments = [];
 
         if (isset($request['authorityId'])) {
-            $assignments = AuthorityAssigment::find()
+            $assignments = AuthorityAssignment::find()
                     ->select('action_id')
                     ->where(['authority_id' => $request['authorityId']])
                     ->andCompanyId()
@@ -195,7 +195,7 @@ class AuthorityController extends ApiController {
                 throw new \Exception('Delete authority fail');
             }
             
-            if (!AuthorityAssigment::deleteAll('authority_id=' . $model->id)) {
+            if (!AuthorityAssignment::deleteAll('authority_id=' . $model->id)) {
                 throw new \Exception('Delete authority_assigment fail');
             }
             

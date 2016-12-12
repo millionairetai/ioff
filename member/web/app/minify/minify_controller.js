@@ -94,7 +94,7 @@ appRoot.controller('AddAuthorityCtrl', ['$scope', '$uibModalInstance', 'controll
 
         controllerService.findAll(function (res) {
             for (var i in res.objects) {
-                controllerNames[res.objects[i]['id']] = res.objects[i]['name'];
+                controllerNames[res.objects[i]['id']] = res.objects[i]['translated_text'];
             }
             
             $scope.controllers = controllerNames;

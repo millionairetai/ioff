@@ -90,5 +90,37 @@ class Action extends \backend\components\db\ActiveRecord {
 
         return $dataProvider;
     }
+    
+    /**
+     * Get list of action.
+     * @return array|boolen
+     */
+    public static function gets() {
+        return self::find()->select(['column_name', 'id'])->indexBy('id')->column();
+    }
 
+    /**
+     * Get list of action.
+     * @return array|boolen
+     */
+    public static function getControllerPlusAction() {
+        return self::find()->select(['CONCAT(controller.column_name, " / ", action.column_name)', 'action.id'])
+                ->leftJoin('controller', 'action.controller_id=controller.id')
+                ->indexBy('id')
+                ->column();
+    }
+    
+    /**
+     * Get list of action translation
+     * @return array|boolean
+     */
+    public static function getTranslation() {
+        return self::find()->select(['translated_text', 'controller.id AS controller_id', 'action.id'])
+                ->leftJoin('controller', 'action.controller_id=controller.id')
+                ->leftJoin('translation', 'translation.owner_id=action.id AND owner_table="action"')
+                ->leftJoin('language', 'translation.language_id=language.id')
+                ->where(['language.language_code' => \Yii::$app->language])
+                ->asArray()
+                ->all();
+    }
 }

@@ -10,6 +10,6 @@ class ActionController extends ApiController {
    * Get list of actions
    */
   public function actionIndex(){
-    return $this->sendResponse(false, "", Action::find()->select('controller_id, id, name')->asArray()->all());
+    return $this->sendResponse(false, "", Action::getTranslation());
   }
 }

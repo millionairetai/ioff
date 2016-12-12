@@ -80,4 +80,26 @@ class Controller extends \backend\components\db\ActiveRecord {
         $query->andFilterWhere(['like', 'description', $this->description]);
         return $dataProvider;
     }
+    
+    /**
+     * Get list of controller.
+     * @param array $params
+     * @return array|boolen
+     */
+    public static function gets() {
+        return self::find()->select(['column_name', 'id'])->indexBy('id')->column();
+    }
+    
+    /**
+     * Get list of controller translation
+     * @return array|boolean
+     */
+    public static function getTranslation() {
+        return self::find()->select(['translated_text', 'controller.id'])
+                ->leftJoin('translation', 'translation.owner_id=controller.id AND owner_table="controller"')
+                ->leftJoin('language', 'translation.language_id=language.id')
+                ->where(['language.language_code' => \Yii::$app->language])
+                ->asArray()
+                ->all();
+    }
 }
