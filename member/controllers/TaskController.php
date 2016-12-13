@@ -350,13 +350,11 @@ class TaskController extends ApiController {
     }
 
     /**
-     * Get task list follower for currrent login employee.
+     * Get my task for dropdown
      */
     public function actionGetTaskForDropdown() {
-        $objects = [];
         try {
-            $result = Task::getMyTaskForDropdown(\Yii::$app->request->post('currentPage'), 10);
-            
+            return $this->sendResponse(false, '', Task::getMyTaskForDropdown(\Yii::$app->request->post('currentPage'), 10));
         } catch (\Exception $e) {
             $result = [
                 'collection' => [],
@@ -364,8 +362,6 @@ class TaskController extends ApiController {
             ];
         }
 
-//        $objects['collection'] = $result;
-//        $objects['totalItems'] = (int) $result['totalCount'];
         return $this->sendResponse(false, '', $result);
     }
 

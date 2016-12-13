@@ -354,7 +354,9 @@
             //Report
             report: 'Báo cáo',
             //Invoice
-            invoice: 'Hóa đơn'
+            invoice: 'Hóa đơn',
+            //Header.
+            you_have_i_task: 'Bạn có %i công việc'
         };
     });
 })(window.angular);

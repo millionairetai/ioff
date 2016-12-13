@@ -104,10 +104,10 @@
                 <li class="dropdown tasks-menu">
                     <a class="dropdown-toggle cursor-pointer" data-toggle="dropdown" ng-click="getMyTaskDropdownClick()">
                         <i class="fa fa-flag-o"></i>
-                        <span class="label label-danger">{{myTasks.total}}</span>
+                        <span ng-show="myTasks.total!=0" class="label label-danger">{{myTasks.total}}</span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li class="header">Bạn có {{myTasks.total}} công việc</li>
+                        <li class="header">{{$root.$lang.you_have_i_task.replace('%i', myTasks.total)}}</li>
                         <li>
                             <!-- inner menu: contains the actual data -->
                             <ul class="menu" scrolly="getMyTaskDropdownScroll()">
@@ -119,7 +119,7 @@
                                         </h3>
                                         <div class="progress xs">
                                             <div class="progress-bar progress-bar-aqua" style="width: {{task.completed_percent}}%" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">
-                                                <span class="sr-only">{{task.completed_percent}}% Complete</span>
+                                                <span class="sr-only">{{task.completed_percent}}%</span>
                                             </div>
                                         </div>
                                     </a>

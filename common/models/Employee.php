@@ -72,7 +72,7 @@ class Employee extends ActiveRecord implements IdentityInterface {
     const STATUS_DELETED = 20;
     //Change with database.
     const STATUS_ACTIVE = 10;
-    //Column_name
+    //Status of employee.
     const COLUNM_NAME_ACTIVE = 'employee.active';
     const COLUNM_NAME_INACTIVE = 'employee.inactive';
     const COLUNM_NAME_INVITED = 'employee.invited';

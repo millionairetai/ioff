@@ -34,6 +34,10 @@ use yii\data\ActiveDataProvider;
 class Task extends \common\components\db\ActiveRecord {
 
     public $sms = 0;
+    //Status of task.
+    const STATUS_COLUMN_NAME_COMPLETED = 'task.completed';
+    const STATUS_COLUMN_NAME_INPROGRESS = 'task.inprogress';
+    const STATUS_COLUMN_NAME_CLOSED = 'task.closed';
 
     function __construct($config = []) {
         parent::__construct();
@@ -456,7 +460,7 @@ class Task extends \common\components\db\ActiveRecord {
                         ->select(['task.id', 'task.name', 'task.start_datetime', 'task.duedatetime'])
                         ->leftJoin('status', 'task.status_id=status.id')
                         ->andWhere(['task.id' => $subTaskAssiQuery])
-                        ->andWhere(['not in', Status::tableName() . '.column_name', ['task.completed', 'task.closed']])
+                        ->andWhere(['not in', Status::tableName() . '.column_name', [self::STATUS_COLUMN_NAME_COMPLETED, self::STATUS_COLUMN_NAME_CLOSED]])
                         ->andCompanyId(false, 'task')
                         ->orderBy('task.datetime_created DESC')
                         ->asArray()
@@ -475,7 +479,7 @@ class Task extends \common\components\db\ActiveRecord {
                         ->select(['task.id', 'task.name', 'task.start_datetime', 'task.duedatetime'])
                         ->leftJoin('status', 'task.status_id=status.id')
                         ->andWhere(['task.id' => $subFollowQuery])
-                        ->andWhere(['not in', Status::tableName() . '.column_name', ['task.completed', 'task.closed']])
+                        ->andWhere(['not in', Status::tableName() . '.column_name', [self::STATUS_COLUMN_NAME_COMPLETED, self::STATUS_COLUMN_NAME_CLOSED]])
                         ->andCompanyId(false, 'task')
                         ->orderBy('task.datetime_created DESC')
                         ->asArray()
@@ -484,6 +488,9 @@ class Task extends \common\components\db\ActiveRecord {
 
     /**
      * Get list task of employees login
+     * @param interger $currentPage
+     * @param interger $itemPerPage
+     * @return array
      */
     public static function getMyTaskForDropdown($currentPage = 1, $itemPerPage = 10) {
         $subTaskAssiQuery = TaskAssignment::find()
@@ -494,10 +501,9 @@ class Task extends \common\components\db\ActiveRecord {
                     ->select(['task.id', 'task.name', 'completed_percent'])
                     ->leftJoin('status', 'task.status_id=status.id')
                     ->andWhere(['task.id' => $subTaskAssiQuery])
-                    ->andWhere(['not in', Status::tableName() . '.column_name', ['task.completed', 'task.closed']])
+                    ->andWhere(['not in', Status::tableName() . '.column_name', [self::STATUS_COLUMN_NAME_COMPLETED, self::STATUS_COLUMN_NAME_CLOSED]])
                     ->andCompanyId(false, 'task')
                     ->orderBy('task.datetime_created DESC');
-        
         
         $totalCount = $myTasks->count();
         $myTasks = $myTasks->offset(($currentPage - 1) * $itemPerPage)
@@ -505,7 +511,7 @@ class Task extends \common\components\db\ActiveRecord {
                     ->asArray()
                     ->all();
         
-         return [
+        return [
             'collection' => $myTasks,
             'totalCount' => $totalCount,
         ];

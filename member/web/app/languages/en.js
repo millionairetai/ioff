@@ -342,7 +342,9 @@
             //Report
             report: 'Report',
             //Invoice
-            invoice: 'Invoice'
+            invoice: 'Invoice',
+            //Header.
+            you_have_i_task: 'You have %i task(s)'
         };
     });
 })(window.angular);

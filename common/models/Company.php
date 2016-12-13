@@ -35,6 +35,7 @@ use common\models\Language;
  */
 class Company extends \backend\components\db\ActiveRecord {
 
+    //Status of company.
     const COLUNM_NAME_ACTIVE = 'company.active';
     const COLUNM_NAME_INACTIVE = 'company.inactive';
     
