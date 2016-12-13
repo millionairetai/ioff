@@ -46,26 +46,26 @@ appRoot.run(function ($rootScope, socketService, notifyService, taskService, com
     $rootScope.myTasks = {
         task: null,
         total: 0,
-        end: false
+        end: false,
+        page: 1
     };
-    var currentPage = 1;
     //Get task for dropdown when loading page.
-    taskService.getMyTaskForDropdown({currentPage: currentPage}, function (respone) {
+    taskService.getMyTaskForDropdown({currentPage: $rootScope.myTasks.page}, function (respone) {
         $rootScope.myTasks.task = respone.objects.collection;
         $rootScope.myTasks.total = respone.objects.totalCount;
         if (respone.objects.collection.length < 10) {
             $rootScope.myTasks.end = true;
             return true;
         }
-        currentPage++;
+        $rootScope.myTasks.page++;
     });
     //Get my task again when clicking on icon.
     $rootScope.getMyTaskDropdownClick = function () {
-        currentPage = 0;
         $rootScope.myTasks = {
             task: null,
             total: 0,
-            end: false
+            end: false,
+            page: 1
         };
 
         $rootScope.getMyTaskDropdownScroll();
@@ -76,7 +76,7 @@ appRoot.run(function ($rootScope, socketService, notifyService, taskService, com
             return true;
         }
         
-        taskService.getMyTaskForDropdown({currentPage: currentPage}, function (respone) {
+        taskService.getMyTaskForDropdown({currentPage: $rootScope.myTasks.page}, function (respone) {
             if ($rootScope.myTasks.task) {
                 $rootScope.myTasks.task = $rootScope.myTasks.task.concat(respone.objects.collection);
                 $rootScope.myTasks.total = respone.objects.totalCount;
@@ -90,7 +90,7 @@ appRoot.run(function ($rootScope, socketService, notifyService, taskService, com
                 return true;
             }
             
-            currentPage++;
+            $rootScope.myTasks.page++;
         });
     }
     //Seach global dropdown
