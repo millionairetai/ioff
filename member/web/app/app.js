@@ -22,22 +22,22 @@ appRoot.run(function ($rootScope, socketService, notifyService, taskService, com
         $rootScope.auth = respone.objects;
         console.log($rootScope.auth);
     });
-        
+
     $rootScope.isAuth = function (url) {
         var segment = url.split('/');
         for (var key in $rootScope.auth) {
             if (key == segment[0]) {
                 for (var keyChild in $rootScope.auth[key]) {
-                    if (keyChild == segment[1] ) {
+                    if (keyChild == segment[1]) {
                         return true;
                     }
                 }
             }
         }
-        
+
         return false;
     }
-    
+
     //init
     notifyService.countNotification({}, function (respone) {
         $rootScope.sum_notify = respone.objects;
@@ -65,16 +65,24 @@ appRoot.run(function ($rootScope, socketService, notifyService, taskService, com
         total: 0
     };
     var currentPage = 1;
+    //Get task for dropdown when loading page.
+    taskService.getTaskForDropdown({currentPage: currentPage}, function (respone) {
+        $rootScope.myTasks.task = respone.objects.collection;
+        $rootScope.myTasks.total = respone.objects.totalCount;
+        currentPage++;
+    });
+    
+    //Get more task when scrolling down the scrollbar at the end.
     $rootScope.getTaskForDropdown = function () {
         taskService.getTaskForDropdown({currentPage: currentPage}, function (respone) {
             if ($rootScope.myTasks.task) {
-                $rootScope.myTasks.task = angular.merge($rootScope.myTasks.task.concat(respone.objects.collection), respone.objects.collection);
+                $rootScope.myTasks.task = $rootScope.myTasks.task.concat(respone.objects.collection);
                 $rootScope.myTasks.total = respone.objects.totalCount;
-            }else {
+            } else {
                 $rootScope.myTasks.task = respone.objects.collection;
                 $rootScope.myTasks.total = respone.objects.totalCount;
             }
-            
+
             currentPage++;
         });
     }
@@ -94,14 +102,14 @@ appRoot.run(function ($rootScope, socketService, notifyService, taskService, com
             $rootScope.searchGlobalItems = null;
             return true;
         }
-        
+
         $rootScope.searchVal = val;
         commonService.getSearchGlobalSuggest({val: val, typeSearch: $rootScope.searchGlobalTypeCode}, function (res) {
             $rootScope.searchGlobalItems = res.objects.collection;
         });
     }
-    
+
     $rootScope.showItemSearchGlobal = function (suggestion) {
-       
+
     }
 });

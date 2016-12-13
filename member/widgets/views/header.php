@@ -102,7 +102,7 @@
                 </li>
                 <!-- Tasks: style can be found in dropdown.less -->
                 <li class="dropdown tasks-menu">
-                    <a class="dropdown-toggle cursor-pointer" data-toggle="dropdown" ng-click="getTaskForDropdown()">
+                    <a class="dropdown-toggle cursor-pointer" data-toggle="dropdown">
                         <i class="fa fa-flag-o"></i>
                         <span class="label label-danger">{{myTasks.total}}</span>
                     </a>
