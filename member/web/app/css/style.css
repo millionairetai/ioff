@@ -1378,6 +1378,9 @@ div.task-creator{
     height: 25px;
 }
 /* Change avatar */
+.box-profile>.profile-user-img{
+    height: 100px;
+}
 .box-profile>a.change-avatar{
     position: absolute;
     top: 10px;

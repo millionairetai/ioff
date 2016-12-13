@@ -9,13 +9,14 @@
 <div class="modal-body text-dangers" >    
     <div class="box-body form-horizontal">
         <form class="form-horizontal" role="form">
-            <div class="col-sm-9" >
+            <div class="clearfix" >
                 <input id="fileImage" type="file" class="form-control input-file-upload" name="file" accept="image/png, image/jpg, image/jpeg, image/pjpeg, image/gif"
-                       onchange="angular.element(this).scope().addFile(this.files); angular.element(this).scope().previewFile();" />
+                       onchange="angular.element(this).scope().addFile(this.files);
+                               angular.element(this).scope().previewFile();" />
 
                 <br/>
                 <br />
-                <img id="previewAvatar" src="" height="200" alt="Image preview...">
+                <div class="text-center"><img id="previewAvatar" src="" height="200" alt="Image preview..."></div>
             </div>
         </form>
     </div>
