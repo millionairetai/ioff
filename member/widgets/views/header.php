@@ -102,15 +102,15 @@
                 </li>
                 <!-- Tasks: style can be found in dropdown.less -->
                 <li class="dropdown tasks-menu">
-                    <a class="dropdown-toggle cursor-pointer" data-toggle="dropdown">
+                    <a class="dropdown-toggle cursor-pointer" data-toggle="dropdown" ng-click="getMyTaskDropdownClick()">
                         <i class="fa fa-flag-o"></i>
                         <span class="label label-danger">{{myTasks.total}}</span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li class="header">Bạn có 9 công việc</li>
+                        <li class="header">Bạn có {{myTasks.total}} công việc</li>
                         <li>
                             <!-- inner menu: contains the actual data -->
-                            <ul class="menu" scrolly="getTaskForDropdown()">
+                            <ul class="menu" scrolly="getMyTaskDropdownScroll()">
                                 <li ng-repeat="task in myTasks.task"><!-- Task item -->
                                     <a href="#/viewTask/{{task.id}}">
                                         <h3>

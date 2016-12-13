@@ -18,63 +18,65 @@ appRoot.controller('iofficezCtrl', ['$scope', function ($scope) {
 
 // run project
 appRoot.run(function ($rootScope, socketService, notifyService, taskService, commonService, $sce, authorityService) {
+    //Get auth array to check.
     authorityService.getEmployeeAuth({}, function (respone) {
         $rootScope.auth = respone.objects;
-        console.log($rootScope.auth);
     });
-
-    $rootScope.isAuth = function (url) {
-        var segment = url.split('/');
-        for (var key in $rootScope.auth) {
-            if (key == segment[0]) {
-                for (var keyChild in $rootScope.auth[key]) {
-                    if (keyChild == segment[1]) {
-                        return true;
-                    }
-                }
-            }
-        }
-
-        return false;
-    }
-
-    //init
+    //init for notification number.
     notifyService.countNotification({}, function (respone) {
         $rootScope.sum_notify = respone.objects;
     });
-
-    //Get notification
+    //Get notification when broadcast.
     socketService.on('broadcast', function (data) {
         notifyService.countNotification({}, function (respone) {
             $rootScope.sum_notify = respone.objects;
         });
     });
-
+    //Get notification items to show 
     $rootScope.getNotifications = function () {
         notifyService.getNotifications({}, function (respone) {
             $rootScope.notifications = respone.objects.collection;
         });
     }
-
+    //
     $rootScope.getHtml = function (html) {
         return $sce.trustAsHtml(html);
     };
-
+    //Get my task and show items on dropdown.
     $rootScope.myTasks = {
         task: null,
-        total: 0
+        total: 0,
+        end: false
     };
     var currentPage = 1;
     //Get task for dropdown when loading page.
-    taskService.getTaskForDropdown({currentPage: currentPage}, function (respone) {
+    taskService.getMyTaskForDropdown({currentPage: currentPage}, function (respone) {
         $rootScope.myTasks.task = respone.objects.collection;
         $rootScope.myTasks.total = respone.objects.totalCount;
+        if (respone.objects.collection.length < 10) {
+            $rootScope.myTasks.end = true;
+            return true;
+        }
         currentPage++;
     });
-    
+    //Get my task again when clicking on icon.
+    $rootScope.getMyTaskDropdownClick = function () {
+        currentPage = 0;
+        $rootScope.myTasks = {
+            task: null,
+            total: 0,
+            end: false
+        };
+
+        $rootScope.getMyTaskDropdownScroll();
+    }
     //Get more task when scrolling down the scrollbar at the end.
-    $rootScope.getTaskForDropdown = function () {
-        taskService.getTaskForDropdown({currentPage: currentPage}, function (respone) {
+    $rootScope.getMyTaskDropdownScroll = function () {
+        if ($rootScope.myTasks.end) {
+            return true;
+        }
+        
+        taskService.getMyTaskForDropdown({currentPage: currentPage}, function (respone) {
             if ($rootScope.myTasks.task) {
                 $rootScope.myTasks.task = $rootScope.myTasks.task.concat(respone.objects.collection);
                 $rootScope.myTasks.total = respone.objects.totalCount;
@@ -83,10 +85,14 @@ appRoot.run(function ($rootScope, socketService, notifyService, taskService, com
                 $rootScope.myTasks.total = respone.objects.totalCount;
             }
 
+            if (respone.objects.collection.length < 10) {
+                $rootScope.myTasks.end = true;
+                return true;
+            }
+            
             currentPage++;
         });
     }
-
     //Seach global dropdown
     $rootScope.searchGlobalItems = [];
     $rootScope.searchGlobalType = '';
