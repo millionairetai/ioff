@@ -94,7 +94,7 @@
             edit: 'Edit', 
             message: 'Message',
             activity: 'Activity',
-            delete_success: 'Delete success',
+            delete_success: 'Delete successfully',
             have_at_least_one_employee_belong_this_department_please_remove_employee_with_this_department_first:'Have at least one employee belong to this department. Please remove employee with this department first',
 
             //-----------------------------------------End of common language.----------------------------------
@@ -165,7 +165,7 @@
             please_enter_this_field: 'Please enter this field',
             authority_name_max_length: 'Authority name must be smaller than 255 charactors',
             please_select_action: 'Please select at least one functionality',
-            is_delete: 'Do you want to delete this authority?',
+            is_delete: 'Do you want to delete this item?',
             authority_is_used: 'This authority can not be deleted because in use',
             authority_added_success:'Authority has been added successfully',
             authority_edited_success:'Authority has been updated successfully',

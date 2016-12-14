@@ -29,7 +29,7 @@
                         </tr>
                         <tr ng-repeat="item in departments">
                             <td>{{item.name}}</td>
-                            <td><i ng-show="$root.auth.department.update" class="fa fa-edit cursor-pointer" ng-click="update(item)"></i></td>
+                            <td><i ng-show="$root.auth.department.update" class="fa fa-edit cursor-pointer" ng-click="update(item.id)"></i></td>
                             <td><i ng-show="$root.auth.department.delete" class="fa fa-trash-o cursor-pointer" ng-click="delete(item.id)"></i></td>
                         </tr>
                     </table>

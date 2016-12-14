@@ -1307,7 +1307,7 @@ appRoot.controller('changePackageCtrl', ['$scope', '$uibModal', 'authorityServic
             });
         };
 
-        $scope.update = function (department) {
+        $scope.update = function (id) {
             var modalInstance = $uibModal.open({
                 templateUrl: 'app/views/department/edit.html',
                 controller: 'editDepartmentCtrl',
@@ -1315,7 +1315,14 @@ appRoot.controller('changePackageCtrl', ['$scope', '$uibModal', 'authorityServic
                 keyboard: true,
                 backdrop: 'static',
                 resolve: {
-                    department: department
+                    department: function ($q, commonService) {
+                        var deferred = $q.defer();
+                        commonService.get('department', id, function (respone) {
+                            deferred.resolve(respone.objects);
+                        });
+
+                        return deferred.promise;
+                    }
                 }
             });
 

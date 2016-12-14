@@ -163,7 +163,7 @@
             please_enter_authority_name: 'Tên quyền không được bỏ trống',
             authority_name_max_length: 'Tên quyền phải nhỏ hơn 255 ký tự',
             please_select_action: 'Bạn phải chọn tối thiểu một chức năng',
-            is_delete: 'Bạn có muốn xóa quyền này không?',
+            is_delete: 'Bạn có muốn xóa mục này không?',
             authority_is_used: 'Quyền không thể xóa vì đang được sử dụng',
             authority_added_success: 'Đã thêm quyền thành công',
             authority_edited_success:'Đã cập nhật quyền thành công',

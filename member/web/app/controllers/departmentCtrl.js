@@ -17,7 +17,7 @@ appRoot.controller('departmentCtrl', ['$scope', '$uibModal', '$rootScope', 'aler
             });
         };
 
-        $scope.update = function (department) {
+        $scope.update = function (id) {
             var modalInstance = $uibModal.open({
                 templateUrl: 'app/views/department/edit.html',
                 controller: 'editDepartmentCtrl',
@@ -25,7 +25,14 @@ appRoot.controller('departmentCtrl', ['$scope', '$uibModal', '$rootScope', 'aler
                 keyboard: true,
                 backdrop: 'static',
                 resolve: {
-                    department: department
+                    department: function ($q, commonService) {
+                        var deferred = $q.defer();
+                        commonService.get('department', id, function (respone) {
+                            deferred.resolve(respone.objects);
+                        });
+
+                        return deferred.promise;
+                    }
                 }
             });
 
