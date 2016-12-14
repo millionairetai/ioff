@@ -43,7 +43,7 @@ use yii\helpers\Url;
                 </a>
             </li>
             <li>
-                <a href="#company">
+                <a href="#department">
                     <i class="fa fa-bars"></i> <span>{{$root.$lang.department}}</span> 
                 </a>
             </li>

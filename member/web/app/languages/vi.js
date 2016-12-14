@@ -3,6 +3,9 @@
 
     angular.module('iofficez').controller('iofficezCtrl', function ($rootScope) {
         $rootScope.$lang = {
+            //-----------------------------------------Error languages here-----------------------------------
+            error_name_empty: 'Tên không được để trống', 
+            //-----------------------------------------End of error languages.--------------------------------
             //-----------------------------------------Common languages here----------------------------------
             data_not_display : 'Không tìm thấy',
             post_add_success : 'Bài đăng thêm thành công',
@@ -19,6 +22,7 @@
             delete_project : 'Xóa dự án',
             edit_project_post : 'Cập nhật bài đăng',
             save : 'Lưu',
+            update: 'Cập nhật',
             remove: 'Xóa',
             post : 'Đăng',
             employee_empty : 'Không nhân viên nào được tìm thấy',
@@ -89,6 +93,8 @@
             edit: 'Cập nhật', 
             message: 'Tin nhắn',
             activity: 'Hoạt động',
+            delete_success: 'Xóa thành công',
+            have_at_least_one_employee_belong_this_department_please_remove_employee_with_this_department_first:'Có ít nhất một nhân viên thuộc về phòng ban này. Xin hãy tháo bỏ phòng ban này với nhân viên đó trước',
             //-----------------------------------------End of common language.----------------------------------
             
             //project
@@ -356,7 +362,10 @@
             //Invoice
             invoice: 'Hóa đơn',
             //Header.
-            you_have_i_task: 'Bạn có %i công việc'
+            you_have_i_task: 'Bạn có %i công việc',
+            //Department
+            department_manage: 'Quản lý phòng ban',
+            department_list: 'Danh sách phòng ban'
         };
     });
 })(window.angular);

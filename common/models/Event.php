@@ -294,7 +294,7 @@ class Event extends ActiveRecord {
      * @param integer $eventId
      * @return array
      */
-    public static function getById($eventId) {
-        return Event::find()->select(['id', 'name'])->where(['id' => $eventId])->one();
-    }
+//    public static function getById($eventId) {
+//        return Event::find()->select(['id', 'name'])->where(['id' => $eventId])->one();
+//    }
 }

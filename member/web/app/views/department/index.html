@@ -1,0 +1,51 @@
+<div class="authority-list-page">
+    <section class="content-header">
+        <h1>
+            {{$root.$lang.department_manage}}
+        </h1>
+        <div ng-show="$root.auth.department.delete" class="tool-right">
+            <a class="btn btn-flat btn-primary" ng-click="add()"><i class="fa fa-plus-square"></i> {{$root.$lang.add}}</a>
+        </div>
+    </section>
+    <section class="content">
+
+        <!-- Default box -->
+        <div class="box box-solid">
+            <div class="box-header with-border">
+                <h3 class="box-title">{{$root.$lang.department_list}}</h3>            
+                <div class="box-tools pull-right">
+                    <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
+                </div>
+            </div>
+            <div class="box-body">
+                <div ng-show="departments.length">
+                    <table class="table table-vertical table-striped">
+                        <tr>                    
+                            <th class="col-name-authority">
+                                {{$root.$lang.name}}
+                            </th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        <tr ng-repeat="item in departments">
+                            <td>{{item.name}}</td>
+                            <td><i ng-show="$root.auth.department.update" class="fa fa-edit cursor-pointer" ng-click="update(item)"></i></td>
+                            <td><i ng-show="$root.auth.department.delete" class="fa fa-trash-o cursor-pointer" ng-click="delete(item.id)"></i></td>
+                        </tr>
+                    </table>
+
+                    <div class="text-right" ng-show="totalItems > params.limit">
+                        <uib-pagination total-items="totalItems" ng-model="params.page" max-size="maxPageSize" class="pagination-sm"
+                                        boundary-links="true" first-text="&lsaquo;&lsaquo;" previous-text="&lsaquo;" next-text="&rsaquo;" last-text="&rsaquo;&rsaquo;" items-per-page="params.limit"
+                                        ng-change="getDepartments()" num-pages="numPages" rotate="false"></uib-pagination>                                  
+                    </div>
+                </div>
+                <div ng-show="!departments.length">
+                    {{$root.$lang.no_data}}
+                </div>
+                <div class="box-footer text-center" ></div><!-- /.box-footer-->
+
+            </div><!-- /.box -->
+        </div>
+    </section>
+</div>

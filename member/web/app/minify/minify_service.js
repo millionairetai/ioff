@@ -362,11 +362,30 @@ appRoot.factory('controllerService', ['apiService', function (apiService) {
             }
         };
     }]);
-appRoot.factory('departmentService', ['apiService', function (apiService) {
+appRoot.factory('departmentService', ['apiService', '$rootScope', 'alertify', 'validateService', function (apiService, $rootScope, alertify, validateService) {
         return {
+            validate: function (department) {
+                var message = "";
+                if (!validateService.required(department.name)) {
+                    message += $rootScope.$lang.error_name_empty;
+                }
+                
+                if (message.length > 0) {
+                    alertify.error(message);
+                    return false;
+                }
+                
+                return true;
+            },
             allDepartment: function (data, success, error) {
                 return apiService.get('department/all', data, success, error);
-            }
+            },
+            gets: function (data, success, error) {
+                return apiService.get('department/index', data, success, error);
+            },
+            delete: function (data, success, error) {
+                return apiService.post('department/delete', data, success, error);
+            },
         };
     }]);
 appRoot.factory('dialogMessage', ['$rootScope', "$uibModal", function ($rootScope, $uibModal) {
@@ -991,6 +1010,10 @@ appRoot.factory('validateService', ['apiService', function (apiService) {
             },
             avatar: function(file) {
                 return this.run(file.type, /^(image\/gif)|(image\/jpg)|(image\/jpeg)|(image\/pjpeg)|(image\/png)$/);
+            },
+            required: function(text) {
+                text = text.trim();
+                return text.length > 0;
             }
         };
     }]);

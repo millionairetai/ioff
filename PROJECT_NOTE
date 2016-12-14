@@ -13,3 +13,15 @@ Reference link
 2. http://jsfiddle.net/srikpreethy/xj4m8ptn/
 3. https://www.sanwebe.com/2013/06/extract-url-content-like-facebook-with-php-and-jquery
 
+
+--Write code.
+In controller
+//Show list of items -> actionIndex.
+//show list in dropdown -> actionGets
+// delete -> delete
+//update, edit -> update
+// Add, Create -> Add
+//List -> Index
+
+In Javascript angular js
+--> Similar.

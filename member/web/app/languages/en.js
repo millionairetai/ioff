@@ -3,6 +3,9 @@
 
     angular.module('iofficez').controller('iofficezCtrl', function ($rootScope) {
         $rootScope.$lang = {
+            //-----------------------------------------Error languages here-----------------------------------
+            error_name_empty: 'Tên không được để trống', 
+            //-----------------------------------------End of error languages.--------------------------------            
             //-----------------------------------------Common languages here----------------------------------
             data_not_display : 'not found',
             post_add_success : 'Post add successfully',
@@ -19,6 +22,7 @@
             delete_project : 'Delete project',
             edit_project_post : 'Edit project Post',
             save : 'Save',
+            update: 'Update',
             remove: 'Delete',
             post : 'Post',
             employee_empty : "Employee does't match",
@@ -90,6 +94,9 @@
             edit: 'Edit', 
             message: 'Message',
             activity: 'Activity',
+            delete_success: 'Delete success',
+            have_at_least_one_employee_belong_this_department_please_remove_employee_with_this_department_first:'Have at least one employee belong to this department. Please remove employee with this department first',
+
             //-----------------------------------------End of common language.----------------------------------
             
             //project
@@ -344,7 +351,10 @@
             //Invoice
             invoice: 'Invoice',
             //Header.
-            you_have_i_task: 'You have %i task(s)'
+            you_have_i_task: 'You have %i task(s)',
+            //Department
+            department_manage: 'Department manage',
+            department_list: 'Department list'
         };
     });
 })(window.angular);

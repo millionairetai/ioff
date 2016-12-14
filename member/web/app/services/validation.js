@@ -25,6 +25,10 @@ appRoot.factory('validateService', ['apiService', function (apiService) {
             },
             avatar: function(file) {
                 return this.run(file.type, /^(image\/gif)|(image\/jpg)|(image\/jpeg)|(image\/pjpeg)|(image\/png)$/);
+            },
+            required: function(text) {
+                text = text.trim();
+                return text.length > 0;
             }
         };
     }]);

@@ -56,6 +56,8 @@ return [
     'Can not upload data' => 'Can not upload data',
     'Language' => 'Language',   
     'Owner' => 'Owner',
+    'error %s is existed' => '%s is existed',
+    'department' => 'Department', 
     //calendar
     'event_id' => 'Event id',
     'event_company_id' => 'Company id',

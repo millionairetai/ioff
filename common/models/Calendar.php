@@ -136,9 +136,9 @@ class Calendar extends ActiveRecord {
      * @param integer $id
      * @return string
      */
-    public static function getById($id) {
-        return self::find()->select("name")->where(['id' => $id])->one();
-    }
+//    public static function getById($id) {
+//        return self::find()->select("name")->where(['id' => $id])->one();
+//    }
        
     /**
      * Get celendar Name

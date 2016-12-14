@@ -113,6 +113,10 @@ appRoot.config(function ($routeProvider, $httpProvider) {
                 templateUrl: 'app/views/report/index.html',
                 controller: 'reportCtrl'
             })
+            .when('/department', {
+                templateUrl: 'app/views/department/index.html',
+                controller: 'departmentCtrl'
+            })
             .otherwise({redirectTo: '/home'});
 
 });

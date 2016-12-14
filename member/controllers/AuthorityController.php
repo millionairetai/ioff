@@ -191,7 +191,7 @@ class AuthorityController extends ApiController {
                 return $this->sendResponse(true, "is used", [], 422);
             }
 
-            if (!$model->delete()) {
+            if ($model->delete() === false) {
                 throw new \Exception('Delete authority fail');
             }
             
