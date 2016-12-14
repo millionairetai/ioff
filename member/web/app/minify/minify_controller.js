@@ -1293,7 +1293,6 @@ appRoot.controller('changePackageCtrl', ['$scope', '$uibModal', 'authorityServic
         $scope.params = {
             page: 1,
             limit: PER_PAGE,
-            searchName: '',
             orderBy: '',
             orderType: ''
         };
@@ -1355,8 +1354,8 @@ appRoot.controller('changePackageCtrl', ['$scope', '$uibModal', 'authorityServic
         $scope.getDepartments();
     }]);
 
-appRoot.controller('editDepartmentCtrl', ['$scope', '$uibModalInstance', '$rootScope', 'alertify', '$timeout', '$filter', 'departmentService', 'department', 'commonService',
-    function ($scope, $uibModalInstance, $rootScope, alertify, $timeout, $filter, departmentService, department, commonService) {
+appRoot.controller('editDepartmentCtrl', ['$scope', '$uibModalInstance', '$rootScope', 'alertify', 'departmentService', 'department', 'commonService',
+    function ($scope, $uibModalInstance, $rootScope, alertify, departmentService, department, commonService) {
         $scope.department = department;
         $scope.update = function () {
             if (departmentService.validate($scope.department)) {

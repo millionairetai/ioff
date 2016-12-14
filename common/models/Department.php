@@ -67,7 +67,7 @@ class Department extends ActiveRecord
      * @param interger $currentPage
      * @return array
      */
-    public static function gets($itemPerPage, $currentPage) {
+    public static function getAll($itemPerPage, $currentPage) {
         $departments = self::find()->select(['id', 'name'])->andCompanyId();
         $totalCount = $departments->count();
         $departments = $departments->orderBy('datetime_created DESC')

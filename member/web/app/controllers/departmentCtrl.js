@@ -3,7 +3,6 @@ appRoot.controller('departmentCtrl', ['$scope', '$uibModal', '$rootScope', 'aler
         $scope.params = {
             page: 1,
             limit: PER_PAGE,
-            searchName: '',
             orderBy: '',
             orderType: ''
         };

@@ -55,7 +55,7 @@ class DepartmentController extends ApiController {
         $itemPerPage = \Yii::$app->request->get('limit');
         $currentPage = \Yii::$app->request->get('page');
         try {
-            return $this->sendResponse(false, '', Department::gets($itemPerPage, $currentPage));
+            return $this->sendResponse(false, '', Department::getAll($itemPerPage, $currentPage));
         } catch (\Exception $e) {
             return $this->sendResponse(true, \Yii::t('member', 'error_system'), []);
         }
@@ -65,7 +65,7 @@ class DepartmentController extends ApiController {
     public function actionAdd() {
         try {
             $request = \Yii::$app->request->post();
-            if (!empty($request) && !empty($request['name']) && !empty($request['description'])) {
+            if (!empty($request) && !empty($request['name'])) { 
                 $department = Department::getByName($request['name']);
                 if (empty($department)) {
                     $department = new Department();
@@ -96,14 +96,13 @@ class DepartmentController extends ApiController {
     public function actionUpdate() {
         try {
             $request = \Yii::$app->request->post();
-            if (!empty($request) && !empty($request['id']) && !empty($request['name']) && !empty($request['description'])) {
+            if (!empty($request) && !empty($request['id']) && !empty($request['name'])) {
                 $department = Department::getById($request['id'], ['id']);
                 if (!empty($department)) {
                     $isExist = Department::isExist($request['id'], $request['name']);
                     if (empty($isExist)) {
-                        $department->name = $request['name'];
-                        $department->description = $request['description'];
-                        if (!$department->save(false)) {
+                        $department->attributes = $request;
+                        if ($department->save() === false) {
                             $this->_message = $this->parserMessage($department->getErrors());
                             $this->_error = true;
                             throw new \Exception($this->_message);
@@ -115,7 +114,7 @@ class DepartmentController extends ApiController {
                     }
                 }
             }
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->_message = \Yii::t('member', 'error_system');
             if ($this->_error == true) {
                 $this->_message = $e->getMessage();
@@ -133,7 +132,7 @@ class DepartmentController extends ApiController {
                 throw new \Exception('No exist this department');
             }
 
-            if (Employee::getOneByParams(['department_id' => $model->id], ['id']) !== false) {
+            if (Employee::getOneByParams(['department_id' => $model->id], ['id']) !== null) {
                 return $this->sendResponse(true, "is used", [], 422);
             }
 
