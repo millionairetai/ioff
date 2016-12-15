@@ -167,7 +167,7 @@ appRoot.factory('authorityService', ['apiService', '$http', function (apiService
                 apiService.post('authority/get-employee-auth', data, success, error);
             },
             getOne:  function (data, success, error) {
-                apiService.get('authority/get-detail', data, success, error);
+                apiService.get('authority/view', data, success, error);
             }
         };
     }]);

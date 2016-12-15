@@ -44,6 +44,21 @@ appRoot.controller('AuthorityCtrl', ['$scope', '$uibModal', 'authorityService', 
                 }
             });
         };
+        
+        $scope.viewDetail = function (authorityId) {
+            var modalInstance = $uibModal.open({
+                templateUrl: 'app/views/authority/detail.html',
+                controller: 'authorityDetailCtrl',
+                size: 'lg',
+                keyboard: true,
+                backdrop: 'static',
+                resolve: {
+                    authorityId: function () {
+                        return authorityId;
+                    }
+                }
+            });
+        };
 
         $scope.findAll = function () {
             authorityService.findAll($scope.params, function (res) {
@@ -242,31 +257,20 @@ appRoot.controller('AddAuthorityCtrl', ['$scope', '$uibModalInstance', 'controll
         };
     }]);
 
-appRoot.controller('authorityDetailCtrl', ['$scope', '$uibModal', 'authorityService', '$rootScope', 'alertify', '$routeParams',
-    function ($scope, $uibModal, authorityService, $rootScope, alertify, $routeParams) {
-        var authorityId = $routeParams.authorityId;
+appRoot.controller('authorityDetailCtrl', ['$scope', '$uibModalInstance', 'authorityService', 'alertify', 'authorityId',
+    function ($scope, $uibModalInstance, authorityService, alertify, authorityId) {
         $scope.authority = null;
         $scope.authorityName = '';
         $scope.getAuthority = function () {
             authorityService.getOne({authorityId: authorityId}, function (response) {
-                if (response.objects.no_data == true) {
-                    flash.setNoDataMessage();
-                    $location.path('/task');
-                }
-
-                if (response.objects.no_authority == true) {
-                    flash.setNoAuthItemMessage();
-                    $location.path('/task');
-                }
-
                 $scope.authorityName = response.objects.authorityName;
                 $scope.authority = response.objects.authorities;
-            }, function (response) {
-                if (response.objects.no_data == true) {
-                    $location.path('/task');
-                }
             });
         };
         
         $scope.getAuthority();
+        
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
     }]);

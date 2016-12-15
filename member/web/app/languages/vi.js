@@ -95,6 +95,7 @@
             activity: 'Hoạt động',
             delete_success: 'Xóa thành công',
             have_at_least_one_employee_belong_this_department_please_remove_employee_with_this_department_first:'Có ít nhất một nhân viên thuộc về phòng ban này. Xin hãy tháo bỏ phòng ban này với nhân viên đó trước',
+            detail: 'Chi tiết',
             //-----------------------------------------End of common language.----------------------------------
             
             //project

@@ -253,12 +253,11 @@ class AuthorityController extends ApiController {
     }
     
     /**
-     * Get all of authorities in authority table.
+     * View authority detail
      */
-    public function actionGetDetail($authorityId) {
+    public function actionView($authorityId) {
         $objects = [];
         try {
-            //Get name of authority.
             $authorityName = '';
             $controllers = Controller::getTranslation();
             if (empty($controllers)) {
@@ -281,7 +280,7 @@ class AuthorityController extends ApiController {
             $objects = ['authorityName' => $authorityName, 'authorities' => $objects];
             return $this->sendResponse(false, "", $objects);
         } catch (\Exception $ex) {
-            return $this->sendResponse(true, "", \Yii::t('member', 'error_system'));
+            return $this->sendResponse(true, \Yii::t('member', 'error_system'), '');
         }
     }
 }

@@ -96,7 +96,7 @@
             activity: 'Activity',
             delete_success: 'Delete successfully',
             have_at_least_one_employee_belong_this_department_please_remove_employee_with_this_department_first:'Have at least one employee belong to this department. Please remove employee with this department first',
-
+            detail: 'Detail',
             //-----------------------------------------End of common language.----------------------------------
             
             //project
