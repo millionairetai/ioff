@@ -107,7 +107,7 @@ appRoot.config(function ($routeProvider, $httpProvider) {
             })
             .when('/authority/:authorityId', {
                 templateUrl: 'app/views/authority/detail.html',
-                controller: 'AuthorityDetailCtrl'
+                controller: 'authorityDetailCtrl'
             })
             .when('/report', {
                 templateUrl: 'app/views/report/index.html',

@@ -61,25 +61,25 @@ class Authority extends \common\components\db\ActiveRecord {
      * Get list of authority
      */
     public static function getAll($request, $companyId) {
-        $limit   = (isset($request['limit'])) ? $request['limit'] : self::PER_PAGE;
-        $page    = (isset($request['page']))  ? $request['page']  : 1;
-        $offset  = ($page - 1) * $limit;
+        $limit = (isset($request['limit'])) ? $request['limit'] : self::PER_PAGE;
+        $page = (isset($request['page'])) ? $request['page'] : 1;
+        $offset = ($page - 1) * $limit;
         $orderBy = self::tableName() . '.lastup_datetime';
-        
+
         if (isset($request['orderBy']) && $request['orderBy']) {
             $orderBy = self::tableName() . '.' . $request['orderBy'];
-            
+
             if ($request['orderBy'] == 'employeeName') {
                 $orderBy = Employee::tableName() . '.firstname';
             }
         }
-        
-        $orderType   = (isset($request['orderType']) && $request['orderType']) ? $request['orderType'] : 'DESC';
+
+        $orderType = (isset($request['orderType']) && $request['orderType']) ? $request['orderType'] : 'DESC';
         $authorities = self::find()
-                            ->select(self::tableName() . '.name,' . self::tableName() . '.lastup_datetime,' . self::tableName() . '.id,' .
-                                Employee::tableName() . '.firstname, ' . Employee::tableName() . '.lastname')
-                            ->leftJoin(Employee::tableName(), self::tableName() . '.lastup_employee_id=' . Employee::tableName() . '.id')
-                            ->where([self::tableName() . '.company_id' => $companyId]);
+                ->select(self::tableName() . '.name,' . self::tableName() . '.lastup_datetime,' . self::tableName() . '.id,' .
+                        Employee::tableName() . '.firstname, ' . Employee::tableName() . '.lastname')
+                ->leftJoin(Employee::tableName(), self::tableName() . '.lastup_employee_id=' . Employee::tableName() . '.id')
+                ->where([self::tableName() . '.company_id' => $companyId]);
 
         if (isset($request['authorityName']) && $request['authorityName']) {
             $authorities = $authorities->andWhere(['like', self::tableName() . '.name', $request['authorityName']]);
@@ -87,7 +87,7 @@ class Authority extends \common\components\db\ActiveRecord {
 
         return $authorities->offset($offset)->limit($limit)->orderBy($orderBy . ' ' . $orderType)->asArray()->all();
     }
-    
+
     /**
      * Get employee auth by employee id.
      * 
@@ -96,19 +96,19 @@ class Authority extends \common\components\db\ActiveRecord {
      */
     public static function getAuthByEmployeeId($employeeId) {
         $query = (new \yii\db\Query())
-                        ->select(['action.column_name AS action_column_name', 'url', 'controller.column_name AS controller_column_name', 'is_display_menu'])
-                        ->from('employee')
-                        ->leftJoin('authority', 'authority.id = employee.authority_id')
-                        ->leftJoin('authority_assignment', 'authority.id = authority_assignment.authority_id')
-                        ->leftJoin('action', 'authority_assignment.action_id = action.id')
-                        ->leftJoin('controller', 'action.controller_id = controller.id')
-                        ->where(['employee.id' => $employeeId,]) 
-                        ->andWhere(['!=', 'action.is_check', self::VAL_FALSE])
-                    ->union((new \yii\db\Query())
-                        ->select(['action.column_name AS action_column_name', 'url', 'controller.column_name AS controller_column_name', 'is_display_menu'])
-                        ->from('action')
-                        ->leftJoin('controller', 'action.controller_id = controller.id')
-                        ->where(['action.is_check'=> self::VAL_FALSE]), false);
+                ->select(['action.column_name AS action_column_name', 'url', 'controller.column_name AS controller_column_name', 'is_display_menu'])
+                ->from('employee')
+                ->leftJoin('authority', 'authority.id = employee.authority_id')
+                ->leftJoin('authority_assignment', 'authority.id = authority_assignment.authority_id')
+                ->leftJoin('action', 'authority_assignment.action_id = action.id')
+                ->leftJoin('controller', 'action.controller_id = controller.id')
+                ->where(['employee.id' => $employeeId,])
+                ->andWhere(['!=', 'action.is_check', self::VAL_FALSE])
+                ->union((new \yii\db\Query())
+                ->select(['action.column_name AS action_column_name', 'url', 'controller.column_name AS controller_column_name', 'is_display_menu'])
+                ->from('action')
+                ->leftJoin('controller', 'action.controller_id = controller.id')
+                ->where(['action.is_check' => self::VAL_FALSE]), false);
 
         return self::findBySql($query->createCommand()->getRawSql())->asArray()->all();
     }
@@ -121,13 +121,33 @@ class Authority extends \common\components\db\ActiveRecord {
      */
     public static function getAuthByEmployeeIdAndIsCheckTrue($employeeId) {
         return Employee::find()
-            ->select(['action.column_name AS action_column_name', 'url', 'controller.column_name AS controller_column_name', 'is_display_menu'])
-            ->leftJoin('authority', 'authority.id = employee.authority_id')
-            ->leftJoin('authority_assignment', 'authority.id = authority_assignment.authority_id')
-            ->leftJoin('action', 'authority_assignment.action_id = action.id')
-            ->leftJoin('controller', 'action.controller_id = controller.id')
-            ->where(["employee.id" => $employeeId, 'action.is_check' => self::VAL_TRUE])
-            ->asArray()
-            ->all();
+                        ->select(['action.column_name AS action_column_name', 'url', 'controller.column_name AS controller_column_name', 'is_display_menu'])
+                        ->leftJoin('authority', 'authority.id = employee.authority_id')
+                        ->leftJoin('authority_assignment', 'authority.id = authority_assignment.authority_id')
+                        ->leftJoin('action', 'authority_assignment.action_id = action.id')
+                        ->leftJoin('controller', 'action.controller_id = controller.id')
+                        ->where(["employee.id" => $employeeId, 'action.is_check' => self::VAL_TRUE])
+                        ->asArray()
+                        ->all();
     }
+
+    /**
+     * Get authority detail by authority id
+     * 
+     * @param interger $employeeId
+     * @return array
+     */
+    public static function getDetailByAuthorityId($authorityId) {
+        return self::find()
+                ->select(['controller.id AS controller_id', 'translation.translated_text AS action_name', 'authority.name AS authority_name'])
+                ->leftJoin('authority_assignment', 'authority.id = authority_assignment.authority_id')
+                ->leftJoin('action', 'authority_assignment.action_id = action.id')
+                ->leftJoin('controller', 'action.controller_id = controller.id')
+                ->leftJoin('translation', 'action.id = translation.owner_id AND translation.owner_table="action"')
+                ->leftJoin('language', 'language.id = translation.language_id')
+                ->where(['authority.id' => $authorityId, 'action.is_check' => self::VAL_TRUE, 'language.language_code' => Yii::$app->language])
+                ->asArray()
+                ->all();
+    }
+
 }

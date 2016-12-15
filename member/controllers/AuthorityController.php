@@ -6,6 +6,7 @@ use Yii;
 use common\models\Authority;
 use common\models\AuthorityAssignment;
 use common\models\Employee;
+use common\models\Controller;
 
 class AuthorityController extends ApiController {
 
@@ -249,5 +250,38 @@ class AuthorityController extends ApiController {
         }
 
         return $this->sendResponse(false, "", $objects);
+    }
+    
+    /**
+     * Get all of authorities in authority table.
+     */
+    public function actionGetDetail($authorityId) {
+        $objects = [];
+        try {
+            //Get name of authority.
+            $authorityName = '';
+            $controllers = Controller::getTranslation();
+            if (empty($controllers)) {
+                throw new \Exception;
+            }
+            
+            foreach ($controllers as $val) {
+                $translation[$val['id']] = $val['translated_text'];
+            }
+
+            $authority = Authority::getDetailByAuthorityId($authorityId);
+            if (empty($authority)) {
+                throw new \Exception;
+            }
+            foreach($authority as $key => $val) {
+                $authorityName = $val['authority_name'];
+                $objects[$translation[$val['controller_id']]][] = $val['action_name'];
+            }
+            
+            $objects = ['authorityName' => $authorityName, 'authorities' => $objects];
+            return $this->sendResponse(false, "", $objects);
+        } catch (\Exception $ex) {
+            return $this->sendResponse(true, "", \Yii::t('member', 'error_system'));
+        }
     }
 }

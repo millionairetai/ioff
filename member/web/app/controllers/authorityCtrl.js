@@ -1,8 +1,8 @@
 //list auhthorities
-appRoot.controller('AuthorityCtrl', ['$scope', '$uibModal', 'authorityService', '$rootScope', 'alertify', 'PER_PAGE', 'MAX_PAGE_SIZE', 
+appRoot.controller('AuthorityCtrl', ['$scope', '$uibModal', 'authorityService', '$rootScope', 'alertify', 'PER_PAGE', 'MAX_PAGE_SIZE',
     function ($scope, $uibModal, authorityService, $rootScope, alertify, PER_PAGE, MAX_PAGE_SIZE) {
         $scope.params = {
-            page : 1,
+            page: 1,
             limit: PER_PAGE,
             authorityName: '',
             orderBy: '',
@@ -25,19 +25,19 @@ appRoot.controller('AuthorityCtrl', ['$scope', '$uibModal', 'authorityService', 
                     }
                 }
             });
-            
+
             modalInstance.result.then(function (data) {
                 if (authority && data != 'delete') {//if editing
                     $scope.authorities[$index] = data;
                 } else {//if creating or deleting
                     $scope.params = {
-                        page :  1,
+                        page: 1,
                         limit: PER_PAGE,
                         authorityName: '',
                         orderBy: 'lastup_datetime',
                         orderType: 'DESC'
                     };
-                    
+
                     $scope.params.page = 1;
                     $scope.params.authorityName = '';
                     $scope.findAll();
@@ -48,8 +48,8 @@ appRoot.controller('AuthorityCtrl', ['$scope', '$uibModal', 'authorityService', 
         $scope.findAll = function () {
             authorityService.findAll($scope.params, function (res) {
                 $scope.authorities = res.objects.authorities;
-                $scope.totalItems  = res.objects.totalItems;
-                
+                $scope.totalItems = res.objects.totalItems;
+
                 if (!$scope.$$phase) {
                     $scope.$apply();
                 }
@@ -62,7 +62,7 @@ appRoot.controller('AuthorityCtrl', ['$scope', '$uibModal', 'authorityService', 
         };
 
         $scope.sortBy = function (orderBy, orderType) {
-            $scope.params.orderBy   = orderBy;
+            $scope.params.orderBy = orderBy;
             $scope.params.orderType = orderType;
             $scope.findAll();
         };
@@ -76,14 +76,14 @@ appRoot.controller('AddAuthorityCtrl', ['$scope', '$uibModalInstance', 'controll
         $scope.cancel = function () {
             $uibModalInstance.dismiss();
         };
-        
+
         $scope.controllers = [];
         $scope.actions = [];
         var controllerNames = {};
         var actions = {};
         $scope.authorityName = '';
         $scope.authority = '';
-        
+
         if (authority) {
             $scope.authorityName = authority.name;
             $scope.authority = authority;
@@ -93,10 +93,10 @@ appRoot.controller('AddAuthorityCtrl', ['$scope', '$uibModalInstance', 'controll
             for (var i in res.objects) {
                 controllerNames[res.objects[i]['id']] = res.objects[i]['translated_text'];
             }
-            
+
             $scope.controllers = controllerNames;
         });
-        
+
         actionService.findAll(function (res) {
             if (authority) {//edit
                 authorityService.findAllAssignments({authorityId: authority.id}, function (data) {
@@ -104,7 +104,7 @@ appRoot.controller('AddAuthorityCtrl', ['$scope', '$uibModalInstance', 'controll
                     for (var i in data.objects) {
                         selectedAssignment.push(data.objects[i]['action_id']);
                     }
-                    
+
                     for (var i in res.objects) {
                         if (!actions[res.objects[i]['controller_id']]) {
                             actions[res.objects[i]['controller_id']] = {
@@ -119,10 +119,10 @@ appRoot.controller('AddAuthorityCtrl', ['$scope', '$uibModalInstance', 'controll
                             actions[res.objects[i]['controller_id']].isChecked = false;
                             res.objects[i]['isChecked'] = false;
                         }
-                        
+
                         actions[res.objects[i]['controller_id']].actions.push(res.objects[i]);
                     }
-                    
+
                     $scope.actions = actions;
                 });
             } else {
@@ -133,11 +133,11 @@ appRoot.controller('AddAuthorityCtrl', ['$scope', '$uibModalInstance', 'controll
                             actions: []
                         };
                     }
-                    
+
                     res.objects[i]['isChecked'] = false;
                     actions[res.objects[i]['controller_id']].actions.push(res.objects[i]);
                 }
-                
+
                 $scope.actions = actions;
             }
         });
@@ -167,7 +167,7 @@ appRoot.controller('AddAuthorityCtrl', ['$scope', '$uibModalInstance', 'controll
                 }
             }
         };
-        
+
         $scope.errors = {};
         $scope.saveAuthority = function () {
             $scope.errors = {};
@@ -180,12 +180,12 @@ appRoot.controller('AddAuthorityCtrl', ['$scope', '$uibModalInstance', 'controll
                         break;
                     }
                 }
-                
+
                 if (!hasError) {
                     break;
                 }
             }
-            
+
             if (hasError) {
                 $scope.errors['action'] = $rootScope.$lang.please_select_action;
             }
@@ -242,7 +242,31 @@ appRoot.controller('AddAuthorityCtrl', ['$scope', '$uibModalInstance', 'controll
         };
     }]);
 
-appRoot.controller('AuthorityDetailCtrl', ['$scope', '$uibModal', 'authorityService', '$rootScope', 'alertify', 'PER_PAGE', 'MAX_PAGE_SIZE', 
-    function ($scope, $uibModal, authorityService, $rootScope, alertify, PER_PAGE, MAX_PAGE_SIZE) {
+appRoot.controller('authorityDetailCtrl', ['$scope', '$uibModal', 'authorityService', '$rootScope', 'alertify', '$routeParams',
+    function ($scope, $uibModal, authorityService, $rootScope, alertify, $routeParams) {
+        var authorityId = $routeParams.authorityId;
+        $scope.authority = null;
+        $scope.authorityName = '';
+        $scope.getAuthority = function () {
+            authorityService.getOne({authorityId: authorityId}, function (response) {
+                if (response.objects.no_data == true) {
+                    flash.setNoDataMessage();
+                    $location.path('/task');
+                }
+
+                if (response.objects.no_authority == true) {
+                    flash.setNoAuthItemMessage();
+                    $location.path('/task');
+                }
+
+                $scope.authorityName = response.objects.authorityName;
+                $scope.authority = response.objects.authorities;
+            }, function (response) {
+                if (response.objects.no_data == true) {
+                    $location.path('/task');
+                }
+            });
+        };
         
+        $scope.getAuthority();
     }]);

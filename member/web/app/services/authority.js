@@ -18,6 +18,9 @@ appRoot.factory('authorityService', ['apiService', '$http', function (apiService
             },
             getEmployeeAuth: function (data, success, error) {
                 apiService.post('authority/get-employee-auth', data, success, error);
+            },
+            getOne:  function (data, success, error) {
+                apiService.get('authority/get-detail', data, success, error);
             }
         };
     }]);
