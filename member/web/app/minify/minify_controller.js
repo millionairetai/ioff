@@ -2,10 +2,10 @@ appRoot.controller('ActivityCtrl', ['$scope', '$uibModal', 'authorityService', '
     function ($scope, $uibModal, authorityService, $rootScope, alertify, PER_PAGE, MAX_PAGE_SIZE) {
 
     }]);//list auhthorities
-appRoot.controller('AuthorityCtrl', ['$scope', '$uibModal', 'authorityService', '$rootScope', 'alertify', 'PER_PAGE', 'MAX_PAGE_SIZE', 
+appRoot.controller('AuthorityCtrl', ['$scope', '$uibModal', 'authorityService', '$rootScope', 'alertify', 'PER_PAGE', 'MAX_PAGE_SIZE',
     function ($scope, $uibModal, authorityService, $rootScope, alertify, PER_PAGE, MAX_PAGE_SIZE) {
         $scope.params = {
-            page : 1,
+            page: 1,
             limit: PER_PAGE,
             authorityName: '',
             orderBy: '',
@@ -28,22 +28,37 @@ appRoot.controller('AuthorityCtrl', ['$scope', '$uibModal', 'authorityService', 
                     }
                 }
             });
-            
+
             modalInstance.result.then(function (data) {
                 if (authority && data != 'delete') {//if editing
                     $scope.authorities[$index] = data;
                 } else {//if creating or deleting
                     $scope.params = {
-                        page :  1,
+                        page: 1,
                         limit: PER_PAGE,
                         authorityName: '',
                         orderBy: 'lastup_datetime',
                         orderType: 'DESC'
                     };
-                    
+
                     $scope.params.page = 1;
                     $scope.params.authorityName = '';
                     $scope.findAll();
+                }
+            });
+        };
+        
+        $scope.viewDetail = function (authorityId) {
+            var modalInstance = $uibModal.open({
+                templateUrl: 'app/views/authority/detail.html',
+                controller: 'authorityDetailCtrl',
+                size: 'lg',
+                keyboard: true,
+                backdrop: 'static',
+                resolve: {
+                    authorityId: function () {
+                        return authorityId;
+                    }
                 }
             });
         };
@@ -51,8 +66,8 @@ appRoot.controller('AuthorityCtrl', ['$scope', '$uibModal', 'authorityService', 
         $scope.findAll = function () {
             authorityService.findAll($scope.params, function (res) {
                 $scope.authorities = res.objects.authorities;
-                $scope.totalItems  = res.objects.totalItems;
-                
+                $scope.totalItems = res.objects.totalItems;
+
                 if (!$scope.$$phase) {
                     $scope.$apply();
                 }
@@ -65,7 +80,7 @@ appRoot.controller('AuthorityCtrl', ['$scope', '$uibModal', 'authorityService', 
         };
 
         $scope.sortBy = function (orderBy, orderType) {
-            $scope.params.orderBy   = orderBy;
+            $scope.params.orderBy = orderBy;
             $scope.params.orderType = orderType;
             $scope.findAll();
         };
@@ -79,14 +94,14 @@ appRoot.controller('AddAuthorityCtrl', ['$scope', '$uibModalInstance', 'controll
         $scope.cancel = function () {
             $uibModalInstance.dismiss();
         };
-        
+
         $scope.controllers = [];
         $scope.actions = [];
         var controllerNames = {};
         var actions = {};
         $scope.authorityName = '';
         $scope.authority = '';
-        
+
         if (authority) {
             $scope.authorityName = authority.name;
             $scope.authority = authority;
@@ -96,10 +111,10 @@ appRoot.controller('AddAuthorityCtrl', ['$scope', '$uibModalInstance', 'controll
             for (var i in res.objects) {
                 controllerNames[res.objects[i]['id']] = res.objects[i]['translated_text'];
             }
-            
+
             $scope.controllers = controllerNames;
         });
-        
+
         actionService.findAll(function (res) {
             if (authority) {//edit
                 authorityService.findAllAssignments({authorityId: authority.id}, function (data) {
@@ -107,7 +122,7 @@ appRoot.controller('AddAuthorityCtrl', ['$scope', '$uibModalInstance', 'controll
                     for (var i in data.objects) {
                         selectedAssignment.push(data.objects[i]['action_id']);
                     }
-                    
+
                     for (var i in res.objects) {
                         if (!actions[res.objects[i]['controller_id']]) {
                             actions[res.objects[i]['controller_id']] = {
@@ -122,10 +137,10 @@ appRoot.controller('AddAuthorityCtrl', ['$scope', '$uibModalInstance', 'controll
                             actions[res.objects[i]['controller_id']].isChecked = false;
                             res.objects[i]['isChecked'] = false;
                         }
-                        
+
                         actions[res.objects[i]['controller_id']].actions.push(res.objects[i]);
                     }
-                    
+
                     $scope.actions = actions;
                 });
             } else {
@@ -136,11 +151,11 @@ appRoot.controller('AddAuthorityCtrl', ['$scope', '$uibModalInstance', 'controll
                             actions: []
                         };
                     }
-                    
+
                     res.objects[i]['isChecked'] = false;
                     actions[res.objects[i]['controller_id']].actions.push(res.objects[i]);
                 }
-                
+
                 $scope.actions = actions;
             }
         });
@@ -170,7 +185,7 @@ appRoot.controller('AddAuthorityCtrl', ['$scope', '$uibModalInstance', 'controll
                 }
             }
         };
-        
+
         $scope.errors = {};
         $scope.saveAuthority = function () {
             $scope.errors = {};
@@ -183,12 +198,12 @@ appRoot.controller('AddAuthorityCtrl', ['$scope', '$uibModalInstance', 'controll
                         break;
                     }
                 }
-                
+
                 if (!hasError) {
                     break;
                 }
             }
-            
+
             if (hasError) {
                 $scope.errors['action'] = $rootScope.$lang.please_select_action;
             }
@@ -245,9 +260,22 @@ appRoot.controller('AddAuthorityCtrl', ['$scope', '$uibModalInstance', 'controll
         };
     }]);
 
-appRoot.controller('AuthorityDetailCtrl', ['$scope', '$uibModal', 'authorityService', '$rootScope', 'alertify', 'PER_PAGE', 'MAX_PAGE_SIZE', 
-    function ($scope, $uibModal, authorityService, $rootScope, alertify, PER_PAGE, MAX_PAGE_SIZE) {
+//View authority detail.
+appRoot.controller('authorityDetailCtrl', ['$scope', '$uibModalInstance', 'authorityService', 'authorityId',
+    function ($scope, $uibModalInstance, authorityService, authorityId) {
+        $scope.authority = null;
+        $scope.authorityName = '';
+        $scope.getAuthority = function () {
+            authorityService.getOne({authorityId: authorityId}, function (response) {
+                $scope.authorityName = response.objects.authorityName;
+                $scope.authority = response.objects.authorities;
+            });
+        };
         
+        $scope.getAuthority();
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
     }]);//show calendar
 appRoot.controller('calendarCtrl', ['$scope', '$uibModal', 'calendarService', 'taskService', '$timeout', 'settingSystem', 'uiCalendarConfig', 'listCalendar', '$rootScope', 'dialogMessage',
     function ($scope, $uibModal, calendarService, taskService, $timeout, settingSystem, uiCalendarConfig, listCalendar, $rootScope, dialogMessage) {
@@ -1288,7 +1316,120 @@ appRoot.controller('changePackageCtrl', ['$scope', '$uibModal', 'authorityServic
     }]);appRoot.controller('CompanyCtrl', ['$scope', '$uibModal', 'authorityService', '$rootScope', 'alertify', 'PER_PAGE', 'MAX_PAGE_SIZE',
     function ($scope, $uibModal, authorityService, $rootScope, alertify, PER_PAGE, MAX_PAGE_SIZE) {
 
-    }]);// show dialog
+    }]);appRoot.controller('departmentCtrl', ['$scope', '$uibModal', '$rootScope', 'alertify', 'PER_PAGE', 'MAX_PAGE_SIZE', 'commonService', 'departmentService', 'dialogMessage',
+    function ($scope, $uibModal, $rootScope, alertify, PER_PAGE, MAX_PAGE_SIZE, commonService, departmentService, dialogMessage) {
+        $scope.params = {
+            page: 1,
+            limit: PER_PAGE,
+            orderBy: '',
+            orderType: ''
+        };
+
+        $scope.totalItems = 0;
+        $scope.departments = [];
+        $scope.maxPageSize = MAX_PAGE_SIZE;
+        $scope.getDepartments = function () {
+            departmentService.gets($scope.params, function (res) {
+                $scope.departments = res.objects.collection;
+                $scope.totalItems = res.objects.totalItems;
+            });
+        };
+
+        $scope.update = function (id) {
+            var modalInstance = $uibModal.open({
+                templateUrl: 'app/views/department/edit.html',
+                controller: 'editDepartmentCtrl',
+                size: 'sm',
+                keyboard: true,
+                backdrop: 'static',
+                resolve: {
+                    department: function ($q, commonService) {
+                        var deferred = $q.defer();
+                        commonService.get('department', id, function (respone) {
+                            deferred.resolve(respone.objects);
+                        });
+
+                        return deferred.promise;
+                    }
+                }
+            });
+
+            modalInstance.result.then(function () {
+                $scope.getDepartments();
+            });
+        };
+
+        $scope.add = function () {
+            var modalInstance = $uibModal.open({
+                templateUrl: 'app/views/department/add.html',
+                controller: 'addDepartmentCtrl',
+                size: 'sm',
+                keyboard: true,
+                backdrop: 'static',
+            });
+
+            modalInstance.result.then(function (data) {
+                $scope.getDepartments();
+            });
+        };
+
+        $scope.delete = function (id) {
+            dialogMessage.open('confirm', $rootScope.$lang.is_delete, function (reponse) {
+                departmentService.delete({id: id}, function () {
+                    $scope.getDepartments();
+                    alertify.success($rootScope.$lang.delete_success);
+                }, function (data) {
+                    if (data.message == 'is used') {
+                        alertify.error($rootScope.$lang.have_at_least_one_employee_belong_this_department_please_remove_employee_with_this_department_first);
+                    }
+                });
+            });
+        };
+
+        $scope.getDepartments();
+    }]);
+
+appRoot.controller('editDepartmentCtrl', ['$scope', '$uibModalInstance', '$rootScope', 'alertify', 'departmentService', 'department', 'commonService',
+    function ($scope, $uibModalInstance, $rootScope, alertify, departmentService, department, commonService) {
+        $scope.department = department;
+        $scope.update = function () {
+            if (departmentService.validate($scope.department)) {
+                commonService.update('department', $scope.department, function (response) {
+                    $scope.department = response.objects;
+                    alertify.success($rootScope.$lang.update_success);
+                    $uibModalInstance.close($scope.employee);
+                })
+            }
+        }
+
+        //cancel
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
+    }]);
+
+appRoot.controller('addDepartmentCtrl', ['$scope', '$uibModalInstance', '$rootScope', 'alertify', 'departmentService', 'commonService',
+    function ($scope, $uibModalInstance, $rootScope, alertify, departmentService, commonService) {
+        $scope.department = {
+            name: '',
+            description: '',
+        };
+
+        $scope.add = function () {
+            if (departmentService.validate($scope.department)) {
+                commonService.add('department', $scope.department, function (response) {
+                    alertify.success($rootScope.$lang.add_success);
+                    $uibModalInstance.close($scope.department);
+                })
+            }
+        }
+
+        //cancel
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+        };
+    }]);
+// show dialog
 appRoot.controller('dialogMessage', [ '$rootScope','$scope', '$uibModalInstance','data','$sce', function ( $rootScope,$scope, $uibModalInstance,data,$sce) {
         $scope.class_header = "dialog-header-error";
         $scope.show_save = false;
@@ -1662,7 +1803,7 @@ appRoot.controller('profileCtrl', ['$scope', '$rootScope', 'alertify', '$timeout
             var modalInstance = $uibModal.open({
                 templateUrl: 'app/views/employee/changeProfile.html',
                 controller: 'changeProfileCtrl',
-                size: 'lg',
+                size: 'sm',
                 keyboard: true,
                 backdrop: 'static',
                 resolve: {

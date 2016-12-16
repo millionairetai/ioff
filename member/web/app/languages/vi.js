@@ -3,6 +3,9 @@
 
     angular.module('iofficez').controller('iofficezCtrl', function ($rootScope) {
         $rootScope.$lang = {
+            //-----------------------------------------Error languages here-----------------------------------
+            error_name_empty: 'Tên không được để trống', 
+            //-----------------------------------------End of error languages.--------------------------------
             //-----------------------------------------Common languages here----------------------------------
             data_not_display : 'Không tìm thấy',
             post_add_success : 'Bài đăng thêm thành công',
@@ -19,6 +22,7 @@
             delete_project : 'Xóa dự án',
             edit_project_post : 'Cập nhật bài đăng',
             save : 'Lưu',
+            update: 'Cập nhật',
             remove: 'Xóa',
             post : 'Đăng',
             employee_empty : 'Không nhân viên nào được tìm thấy',
@@ -89,6 +93,9 @@
             edit: 'Cập nhật', 
             message: 'Tin nhắn',
             activity: 'Hoạt động',
+            delete_success: 'Xóa thành công',
+            have_at_least_one_employee_belong_this_department_please_remove_employee_with_this_department_first:'Có ít nhất một nhân viên thuộc về phòng ban này. Xin hãy tháo bỏ phòng ban này với nhân viên đó trước',
+            detail: 'Chi tiết',
             //-----------------------------------------End of common language.----------------------------------
             
             //project
@@ -157,7 +164,7 @@
             please_enter_authority_name: 'Tên quyền không được bỏ trống',
             authority_name_max_length: 'Tên quyền phải nhỏ hơn 255 ký tự',
             please_select_action: 'Bạn phải chọn tối thiểu một chức năng',
-            is_delete: 'Bạn có muốn xóa quyền này không?',
+            is_delete: 'Bạn có muốn xóa mục này không?',
             authority_is_used: 'Quyền không thể xóa vì đang được sử dụng',
             authority_added_success: 'Đã thêm quyền thành công',
             authority_edited_success:'Đã cập nhật quyền thành công',
@@ -356,7 +363,10 @@
             //Invoice
             invoice: 'Hóa đơn',
             //Header.
-            you_have_i_task: 'Bạn có %i công việc'
+            you_have_i_task: 'Bạn có %i công việc',
+            //Department
+            department_manage: 'Quản lý phòng ban',
+            department_list: 'Danh sách phòng ban'
         };
     });
 })(window.angular);

@@ -420,7 +420,7 @@ class File extends \common\components\db\ActiveRecord {
         }
         
         //Delete the old avatar file and record.
-        if ($file = self::getByParams(['owner_id' => $employeeId, 'employee_id' => $employeeId, 'owner_object' => self::TABLE_EMPLOYEE])) {
+        if ($file = self::getOneByParams(['owner_id' => $employeeId, 'employee_id' => $employeeId, 'owner_object' => self::TABLE_EMPLOYEE])) {
             @unlink(\Yii::$app->params['PathUpload'] . DIRECTORY_SEPARATOR . $file->path);
             if ($file->delete() === false) {
                 throw new \Exception('Can not delete avatar');

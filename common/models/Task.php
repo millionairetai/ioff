@@ -306,9 +306,9 @@ class Task extends \common\components\db\ActiveRecord {
      * @param integer $eventId
      * @return array
      */
-    public static function getById($id) {
-        return Task::find()->where(['id' => $id])->one();
-    }
+//    public static function getById($id) {
+//        return Task::find()->where(['id' => $id])->one();
+//    }
 
     /**
      * Get Info task

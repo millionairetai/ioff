@@ -56,6 +56,8 @@ return [
     'Can not upload data' => 'Không thể upload dữ liệu',
     'Language' => 'Ngôn ngữ', 
     'Owner' => 'Người sở hữu',
+    'error %s is existed' => '%s đã tồn tại',
+    'department' => 'Phòng ban', 
     //Calendar
     'event_id' => 'Mã sự kiện',
     'event_company_id' => 'Công ty',

@@ -261,6 +261,21 @@ class ActiveRecord extends \yii\db\ActiveRecord
     }
     
     /**
+     * Get one record by params
+     * 
+     * @param array $params
+     * @param array $columnName - list of column name in table
+     * @return Active Record
+     */
+    public static function getOneByParams($params, $columnName = []) { 
+        if (!empty($columnName)) {
+            return self::find()->select($columnName)->where($params)->one();
+        }
+        
+        return self::find()->where($params)->one();
+    }
+    
+    /**
      * Get by params
      * 
      * @param array $params
@@ -272,7 +287,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
             return self::find()->select($columnName)->where($params)->one();
         }
         
-        return self::find()->where($params)->one();
+        return self::find()->where($params)->all();
     }
       
     /**

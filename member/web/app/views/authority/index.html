@@ -78,7 +78,7 @@
                             <th></th>
                         </tr>
                         <tr ng-repeat="item in authorities">
-                            <td>{{item.name}}</td>
+                            <td><a href ng-click="viewDetail(item.id)">{{item.name}}</a></td>
                             <td>{{item.lastup_datetime * 1000| date:'dd-MM-yyyy'}}</td>
                             <td>{{item.firstname}} {{item.lastname}}</td>
                             <td><i ng-show="$root.auth.authority.edit" class="fa fa-edit cursor-pointer" ng-click="add(item, $index)"></i></td>

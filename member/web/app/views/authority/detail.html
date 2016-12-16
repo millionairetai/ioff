@@ -1,50 +1,32 @@
-<div class="authority-list-page">
-    <section class="content-header">
-        <h1>
-            Authority detail
-        </h1>
-        <div class="tool-right">
-            <a class="btn btn-info" ng-click="add()"><i class="fa fa-plus-square"></i> {{$root.$lang.authority_add}}</a>
-        </div>
-    </section>
-    <section class="content">
-
-        <!-- Default box -->
-        <div class="box">
-            <div class="box-header with-border">
-                <h3 class="box-title">Thông tin chi tiết quyền</h3>            
-                <div class="box-tools pull-right">
-                    <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
-                    <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
-                </div>
-            </div>
-            <div class="box-body">
-                <div class="row">
-                    <div class="col-md-9">
-                        <div id="authority" class="clearfix">
-                            <h3><i class="fa fa-fw fa-user"></i> Tôn Hoàng</h3>
-                            <h4>Authority</h4>
+<div class="modal-header dialog-header-wait">
+    <button type="button" class="close" ng-click="cancel()">×</button>
+    <h4 class="modal-title text-danger"> 
+        <strong><i class="fa fa-cubes"></i>
+            <span>{{$root.$lang.detail}}</span>
+        </strong>
+    </h4>
+</div>
+<div class="modal-body text-dangers detail-authority-box" >    
+    <div class="box-body form-horizontal">
+        <div class="row form-group">
+            <div class="row">
+                <div class="col-md-9">
+                    <div id="authority" class="clearfix">
+                        <h3><i class="fa fa-fw fa-user"></i> {{authorityName}}</h3>
+                        <div ng-repeat="(controller, actions) in authority">
+                            <h4>{{controller}}</h4>
                             <ul class="list-authority">
-                                <li class="list-authority-item"><i class="fa fa-circle text-green"></i> Add Task </li>
-                                <li class="list-authority-item"><i class="fa fa-circle text-green"></i> Delete authority </li>
-                                <li class="list-authority-item"><i class="fa fa-circle text-green"></i> Update functionality </li>
-                                <li class="list-authority-item"><i class="fa fa-circle text-green"></i> Edit task </li>
-                                <li class="list-authority-item"><i class="fa fa-circle text-green"></i> Change authority </li>
-                            </ul>
-                            <h4>Project</h4>
-                            <ul class="list-authority">
-                                <li class="list-authority-item"><i class="fa fa-circle text-green"></i> Add Task </li>
-                                <li class="list-authority-item"><i class="fa fa-circle text-green"></i> Delete authority </li>
-                                <li class="list-authority-item"><i class="fa fa-circle text-green"></i> Update functionality </li>
-                                <li class="list-authority-item"><i class="fa fa-circle text-green"></i> Edit task </li>
-                                <li class="list-authority-item"><i class="fa fa-circle text-green"></i> Change authority </li>
+                                <li ng-repeat="action in actions" class="list-authority-item"><i class="fa fa-circle text-green"></i> {{action}}</li>
                             </ul>
                         </div>
+
                     </div>
                 </div>
-            </div>    
-
-        </div><!-- /.box -->
-
-    </section>
+            </div>
+        </div>
+    </div>
+</div>  
+<div class="modal-footer">    
+    <button type="button" class="btn btn-default btn-flat" ng-click="cancel()"> <i class="fa fa-remove"></i> {{$root.$lang.button_close}}</button>
 </div>
+

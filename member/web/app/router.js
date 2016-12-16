@@ -105,15 +105,15 @@ appRoot.config(function ($routeProvider, $httpProvider) {
                 templateUrl: 'app/views/company/changePackage.html',
                 controller: 'changePackageCtrl'
             })
-            .when('/authority/:authorityId', {
-                templateUrl: 'app/views/authority/detail.html',
-                controller: 'AuthorityDetailCtrl'
-            })
             .when('/report', {
                 templateUrl: 'app/views/report/index.html',
                 controller: 'reportCtrl'
             })
-            .otherwise({redirectTo: '/home'});
+            .when('/department', {
+                templateUrl: 'app/views/department/index.html',
+                controller: 'departmentCtrl'
+            })
+            .otherwise({redirectTo: '/activity'});
 
 });
 

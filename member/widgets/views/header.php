@@ -148,13 +148,13 @@
                         <!-- Menu Body -->
                         <li class="user-body">
                             <div class="col-xs-4 text-center">
-                                <a href="#">Followers</a>
+                                <a href="#">My authority</a>
                             </div>
                             <div class="col-xs-4 text-center">
                                 <a href="#">Sales</a>
                             </div>
                             <div class="col-xs-4 text-center">
-                                <a href="#">Friends</a>
+                                <a href="#">Settings</a>
                             </div>
                         </li>
                         <!-- Menu Footer-->

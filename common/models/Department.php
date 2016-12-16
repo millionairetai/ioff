@@ -58,4 +58,36 @@ class Department extends ActiveRecord
             'disabled' 			 => Yii::t('common', 'Disabled'),
         ];
     }
+    
+    
+    /**
+     * Get all department
+     * 
+     * @param interger $itemPerPage
+     * @param interger $currentPage
+     * @return array
+     */
+    public static function getAll($itemPerPage, $currentPage) {
+        $departments = self::find()->select(['id', 'name'])->andCompanyId();
+        $totalCount = $departments->count();
+        $departments = $departments->orderBy('datetime_created DESC')
+                ->limit($itemPerPage)
+                ->offset(($currentPage - 1) * $itemPerPage)
+                ->asArray()->all();
+
+        return [
+            'collection' => $departments,
+            'totalItems' => $totalCount,
+        ];
+    }   
+    
+    /**
+     * Get department by name
+     *
+     * @param string $name
+     * @return Active Record|false
+     */
+    public static function getByName($name) {
+        return self::find()->andWhere(['name' => $name])->andCompanyId()->one();
+    }
 }

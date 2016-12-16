@@ -1,0 +1,29 @@
+<div class="modal-header dialog-header-wait">
+    <button type="button" class="close" ng-click="cancel()">×</button>
+    <h4 class="modal-title text-danger"> 
+        <strong><i class="fa fa-cubes"></i>
+            <span>{{$root.$lang.add}}</span>
+        </strong>
+    </h4>
+</div>
+<div class="modal-body text-dangers" >    
+    <div class="box-body form-horizontal">
+        <div class="row form-group">
+            <label for="inputEmail3" class="col-sm-3 control-label ng-binding">{{$root.$lang.name}}</label>    
+            <div class="col-sm-9">
+                <input type="text" class="form-control" ng-model="department.name"/>
+            </div>
+        </div>
+        <div class="row form-group">
+            <label for="inputEmail3" class="col-sm-3 control-label ng-binding">{{$root.$lang.description}}</label>    
+            <div class="col-sm-9">
+                <textarea class="form-control" ng-model="department.description"></textarea>
+            </div>
+        </div>
+    </div>
+
+</div>  
+<div class="modal-footer">    
+    <button type="button" class="btn btn-primary btn-flat" ng-click="add()"> <i class="fa fa-save"></i> {{$root.$lang.ok}}</button>
+    <button type="button" class="btn btn-default btn-flat" ng-click="cancel()"> <i class="fa fa-remove"></i> {{$root.$lang.button_close}}</button>
+</div>
