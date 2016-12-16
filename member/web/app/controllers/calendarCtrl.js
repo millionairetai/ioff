@@ -123,7 +123,7 @@ appRoot.controller('calendarCtrl', ['$scope', '$uibModal', 'calendarService', 't
                             start: moment(value.start).toDate(),
                             end: moment(value.end).toDate(),
                             color: value.color,
-                            url: '#/viewEvent/' + value.id,
+                            url: (angular.isUndefined(value.isTask)? '#/viewEvent/' :'#/viewTask/')  + value.id,
                             allDay : allDay
                         };
                         $scope.events.push(newEvent);
