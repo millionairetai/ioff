@@ -264,6 +264,7 @@ class AuthorityController extends ApiController {
                 throw new \Exception;
             }
             
+            //Get translated_text of controller via controller id.
             foreach ($controllers as $val) {
                 $translation[$val['id']] = $val['translated_text'];
             }

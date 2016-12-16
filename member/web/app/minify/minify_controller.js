@@ -260,8 +260,9 @@ appRoot.controller('AddAuthorityCtrl', ['$scope', '$uibModalInstance', 'controll
         };
     }]);
 
-appRoot.controller('authorityDetailCtrl', ['$scope', '$uibModalInstance', 'authorityService', 'alertify', 'authorityId',
-    function ($scope, $uibModalInstance, authorityService, alertify, authorityId) {
+//View authority detail.
+appRoot.controller('authorityDetailCtrl', ['$scope', '$uibModalInstance', 'authorityService', 'authorityId',
+    function ($scope, $uibModalInstance, authorityService, authorityId) {
         $scope.authority = null;
         $scope.authorityName = '';
         $scope.getAuthority = function () {
