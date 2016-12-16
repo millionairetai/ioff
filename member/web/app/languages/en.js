@@ -97,6 +97,9 @@
             delete_success: 'Delete successfully',
             have_at_least_one_employee_belong_this_department_please_remove_employee_with_this_department_first:'Have at least one employee belong to this department. Please remove employee with this department first',
             detail: 'Detail',
+            package: 'Package',
+            storage: 'Storage',
+            user: 'User',
             //-----------------------------------------End of common language.----------------------------------
             
             //project
@@ -354,7 +357,13 @@
             you_have_i_task: 'You have %i task(s)',
             //Department
             department_manage: 'Department manage',
-            department_list: 'Department list'
+            department_list: 'Department list',
+            //company
+            used_storage: 'Use storage',
+            register_account: 'Register account',
+            company_information: 'Company information',
+            start_datetime: 'Started date',
+            expire_time: 'Expired date'
         };
     });
 })(window.angular);

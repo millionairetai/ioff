@@ -1313,9 +1313,19 @@ appRoot.controller('editEventCtrl', ['$rootScope', 'data', 'listCalendar', '$sco
 appRoot.controller('changePackageCtrl', ['$scope', '$uibModal', 'authorityService', '$rootScope', 'alertify', 'PER_PAGE', 'MAX_PAGE_SIZE',
     function ($scope, $uibModal, authorityService, $rootScope, alertify, PER_PAGE, MAX_PAGE_SIZE) {
 
-    }]);appRoot.controller('CompanyCtrl', ['$scope', '$uibModal', 'authorityService', '$rootScope', 'alertify', 'PER_PAGE', 'MAX_PAGE_SIZE',
-    function ($scope, $uibModal, authorityService, $rootScope, alertify, PER_PAGE, MAX_PAGE_SIZE) {
+    }]);appRoot.controller('CompanyCtrl', ['$scope', 'companyService', '$rootScope', 'alertify', 
+    function ($scope, companyService, $rootScope, alertify) {
+        $scope.company = null;
+        $scope.getCompany = function () {
+            companyService.getOne({}, function (response) {
+                $scope.company = response.objects.company;
+            });
+        };
 
+        $scope.getCompany();
+//        $scope.cancel = function () {
+//            $uibModalInstance.dismiss('cancel');
+//        };
     }]);appRoot.controller('departmentCtrl', ['$scope', '$uibModal', '$rootScope', 'alertify', 'PER_PAGE', 'MAX_PAGE_SIZE', 'commonService', 'departmentService', 'dialogMessage',
     function ($scope, $uibModal, $rootScope, alertify, PER_PAGE, MAX_PAGE_SIZE, commonService, departmentService, dialogMessage) {
         $scope.params = {
@@ -1803,7 +1813,7 @@ appRoot.controller('profileCtrl', ['$scope', '$rootScope', 'alertify', '$timeout
             var modalInstance = $uibModal.open({
                 templateUrl: 'app/views/employee/changeProfile.html',
                 controller: 'changeProfileCtrl',
-                size: 'sm',
+                size: 'lg',
                 keyboard: true,
                 backdrop: 'static',
                 resolve: {

@@ -348,7 +348,7 @@ appRoot.controller('profileCtrl', ['$scope', '$rootScope', 'alertify', '$timeout
             var modalInstance = $uibModal.open({
                 templateUrl: 'app/views/employee/changeProfile.html',
                 controller: 'changeProfileCtrl',
-                size: 'sm',
+                size: 'lg',
                 keyboard: true,
                 backdrop: 'static',
                 resolve: {

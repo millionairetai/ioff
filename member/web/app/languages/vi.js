@@ -96,6 +96,9 @@
             delete_success: 'Xóa thành công',
             have_at_least_one_employee_belong_this_department_please_remove_employee_with_this_department_first:'Có ít nhất một nhân viên thuộc về phòng ban này. Xin hãy tháo bỏ phòng ban này với nhân viên đó trước',
             detail: 'Chi tiết',
+            package: 'Gói',
+            storage: 'Dung lượng lưu trữ',
+            user: 'Người dùng',
             //-----------------------------------------End of common language.----------------------------------
             
             //project
@@ -366,7 +369,13 @@
             you_have_i_task: 'Bạn có %i công việc',
             //Department
             department_manage: 'Quản lý phòng ban',
-            department_list: 'Danh sách phòng ban'
+            department_list: 'Danh sách phòng ban',
+            //company
+            used_storage: 'Dung lượng đã dùng',
+            register_account: 'Tài khoản đăng ký',
+            company_information: 'Thông tin công ty',
+            start_datetime: 'Ngày bắt đầu',
+            expire_time: 'Ngày kết thúc'
         };
     });
 })(window.angular);

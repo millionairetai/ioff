@@ -1,10 +1,10 @@
 <div class="authority-list-page">
     <section class="content-header">
         <h1>
-            Company manage
+            Quản lý công ty
         </h1>
         <div class="tool-right">
-            <a class="btn btn-info" ng-click="add()"><i class="fa fa-plus-square"></i> Add</a>
+            <a class="btn btn-flat btn-primary" ng-click="changePackage()"><i class="fa fa-edit"></i> Change package</a>
         </div>
     </section>
     <section class="content">
@@ -13,7 +13,7 @@
                 <!-- Default box -->
                 <div id="detail-company" class="box box-solid">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Detail company information</h3>            
+                        <h3 class="box-title">{{$root.$lang.company_information}}</h3>            
                         <div class="box-tools pull-right">
                             <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
                         </div>
@@ -22,71 +22,73 @@
                         <table class="table no-border no-margin">
                             <tbody>
                                 <tr>
-                                    <th>Name company:</th>
-                                    <td>Công ty cổ phần mắt bão</td>
+                                    <th>{{$root.$lang.name}}</th>
+                                    <td>{{company.company_name}}</td>
                                 </tr>
                                 <tr>
-                                    <th>Package:</th>
-                                    <td>Standard</td>
+                                    <th>{{$root.$lang.package}}</th>
+                                    <td>{{company.plan_type_name}}</td>
                                 </tr>
                                 <tr>
-                                    <th>Status:</th>
+                                    <th>{{$root.$lang.status}}</th>
                                     <td><p class="cl_green"><i class="fa fa-2x fa-fw fa-check-circle"></i></p></td>
                                 </tr>
                                 <tr>
-                                    <th>Url access:</th>
-                                    <td>http://matbao.centeroffice.vn</td>
-                                </tr>
-                                <tr>
-                                    <th>Time:</th>
+                                    <th>{{$root.$lang.time}}</th>
                                     <td>
                                         <p>
-                                            <b>Started datetime: 24/1/2015</b><br/>
-                                            <b>Duedate time: 24/1/2016</b>
+                                            <b>{{$root.$lang.start_datetime}}: {{company.start_date}}</b><br/>
+                                            <b>{{$root.$lang.expire_time}}: {{company.expired_date}}</b>
                                         </p>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>Disk:</th>
+                                    <th>{{$root.$lang.storage}}</th>
                                     <td>
+                                        <div class="col-sm-7">
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <span>{{$root.$lang.used_storage}}</span>
+                                                    <p><b>{{company.total_storage}} MB/{{company.company_name}} MB</b></p>
+                                                    <div class="box-footer">
+                                                        <p class="text-center"><input class="knob" type="text" value="65" data-skin="tron" data-thickness=".2" width="150" height="150"></p>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <span>{{$root.$lang.user}}</span>
+                                                    <p><b>{{company.total_employee}}/{{company.company_name}}</b></p>
+                                                    <div class="box-footer">
+                                                        <p class="text-center"><input class="knob" type="text" value="65" data-skin="tron" data-thickness=".2" width="150" height="150" fg-color="red"></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>Register account:</th>
+                                    <th>{{$root.$lang.register_account}}</th>
                                     <td>
                                         <table class="table no-border no-margin">
                                             <tbody>
                                                 <tr>
-                                                    <th>Name:</th>
-                                                    <td>Trịnh Giác Bậc</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Username:</th>
-                                                    <td>giacbat</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Password:</th>
-                                                    <td>************</td>
+                                                    <th>{{$root.$lang.name}}:</th>
+                                                    <td>{{company.employee.name}}</td>
                                                 </tr>
                                                 <tr>
                                                     <th>Email:</th>
-                                                    <td>giacbat@matbao.vn</td>
+                                                    <td>{{company.employee.email}}</td>
                                                 </tr>
                                                 <tr>
-                                                    <th>Phone:</th>
-                                                    <td>083938848</td>
+                                                    <th>{{$root.$lang.mobile_phone}}:</th>
+                                                    <td>{{company.employee.mobile_phone}}</td>
                                                 </tr>
                                                 <tr>
-                                                    <th>Address:</th>
-                                                    <td>93A, Nguyễn Thái Học, Phường 9, Quận 3, tp Hồ Chí Minh</td>
+                                                    <th>{{$root.$lang.address}}:</th>
+                                                    <td>{{company.employee.address}}</td>
                                                 </tr>
                                             </tbody>
                                         </table>
                                     </td>
-                                </tr>
-                                <tr>
-                                    <th>Business area:</th>
-                                    <td>Marketing and communication</td>
                                 </tr>
                             </tbody>
                         </table>

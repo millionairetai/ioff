@@ -6,6 +6,7 @@ use Yii;
 use yii\data\ActiveDataProvider;
 use common\models\PlanType;
 use common\models\Language;
+use common\models\Employee;
 
 /**
  * This is the model class for table "company".
@@ -38,7 +39,7 @@ class Company extends \backend\components\db\ActiveRecord {
     //Status of company.
     const COLUNM_NAME_ACTIVE = 'company.active';
     const COLUNM_NAME_INACTIVE = 'company.inactive';
-    
+
     /**
      * @inheritdoc
      */
@@ -91,11 +92,11 @@ class Company extends \backend\components\db\ActiveRecord {
             'disabled' => Yii::t('common', 'Disabled'),
         ];
     }
-    
+
     public function getEmployees() {
         return $this->hasMany(Employee::className(), ['company_id' => 'id']);
     }
-    
+
     /**
      * @param array $params
      * @return ActiveDataProvider
@@ -106,7 +107,7 @@ class Company extends \backend\components\db\ActiveRecord {
                 ->joinWith(['status'])
                 ->joinWith(['plan_type'])
                 ->orderBy('datetime_created DESC');
-    
+
 //                ->joinWith(['authority']);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -144,6 +145,24 @@ class Company extends \backend\components\db\ActiveRecord {
      */
     public function getLanguage() {
         return $this->hasOne(Language::className(), ['id' => 'language_id']);
+    }
+
+    /**
+     * Get company detail by company id
+     * 
+     * @param interger $employeeId
+     * @return array
+     */
+    public static function getDetailByCompanyId($companyId) {
+        return self::find()
+                        ->select(['plan_type.name AS plan_type_name', 'company.name AS company_name', 'status.column_name AS status_column_name',
+                            'company.total_storage', 'company.total_employee', 'company.start_date', 'company.expired_date', 'company.id', 'company.created_employee_id'])
+                        ->leftJoin('plan_type', 'plan_type.id = company.plan_type_id')
+                        ->leftJoin('plan_type_detail', 'plan_type_detail.plan_type_id = plan_type.id')
+                        ->leftJoin('status', 'company.status_id = status.id')
+                        ->where(['company.id' => $companyId,])
+                        ->asArray()
+                        ->one();
     }
 
 }

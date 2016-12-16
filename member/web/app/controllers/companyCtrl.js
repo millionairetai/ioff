@@ -1,4 +1,11 @@
-appRoot.controller('CompanyCtrl', ['$scope', '$uibModal', 'authorityService', '$rootScope', 'alertify', 'PER_PAGE', 'MAX_PAGE_SIZE',
-    function ($scope, $uibModal, authorityService, $rootScope, alertify, PER_PAGE, MAX_PAGE_SIZE) {
+appRoot.controller('CompanyCtrl', ['$scope', 'companyService', '$rootScope', 'alertify', 
+    function ($scope, companyService, $rootScope, alertify) {
+        $scope.company = null;
+        $scope.getCompany = function () {
+            companyService.getOne({}, function (response) {
+                $scope.company = response.objects.company;
+            });
+        };
 
+        $scope.getCompany();
     }]);

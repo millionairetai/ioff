@@ -357,6 +357,14 @@ appRoot.factory('commonService', ['apiService', 'taskService', 'projectService',
             }
         };
     }]);
+appRoot.factory('companyService', ['apiService', '$rootScope', 'alertify', 
+    function (apiService, $rootScope, alertify) {
+        return {
+            getOne: function (data, success, error) {
+                apiService.get('company/view', data, success, error);
+            }
+        };
+    }]);
 appRoot.factory('controllerService', ['apiService', function (apiService) {
 
         return {
