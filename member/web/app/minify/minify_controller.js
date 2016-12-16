@@ -273,7 +273,6 @@ appRoot.controller('authorityDetailCtrl', ['$scope', '$uibModalInstance', 'autho
         };
         
         $scope.getAuthority();
-        
         $scope.cancel = function () {
             $uibModalInstance.dismiss('cancel');
         };

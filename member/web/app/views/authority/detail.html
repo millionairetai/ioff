@@ -13,7 +13,7 @@
                 <div class="col-md-9">
                     <div id="authority" class="clearfix">
                         <h3><i class="fa fa-fw fa-user"></i> {{authorityName}}</h3>
-                        <div ng-repeat="(controller, actions) in authority track by $index">
+                        <div ng-repeat="(controller, actions) in authority">
                             <h4>{{controller}}</h4>
                             <ul class="list-authority">
                                 <li ng-repeat="action in actions" class="list-authority-item"><i class="fa fa-circle text-green"></i> {{action}}</li>
