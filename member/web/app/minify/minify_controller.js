@@ -413,7 +413,7 @@ appRoot.controller('calendarCtrl', ['$scope', '$uibModal', 'calendarService', 't
             var modalInstance = $uibModal.open({
                 templateUrl: 'app/views/calendar/addCalendar.html',
                 controller: 'addCalendarCtrl',
-                size: 'lg',
+                size: 'sm',
                 keyboard: true,
                 backdrop: 'static',
             });
@@ -432,7 +432,7 @@ appRoot.controller('calendarCtrl', ['$scope', '$uibModal', 'calendarService', 't
             var modalInstance = $uibModal.open({
                 templateUrl: 'app/views/calendar/editCalendar.html',
                 controller: 'editCalendarCtrl',
-                size: 'lg',
+                size: 'sm',
                 keyboard: true,
                 backdrop: 'static',
                 resolve: {
@@ -1323,9 +1323,6 @@ appRoot.controller('changePackageCtrl', ['$scope', '$uibModal', 'authorityServic
         };
 
         $scope.getCompany();
-//        $scope.cancel = function () {
-//            $uibModalInstance.dismiss('cancel');
-//        };
     }]);appRoot.controller('departmentCtrl', ['$scope', '$uibModal', '$rootScope', 'alertify', 'PER_PAGE', 'MAX_PAGE_SIZE', 'commonService', 'departmentService', 'dialogMessage',
     function ($scope, $uibModal, $rootScope, alertify, PER_PAGE, MAX_PAGE_SIZE, commonService, departmentService, dialogMessage) {
         $scope.params = {

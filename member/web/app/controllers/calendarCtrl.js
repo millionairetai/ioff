@@ -135,7 +135,7 @@ appRoot.controller('calendarCtrl', ['$scope', '$uibModal', 'calendarService', 't
             var modalInstance = $uibModal.open({
                 templateUrl: 'app/views/calendar/addCalendar.html',
                 controller: 'addCalendarCtrl',
-                size: 'lg',
+                size: 'sm',
                 keyboard: true,
                 backdrop: 'static',
             });
@@ -154,7 +154,7 @@ appRoot.controller('calendarCtrl', ['$scope', '$uibModal', 'calendarService', 't
             var modalInstance = $uibModal.open({
                 templateUrl: 'app/views/calendar/editCalendar.html',
                 controller: 'editCalendarCtrl',
-                size: 'lg',
+                size: 'sm',
                 keyboard: true,
                 backdrop: 'static',
                 resolve: {
