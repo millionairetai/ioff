@@ -296,6 +296,7 @@ class EmployeeController extends ApiController {
                     'birthdate' => (!empty($employee->birthdate) ? \Yii::$app->formatter->asDate($employee->birthdate) : ''),
 //                    'gender' => $employee->gender,
                     'street_address_1' => $employee->street_address_1,
+                    'loginEmployeeId' => Yii::$app->user->identity->id
                 ];
             } else {
                 throw new \Exception($this->_message);

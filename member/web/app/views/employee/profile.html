@@ -6,7 +6,7 @@
                 <div class="box box-solid">
                     <div class="box-body box-profile">
                         <img class="profile-user-img img-responsive img-circle" src="{{employee.image}}" alt="User profile picture">
-                        <a class="change-avatar" ng-click="changeProfile()"><i class="fa fa-camera fa-2x" aria-hidden="true"></i></a>
+                        <a ng-show="employee.id == employee.loginEmployeeId"  class="change-avatar" ng-click="changeProfile()"><i class="fa fa-camera fa-2x" aria-hidden="true"></i></a>
                         <h3 class="profile-username text-center">{{employee.fullname}}</h3>
 
                         <p class="text-muted text-center">{{employee.email}}</p>
@@ -26,8 +26,8 @@
                             </li>
                         </ul>
 
-                        <a class="btn btn-primary btn-block" ng-click="update()"><b>{{$root.$lang.edit}}</b></a>
-                        <a class="btn btn-primary btn-block" ng-click="changePassword()"><b>{{$root.$lang.change_password}}</b></a>
+                        <a ng-show="employee.id == employee.loginEmployeeId" class="btn btn-primary btn-block" ng-click="update()"><b>{{$root.$lang.edit}}</b></a>
+                        <a ng-show="employee.id == employee.loginEmployeeId" class="btn btn-primary btn-block" ng-click="changePassword()"><b>{{$root.$lang.change_password}}</b></a>
                     </div>
                     <!-- /.box-body -->
                 </div>
