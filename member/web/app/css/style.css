@@ -1327,13 +1327,10 @@ div.task-creator{
 /* Authority detail */
 #authority{
     position: relative;
-    border: 1px solid #ddd;
 }
 #authority h3{
-    background: #f6f7f9;
     margin: 0 0 30px;
     padding: 15px 0 12px 10px;
-    border-bottom: 1px solid #ddd;
 }
 #authority h4{
     padding: 0 15px;
@@ -1348,14 +1345,14 @@ div.task-creator{
     padding: 0 15px;
 }
 #authority .list-authority li{
-    padding: 15px 0 12px 0;
+    padding: 15px 30px 12px 0;
     color: #666;
+    display: inline-block;
 }
 #authority .list-authority li i{
-    padding: 0 10px;
+    padding: 0 5px 0 0;
 }
 #authority .list-authority li+li{
-    border-top: 1px solid #ddd;
 }
 /* List project */
 #list-project{
