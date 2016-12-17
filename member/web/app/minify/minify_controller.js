@@ -1316,6 +1316,10 @@ appRoot.controller('changePackageCtrl', ['$scope', '$uibModal', 'authorityServic
     }]);appRoot.controller('CompanyCtrl', ['$scope', 'companyService', '$rootScope', 'alertify', 
     function ($scope, companyService, $rootScope, alertify) {
         $scope.company = null;
+        $scope.colors=["#f56954","#00a65a","#f39c12","#00c0ef","#3c8dbc","#d2d6de"];
+        //Chart donut
+        $scope.labels01 = ["Hoàn thành (11)", "Đang làm(13)", "Chưa làm(8)", "Bỏ dự án (20)", "Quá hạn(40)"];
+        $scope.data01 = [11, 13, 8, 20,40];
         $scope.getCompany = function () {
             companyService.getOne({}, function (response) {
                 $scope.company = response.objects.company;

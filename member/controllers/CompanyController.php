@@ -21,6 +21,7 @@ class CompanyController extends ApiController {
         $objects = [];
         try {
             $company = Company::getDetailByCompanyId(Yii::$app->user->identity->company_id);
+            $company['total_storage'] = floor($company['total_storage'] / (1024 * 1024));
             $company['expired_date'] = \Yii::$app->formatter->asDate($company['expired_date']);
             $company['start_date'] = \Yii::$app->formatter->asDate($company['start_date']);
             if (empty($company)) {
