@@ -119,8 +119,8 @@ appRoot.controller('taskCtrl', ['$scope', 'taskService', '$uibModal', '$rootScop
     }]);
 
 /*add Task Popup Controller*/
-appRoot.controller('addTaskCtrl', ['socketService', '$scope', 'taskService', '$location', '$uibModalInstance', '$rootScope', 'departmentService', 'alertify', '$timeout', 'employeeService', 'projectService', '$cacheFactory', 'commonService', 'taskGroupService', 'priorityService',
-    function (socketService, $scope, taskService, $location, $uibModalInstance, $rootScope, departmentService, alertify, $timeout, employeeService, projectService, $cacheFactory, commonService, taskGroupService, priorityService) {
+appRoot.controller('addTaskCtrl', ['socketService', '$scope', 'taskService', '$location', '$uibModalInstance', '$rootScope', 'departmentService', 'alertify', '$timeout', 'employeeService', 'projectService', '$cacheFactory', 'commonService', 'taskGroupService', 'priorityService', 'statusService',
+    function (socketService, $scope, taskService, $location, $uibModalInstance, $rootScope, departmentService, alertify, $timeout, employeeService, projectService, $cacheFactory, commonService, taskGroupService, priorityService, statusService) {
         //init
         $scope.step = 1;
         $scope.more = 0;
@@ -306,8 +306,8 @@ appRoot.controller('addTaskCtrl', ['socketService', '$scope', 'taskService', '$l
         });
 
         //status
-        taskService.getStatusList({}, function (data) {
-            $scope.statuses = data.objects.collection;
+        statusService.getTaskStatus({}, function (data) {
+            $scope.statuses = data.objects;
 
             if ($scope.statuses.length > 0) {
                 $scope.task.status_id = $scope.statuses[0].id;
@@ -628,8 +628,8 @@ appRoot.controller('viewTaskCtrl', ['socketService','$sce', 'fileService', '$sco
 }]);
 
 /*edit Task Popup Controller*/
-appRoot.controller('editTaskCtrl', ['socketService', 'data', '$scope', 'taskService', '$location', '$uibModalInstance', '$rootScope', 'commonService', 'alertify', '$timeout', 'employeeService', 'projectService', '$cacheFactory', 'priorityService',
-    function (socketService, data, $scope, taskService, $location, $uibModalInstance, $rootScope, commonService, alertify, $timeout, employeeService, projectService, $cacheFactory, priorityService) {
+appRoot.controller('editTaskCtrl', ['socketService', 'data', '$scope', 'taskService', '$location', '$uibModalInstance', '$rootScope', 'commonService', 'alertify', '$timeout', 'employeeService', 'projectService', '$cacheFactory', 'priorityService', 'statusService',
+    function (socketService, data, $scope, taskService, $location, $uibModalInstance, $rootScope, commonService, alertify, $timeout, employeeService, projectService, $cacheFactory, priorityService, statusService) {
         //init
         $scope.step = 1;
         $scope.more = 0;
@@ -840,12 +840,12 @@ appRoot.controller('editTaskCtrl', ['socketService', 'data', '$scope', 'taskServ
 
         //priority
         priorityService.getTaskPriority({}, function (data) {
-            $scope.priorities = data.objects.collection;
+            $scope.priorities = data.objects;
         });
 
         //status
-        taskService.getStatusList({}, function (data) {
-            $scope.statuses = data.objects.collection;
+        statusService.getTaskStatus({}, function (data) {
+            $scope.statuses = data.objects;
         });
 
         //next

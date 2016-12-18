@@ -753,6 +753,9 @@ appRoot.factory('statusService', ['apiService', function (apiService) {
     	getProjectStatus : function (data,success,error){
             apiService.get('status/get-status?type=project', data, success, error);
         },
+        getTaskStatus : function (data,success,error){
+            apiService.get('status/get-status?type=task', data, success, error);
+        },
         getEmployeesStatus : function (employeeStatus, success, error){
             apiService.get('status/get-employee-statuses', {currentStatus: employeeStatus},success, error);
         }
@@ -764,9 +767,9 @@ appRoot.factory('taskService', ['apiService','$rootScope','alertify', function (
             getPriorityList : function (data,success,error) {
                 apiService.get('priority/get-priority-list',data,success,error);
             },
-            getStatusList : function (data,success,error) {
-                apiService.get('status/get-task-status-list',data,success,error);
-            },                        
+//            getStatusList : function (data,success,error) {
+//                apiService.get('status/get-task-status-list',data,success,error);
+//            },                        
             getTaskGroupList : function (data,success,error) {
                 apiService.get('task/get-task-group',data,success,error);
             },

@@ -3,10 +3,7 @@ appRoot.factory('taskService', ['apiService','$rootScope','alertify', function (
         return {
             getPriorityList : function (data,success,error) {
                 apiService.get('priority/get-priority-list',data,success,error);
-            },
-            getStatusList : function (data,success,error) {
-                apiService.get('status/get-task-status-list',data,success,error);
-            },                        
+            },                      
             getTaskGroupList : function (data,success,error) {
                 apiService.get('task/get-task-group',data,success,error);
             },

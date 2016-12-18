@@ -17,7 +17,10 @@ class TranslationController extends \yii\web\Controller {
     private $_ownerTable =  [
         'controller' => 'controller', 
         'action' => 'action',
-        'plan_type' => 'plan_type'
+        'plan_type' => 'plan_type',
+        'status'    => 'status',
+        'priority' => 'priority',
+        'event_confirmation_type' => 'event_confirmation_type'
     ];
 
     public function __construct($id, $module, $config = array()) {
@@ -50,6 +53,15 @@ class TranslationController extends \yii\web\Controller {
                         break;
                     case 'plan_type':
                         $ownerIds = \common\models\PlanType::gets(['column_name', 'id'], true, true);
+                        break;
+                    case 'status':
+                        $ownerIds = \common\models\Status::gets(['column_name', 'id'], true, true);
+                        break;
+                    case 'priority':
+                        $ownerIds = \common\models\Priority::gets(['column_name', 'id'], true, true);
+                        break;
+                    case 'event_confirmation_type':
+                        $ownerIds = \common\models\EventConfirmationType::gets(['column_name', 'id'], true, true);
                         break;
                 }
                 

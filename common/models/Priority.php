@@ -72,8 +72,10 @@ class Priority extends \common\components\db\ActiveRecord
      */
     public static function getByOwnerTable($ownerTable) {
         return self::find()
-                ->select(['id','name'])
-                ->where(['owner_table' => $ownerTable])
+                ->select(['priority.id','translation.translated_text AS name'])
+                ->leftJoin('translation', 'priority.id = translation.owner_id AND translation.owner_table="priority"')
+                ->leftJoin('language', 'language.id = translation.language_id')
+                ->where(['priority.owner_table' => $ownerTable, 'language.language_code' => Yii::$app->language])
                 ->asArray()
                 ->all();;
     }

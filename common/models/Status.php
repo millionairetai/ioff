@@ -90,10 +90,12 @@ class Status extends \common\components\db\ActiveRecord
      */
     public static function getByOwnerTable($ownerTable) {
         return self::find()
-                ->select(['id','name'])
-                ->where(['owner_table' => $ownerTable])
+                ->select(['status.id','translation.translated_text AS name'])
+                ->leftJoin('translation', 'status.id = translation.owner_id AND translation.owner_table="status"')
+                ->leftJoin('language', 'language.id = translation.language_id')
+                ->where(['status.owner_table' => $ownerTable, 'language.language_code' => Yii::$app->language])
                 ->asArray()
-                ->all();;
+                ->all();
     }
     
     /**

@@ -102,13 +102,21 @@ class EventConfirmationType extends \common\components\db\ActiveRecord {
      * @return integer
      */
     public static function getEventConfirmationTypes() {
+        $eventConfirmTypes =  self::find()
+                ->select(['event_confirmation_type.id', 'event_confirmation_type.column_name', 'translation.translated_text AS name'])
+                ->leftJoin('translation', 'event_confirmation_type.id = translation.owner_id AND translation.owner_table="event_confirmation_type"')
+                ->leftJoin('language', 'language.id = translation.language_id')
+                ->where(['language.language_code' => Yii::$app->language])
+                ->asArray()
+                ->all();
+        
         $eventConfimationTypeList = [];
-        if ($eventConfimationTypes = EventConfirmationType::find()->select(['id', 'name', 'column_name'])->all()) {
-            foreach ($eventConfimationTypes as $info) {
+        if (!empty($eventConfirmTypes)) {
+            foreach ($eventConfirmTypes as $info) {
                 $eventConfimationTypeList[] = [
-                        'id'   => $info->id,
-                        'name' => $info->name,
-                        'column_name' => $info->column_name,
+                        'id'   => $info['id'],
+                        'name' => $info['name'],
+                        'column_name' => $info['column_name'],
                 ];
             }
         }
