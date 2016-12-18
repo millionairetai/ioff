@@ -11,6 +11,6 @@ appRoot.controller('reportCtrl', ['$scope', '$uibModal', '$rootScope', 'alertify
             }
         };
         //Chart pie
-        $scope.labels02 = ["Hoàn thành (200)", "Đang làm(1300)", "Chưa làm(800)"];
+        $scope.labels02 = ["Hoàn thành (200%)", "Đang làm(1300%)", "Chưa làm(800%)"];
         $scope.data02 = [400, 600, 800];
     }]);

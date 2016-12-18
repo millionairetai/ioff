@@ -5,7 +5,7 @@
             <dd class="imgleft">
                 <div class="image">
                     <img src="{{employee.image}}" class="img-circle user-image" alt="User Image">
-                    <a ng-show="$root.auth.employee.update" class="cursor-pointer" ng-click="edit(employee.id, index)">{{$root.$lang.edit}}</a>
+                    <a ng-show="$root.auth.employee.update || $root.auth.is_admin" class="cursor-pointer" ng-click="edit(employee.id, index)">{{$root.$lang.edit}}</a>
                 </div>
                 <div class="info">
                     <p ng-show="employee.is_admin"><a class="btn btn-info btn-xs">Admin</a></p>
@@ -24,8 +24,8 @@
             {{$root.$lang.employee_manage}}
         </h1>
         <div class="tool-right">
-            <a ng-show="$root.auth.employee.add"  class="btn btn-primary btn-flat" ng-click="add()"><i class="fa fa-plus-square"></i> {{$root.$lang.add}}</a>
-            <a ng-show="$root.auth.employee.invite" class="btn btn-primary btn-flat" ng-click="invite()"><i class="fa fa-plus-square"></i> {{$root.$lang.invite}}</a>
+            <a ng-show="$root.auth.employee.add || $root.auth.is_admin"  class="btn btn-primary btn-flat" ng-click="add()"><i class="fa fa-plus-square"></i> {{$root.$lang.add}}</a>
+            <a ng-show="$root.auth.employee.invite || $root.auth.is_admin" class="btn btn-primary btn-flat" ng-click="invite()"><i class="fa fa-plus-square"></i> {{$root.$lang.invite}}</a>
         </div>
     </section>
     <section class="content">

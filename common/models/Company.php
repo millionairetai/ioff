@@ -150,17 +150,19 @@ class Company extends \backend\components\db\ActiveRecord {
     /**
      * Get company detail by company id
      * 
-     * @param interger $employeeId
+     * @param interger $companyId
      * @return array
      */
     public static function getDetailByCompanyId($companyId) {
         return self::find()
-                        ->select(['plan_type.name AS plan_type_name', 'company.name AS company_name', 'status.column_name AS status_column_name',
+                        ->select(['translation.translated_text AS plan_type_name', 'company.name AS company_name', 'status.column_name AS status_column_name',
                             'company.total_storage', 'company.total_employee', 'company.start_date', 'company.expired_date', 'company.id', 'company.created_employee_id'])
                         ->leftJoin('plan_type', 'plan_type.id = company.plan_type_id')
                         ->leftJoin('plan_type_detail', 'plan_type_detail.plan_type_id = plan_type.id')
                         ->leftJoin('status', 'company.status_id = status.id')
-                        ->where(['company.id' => $companyId,])
+                        ->leftJoin('translation', 'translation.owner_id=plan_type.id AND translation.owner_table="plan_type"')
+                        ->leftJoin('language', 'language.id = translation.language_id')
+                        ->where(['company.id' => $companyId, 'language.language_code' => Yii::$app->language])
                         ->asArray()
                         ->one();
     }

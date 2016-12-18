@@ -36,7 +36,7 @@
                 <!-- Add the bg color to the header using any of the bg-* classes -->
                 <div class="widget-user-header bg-yellow" style=" padding: 10px 20px;">
                     {{$root.$lang.calendar_title}}
-                    <div ng-show="$root.auth.calendar.add_calendar" class="btn-group fc-right pull-right">
+                    <div ng-show="$root.auth.calendar.add_calendar || $root.auth.is_admin" class="btn-group fc-right pull-right">
                         <a href="javascript:void(0)" class="text-white" ng-click="addCalendar()">
                             <i class="fa fa-plus"></i> {{$root.$lang.add}}
                         </a>
@@ -52,13 +52,13 @@
                         </li>
                         <li ng-repeat="calendar in calendars">
                             <input type="checkbox" checklist-model="chooseCalendar" checklist-value="calendar.id" icheck ng-change="checkCalendar()"> {{calendar.name}}
-                            <div ng-show="$root.auth.calendar.delete_calendar && $root.auth.calendar.edit_calendar" class="btn-group pull-right">
+                            <div ng-show="($root.auth.calendar.delete_calendar && $root.auth.calendar.edit_calendar)  || $root.auth.is_admin" class="btn-group pull-right">
                                 <button type="button" class="btn btn-list-tool dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
                                     <i class="fa fa-bars"></i>
                                 </button>
                                 <ul class="dropdown-menu pull-right" role="menu">
-                                    <li ng-show="$root.auth.calendar.edit_calendar"><a ng-click="editCalendar(calendar, $index)" class="fa">{{$root.$lang.button_update}}</a></li>
-                                    <li ng-show="$root.auth.calendar.delete_calendar"><a ng-click="deleteCalendar($index, calendar.id)">{{$root.$lang.remove}}</a></li>
+                                    <li ng-show="$root.auth.calendar.edit_calendar || $root.auth.is_admin"><a ng-click="editCalendar(calendar, $index)" class="fa">{{$root.$lang.button_update}}</a></li>
+                                    <li ng-show="$root.auth.calendar.delete_calendar || $root.auth.is_admin"><a ng-click="deleteCalendar($index, calendar.id)">{{$root.$lang.remove}}</a></li>
                                 </ul>
                             </div>
                             <span class="pull-right badge bg-blue">{{calendar.count}}</span>

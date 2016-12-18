@@ -28,12 +28,14 @@ appRoot.controller('calendarCtrl', ['$scope', '$uibModal', 'calendarService', 't
                 lang: settingSystem.language,
 //                height: 'auto',
                 select: function (start, end, allDay) {
-                    if (angular.isUndefined($rootScope.auth.calendar)) {
-                        return false;
-                    }
-                    
-                    if (angular.isUndefined($rootScope.auth.calendar.add_event)) {
-                        return false;
+                    if (!$rootScope.auth.is_admin) {
+                        if (angular.isUndefined($rootScope.auth.calendar)) {
+                            return false;
+                        }
+
+                        if (angular.isUndefined($rootScope.auth.calendar.add_event)) {
+                            return false;
+                        }   
                     }
                     
                     var modalInstance = $uibModal.open({

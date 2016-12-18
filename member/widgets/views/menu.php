@@ -32,7 +32,7 @@ use yii\helpers\Url;
                     <i class="fa fa-user"></i> <span>{{$root.$lang.employee}}</span> 
                 </a>
             </li>
-            <li ng-show="$root.auth.authority.index">
+            <li ng-show="$root.auth.authority.index || $root.auth.is_admin">
                 <a href="#authority">
                     <i class="fa fa-group"></i> <span>{{$root.$lang.authority}}</span> 
                 </a>

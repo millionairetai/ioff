@@ -9,6 +9,7 @@ use Yii;
  *
  * @property integer $id
  * @property string $name
+ * @property string $column_name
  * @property string $description
  * @property string $datetime_created
  * @property string $lastup_datetime
@@ -16,7 +17,7 @@ use Yii;
  * @property string $lastup_employee_id
  * @property boolean $disabled
  */
-class PlanType extends \backend\components\db\ActiveRecord
+class PlanType extends \common\components\db\ActiveRecord
 {
     ////////////////////////////////////
     //Maybe change afterward
@@ -39,11 +40,12 @@ class PlanType extends \backend\components\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name'], 'required'],
-            [['description'], 'string'],
+            [['name', 'column_name'], 'required'],
+            [['description', 'column_name'], 'string'],
             [['datetime_created', 'lastup_datetime', 'created_employee_id', 'lastup_employee_id'], 'integer'],
             [['disabled'], 'boolean'],
-            [['name'], 'string', 'max' => 255]
+            [['name'], 'string', 'max' => 255],
+            [['column_name'], 'string', 'max' => 50]
         ];
     }
 
@@ -55,6 +57,7 @@ class PlanType extends \backend\components\db\ActiveRecord
         return [
             'id' => Yii::t('common', 'ID'),
             'name' => Yii::t('common', 'Name'),
+            'column_name' => Yii::t('common', 'Column name'),
             'description' => Yii::t('common', 'Description'),
             'datetime_created' => Yii::t('common', 'Datetime Created'),
             'lastup_datetime' => Yii::t('common', 'Lastup Datetime'),

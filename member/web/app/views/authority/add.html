@@ -50,6 +50,6 @@
 </div>  
 <div class="modal-footer">    
     <button type="button" class="btn btn-primary btn-flat" ng-click="saveAuthority()"> <i class="fa fa-save"></i> {{$root.$lang.ok}}</button>
-    <button ng-show="$root.auth.authority.delete" type="button" class="btn btn-danger btn-flat" ng-click="deleteAuthority()" ng-show="authority"><i class="fa fa-trash"></i> {{$root.$lang.remove}}</button>
+    <button ng-show="($root.auth.authority.delete || $root.auth.is_admin) && authority" type="button" class="btn btn-danger btn-flat" ng-click="deleteAuthority()" ng-show="authority"><i class="fa fa-trash"></i> {{$root.$lang.remove}}</button>
     <button type="button" class="btn btn-default btn-flat" ng-click="cancel()"> <i class="fa fa-remove"></i> {{$root.$lang.button_close}}</button>
 </div>

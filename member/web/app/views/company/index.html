@@ -31,7 +31,7 @@
                                 </tr>
                                 <tr>
                                     <th>{{$root.$lang.status}}</th>
-                                    <td><p class="cl_green"><i class="fa fa-2x fa-fw fa-check-circle"></i></p></td>
+                                    <td><p ng-class="company.status_column_name == 'company.active' ? 'cl_green' : 'cl_red'"><i class="fa fa-2x fa-fw fa-check-circle"></i></p></td>
                                 </tr>
                                 <tr>
                                     <th>{{$root.$lang.time}}</th>
@@ -49,7 +49,7 @@
                                             <div class="row">
                                                 <div class="col-sm-6">
                                                     <span>{{$root.$lang.used_storage}}</span>
-                                                    <p><b>{{company.total_storage}} MB/{{company.company_name}} MB</b></p>
+                                                    <p><b>{{company.total_storage}} MB/ MB</b></p>
                                                     <div class="box-footer">
                                                         <p class="text-center"><input class="knob" type="text" value="65" data-skin="tron" data-thickness=".2" width="150" height="150"></p>
                                                     </div>

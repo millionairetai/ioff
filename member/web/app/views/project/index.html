@@ -2,7 +2,7 @@
     <h1>
         {{$root.$lang.project_manage}}
     </h1>
-    <div ng-show="$root.auth.project.add"  class="tool-right">
+    <div ng-show="$root.auth.project.add || $root.auth.is_admin"  class="tool-right">
         <a class="btn btn-primary btn-flat" ng-click="add()"><i class="fa fa-plus-square"></i> {{$root.$lang.add_project}}</a>
     </div>
 </section>

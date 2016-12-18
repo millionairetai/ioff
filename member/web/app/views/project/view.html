@@ -131,7 +131,7 @@
             <div class="col-md-12">
                 <div class="modal-footer">
                     <a href="#project"><button type="button" class="btn btn-default btn-flat" ><i class="fa fa-arrow-circle-left"></i> {{$root.$lang.button_back}}</button></a>
-                    <button type="button" class="btn btn-primary btn-flat" ng-click="edit()" ng-show="$root.auth.project.edit" ><i class="fa fa-edit"></i> {{$root.$lang.edit_project}}</button>
+                    <button type="button" class="btn btn-primary btn-flat" ng-click="edit()" ng-show="$root.auth.project.edit || $root.auth.is_admin" ><i class="fa fa-edit"></i> {{$root.$lang.edit_project}}</button>
                     <button type="button" class="btn btn-danger btn-flat" ng-click="cancel()"><i class="fa fa-remove"></i> {{$root.$lang.delete_project}}</button>
                 </div>
             </div>

@@ -15,8 +15,9 @@ class TranslationController extends \yii\web\Controller {
 
     private $_model;
     private $_ownerTable =  [
-      'controller' => 'controller', 
-      'action' => 'action'
+        'controller' => 'controller', 
+        'action' => 'action',
+        'plan_type' => 'plan_type'
     ];
 
     public function __construct($id, $module, $config = array()) {
@@ -46,6 +47,9 @@ class TranslationController extends \yii\web\Controller {
                         break;
                     case 'controller':
                         $ownerIds = \common\models\Controller::gets();
+                        break;
+                    case 'plan_type':
+                        $ownerIds = \common\models\PlanType::gets(['column_name', 'id'], true, true);
                         break;
                 }
                 

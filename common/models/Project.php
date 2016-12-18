@@ -130,7 +130,10 @@ class Project extends \common\components\db\ActiveRecord {
                 ->asArray()
                 ->all();
         if (empty($projects)) {
-            return [];
+            return [
+                'collection' => [],
+                'totalCount' => 0,
+            ];
         }
 
         return [

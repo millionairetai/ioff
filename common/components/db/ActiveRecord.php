@@ -247,10 +247,14 @@ class ActiveRecord extends \yii\db\ActiveRecord
      * @param array $columns
      * @return objec|array
      */
-    public static function gets($columns = [], $isReturnArr = true) {
+    public static function gets($columns = [], $isReturnArr = true, $dropdown = false) {
         $return = self::find();
         if (!empty($columns)) {
             $return = $return->select($columns);
+        }
+        
+        if ($dropdown) {
+            return $return->indexBy('id')->column();
         }
         
         if ($isReturnArr) {
