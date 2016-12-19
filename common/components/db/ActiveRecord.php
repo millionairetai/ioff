@@ -254,7 +254,7 @@ class ActiveRecord extends \yii\db\ActiveRecord
         }
         
         if ($dropdown) {
-            return $return->indexBy('id')->column();
+            return $return->andCompanyId()->indexBy('id')->column();
         }
         
         if ($isReturnArr) {

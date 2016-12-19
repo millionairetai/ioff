@@ -112,6 +112,9 @@ appRoot.factory('taskService', ['apiService','$rootScope','alertify', function (
             },
             getMyFollowTaskForCalendar:  function(data,success,error) {
                 apiService.post('task/get-my-follow-task-for-calendar',data,success,error);
+            },
+            getTaskReport: function(data,success,error) {
+                apiService.get('task/get-report',data,success,error);
             }
         };
     }]);

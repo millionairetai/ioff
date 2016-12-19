@@ -516,4 +516,27 @@ class Task extends \common\components\db\ActiveRecord {
             'totalCount' => $totalCount,
         ];
     }    
+        
+    /**
+     * Get all task follow employess login
+     */
+    public static function getReport($projectId) {
+        $report =  self::find()
+                        ->select(['COUNT(task.id) AS number_task', 'status.column_name', 'translation.translated_text AS status_name'])
+                        ->leftJoin('status', 'task.status_id=status.id AND status.owner_table="task"');
+        
+        if ($projectId) {
+            $report = $report->andFilterWhere(['task.project_id' => $projectId]);
+        }
+                        
+        return $report->leftJoin('translation', 'translation.owner_id=status.id AND translation.owner_table="status"')
+                ->leftJoin('language', 'translation.language_id=language.id')
+                ->andWhere(['language.language_code' => \Yii::$app->language])
+                ->andCompanyId(false, 'task')
+                ->groupBy(['status_id'])
+                ->asArray()
+                ->all();
+        
+//        print($a->createCommand()->RawSql);die;
+    }
 }

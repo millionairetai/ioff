@@ -122,7 +122,7 @@ class TaskController extends ApiController {
                 if (!empty($postData['redmind'])) {
                     $remind[] = [$employee->id, $task->id, Remind::TABLE_TASK, $task->name, $task->duedatetime - ($postData['redmind'] * 60), $postData['redmind'], 0, 0];
                 }
-                }
+            }
 
             TaskAssignment::batchInsert($taskAss, ['task_id', 'employee_id']);
             Follower::batchInsert($taskFollow, ['task_id', 'employee_id']);
@@ -163,7 +163,7 @@ class TaskController extends ApiController {
         $objects['collection'] = $collection;
         return $this->sendResponse(false, '', $objects);
     }
-    
+
     public function actionGetTasksByProject() {
         $collection = [];
         $tasks = Task::find()
@@ -417,7 +417,7 @@ class TaskController extends ApiController {
             if ($taskId = \Yii::$app->request->get('taskId')) {
                 if ($dataTask = Task::getInfoTask($taskId)) {
                     //check authentication to view task
-                    if (($dataTask['assignView'] == true) || ($dataTask['task']['is_public'] == true) || 
+                    if (($dataTask['assignView'] == true) || ($dataTask['task']['is_public'] == true) ||
                             Employee::isAdmin() || ($dataTask['task']['creator_event_id'] == Yii::$app->user->identity->id)) {
                         $dataTask['no_data'] = false;
                         return $this->sendResponse(false, "", $dataTask);
@@ -431,7 +431,7 @@ class TaskController extends ApiController {
         } catch (\Exception $e) {
             return $this->sendResponse(true, \Yii::t('member', 'Can not get data'), []);
         }
-        
+
         return $this->sendResponse(true, \Yii::t('member', 'Can not get data'), $dataTask);
     }
 
@@ -448,7 +448,7 @@ class TaskController extends ApiController {
         }
 
         $transaction = \Yii::$app->db->beginTransaction();
-        try { 
+        try {
             //Check if get task is null value.
             if (!$task = Task::getById($dataPost['id'])) {
                 throw new \Exception('Get task info fail');
@@ -462,7 +462,7 @@ class TaskController extends ApiController {
                 $this->_error = true;
                 throw new \Exception($this->_message);
             }
-            
+
             //update table task_assignment
             $assignmenMerge = $this->_mergeDataAssignmen($dataPost);
             $this->_updataTaskAssignmen($dataPost, $assignmenMerge);
@@ -470,14 +470,14 @@ class TaskController extends ApiController {
             //update table task_assignment
             $followerMerge = $this->_mergeDataFollower($dataPost);
             $this->_updataTaskFollower($dataPost, $followerMerge);
-            
+
             //update table Remind
             $mergeEmployee = $this->_mergeDataEmployees($dataPost);
             $this->_updataRemind($dataPost, $mergeEmployee, $task);
-            
+
             //move file
             $dataPost['fileList'] = File::addFiles($_FILES, \Yii::$app->params['PathUpload'], $task->id, Task::tableName());
-            
+
             //update table activity
             $activity = new Activity();
             $activity->owner_id = $task->id;
@@ -489,30 +489,30 @@ class TaskController extends ApiController {
             if (!$activity->save()) {
                 throw new \Exception('Save record to table Activity fail');
             }
-            
+
             //update table Notification
             if (!empty($mergeEmployee['employees'])) {
                 //save sms
                 $dataInsertSms = $dataInsertNotification = [];
                 foreach ($mergeEmployee['employees'] as $key => $val) {
                     $dataInsertNotification[] = [
-                            'owner_id' => $task->id,
-                            'owner_table' => Task::tableName(),
-                            'employee_id' => $val,
-                            'type' => Activity::TYPE_EDIT_TASK,
-                            'content' => Notification::makeContent(\Yii::t('common', 'edited'), $task->name),
-                            'owner_employee_id' => 0
+                        'owner_id' => $task->id,
+                        'owner_table' => Task::tableName(),
+                        'employee_id' => $val,
+                        'type' => Activity::TYPE_EDIT_TASK,
+                        'content' => Notification::makeContent(\Yii::t('common', 'edited'), $task->name),
+                        'owner_employee_id' => 0
                     ];
 
                     if ($task->sms) {
                         $dataInsertSms[] = [
-                                'owner_id' => $task->id,
-                                'employee_id' => $val,
-                                'owner_table' => Task::tableName(),
-                                'content' => Sms::makeContent(\Yii::t('common', 'edited'), $task->name),
-                                'is_success' => true,
-                                'fee' => 0,
-                                'agency_gateway' => 'esms'
+                            'owner_id' => $task->id,
+                            'employee_id' => $val,
+                            'owner_table' => Task::tableName(),
+                            'content' => Sms::makeContent(\Yii::t('common', 'edited'), $task->name),
+                            'is_success' => true,
+                            'fee' => 0,
+                            'agency_gateway' => 'esms'
                         ];
                     }
                 }
@@ -550,8 +550,8 @@ class TaskController extends ApiController {
             //send email and sms
             if (!empty($mergeEmployee['employees'])) {
                 $dataSend = [
-                        '{creator name}' => \Yii::$app->user->identity->fullname,
-                        '{task name}' => $task->name
+                    '{creator name}' => \Yii::$app->user->identity->fullname,
+                    '{task name}' => $task->name
                 ];
 
                 $employees = new Employee();
@@ -576,7 +576,7 @@ class TaskController extends ApiController {
 
         return $this->sendResponse($this->_error, $this->_message, ['postnew' => $postNew]);
     }
-    
+
     /**
      * Function update remind
      *
@@ -590,53 +590,53 @@ class TaskController extends ApiController {
             return true;
         if (empty($object))
             return true;
-        
+
         $taskId = $dataPost['id'];
-    
+
         //check update remind time
         $dataUpdate = [];
         if ($dataPost['redmind'] != $dataPost['data_old']['task']['remind']) {
             if (!\Yii::$app->db->createCommand()->update(Remind::tableName(), [
-                    'remind_datetime' => $object->start_datetime - ($dataPost['redmind'] * 60),
-                    'minute_before' => isset($dataPost['redmind']) ? $dataPost['redmind'] : 0], [
-                        'owner_id' => $taskId, 'company_id' => $this->_companyId, 
+                        'remind_datetime' => $object->start_datetime - ($dataPost['redmind'] * 60),
+                        'minute_before' => isset($dataPost['redmind']) ? $dataPost['redmind'] : 0], [
+                        'owner_id' => $taskId, 'company_id' => $this->_companyId,
                         'owner_table' => Task::tableName()])->execute()
             ) {
                 throw new \Exception('Save record to table remind fail');
             }
         }
-        
+
         //Delete employee
         if (!empty($dataMegre['employeeOld'])) {
             Remind::deleteAll([
-                    'company_id'  => $this->_companyId,
-                    'employee_id' => array_values($dataMegre['employeeOld']),
-                    'owner_id'    => $taskId,
-                    'owner_table' => Task::tableName(),
+                'company_id' => $this->_companyId,
+                'employee_id' => array_values($dataMegre['employeeOld']),
+                'owner_id' => $taskId,
+                'owner_table' => Task::tableName(),
             ]);
         }
-        
+
         //Add new employee
         $dataInsertRemind = [];
         if (!empty($dataMegre['employeeNew'])) {
             foreach ($dataMegre['employeeNew'] as $val) {
                 $dataInsertRemind[] = [
-                        'employee_id' => $val,
-                        'owner_id' => $taskId,
-                        'owner_table' => Task::tableName(),
-                        'content' => $dataPost['name'],
-                        'remind_datetime' => $object->start_datetime - ($dataPost['redmind'] * 60),
-                        'minute_before' => isset($dataPost['redmind']) ? $dataPost['redmind'] : 0,
-                        'repeated_time' => 0,
-                        'is_snoozing' => 0,
+                    'employee_id' => $val,
+                    'owner_id' => $taskId,
+                    'owner_table' => Task::tableName(),
+                    'content' => $dataPost['name'],
+                    'remind_datetime' => $object->start_datetime - ($dataPost['redmind'] * 60),
+                    'minute_before' => isset($dataPost['redmind']) ? $dataPost['redmind'] : 0,
+                    'repeated_time' => 0,
+                    'is_snoozing' => 0,
                 ];
             }
         }
-        
+
         Remind::batchInsert($dataInsertRemind);
         return true;
     }
-    
+
     /**
      * Function update Invitation
      *
@@ -646,20 +646,20 @@ class TaskController extends ApiController {
     private function _updataTaskAssignmen($data, $dataMegre) {
         if (empty($data['id']) || empty($data['project_id']))
             return false;
-        
+
         $taskId = $data['id'];
         if ($data['project_id'] != $data['data_old']['task']['project_id']) {
             TaskAssignment::delete([
-                    'task_id'    => $taskId,
-                    'company_id' => $this->_companyId,
+                'task_id' => $taskId,
+                'company_id' => $this->_companyId,
             ]);
-        }else {
+        } else {
             //delete department table Invitation
             if (!empty($dataMegre['employeeOld'])) {
                 TaskAssignment::deleteAll([
-                        'task_id'     => $data['id'],
-                        'employee_id' => $dataMegre['employeeOld'],
-                        'company_id'  => $this->_companyId,
+                    'task_id' => $data['id'],
+                    'employee_id' => $dataMegre['employeeOld'],
+                    'company_id' => $this->_companyId,
                 ]);
             }
         }
@@ -668,15 +668,15 @@ class TaskController extends ApiController {
             $dataInsertAssignment = [];
             foreach ($dataMegre['employeeNew'] as $id) {
                 $dataInsertAssignment[] = [
-                        'task_id'     => $taskId,
-                        'employee_id' => $id,
+                    'task_id' => $taskId,
+                    'employee_id' => $id,
                 ];
             }
             TaskAssignment::batchInsert($dataInsertAssignment);
         }
         return true;
     }
-    
+
     /**
      * Function update Invitation
      *
@@ -686,20 +686,20 @@ class TaskController extends ApiController {
     private function _updataTaskFollower($data, $dataMegre) {
         if (empty($data['id']) || empty($data['project_id']))
             return false;
-        
+
         $taskId = $data['id'];
         if ($data['project_id'] != $data['data_old']['task']['project_id']) {
             Follower::delete([
-                    'task_id'    => $taskId,
-                    'company_id' => $this->_companyId,
+                'task_id' => $taskId,
+                'company_id' => $this->_companyId,
             ]);
-        }else {
+        } else {
             //delete department table Invitation
             if (!empty($dataMegre['employeeOld'])) {
                 Follower::deleteAll([
-                        'task_id'     => $data['id'],
-                        'employee_id' => $dataMegre['employeeOld'],
-                        'company_id'  => $this->_companyId,
+                    'task_id' => $data['id'],
+                    'employee_id' => $dataMegre['employeeOld'],
+                    'company_id' => $this->_companyId,
                 ]);
             }
         }
@@ -708,8 +708,8 @@ class TaskController extends ApiController {
             $dataInsertAssignment = [];
             foreach ($dataMegre['employeeNew'] as $id) {
                 $dataInsertAssignment[] = [
-                        'task_id'     => $taskId,
-                        'employee_id' => $id,
+                    'task_id' => $taskId,
+                    'employee_id' => $id,
                 ];
             }
             Follower::batchInsert($dataInsertAssignment);
@@ -733,12 +733,12 @@ class TaskController extends ApiController {
                 'task_id' => $taskId,
                 'task_group_id' => $data['taskGroupIds'],
             ]);
-        }else {
+        } else {
             //delete taskGroup table taskGroup
             if (!empty($dataMegre['taskGroupOld'])) {
                 TaskGroupAllocation::deleteAll([
-                        'task_id' => $taskId,
-                        'task_group_id' => $dataMegre['taskGroupOld'],
+                    'task_id' => $taskId,
+                    'task_group_id' => $dataMegre['taskGroupOld'],
                 ]);
             }
         }
@@ -747,15 +747,15 @@ class TaskController extends ApiController {
             $dataTaskGroupNew = [];
             foreach ($dataMegre['taskGroupNew'] as $id) {
                 $dataTaskGroupAllocationNew[] = [
-                        'task_group_id' => $id,
-                        'task_id'       => $taskId,
+                    'task_group_id' => $id,
+                    'task_id' => $taskId,
                 ];
             }
             TaskGroupAllocation::batchInsert($dataTaskGroupAllocationNew);
         }
         return true;
     }
-    
+
     /**
      * Function update or add info in table task_assignment of screen edit task
      *
@@ -780,12 +780,12 @@ class TaskController extends ApiController {
     private function _mergeDataFollower($dataPost = []) {
         if (empty($dataPost))
             return false;
-        
+
         $employeeOld = !empty($dataPost['data_old']['followers']) ? $dataPost['data_old']['followers'] : null;
         $employeeNew = !empty($dataPost['followingEmployees']) ? $dataPost['followingEmployees'] : null;
         return $this->_mergeData($employeeOld, $employeeNew);
     }
-    
+
     /**
      * Function update or add info in table task_assignment of screen edit task
      *
@@ -815,7 +815,7 @@ class TaskController extends ApiController {
                     }
                 }
             }
-        }else if (!empty($taskGroupOld) && empty($taskGroupNew)) {
+        } else if (!empty($taskGroupOld) && empty($taskGroupNew)) {
             foreach ($taskGroupOld as $keyTaskGroupOld => $valTaskGroupOld) {
                 $result['taskGroupOld'][$keyTaskGroupOld] = $valTaskGroupOld;
             }
@@ -826,7 +826,7 @@ class TaskController extends ApiController {
         }
         return $result;
     }
-    
+
     /**
      * Function update or add info in table project_participant of screen edit project
      *
@@ -852,7 +852,7 @@ class TaskController extends ApiController {
                     }
                 }
             }
-        }else if (!empty($employeeOld) && empty($employeeNew)) {
+        } else if (!empty($employeeOld) && empty($employeeNew)) {
             foreach ($employeeOld as $keyEmployessOld => $valEmployeeOld) {
                 $result['employeeOld'][$keyEmployessOld] = $valEmployeeOld['id'];
                 $result['employeeOldLog'][$valEmployeeOld['id']] = $valEmployeeOld['fullname'];
@@ -865,7 +865,6 @@ class TaskController extends ApiController {
         }
         return $result;
     }
-    
 
     /**
      * Function update or add info in table project_participant of screen edit project
@@ -876,16 +875,16 @@ class TaskController extends ApiController {
     private function _mergeDataEmployees($dataPost = []) {
         if (empty($dataPost))
             return false;
-        
+
         $assigningEmployees = !empty($dataPost['assigningEmployees']) ? $dataPost['assigningEmployees'] : [];
         $followingEmployees = !empty($dataPost['followingEmployees']) ? $dataPost['followingEmployees'] : [];
-        
+
         $assigning = !empty($dataPost['data_old']['assignees']) ? $dataPost['data_old']['assignees'] : [];
         $following = !empty($dataPost['data_old']['followers']) ? $dataPost['data_old']['followers'] : [];
-        
-        $employeeNew = array_merge($assigningEmployees,$followingEmployees);
-        $employeeOld = array_merge($assigning,$following);
-        
+
+        $employeeNew = array_merge($assigningEmployees, $followingEmployees);
+        $employeeOld = array_merge($assigning, $following);
+
         $result = [];
         if (!empty($employeeOld) && !empty($employeeNew)) {
             foreach ($employeeOld as $keyEmployessOld => $valEmployeeOld) {
@@ -902,10 +901,10 @@ class TaskController extends ApiController {
                 }
             }
         }
-        
+
         return $result;
     }
-    
+
     /**
      * Make project history
      *
@@ -917,7 +916,7 @@ class TaskController extends ApiController {
         if (empty($dataPost)) {
             return $content;
         }
-        
+
         $noSetting = \Yii::t('member', 'no setting');
         //get name project
         $project_id_old = !empty($dataPost['data_old']['task']['project_id']) ? $dataPost['data_old']['task']['project_id'] : 0;
@@ -932,24 +931,24 @@ class TaskController extends ApiController {
             if (!empty($project)) {
                 foreach ($project as $key => $val) {
                     if ($val->id == $project_id_old) {
-                        $project_name_old = '#Task '.$val->id. ': '.$val->name;
+                        $project_name_old = '#Task ' . $val->id . ': ' . $val->name;
                     }
                     if ($val->id == $project_id_new) {
-                        $project_name_new = '#Task '.$val->id. ': '.$val->name;
+                        $project_name_new = '#Task ' . $val->id . ': ' . $val->name;
                     }
                 }
             }
         }
-        
+
         $task_id_old = !empty($dataPost['data_old']['task']['parent_id']) ? $dataPost['data_old']['task']['parent_id'] : 0;
         $task_id_new = !empty($object->parent_id) ? $object->parent_id : 0;
         $task_name_old = $task_name_new = '';
         if ($task_id_old != $task_id_new) {
             $task = Task::find()
-            ->select(['id', 'name'])
-            ->where(['id' => [$dataPost['data_old']['task']['parent_id'], $object->parent_id]])
-            ->andCompanyId()
-            ->all();
+                    ->select(['id', 'name'])
+                    ->where(['id' => [$dataPost['data_old']['task']['parent_id'], $object->parent_id]])
+                    ->andCompanyId()
+                    ->all();
             if (!empty($task)) {
                 foreach ($task as $key => $val) {
                     if ($val->id == $task_id_old) {
@@ -961,19 +960,19 @@ class TaskController extends ApiController {
                 }
             }
         }
-        
+
         $dataReplace = array(
-                \Yii::t('member', 'task name') => array($dataPost['data_old']['task']['name'] => $dataPost['name']),
-                \Yii::t('member', 'project name') => array($project_name_old => $project_name_new),
-                \Yii::t('member', 'task end date') => array($dataPost['data_old']['task']['duedatetime'] => date('Y-m-d', $object->duedatetime)),
-                \Yii::t('member', 'task priority') => array($dataPost['data_old']['task']['priority_name'] => $object->priority->name),
-                \Yii::t('member', 'project completed percent') => array($dataPost['data_old']['task']['completed_percent'] => $object->completed_percent),
-                \Yii::t('member', 'project description') => array($dataPost['data_old']['task']['description'] => $object->description),
-                \Yii::t('member', 'project share') => array($dataPost['data_old']['task']['status_name'] => $object->status->name),
-                \Yii::t('member', 'project estimate') => array($dataPost['data_old']['task']['estimate_hour'] => $object->estimate_hour),
-                \Yii::t('member', 'project parent') => array($task_name_old => $task_name_new),
+            \Yii::t('member', 'task name') => array($dataPost['data_old']['task']['name'] => $dataPost['name']),
+            \Yii::t('member', 'project name') => array($project_name_old => $project_name_new),
+            \Yii::t('member', 'task end date') => array($dataPost['data_old']['task']['duedatetime'] => date('Y-m-d', $object->duedatetime)),
+            \Yii::t('member', 'task priority') => array($dataPost['data_old']['task']['priority_name'] => $object->priority->name),
+            \Yii::t('member', 'project completed percent') => array($dataPost['data_old']['task']['completed_percent'] => $object->completed_percent),
+            \Yii::t('member', 'project description') => array($dataPost['data_old']['task']['description'] => $object->description),
+            \Yii::t('member', 'project share') => array($dataPost['data_old']['task']['status_name'] => $object->status->name),
+            \Yii::t('member', 'project estimate') => array($dataPost['data_old']['task']['estimate_hour'] => $object->estimate_hour),
+            \Yii::t('member', 'project parent') => array($task_name_old => $task_name_new),
         );
-        
+
         //Create log project history text.
         foreach ($dataReplace as $key => $value) {
             if (!empty($value)) {
@@ -983,7 +982,7 @@ class TaskController extends ApiController {
                         $befor = empty($befor) ? \Yii::t('member', 'no setting') : $befor;
                         switch ($key) {
                             case \Yii::t('member', 'project description'):
-                                $description = !empty($befor) ? \Yii::t('member', 'project description') . ' ' . \Yii::t('member', 'comment update after') .' '. $befor : $noSetting;
+                                $description = !empty($befor) ? \Yii::t('member', 'project description') . ' ' . \Yii::t('member', 'comment update after') . ' ' . $befor : $noSetting;
                                 $content .= '<li>' . $description . '</li>';
                                 break;
                             default:
@@ -994,7 +993,7 @@ class TaskController extends ApiController {
                 }
             }
         }
-        
+
         //Create text log for files.
         if (!empty($dataPost['fileList'])) {
             $content .= '<li>' . \Yii::t('member', 'add file') . '</li>';
@@ -1002,7 +1001,7 @@ class TaskController extends ApiController {
                 $content .= '<div class="padding-left-20"><i><a href="' . \Yii::$app->params['PathUpload'] . DIRECTORY_SEPARATOR . $file['path'] . '">' . $file['name'] . '</a></i></div>';
             }
         }
-        
+
         //Create text log for employee and department.
         if (($project_id_old != $project_id_new)) {
             $assignmenMerge = $this->_mergeDataAssignmen($dataPost);
@@ -1015,7 +1014,7 @@ class TaskController extends ApiController {
                             $content .='<div class="padding-left-20"><a href="#/member/' . $key . '"><i>' . $val . '</i></a></div>';
                         }
                     }
-                
+
                     if (!empty($assignmenMerge['employeeNewLog'])) {
                         $content .= '<div class="padding-left-20">' . \Yii::t('member', 'add new') . '</div>';
                         foreach ($assignmenMerge['employeeNewLog'] as $key => $val) {
@@ -1035,7 +1034,7 @@ class TaskController extends ApiController {
                             $content .='<div class="padding-left-20"><a href="#/member/' . $key . '"><i>' . $val . '</i></a></div>';
                         }
                     }
-                
+
                     if (!empty($followerMerge['employeeNewLog'])) {
                         $content .= '<div class="padding-left-20">' . \Yii::t('member', 'add new') . '</div>';
                         foreach ($followerMerge['employeeNewLog'] as $key => $val) {
@@ -1051,7 +1050,7 @@ class TaskController extends ApiController {
                     $content .= '<li>' . \Yii::t('member', 'task group') . '</li>';
                     if (!empty($taskgroupMerge['taskGroupOld'])) {
                         $content .= '<div class="padding-left-20">' . \Yii::t('member', 'delete') . '</div>';
-                        
+
                         $taskGroups = TaskGroup::find()->select(['id', 'name'])->where(['id' => $taskgroupMerge['taskGroupOld']])->andCompanyId()->all();
                         foreach ($taskGroups as $key => $val) {
                             $content .='<div class="padding-left-20"><i>' . $val->name . '</i></div>';
@@ -1067,10 +1066,10 @@ class TaskController extends ApiController {
                 }
             }
         }
-    
+
         return $content == '' ? false : "<ul>" . $content . "</ul>";
     }
-    
+
     /**
      * Get My task list show caledar.
      */
@@ -1091,7 +1090,7 @@ class TaskController extends ApiController {
         }
         return $this->sendResponse(false, '', $result);
     }
-        
+
     /**
      * Get my follow task list show caledar.
      */
@@ -1099,19 +1098,31 @@ class TaskController extends ApiController {
         $result = [];
         if ($tasks = Task::getMyFollowTaskForCalendar()) {
             foreach ($tasks as $task) {
-                    $duedatetime = $task['duedatetime'] == null ? : $task['duedatetime'];
-                    $result[] = [
-                        'id' => $task['id'],
-                        'color' => "#3b91ad",
-                        'start' => date('Y-m-d'),
-                        'end' => !empty($duedatetime) ? date('Y-m-d H:i:s', $duedatetime) : date('Y-m-d', $duedatetime),
-                        'title' => 'Follow: ' . $task['name'],
-                        'isTask' => true,
-                    ];
-                }
+                $duedatetime = $task['duedatetime'] == null ? : $task['duedatetime'];
+                $result[] = [
+                    'id' => $task['id'],
+                    'color' => "#3b91ad",
+                    'start' => date('Y-m-d'),
+                    'end' => !empty($duedatetime) ? date('Y-m-d H:i:s', $duedatetime) : date('Y-m-d', $duedatetime),
+                    'title' => 'Follow: ' . $task['name'],
+                    'isTask' => true,
+                ];
             }
-        
+        }
+
         return $this->sendResponse(false, '', $result);
+    }
+
+    /**
+     * Get my follow task list show caledar.
+     */
+    public function actionGetReport($projectId = 0) {
+        $result = [];
+        if ($report = Task::getReport($projectId)) {
+//            var_dump($report);die;
+        }
+
+        return $this->sendResponse(false, '', $report);
     }
 
 }

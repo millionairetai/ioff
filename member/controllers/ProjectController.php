@@ -755,4 +755,21 @@ class ProjectController extends ApiController {
         return $this->sendResponse(false, "", $objects);
     }
 
+        /**
+     * Get all department for select dropdown.
+     */
+    public function actionGets() {
+        $objects = [];
+        if ($array = Project::gets(['id', 'name'])) {
+            foreach ($array as $item) {
+                $objects[] = [
+                    'id' => $item['id'],
+                    'name' => $item['name'],
+                ];
+            }
+        }
+
+        return $this->sendResponse(false, "", $objects);
+    }
+
 }

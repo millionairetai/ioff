@@ -1,16 +1,57 @@
-appRoot.controller('reportCtrl', ['$scope', '$uibModal', '$rootScope', 'alertify', 'PER_PAGE', 'MAX_PAGE_SIZE',
-    function ($scope, $uibModal, $rootScope, alertify, PER_PAGE, MAX_PAGE_SIZE) {
-        $scope.colors=["#f56954","#00a65a","#f39c12","#00c0ef","#3c8dbc","#d2d6de"];
-        //Chart donut
-        $scope.labels01 = ["Hoàn thành (11)", "Đang làm(13)", "Chưa làm(8)", "Bỏ dự án (20)", "Quá hạn(40)"];
-        $scope.data01 = [11, 13, 8, 20,40];
-        $scope.options = {
-            legend: {
-                display: true,
-                position:'left'
+appRoot.controller('reportCtrl', ['$scope', '$uibModal', '$rootScope', 'alertify', 'taskService', 'commonService',
+    function ($scope, $uibModal, $rootScope, alertify, taskService, commonService) {
+        $scope.reports = [];
+        $scope.projects = [];
+        $scope.projectId = 0;
+        $scope.totalTask = 0;
+        $scope.colors = ["#00a65a", "#f56954", "#f39c12", "#00c0ef"];
+        $scope.chart = {
+            colors: [],
+            taskReportLabels: [],
+            taskdataReport: [],
+            options: {
+                legend: {
+                    display: true,
+                    position: 'left'
+                }
             }
         };
-        //Chart pie
-        $scope.labels02 = ["Hoàn thành (200%)", "Đang làm(1300%)", "Chưa làm(800%)"];
-        $scope.data02 = [400, 600, 800];
+        
+        commonService.gets('project', function (response) {
+            $scope.projects = response.objects;
+        });
+
+        $scope.getTaskReport = function () {
+            var id = 0;
+            if ($scope.projectId) {
+                id = $scope.projectId.id;
+            } else {
+                id = 0;
+            }
+            
+            taskService.getTaskReport({projectId: id}, function (response) {
+                $scope.reports = response.objects;
+                $scope.chart.colors = [];
+                $scope.chart.taskReportLabels = [];
+                $scope.chart.taskdataReport = [];
+                $scope.totalTask = 0;
+                //Sum
+                if ($scope.reports.length > 0) {
+                    angular.forEach($scope.reports, function (value, key) {
+                        $scope.totalTask += parseInt(value.number_task);
+                    })
+                }
+                
+                if ($scope.reports.length > 0) {
+                    angular.forEach($scope.reports, function (value, key) {
+                        $scope.chart.taskReportLabels[key] = value.status_name + '(' + value.number_task + ' task - chiếm:'+ Math.floor((value.number_task/$scope.totalTask)*100) + '%)';
+                        $scope.chart.taskdataReport[key] = value.number_task;
+                        $scope.chart.colors[key] = $scope.colors[key];
+                    })
+                }
+            });
+        };
+
+        $scope.getTaskReport();
+
     }]);
