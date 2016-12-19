@@ -288,13 +288,4 @@ class Event extends ActiveRecord {
         return $listEmployeeAttend;
     }
        
-    /**
-     * Get Event information by id
-     *
-     * @param integer $eventId
-     * @return array
-     */
-//    public static function getById($eventId) {
-//        return Event::find()->select(['id', 'name'])->where(['id' => $eventId])->one();
-//    }
 }

@@ -2,22 +2,22 @@
 
 namespace member\controllers;
 
+use Yii;
+use common\models\Project;
+use common\models\EventPost;
 use common\models\Calendar;
 use common\models\Event;
 use common\models\Invitation;
 use common\models\Invitee;
 use common\models\File;
 use common\models\Activity;
-use common\models\EventConfirmation;
-use common\models\Notification;
 use common\models\Remind;
 use common\models\Employee;
 use common\models\Sms;
 use common\models\EmployeeActivity;
-use Yii;
-use common\models\Project;
 use common\models\EventConfirmationType;
-use common\models\EventPost;
+use common\models\EventConfirmation;
+use common\models\Notification;
 
 class CalendarController extends ApiController {
 
