@@ -170,7 +170,7 @@ $(function () {
   //Add slimscroll to navbar dropdown
   if (o.navbarMenuSlimscroll && typeof $.fn.slimscroll != 'undefined') {
     $(".navbar .menu").slimscroll({
-      height: o.navbarMenuHeight,
+      height: "400px",
       alwaysVisible: false,
       size: o.navbarMenuSlimscrollWidth
     }).css("width", "100%");

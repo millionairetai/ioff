@@ -1408,3 +1408,13 @@ div.task-creator{
 .box-profile>a.change-avatar:hover{
     opacity: 1;
 }
+
+/* Resize width notifi box*/
+.navbar-nav > .notifications-menu > .dropdown-menu, .navbar-nav > .messages-menu > .dropdown-menu, .navbar-nav > .tasks-menu > .dropdown-menu{
+    width: 430px;
+}
+@media (max-width:768px){
+    .navbar-nav > .notifications-menu > .dropdown-menu, .navbar-nav > .messages-menu > .dropdown-menu, .navbar-nav > .tasks-menu > .dropdown-menu{
+        width: 280px;
+    }
+}
