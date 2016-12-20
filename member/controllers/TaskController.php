@@ -1118,11 +1118,34 @@ class TaskController extends ApiController {
      */
     public function actionGetReport($projectId = 0) {
         $result = [];
-        if ($report = Task::getReport($projectId)) {
+        if ($report = Task::getReportByProjectId($projectId)) {
 //            var_dump($report);die;
         }
 
         return $this->sendResponse(false, '', $report);
+    }
+    
+    /**
+     * Get my follow task list show caledar.
+     */
+    public function actionGetEmployeeTaskReport($projectId = 0) {
+        $result = [];
+        $employee = new Employee();
+        if ($reports = Task::getEmployeeTaskReportByProjectId($projectId)) {
+            foreach ($reports as $report) {
+                $employee->company_id = $report['company_id'];
+                $employee->firstname = $report['firstname'];
+                $employee->lastname = $report['lastname'];
+                $employee->profile_image_path = $report['profile_image_path'];
+                $result[] = [
+                    'employee_fullname' => $employee->fullname,
+                    'avatar' => $employee->image,
+                    'total_hour' => $report['total_hour'],
+                ];
+            }
+        }
+
+        return $this->sendResponse(false, '', $result);
     }
 
 }

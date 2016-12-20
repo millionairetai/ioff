@@ -317,10 +317,10 @@ class Employee extends ActiveRecord implements IdentityInterface {
      */
     public function getImage() {
         if ($this->profile_image_path) {
-            return '/upload' . '/' . Yii::$app->user->identity->company_id . '/avatar/'. $this->profile_image_path . '?time=' . time();
+            return DIRECTORY_SEPARATOR .  'upload' . DIRECTORY_SEPARATOR . Yii::$app->user->identity->company_id . DIRECTORY_SEPARATOR . 'avatar'. DIRECTORY_SEPARATOR . $this->profile_image_path . '?time=' . time();
         }
 
-        return '/upload' . '/' . Yii::$app->user->identity->company_id . '/avatar/' . 'profileImageDefault.jpg?time=' . time();
+        return DIRECTORY_SEPARATOR . 'img' . DIRECTORY_SEPARATOR . 'profileImageDefault.jpg';
     }
 
     /**

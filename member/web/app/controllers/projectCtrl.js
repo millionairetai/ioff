@@ -247,7 +247,7 @@ appRoot.controller('addProjectCtrl', ['socketService','$scope', 'projectService'
         
         $scope.tinymceOptions = {
             inline: false,
-            toolbar: 'formatselect | bold italic underline | bullist numlist | alignleft aligncenter alignright alignjustify | undo redo ',
+            toolbar: 'formatselect | bold italic underline | bullist numlist | undo redo ',
             menubar: false,
             skin: 'lightgray',
             theme: 'modern'
@@ -465,7 +465,7 @@ appRoot.controller('viewProjectCtrl', ['$scope', 'projectService', 'fileService'
         
         $scope.tinymceOptions = {
                 inline: false,
-                toolbar: 'formatselect | bold italic underline | bullist numlist | alignleft aligncenter alignright alignjustify | undo redo ',
+                toolbar: 'formatselect | bold italic underline | bullist numlist | undo redo ',
                 menubar: false,
                 skin: 'lightgray',
                 theme: 'modern'
@@ -501,7 +501,7 @@ appRoot.controller('editProjectPostCtrl', ['$scope', 'projectPostService', '$uib
     	
     	$scope.tinymceOptions = {
                 inline: false,
-                toolbar: 'formatselect | bold italic underline | bullist numlist | alignleft aligncenter alignright alignjustify | undo redo ',
+                toolbar: 'formatselect | bold italic underline | bullist numlist | undo redo ',
                 menubar: false,
                 skin: 'lightgray',
                 theme: 'modern'
@@ -699,7 +699,7 @@ appRoot.controller('editProjectCtrl', ['$scope', 'projectService', '$location', 
         
         $scope.tinymceOptions = {
                 inline: false,
-                toolbar: 'formatselect | bold italic underline | bullist numlist | alignleft aligncenter alignright alignjustify | undo redo ',
+                toolbar: 'formatselect | bold italic underline | bullist numlist | undo redo ',
                 menubar: false,
                 skin: 'lightgray',
                 theme: 'modern'
