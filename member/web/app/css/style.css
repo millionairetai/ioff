@@ -1007,8 +1007,8 @@ div.task-creator{
     display: table-cell;
 }
 .list-employee .item-employee dl dd .image img{
-    width: 100%;
-    height: auto;
+    width: 60px;
+    height: 60px;
 }
 .list-employee .item-employee dl dd p{
     margin-bottom: 0;
