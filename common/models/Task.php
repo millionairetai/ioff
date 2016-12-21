@@ -518,7 +518,9 @@ class Task extends \common\components\db\ActiveRecord {
     }    
         
     /**
-     * Get all task follow employess login
+     * Get task report by project id
+     * @param interger $projectId
+     * @return array
      */
     public static function getTaskReportByProjectId($projectId) {
         $report =  self::find()
@@ -536,12 +538,12 @@ class Task extends \common\components\db\ActiveRecord {
                 ->groupBy(['status_id'])
                 ->asArray()
                 ->all();
-        
-//        print($a->createCommand()->RawSql);die;
     }
     
     /**
-     * Get all task follow employess login
+     * Get employee task report by project id
+     * @param interger $projectId
+     * @return array
      */
     public static function getEmployeeTaskReportByProjectId($projectId) {
         $report = Employee::find()
@@ -556,14 +558,11 @@ class Task extends \common\components\db\ActiveRecord {
             $report = $report->andFilterWhere(['task.project_id' => $projectId]);
         }
                         
-        return $a = $report
+        return $report
                 ->andCompanyId(false, 'employee')
                 ->groupBy(['employee.id'])
                 ->orderBy('total_hour DESC')
                 ->asArray()
                 ->all();
-        
-        
-//        print($a->createCommand()->RawSql);die;
     }
 }
