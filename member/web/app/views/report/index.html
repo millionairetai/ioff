@@ -55,7 +55,7 @@
                                     <th style="width: 40px"></th>
                                 </tr>
                                 <tr ng-repeat="(key, empTaskReport) in empTaskReports">
-                                    <td>{{key}}.</td>
+                                    <td>{{key + 1}}.</td>
                                     <td><img src="{{empTaskReport.avatar}}" class="img-circle user-image" alt="User Image">{{empTaskReport.employee_fullname}}</td>
                                     <td>{{empTaskReport.total_hour}} {{$root.$lang.hour}}</td>
                                     <td>
