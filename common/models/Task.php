@@ -558,7 +558,7 @@ class Task extends \common\components\db\ActiveRecord {
                         
         return $a = $report
                 ->andCompanyId(false, 'employee')
-                ->groupBy(['task_assignment.employee_id'])
+                ->groupBy(['employee.id'])
                 ->orderBy('total_hour DESC')
                 ->asArray()
                 ->all();

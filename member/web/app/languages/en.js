@@ -363,7 +363,12 @@
             register_account: 'Register account',
             company_information: 'Company information',
             start_datetime: 'Started date',
-            expire_time: 'Expired date'
+            expire_time: 'Expired date',
+            //report
+            total_task: 'Total task',
+            total_hour: 'Total hour',
+            number_worked_hour: 'Work hour',            
+            about: 'about'
         };
     });
 })(window.angular);

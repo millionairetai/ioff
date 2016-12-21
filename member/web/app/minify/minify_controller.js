@@ -2727,7 +2727,8 @@ appRoot.controller('reportCtrl', ['$scope', '$uibModal', '$rootScope', 'alertify
 
                 if ($scope.reports.length > 0) {
                     angular.forEach($scope.reports, function (value, key) {
-                        $scope.chart.taskReportLabels[key] = value.status_name + '(' + value.number_task + ' task - chiếm:' + Math.floor((value.number_task / $scope.totalTask) * 100) + '%)';
+                        $scope.chart.taskReportLabels[key] = value.status_name + '(' + value.number_task + ' '+ $rootScope.$lang.task +'- ' 
+                                + $rootScope.$lang.about + ':' + Math.floor((value.number_task / $scope.totalTask) * 100) + '%)';
                         $scope.chart.taskdataReport[key] = value.number_task;
                         $scope.chart.colors[key] = $scope.colors[key];
                     })
