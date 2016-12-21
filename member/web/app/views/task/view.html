@@ -181,15 +181,33 @@
 
             <div class="col-md-12">
                 <div class="modal-footer">                    
-                    <a class="pull-right" href ng-click="ToggleCommentForm()"> <span ng-if="isOpenCommentForm==true">{{$root.$lang.hide}} </span><span ng-if="isOpenCommentForm==false">{{$root.$lang.show}} </span>{{$root.$lang.input_comment}}</a>
+                    <a class="pull-right" href ng-click="ToggleCommentForm()"> <span ng-if="isOpenCommentForm == true">{{$root.$lang.hide}} </span><span ng-if="isOpenCommentForm == false">{{$root.$lang.show}} </span>{{$root.$lang.input_comment}}</a>
                 </div>
             </div>
             <div class="col-md-12">
                 <div class="form-post-task" ng-show="isOpenCommentForm">
                     <form class="form-horizontal">
                         <table class="table">
-                            <tr>
+                            <tr> 
                                 <td width="80%"> 
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">Worked hour</label>
+                                        <div class="col-sm-3" >
+                                            <input type="text" class="form-control" ng-model="task.name" >
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">{{$root.$lang.task_completed_percent}}</label>
+                                        <div class="col-sm-9"  style="padding-top: 5px">
+                                            <div class="pull-left" style="width: 90%">
+                                                <div min="0" max="100" ui-slider="{range: 'min'}" ng-model="task.completed_percent"></div> 
+                                            </div> 
+                                            <div class="pull-right">
+                                                {{task.completed_percent}}%
+                                            </div>
+                                            <div class="clearBoth"></div>
+                                        </div>
+                                    </div>
                                     <textarea class="form-control" data-ui-tinymce ng-model="taskPostData.description" rows="5"></textarea>
                                     <br/>
                                     <input id="fileImage" type="file" class="form-control input-file-upload" name="file" onchange="angular.element(this).scope().addFile(this.files);

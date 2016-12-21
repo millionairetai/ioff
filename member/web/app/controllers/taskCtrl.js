@@ -481,6 +481,7 @@ appRoot.controller('viewTaskCtrl', ['socketService','$sce', 'fileService', '$sco
         description: '',
         taskId: taskId,
     };
+    
     $scope.addTaskPost = function () {
         if (($scope.collection.employeeList != null)) {
             $scope.taskPostData.employeeList = $scope.collection.employeeList;
