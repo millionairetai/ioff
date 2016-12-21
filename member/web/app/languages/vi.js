@@ -99,6 +99,8 @@
             package: 'Gói',
             storage: 'Dung lượng lưu trữ',
             user: 'Người dùng',
+            hide: 'Ẩn',
+            show: 'Hiện',
             //-----------------------------------------End of common language.----------------------------------
             
             //project
@@ -380,7 +382,9 @@
             total_task: 'Tổng số công việc',
             total_hour: 'Tổng số giờ',
             number_worked_hour: 'Số giờ làm',
-            about: 'khoảng'
+            about: 'khoảng',
+            input_comment:' nhập bình luận'
+            
         };
     });
 })(window.angular);

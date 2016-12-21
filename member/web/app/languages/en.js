@@ -100,6 +100,8 @@
             package: 'Package',
             storage: 'Storage',
             user: 'User',
+            hide: 'Hide',
+            show: 'Show',
             //-----------------------------------------End of common language.----------------------------------
             
             //project
@@ -368,7 +370,8 @@
             total_task: 'Total task',
             total_hour: 'Total hour',
             number_worked_hour: 'Work hour',            
-            about: 'about'
+            about: 'about',
+            input_comment:' input comment'
         };
     });
 })(window.angular);

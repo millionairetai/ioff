@@ -373,7 +373,11 @@ appRoot.controller('viewTaskCtrl', ['socketService','$sce', 'fileService', '$sco
     var taskId = $routeParams.taskId;
     $scope.collection = [];
     $scope.files = [];
-
+    $scope.isOpenCommentForm = true;
+    
+    $scope.ToggleCommentForm = function() {
+        $scope.isOpenCommentForm = $scope.isOpenCommentForm == true ? false : true;
+    }
     $scope.getInfoTask = function () {
         taskService.getTaskView({taskId: taskId}, function (response) {
                 if (response.objects.no_data == true) {
