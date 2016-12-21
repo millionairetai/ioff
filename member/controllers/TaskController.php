@@ -1116,9 +1116,9 @@ class TaskController extends ApiController {
     /**
      * Get my follow task list show caledar.
      */
-    public function actionGetReport($projectId = 0) {
+    public function actionGetTaskReport($projectId = 0) {
         $result = [];
-        if ($report = Task::getReportByProjectId($projectId)) {
+        if ($report = Task::getTaskReportByProjectId($projectId)) {
 //            var_dump($report);die;
         }
 
