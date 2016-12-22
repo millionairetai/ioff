@@ -1,7 +1,7 @@
 <section class="content">
     <div class="box">
         <div class="box-header with-border">
-            <h3 class="box-title">Report</h3>
+            <h3 class="box-title">{{$root.$lang.report}}</h3>
             <div class="box-tools pull-right">
                 <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
             </div>
@@ -11,8 +11,8 @@
                 <!-- Custom Tabs -->
                 <div class="nav-tabs-custom">
                     <ul class="nav nav-tabs">
-                        <li class="active"><a href="/report/#tab_1" data-toggle="tab">Tổng quan dự án</a></li>
-                        <li><a href="/report/#tab_2" data-toggle="tab">Thành viên</a></li>
+                        <li class="active"><a href="/report/#tab_1" data-toggle="tab">{{$root.$lang.project}}</a></li>
+                        <li><a href="/report/#tab_2" data-toggle="tab">{{$root.$lang.employee}}</a></li>
                     </ul>
                     <div id="report-tab" class="tab-content">
                         <div class="tab-pane active" id="tab_1">
@@ -27,7 +27,7 @@
                             <div class="row">
                                 <br /><br />
                                 <div class="col-md-12">
-                                    <b> Total task :</b> {{totalTask}}
+                                    <b> {{$root.$lang.total_task}} :</b> {{totalTask}}
                                     <canvas id="doughnut" class="chart chart-doughnut" chart-options="chart.options" chart-data="chart.taskdataReport" chart-labels="chart.taskReportLabels" chart-colors="chart.colors"></canvas> 
                                 </div>
                             </div>
@@ -36,32 +36,31 @@
                         <div class="tab-pane" id="tab_2">
                             <table class="table">
                                 <tbody>
-                                    Total hour: {{empTaskTotalHour}} hour(s)
                                     <tr>
-                                        <div class="col-sm-9 pull-right">
-                                            <select class="form-control" ng-model="empTabProjectId" 
-                                                    ng-change="getEmployeeTaskReport()"
-                                                    ng-options="option.name for option in projects">
-                                                <option value=''>--</option>
-                                            </select>
-                                            <br />
-                                        </div>
-                                
+                                <div class="col-sm-9 pull-right">
+                                    <select class="form-control" ng-model="empTabProjectId" 
+                                            ng-change="getEmployeeTaskReport()"
+                                            ng-options="option.name for option in projects">
+                                        <option value=''>--</option>
+                                    </select>
+                                    <br />
+                                </div>
+                                <b>{{$root.$lang.total_hour}}:</b> {{empTaskTotalHour}} {{$root.$lang.hour}}
                                 </tr>
                                 <tr>
                                     <th style="width: 10px">#</th>
-                                    <th>Nhân viên</th>
-                                    <th>Thời gian làm</th>
-                                    <th>Progress</th>
-                                    <th style="width: 40px">%</th>
+                                    <th>{{$root.$lang.employee}}</th>
+                                    <th>{{$root.$lang.number_worked_hour}}</th>
+                                    <th>%</th>
+                                    <th style="width: 40px"></th>
                                 </tr>
                                 <tr ng-repeat="(key, empTaskReport) in empTaskReports">
-                                    <td>{{key}}.</td>
+                                    <td>{{key + 1}}.</td>
                                     <td><img src="{{empTaskReport.avatar}}" class="img-circle user-image" alt="User Image">{{empTaskReport.employee_fullname}}</td>
-                                    <td>{{empTaskReport.total_hour}} giờ</td>
+                                    <td>{{empTaskReport.total_hour}} {{$root.$lang.hour}}</td>
                                     <td>
                                         <div class="progress progress-xs">
-                                            <div class="progress-bar progress-bar-danger" style="width: 55%"></div>
+                                            <div class="progress-bar progress-bar-danger" style="width: {{empTaskReport.hour_percent}}%"></div>
                                         </div>
                                     </td>
                                     <td><span class="badge bg-red">{{empTaskReport.hour_percent}}%</span></td>
@@ -76,9 +75,6 @@
                 <!-- nav-tabs-custom -->
             </div>
         </div><!-- /.box-body -->
-        <div class="box-footer">
-            Footer
-        </div><!-- /.box-footer-->
     </div><!-- /.box -->
 
 </section>

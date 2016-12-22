@@ -100,6 +100,8 @@
             package: 'Package',
             storage: 'Storage',
             user: 'User',
+            hide: 'Hide',
+            show: 'Show',
             //-----------------------------------------End of common language.----------------------------------
             
             //project
@@ -363,7 +365,13 @@
             register_account: 'Register account',
             company_information: 'Company information',
             start_datetime: 'Started date',
-            expire_time: 'Expired date'
+            expire_time: 'Expired date',
+            //report
+            total_task: 'Total task',
+            total_hour: 'Total hour',
+            number_worked_hour: 'Work hour',            
+            about: 'about',
+            input_comment:' input comment'
         };
     });
 })(window.angular);

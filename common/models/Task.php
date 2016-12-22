@@ -518,9 +518,11 @@ class Task extends \common\components\db\ActiveRecord {
     }    
         
     /**
-     * Get all task follow employess login
+     * Get task report by project id
+     * @param interger $projectId
+     * @return array
      */
-    public static function getReportByProjectId($projectId) {
+    public static function getTaskReportByProjectId($projectId) {
         $report =  self::find()
                         ->select(['COUNT(task.id) AS number_task', 'status.column_name', 'translation.translated_text AS status_name'])
                         ->leftJoin('status', 'task.status_id=status.id AND status.owner_table="task"');
@@ -536,12 +538,12 @@ class Task extends \common\components\db\ActiveRecord {
                 ->groupBy(['status_id'])
                 ->asArray()
                 ->all();
-        
-//        print($a->createCommand()->RawSql);die;
     }
     
     /**
-     * Get all task follow employess login
+     * Get employee task report by project id
+     * @param interger $projectId
+     * @return array
      */
     public static function getEmployeeTaskReportByProjectId($projectId) {
         $report = Employee::find()
@@ -556,14 +558,11 @@ class Task extends \common\components\db\ActiveRecord {
             $report = $report->andFilterWhere(['task.project_id' => $projectId]);
         }
                         
-        return $a = $report
+        return $report
                 ->andCompanyId(false, 'employee')
-                ->groupBy(['task_assignment.employee_id'])
+                ->groupBy(['employee.id'])
                 ->orderBy('total_hour DESC')
                 ->asArray()
                 ->all();
-        
-        
-//        print($a->createCommand()->RawSql);die;
     }
 }

@@ -2679,15 +2679,13 @@ appRoot.controller('editProjectCtrl', ['$scope', 'projectService', '$location', 
             };
 
     }]);
-appRoot.controller('reportCtrl', ['$scope', '$uibModal', '$rootScope', 'alertify', 'taskService', 'commonService',
-    function ($scope, $uibModal, $rootScope, alertify, taskService, commonService) {
+appRoot.controller('reportCtrl', ['$scope', '$rootScope', 'taskService', 'commonService',
+    function ($scope, $rootScope, taskService, commonService) {
         $scope.reports = [];
         $scope.projects = [];
         $scope.projectId = 0;
         $scope.totalTask = 0;
         $scope.colors = ["#00a65a", "#f56954", "#f39c12", "#00c0ef"];
-        //Employee tab
-        $scope.empTabProjectId = 0;
         $scope.chart = {
             colors: [],
             taskReportLabels: [],
@@ -2723,11 +2721,10 @@ appRoot.controller('reportCtrl', ['$scope', '$uibModal', '$rootScope', 'alertify
                     angular.forEach($scope.reports, function (value, key) {
                         $scope.totalTask += parseInt(value.number_task);
                     })
-                }
-
-                if ($scope.reports.length > 0) {
+                    
                     angular.forEach($scope.reports, function (value, key) {
-                        $scope.chart.taskReportLabels[key] = value.status_name + '(' + value.number_task + ' task - chiếm:' + Math.floor((value.number_task / $scope.totalTask) * 100) + '%)';
+                        $scope.chart.taskReportLabels[key] = value.status_name + '(' + value.number_task + ' '+ $rootScope.$lang.task +'- ' 
+                                + $rootScope.$lang.about + ':' + Math.floor((value.number_task / $scope.totalTask) * 100) + '%)';
                         $scope.chart.taskdataReport[key] = value.number_task;
                         $scope.chart.colors[key] = $scope.colors[key];
                     })
@@ -2738,6 +2735,7 @@ appRoot.controller('reportCtrl', ['$scope', '$uibModal', '$rootScope', 'alertify
         $scope.getTaskReport();
 
         //Employee tab
+        $scope.empTabProjectId = 0;
         $scope.empTaskReports = [];
         $scope.empTaskTotalHour = 0;
         $scope.getEmployeeTaskReport = function () {
@@ -3197,7 +3195,11 @@ appRoot.controller('viewTaskCtrl', ['socketService','$sce', 'fileService', '$sco
     var taskId = $routeParams.taskId;
     $scope.collection = [];
     $scope.files = [];
-
+    $scope.isOpenCommentForm = true;
+    
+    $scope.ToggleCommentForm = function() {
+        $scope.isOpenCommentForm = $scope.isOpenCommentForm == true ? false : true;
+    }
     $scope.getInfoTask = function () {
         taskService.getTaskView({taskId: taskId}, function (response) {
                 if (response.objects.no_data == true) {
@@ -3298,9 +3300,12 @@ appRoot.controller('viewTaskCtrl', ['socketService','$sce', 'fileService', '$sco
 
    //function add event post
     $scope.taskPostData = {
+        worked_hour: '',
+        completed_percent: 0,
         description: '',
         taskId: taskId,
     };
+    
     $scope.addTaskPost = function () {
         if (($scope.collection.employeeList != null)) {
             $scope.taskPostData.employeeList = $scope.collection.employeeList;
@@ -3316,8 +3321,10 @@ appRoot.controller('viewTaskCtrl', ['socketService','$sce', 'fileService', '$sco
             TaskPostService.addTaskPost(fd, function (response) {
                 alertify.success($rootScope.$lang.task_post_add_success);
                 $scope.taskPostData = {
+                    worked_hour: 0,
+                    completed_percent: 0,
                     description: '',
-                    taskId: taskId,
+                    taskId: taskId
                 };
 
                 $scope.files = [];

@@ -13,6 +13,7 @@ use common\models\Sms;
 use common\models\ProjectPost;
 use common\models\TaskPost;
 use common\models\Task;
+use common\models\TaskAssignment;
 
 class TaskPostController extends ApiController {
 
@@ -121,6 +122,24 @@ class TaskPostController extends ApiController {
             if (isset($dataPost['taskId'])) {
                 if (!$taskInfo = Task::getById($dataPost['taskId'])) {
                     throw new \Exception('Get task info fail');
+                }
+            }
+            
+            //Update task
+            if (isset($dataPost['worked_hour'])) {
+                $taskInfo->worked_hour += $dataPost['worked_hour'];
+                $taskInfo->completed_percent = $dataPost['completed_percent'];
+                if ($taskInfo->save() === false) {
+                    throw new \Exception('Save task info fail');
+                }
+                
+                //update task assignment 
+                if (!TaskAssignment::updateAllCounters(['worked_hour'=> $dataPost['worked_hour']], [
+                        'task_id' => $taskInfo->id, 
+                        'employee_id'=>$taskInfo->employee_id, 
+                        'company_id' => $taskInfo->company_id
+                    ])) {
+                    throw new \Exception('Save task assignment fail');
                 }
             }
 
