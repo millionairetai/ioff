@@ -102,7 +102,7 @@
                     <tr>
                         <th width="20%" class="border-top-none">{{$root.$lang.project_manage}}</th>
                         <td width="80%" class="border-top-none" ng-if="collection.project_info.image != null">
-                            <div class="user-block-text-center-right" ><img src="{{collection.project_info.image}}" class="img-circle" width="58px" height="58px"> <a href="#/member/{{collection.project_info.manager_project_id}}">{{collection.project_info.project_manager}}</a></div>
+                            <div class="user-block-text-center-right" ><img src="{{collection.project_info.image}}" class="img-circle" width="58px" height="58px"> <a href="#/viewEmployee/{{collection.project_info.manager_project_id}}">{{collection.project_info.project_manager}}</a></div>
                         </td>
                     </tr>
                     <tr>
@@ -117,7 +117,7 @@
                         <th>{{$root.$lang.project_members}}</th>
                         <td>
                             <div ng-repeat="employees in collection.employee_info| limitTo:limit">
-                                <div class="user-block-text-center-right"><img src="{{employees.image}}" class="img-circle" alt="User Image" width="58px" height="58px"> <a href="#/member/{{employees.id}}">{{employees.firstname}}</a></div><br/>
+                                <div class="user-block-text-center-right"><img src="{{employees.image}}" class="img-circle" alt="User Image" width="58px" height="58px"> <a href="#/viewEmployee/{{employees.id}}">{{employees.firstname}}</a></div><br/>
                             </div>
 
                             <div class=" text-center" >
@@ -163,7 +163,7 @@
                             <div class="box-header with-border">
                                 <div class="user-block">
                                     <img src="{{v.profile_image_path}}" class="img-circle" alt="User Image" width="58px" height="58px">
-                                    <span class="username"><a href="#/member/{{v.id}}"><b>{{v.employee_name}}</b></a></span>
+                                    <span class="username"><a href="#/viewEmployee/{{v.id}}"><b>{{v.employee_name}}</b></a></span>
                                     <span class="description">{{v.time| date : "fullDate" }}</span>
                                 </div>
                                 <div class="pull-right box-tools">

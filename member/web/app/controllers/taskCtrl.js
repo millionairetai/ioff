@@ -478,6 +478,8 @@ appRoot.controller('viewTaskCtrl', ['socketService','$sce', 'fileService', '$sco
 
    //function add event post
     $scope.taskPostData = {
+        worked_hour: '',
+        completed_percent: 0,
         description: '',
         taskId: taskId,
     };
@@ -497,8 +499,10 @@ appRoot.controller('viewTaskCtrl', ['socketService','$sce', 'fileService', '$sco
             TaskPostService.addTaskPost(fd, function (response) {
                 alertify.success($rootScope.$lang.task_post_add_success);
                 $scope.taskPostData = {
+                    worked_hour: 0,
+                    completed_percent: 0,
                     description: '',
-                    taskId: taskId,
+                    taskId: taskId
                 };
 
                 $scope.files = [];
