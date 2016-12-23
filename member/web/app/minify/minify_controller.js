@@ -3213,6 +3213,7 @@ appRoot.controller('viewTaskCtrl', ['socketService','$sce', 'fileService', '$sco
                 }
                 
                 $scope.collection = response.objects;
+                static_postnew = response.objects;
             }, function (response) {
                 if (response.objects.no_data == true) {
                     $location.path('/task');
@@ -3297,19 +3298,33 @@ appRoot.controller('viewTaskCtrl', ['socketService','$sce', 'fileService', '$sco
         }, function () {
         });
     };
-
-   //function add event post
+   //function add task post
     $scope.taskPostData = {
         worked_hour: '',
-        completed_percent: 0,
+        completed_percent: $scope.collection.task,
         description: '',
         taskId: taskId,
+    };
+    
+    //Check if show hide show input log tim
+    $scope.isCanLogTime = function(assignees, auth) {
+        if (angular.isUndefined(assignees)) {
+            return false;
+        }
+        var i = 0;
+        for (i = 0; i < assignees.length; i++) {
+           if (assignees[i].id == auth.user_id){
+                console.log(assignees[i]);
+                return true;
+            }
+        }
+        return false;
     };
     
     $scope.addTaskPost = function () {
         if (($scope.collection.employeeList != null)) {
             $scope.taskPostData.employeeList = $scope.collection.employeeList;
-        }
+        };
 
         if (TaskPostService.validateTaskPost($scope.taskPostData)) {
             var fd = new FormData();
@@ -3321,8 +3336,7 @@ appRoot.controller('viewTaskCtrl', ['socketService','$sce', 'fileService', '$sco
             TaskPostService.addTaskPost(fd, function (response) {
                 alertify.success($rootScope.$lang.task_post_add_success);
                 $scope.taskPostData = {
-                    worked_hour: 0,
-                    completed_percent: 0,
+                    worked_hour: '',
                     description: '',
                     taskId: taskId
                 };
@@ -3455,6 +3469,22 @@ appRoot.controller('viewTaskCtrl', ['socketService','$sce', 'fileService', '$sco
         if (typeof $scope.files[$index] !== 'undefined') {
             $scope.files.splice($index, 1);
         }
+    };
+    
+    //Get detail of work hour each employee.
+    $scope.getDetailWorkedHourEmployee = function (taskId) {
+        var modalInstance = $uibModal.open({
+            templateUrl: 'app/views/task/detailWorkedHourEmployee.html',
+            controller: 'detailWorkedHourEmployeeCtrl',
+            size: 'sm',
+            keyboard: true,
+            backdrop: 'static',
+            resolve: {
+                taskId: function (){
+                    return taskId;
+                }
+            }
+        });
     };
 }]);
 
@@ -3747,6 +3777,20 @@ appRoot.controller('editTaskPostCtrl', ['$scope', 'TaskPostService', '$uibModalI
                 });
             }
         };
+        //cancel
+        $scope.cancel = function () {
+            $uibModalInstance.dismiss('cancel');
+    };
+}]);
+
+//edit task post
+appRoot.controller('detailWorkedHourEmployeeCtrl', ['$scope', '$uibModalInstance', '$rootScope', 'alertify', 'taskId', 'taskService',
+    function ($scope, $uibModalInstance, $rootScope, alertify, taskId, taskService) {
+       $scope.employees = [];
+       
+       taskService.getDetaiWorkedHourEmployee({taskId: taskId}, function(response) {
+           $scope.employees = response.objects;
+       });
         //cancel
         $scope.cancel = function () {
             $uibModalInstance.dismiss('cancel');

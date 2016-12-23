@@ -881,6 +881,9 @@ appRoot.factory('taskService', ['apiService','$rootScope','alertify', function (
             },
             getEmpTaskReport: function(data,success,error) {
                 apiService.get('task/get-employee-task-report',data,success,error);
+            },
+            getDetaiWorkedHourEmployee: function(data,success,error) {
+                apiService.get('task/get-detail-worked-hour-employee',data,success,error);
             }
         };
     }]);
@@ -892,36 +895,42 @@ appRoot.factory('taskGroupService', ['apiService', '$rootScope', 'alertify', fun
             }
         };
     }]);
-appRoot.factory('TaskPostService', ['apiService', '$rootScope', 'alertify', function (apiService, $rootScope, alertify) {
-    return {
-        addTaskPost: function (data, success, error) {
-            apiService.upload('task-post/add-task-post', data, success, error);
-        },
-        getTaskPosts: function (data, success, error) {
-            apiService.get('task-post/get-task-post', data, success, error);
-        },
-        getLastTaskPost: function (data, success, error) {
-            apiService.get('task-post/get-last-task-post', data, success, error);
-        },
-        removeTaskPost : function (data,success,error){
-            apiService.get('task-post/remove-task-post', data, success, error);
-        },
-        updateTaskPost : function (data,success,error){
-            apiService.post('task-post/update-task-post', data, success, error);
-        },
-        validateTaskPost: function (object) {
-            var message = "";
-            if (object.description.length == 0) {
-                message += $rootScope.$lang.task_description_error_empty + "<br/>";
+appRoot.factory('TaskPostService', ['apiService', '$rootScope', 'alertify', 'validateService',
+    function (apiService, $rootScope, alertify, validateService) {
+
+        return {
+            addTaskPost: function (data, success, error) {
+                apiService.upload('task-post/add-task-post', data, success, error);
+            },
+            getTaskPosts: function (data, success, error) {
+                apiService.get('task-post/get-task-post', data, success, error);
+            },
+            getLastTaskPost: function (data, success, error) {
+                apiService.get('task-post/get-last-task-post', data, success, error);
+            },
+            removeTaskPost: function (data, success, error) {
+                apiService.get('task-post/remove-task-post', data, success, error);
+            },
+            updateTaskPost: function (data, success, error) {
+                apiService.post('task-post/update-task-post', data, success, error);
+            },
+            validateTaskPost: function (object) {
+                var message = "";
+                if (validateService.required(object.worked_hour) && !validateService.integer(object.worked_hour)) {
+                    message += $rootScope.$lang.worked_hour_must_be_number + "<br/>";
+                }
+
+                if (object.description.length == 0) {
+                    message += $rootScope.$lang.task_description_error_empty + "<br/>";
+                }
+                if (message.length > 0) {
+                    alertify.error(message);
+                    return false;
+                }
+                return true;
             }
-            if (message.length > 0) {
-                alertify.error(message);
-                return false;
-            }
-            return true;
-        }
-    };
-}]);appRoot.factory( "ValidationServices", function() {
+        };
+    }]);appRoot.factory( "ValidationServices", function() {
     return {
         failIfWrongThreshouldConfig: function( firstThreshould, secondThreshould ) {
             if( (! firstThreshould && ! secondThreshould) || (firstThreshould && secondThreshould) ) {
@@ -1012,6 +1021,9 @@ appRoot.factory('validateService', ['apiService', function (apiService) {
                 }
 
                 return true;
+            },
+            integer: function (number) {
+                return this.run(number, /^\s*[+-]?\d+\s*$/);
             },
             email: function (email) {
                 return this.run(email, /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/);

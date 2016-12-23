@@ -11,6 +11,9 @@ appRoot.factory('validateService', ['apiService', function (apiService) {
 
                 return true;
             },
+            integer: function (number) {
+                return this.run(number, /^\s*[+-]?\d+\s*$/);
+            },
             email: function (email) {
                 return this.run(email, /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/);
             },

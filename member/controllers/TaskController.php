@@ -1142,5 +1142,30 @@ class TaskController extends ApiController {
 
         return $this->sendResponse(false, '', $result);
     }
+    
+    /**
+     * Get detail worked hour employee
+     */
+    public function actionGetDetailWorkedHourEmployee($taskId) {
+        $result = [];
+        $employee = new Employee();
+        if ($records = TaskAssignment::getWorkedHourEmployeeByTaskId($taskId)) {
+            foreach ($records as $record) {
+                $employee->company_id = $record['company_id'];
+                $employee->firstname = $record['firstname'];
+                $employee->lastname = $record['lastname'];
+                $employee->profile_image_path = $record['profile_image_path'];
+                $employee->id = $record['id'];
+                $result[] = [
+                    'employee_fullname' => $employee->fullname,
+                    'avatar' => $employee->image,
+                    'worked_hour' => $record['worked_hour'],
+                    'user_id' => $employee->id,
+                ];
+            }
+            
+            return $this->sendResponse(false, '', $result);
+        }
+    }
 
 }

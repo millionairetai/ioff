@@ -1,0 +1,37 @@
+<div class="modal-header dialog-header-wait">
+    <button type="button" class="close" ng-click="cancel()">×</button>
+    <h4 class="modal-title text-danger"> 
+        <strong><i class="fa fa-cubes"></i>
+            <span>{{$root.$lang.detail}}</span>
+        </strong>
+    </h4>
+</div>
+<div class="modal-body text-dangers detail-employee-hour-box" >    
+    <div class="box-body form-horizontal">
+        <!--<div class="row form-group">-->
+            <!--<div class="row">-->
+                <!--<div class="col-md-9">-->
+                    <div id="employee-hour" class="clearfix">
+                        <table class="table">
+                            <tbody>
+                                <tr ng-repeat="employee in employees">
+                                    <td width="80%" class="border-top-none">
+                                        <div class="user-block-text-center-right">
+                                            <img class="img-circle" width="58px" height="58px" src="{{employee.avatar}}">
+                                            <a href="#/viewEmployee/{{employee.id}}" class="ng-binding">{{employee.employee_fullname}}</a>
+                                        </div>
+                                    </td>
+                                    <td width="20%" class="border-top-none">{{employee.worked_hour}} {{$root.$lang.hour}}</td>
+                                </tr>        
+                            </tbody>
+                        </table>
+                    </div>
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    </div>
+</div>  
+<div class="modal-footer">    
+    <button type="button" class="btn btn-default btn-flat" ng-click="cancel()"> <i class="fa fa-remove"></i> {{$root.$lang.button_close}}</button>
+</div>
+

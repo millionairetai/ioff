@@ -371,7 +371,9 @@
             total_hour: 'Total hour',
             number_worked_hour: 'Work hour',            
             about: 'about',
-            input_comment:' input comment'
+            input_comment:' input comment',
+            worked_hour_must_be_number: 'Worked hour must be number',
+            total_worked_hour: 'Total of worked hour'
         };
     });
 })(window.angular);

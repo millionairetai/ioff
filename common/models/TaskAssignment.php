@@ -17,21 +17,19 @@ use Yii;
  * @property string $lastup_employee_id
  * @property boolean $disabled
  */
-class TaskAssignment extends \common\components\db\ActiveRecord
-{
+class TaskAssignment extends \common\components\db\ActiveRecord {
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'task_assignment';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['company_id', 'task_id', 'employee_id', 'datetime_created', 'lastup_datetime', 'created_employee_id', 'lastup_employee_id'], 'integer'],
             [['task_id', 'employee_id'], 'required'],
@@ -42,8 +40,7 @@ class TaskAssignment extends \common\components\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => 'ID',
             'company_id' => 'Company ID',
@@ -56,4 +53,23 @@ class TaskAssignment extends \common\components\db\ActiveRecord
             'disabled' => 'Disabled',
         ];
     }
+
+    /**
+     * Get worked hour employee by task id.
+     * @param interger $taskId
+     * @return array
+     */
+    public static function getWorkedHourEmployeeByTaskId($taskId) {
+        $employees = Employee::find()
+                ->select(['task_assignment.worked_hour', 'employee.firstname', 'employee.lastname', 'employee.id', 'employee.profile_image_path',
+                    'employee.company_id', 'employee.id'])
+                ->leftJoin('task_assignment', 'task_assignment.employee_id=employee.id')
+                ->where(['task_assignment.task_id' => $taskId]);
+
+        return $employees
+                        ->andCompanyId(false, 'employee')
+                        ->asArray()
+                        ->all();
+    }
+
 }

@@ -69,9 +69,10 @@
                         <tr>
                             <th>{{$root.$lang.work_time}}</th>
                             <td>
-                                <strong>{{$root.$lang.task_start_date}}</strong> {{collection.task.start_datetime| date : "fullDate" }}
+                                <strong>{{$root.$lang.task_start_date}}:</strong> {{collection.task.start_datetime| date : "fullDate" }}
                                 <br/>
-                                <strong>{{$root.$lang.task_end_date}}</strong> {{collection.task.duedatetime| date : "fullDate" }}
+                                <strong>{{$root.$lang.expire_time}}:</strong> {{collection.task.duedatetime| date : "fullDate" }}<br />
+                                <strong>{{$root.$lang.total_worked_hour}}:</strong> <a class="worked-hour" href ng-click="getDetailWorkedHourEmployee(collection.task.id)">{{collection.task.worked_hour}} {{$root.$lang.hour}}</a>
                             </td>
                             <td></td>
                         </tr>
@@ -190,24 +191,27 @@
                         <table class="table">
                             <tr> 
                                 <td width="80%"> 
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label">Worked hour</label>
-                                        <div class="col-sm-3" >
-                                            <input type="text" class="form-control" ng-model="taskPostData.worked_hour" >
-                                        </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label">{{$root.$lang.task_completed_percent}}</label>
-                                        <div class="col-sm-9"  style="padding-top: 5px">
-                                            <div class="pull-left" style="width: 90%">
-                                                <div min="0" max="100" ui-slider="{range: 'min'}" ng-model="taskPostData.completed_percent"></div> 
-                                            </div> 
-                                            <div class="pull-right">
-                                                {{taskPostData.completed_percent}}%
+                                    <div class="log-hour-work" ng-show="isCanLogTime(collection.assignees, auth)">
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">Worked hour</label>
+                                            <div class="col-sm-3" >
+                                                <input type="text" class="form-control" ng-model="taskPostData.worked_hour" >
                                             </div>
-                                            <div class="clearBoth"></div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">{{$root.$lang.task_completed_percent}}</label>
+                                            <div class="col-sm-9"  style="padding-top: 5px">
+                                                <div class="pull-left" style="width: 90%">
+                                                    <div min="0" max="100" ui-slider="{range: 'min'}" ng-model="taskPostData.completed_percent"></div> 
+                                                </div> 
+                                                <div class="pull-right">
+                                                    {{taskPostData.completed_percent}}%
+                                                </div>
+                                                <div class="clearBoth"></div>
+                                            </div>
                                         </div>
                                     </div>
+
                                     <textarea class="form-control" data-ui-tinymce ng-model="taskPostData.description" rows="5"></textarea>
                                     <br/>
                                     <input id="fileImage" type="file" class="form-control input-file-upload" name="file" onchange="angular.element(this).scope().addFile(this.files);

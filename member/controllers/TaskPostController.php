@@ -14,6 +14,7 @@ use common\models\ProjectPost;
 use common\models\TaskPost;
 use common\models\Task;
 use common\models\TaskAssignment;
+use yii\validators\NumberValidator;
 
 class TaskPostController extends ApiController {
 
@@ -119,30 +120,46 @@ class TaskPostController extends ApiController {
             }
 
             $taskInfo = [];
-            if (isset($dataPost['taskId'])) {
+            if (!empty($dataPost['taskId'])) {
                 if (!$taskInfo = Task::getById($dataPost['taskId'])) {
                     throw new \Exception('Get task info fail');
                 }
             }
             
+
             //Update task
-            if (isset($dataPost['worked_hour'])) {
+            if (!empty($dataPost['worked_hour'])) {
+                $validator = new NumberValidator();
+                if (!$validator->validate($dataPost['worked_hour'], $error)) {
+                    throw new \Exception('hour must be integer');
+                }
                 $taskInfo->worked_hour += $dataPost['worked_hour'];
-                $taskInfo->completed_percent = $dataPost['completed_percent'];
-                if ($taskInfo->save() === false) {
-                    throw new \Exception('Save task info fail');
+            }
+            
+            if (!empty($dataPost['completed_percent'])) {
+                if (!$validator->validate($dataPost['completed_percent'], $error)) {
+                    throw new \Exception('completed percent must be integer');
                 }
                 
+                 $taskInfo->completed_percent = $dataPost['completed_percent'];
+            }
+            
+            if ($taskInfo->save() === false) {
+                throw new \Exception('Save task info fail');
+            }
+            
+            //Update hour of each employee time
+            if (!empty($dataPost['worked_hour'])) {    
                 //update task assignment 
                 if (!TaskAssignment::updateAllCounters(['worked_hour'=> $dataPost['worked_hour']], [
-                        'task_id' => $taskInfo->id, 
-                        'employee_id'=>$taskInfo->employee_id, 
-                        'company_id' => $taskInfo->company_id
-                    ])) {
-                    throw new \Exception('Save task assignment fail');
+                            'task_id' => $taskInfo->id, 
+                            'employee_id'=> Yii::$app->user->identity->id, 
+                            'company_id' => $taskInfo->company_id
+                        ])) {
+                        throw new \Exception('Save task assignment fail');
                 }
             }
-
+            
             //insert task_post table:
             $taskPost = new TaskPost();
             $taskPost->task_id = $dataPost['taskId'];
@@ -221,7 +238,7 @@ class TaskPostController extends ApiController {
 
             $transaction->commit();
             return $this->sendResponse(false, [], ['collection' => $collection, 'files' => [$taskPost->id => $fileData]]);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $transaction->rollBack();
             return $this->sendResponse(true, \Yii::t('member', 'error_system'), []);
         }

@@ -383,8 +383,9 @@
             total_hour: 'Tổng số giờ',
             number_worked_hour: 'Số giờ làm',
             about: 'khoảng',
-            input_comment:' nhập bình luận'
-            
+            input_comment:' nhập bình luận',
+            worked_hour_must_be_number: 'Số giờ làm phải là số',
+            total_worked_hour: 'Tổng giờ làm'
         };
     });
 })(window.angular);

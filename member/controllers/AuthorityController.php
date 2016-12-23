@@ -250,6 +250,7 @@ class AuthorityController extends ApiController {
         }
 
         $objects['is_admin'] = Yii::$app->user->identity->is_admin;
+        $objects['user_id'] = Yii::$app->user->identity->id;
         return $this->sendResponse(false, "", $objects);
     }
     
