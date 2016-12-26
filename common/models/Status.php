@@ -112,4 +112,20 @@ class Status extends \common\components\db\ActiveRecord
                 ->asArray()
                 ->all();;
     }
+    
+    /**
+     * Get priority by status id and  owner table
+     * @param integer $statusId
+     * @param string $ownerTable
+     * @return array
+     */
+    public static function getByStatusIdAndOwnerTable($statusId, $ownerTable) {
+        return self::find()
+                ->select(['status.id','translation.translated_text AS name'])
+                ->leftJoin('translation', 'status.id = translation.owner_id AND translation.owner_table="status"')
+                ->leftJoin('language', 'language.id = translation.language_id')
+                ->where(['status.owner_table' => $ownerTable, 'language.language_code' => Yii::$app->language, 'translation.owner_id' => $statusId])
+                ->asArray()
+                ->one();
+    }
 }

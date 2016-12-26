@@ -68,7 +68,7 @@ class Priority extends \common\components\db\ActiveRecord
      * Get priority by owner table
      * 
      * param string $ownerTable
-     * @return \yii\db\ActiveQuery
+     * @return array
      */
     public static function getByOwnerTable($ownerTable) {
         return self::find()
@@ -78,5 +78,22 @@ class Priority extends \common\components\db\ActiveRecord
                 ->where(['priority.owner_table' => $ownerTable, 'language.language_code' => Yii::$app->language])
                 ->asArray()
                 ->all();;
+    }
+    
+    /**
+     * Get priority by priority id and  owner table
+     * 
+     * @param integer $priorityId
+     * @param string $ownerTable
+     * @return array
+     */
+    public static function getByPriorityIdAndOwnerTable($priorityId, $ownerTable) {
+        return self::find()
+                ->select(['priority.id','translation.translated_text AS name'])
+                ->leftJoin('translation', 'priority.id = translation.owner_id AND translation.owner_table="priority"')
+                ->leftJoin('language', 'language.id = translation.language_id')
+                ->where(['priority.owner_table' => $ownerTable, 'language.language_code' => Yii::$app->language, 'translation.owner_id' => $priorityId])
+                ->asArray()
+                ->one();
     }
 }

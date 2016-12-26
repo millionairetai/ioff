@@ -393,6 +393,9 @@ class Task extends \common\components\db\ActiveRecord {
             }
         }
 
+        //Get status corresponding status and priority name for task.
+        $priority = Priority::getByPriorityIdAndOwnerTable($task->priority_id, 'task');
+        $status = Status::getByStatusIdAndOwnerTable($task->status_id, 'task');
         $result = [
                 'task' => [
                         'id'                => $task->id,
@@ -409,8 +412,8 @@ class Task extends \common\components\db\ActiveRecord {
                         'description'       => $task->description,
                         'worked_hour'       => $task->worked_hour,
                         'duedatetime'       => $duedatetime,
-                        'status_name'       => $task->status->name,
-                        'priority_name'     => $task->priority->name,
+                        'status_name'       => !empty($status['name'])?  $status['name'] : '',
+                        'priority_name'     => !empty($priority['name']) ? $priority['name'] : '',
                         'estimate_hour'     => $task->estimate_hour,
                         'start_datetime'    => $startDateTime,
                         'is_public_name'    => $task->getIsPublic(),
