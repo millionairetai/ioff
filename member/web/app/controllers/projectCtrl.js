@@ -264,6 +264,10 @@ appRoot.controller('viewProjectCtrl', ['$scope', 'projectService', 'fileService'
         $scope.collection = [];
         $scope.files = [];
 
+        $scope.isOpenCommentForm = true;
+        $scope.ToggleCommentForm = function() {
+            $scope.isOpenCommentForm = $scope.isOpenCommentForm == true ? false : true;
+        }
         $scope.getInfoProject = function () {
             projectService.viewProject({projectId: projectId}, function (response) {
                 $scope.collection = response.objects.collection;

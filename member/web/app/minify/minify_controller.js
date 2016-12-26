@@ -2237,6 +2237,10 @@ appRoot.controller('viewProjectCtrl', ['$scope', 'projectService', 'fileService'
         $scope.collection = [];
         $scope.files = [];
 
+        $scope.isOpenCommentForm = true;
+        $scope.ToggleCommentForm = function() {
+            $scope.isOpenCommentForm = $scope.isOpenCommentForm == true ? false : true;
+        }
         $scope.getInfoProject = function () {
             projectService.viewProject({projectId: projectId}, function (response) {
                 $scope.collection = response.objects.collection;
@@ -3307,7 +3311,7 @@ appRoot.controller('viewTaskCtrl', ['socketService','$sce', 'fileService', '$sco
         taskId: taskId,
     };
     
-    //Check if show hide show input log time
+    //Check if show hide show for form of log hour.
     $scope.isCanLogTime = function(assignees, auth) {
         if (angular.isUndefined(assignees)) {
             return false;

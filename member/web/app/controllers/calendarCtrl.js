@@ -473,7 +473,7 @@ appRoot.controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService',
                 $scope.collection = response.objects;
                 employee_id = $scope.collection.event.employee_id;
             });
-        };
+        };        
         $scope.getInfoEvent();
 
         //function add event post

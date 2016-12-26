@@ -2,6 +2,10 @@
     <h1>
         {{$root.$lang.project_manage}}
     </h1>
+    <div class="tool-right">
+        <a href="#project"><button type="button" class="btn btn-default btn-flat" ><i class="fa fa-arrow-circle-left"></i> {{$root.$lang.button_back}}</button></a>
+        <button type="button" class="btn btn-primary btn-flat" ng-click="edit()" ng-show="$root.auth.project.edit || $root.auth.is_admin" ><i class="fa fa-edit"></i> {{$root.$lang.edit_project}}</button>
+    </div>
 </section>
 
 <section class="content">
@@ -130,33 +134,35 @@
             </div>
             <div class="col-md-12">
                 <div class="modal-footer">
-                    <a href="#project"><button type="button" class="btn btn-default btn-flat" ><i class="fa fa-arrow-circle-left"></i> {{$root.$lang.button_back}}</button></a>
-                    <button type="button" class="btn btn-primary btn-flat" ng-click="edit()" ng-show="$root.auth.project.edit || $root.auth.is_admin" ><i class="fa fa-edit"></i> {{$root.$lang.edit_project}}</button>
-                    <button type="button" class="btn btn-danger btn-flat" ng-click="cancel()"><i class="fa fa-remove"></i> {{$root.$lang.delete_project}}</button>
+                    <div class="modal-footer">                    
+                        <a class="pull-right" href ng-click="ToggleCommentForm()"> <span ng-if="isOpenCommentForm == true">{{$root.$lang.hide}} </span><span ng-if="isOpenCommentForm == false">{{$root.$lang.show}} </span>{{$root.$lang.input_comment}}</a>
+                    </div>
                 </div>
             </div>
             <div class="col-md-12">
-                <form class="form-horizontal">
-                    <table class="table">
-                        <tr>
-                            <th width="10%">{{$root.$lang.project_description}}</th>
-                            <td width="80%"> 
-                                <textarea  class="form-control"  data-ui-tinymce ng-model="project.description" rows="5"></textarea>
-                                <br/>
-                                <input id="fileImage" type="file" class="form-control input-file-upload" name="file" onchange="angular.element(this).scope().addFile(this.files);
-                                                $('#fileImage').replaceWith($('#fileImage').clone());" />
-                                <br/>
-                                <div class="show-file-name" ng-repeat="file in files">
-                                    <strong>{{file.name}}</strong> <i class="fa fa-remove" ng-click="removeFile($index)"></i>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-primary btn-flat" ng-click="addProjectPost()" ><i class="fa fa-save"></i> {{$root.$lang.post}}</button>
-                                </div>
-                            </td>
-                            <td width="10%"></td>
-                        </tr>
-                    </table>
-                </form>
+                <div class="form-post-project" ng-show="isOpenCommentForm">
+                    <form class="form-horizontal">
+                        <table class="table">
+                            <tr>
+                                <td width="80%"> 
+                                    <textarea  class="form-control"  data-ui-tinymce ng-model="project.description" rows="5"></textarea>
+                                    <br/>
+                                    <input id="fileImage" type="file" class="form-control input-file-upload" name="file" onchange="angular.element(this).scope().addFile(this.files);
+                                            $('#fileImage').replaceWith($('#fileImage').clone());" />
+                                    <br/>
+                                    <div class="show-file-name" ng-repeat="file in files">
+                                        <strong>{{file.name}}</strong> <i class="fa fa-remove" ng-click="removeFile($index)"></i>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary btn-flat" ng-click="addProjectPost()" ><i class="fa fa-save"></i> {{$root.$lang.post}}</button>
+                                    </div>
+                                </td>
+                                <td width="10%"></td>
+                            </tr>
+                        </table>
+                    </form>    
+                </div>
+
                 <div>
                     <div ng-repeat="v in projectPost">
                         <div class="box box-widget">
@@ -167,17 +173,17 @@
                                     <span class="description">{{v.time| date : "fullDate" }}</span>
                                 </div>
                                 <div class="pull-right box-tools">
-                                       <!-- button with a dropdown -->
-                                       <div class="btn-group" ng-if="v.actionDelete == true">
-                                           <button type="button" class="btn btn-box-tool" data-toggle="dropdown" aria-expanded="false">
-                                           <i class="fa fa-bars"></i></button>
-                                           <ul class="dropdown-menu pull-right" role="menu">
-	                                           <li><a ng-click="editProjectPost(v, $index)">{{$root.$lang.button_update}}</a></li>
-	                                           <li><a ng-click="deleteProjectPost($index, v.id)">{{$root.$lang.remove}}</a></li>
-                                           </ul>
-                                       </div>
-                                       <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                               </div>
+                                    <!-- button with a dropdown -->
+                                    <div class="btn-group" ng-if="v.actionDelete == true">
+                                        <button type="button" class="btn btn-box-tool" data-toggle="dropdown" aria-expanded="false">
+                                            <i class="fa fa-bars"></i></button>
+                                        <ul class="dropdown-menu pull-right" role="menu">
+                                            <li><a ng-click="editProjectPost(v, $index)">{{$root.$lang.button_update}}</a></li>
+                                            <li><a ng-click="deleteProjectPost($index, v.id)">{{$root.$lang.remove}}</a></li>
+                                        </ul>
+                                    </div>
+                                    <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                </div>
                                 <!-- /.box-tools -->
                             </div>
                             <!-- /.box-header -->
