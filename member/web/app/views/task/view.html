@@ -15,7 +15,6 @@
             <h3 class="box-title">{{$root.$lang.task_infomation}}</h3>
             <div class="box-tools pull-right">
                 <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="{{$root.$lang.expand}}"><i class="fa fa-minus"></i></button>
-                <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="{{$root.$lang.remove}}"><i class="fa fa-times"></i></button>
             </div>
         </div>
         <div class="box-body">
@@ -193,13 +192,13 @@
                                 <td width="80%"> 
                                     <div class="log-hour-work" ng-show="isCanLogTime(collection.assignees, auth)">
                                         <div class="form-group">
-                                            <label class="col-sm-3 control-label">Worked hour</label>
+                                            <label class="col-sm-3 control-label">{{$root.$lang.number_worked_hour}}</label>
                                             <div class="col-sm-3" >
                                                 <input type="text" class="form-control" ng-model="taskPostData.worked_hour" >
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <label class="col-sm-3 control-label">{{$root.$lang.task_completed_percent}}</label>
+                                            <label class="col-sm-3 control-label">{{$root.$lang.completed_percent}}</label>
                                             <div class="col-sm-9"  style="padding-top: 5px">
                                                 <div class="pull-left" style="width: 90%">
                                                     <div min="0" max="100" ui-slider="{range: 'min'}" ng-model="taskPostData.completed_percent"></div> 

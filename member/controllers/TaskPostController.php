@@ -112,36 +112,48 @@ class TaskPostController extends ApiController {
      */
     public function actionAddTaskPost() {
         try {
-            $transaction = \Yii::$app->db->beginTransaction();
             $dataPost = [];
+            $taskInfo = [];
+            $logTask = '';//use to make text of worked hour and completed percent and save in task post
+            $validator = new NumberValidator();// validate for work hour and completed percent
+            
+            $transaction = \Yii::$app->db->beginTransaction();
             $taskJson = \Yii::$app->request->post('task', '');
             if (strlen($taskJson)) {
                 $dataPost = json_decode($taskJson, true);
             }
 
-            $taskInfo = [];
             if (!empty($dataPost['taskId'])) {
                 if (!$taskInfo = Task::getById($dataPost['taskId'])) {
                     throw new \Exception('Get task info fail');
                 }
             }
             
-
-            //Update task
+            //if work hour, complete percent, description dont have anything changing, return.
+            if (empty($dataPost['worked_hour'])  && (isset($dataPost['completed_percent']) && $dataPost['completed_percent'] == $taskInfo->completed_percent)
+                && empty($dataPost['description'])) {
+                return $this->sendResponse(false, [], []);
+            }
+            
             if (!empty($dataPost['worked_hour'])) {
-                $validator = new NumberValidator();
                 if (!$validator->validate($dataPost['worked_hour'], $error)) {
                     throw new \Exception('hour must be integer');
                 }
                 $taskInfo->worked_hour += $dataPost['worked_hour'];
+                $logTask = sprintf(Yii::t('member', 'Update number of working is more %s hour(s)'), $dataPost['worked_hour']);
             }
             
-            if (!empty($dataPost['completed_percent'])) {
+            if (!empty($dataPost['completed_percent'])
+                    ||(isset($dataPost['completed_percent']) && $dataPost['completed_percent'] ==0)) {
                 if (!$validator->validate($dataPost['completed_percent'], $error)) {
                     throw new \Exception('completed percent must be integer');
                 }
                 
-                 $taskInfo->completed_percent = $dataPost['completed_percent'];
+                if ($taskInfo->completed_percent != $dataPost['completed_percent']) {
+                    $logTask .= sprintf(Yii::t('member', 'Change completed percent from %s to %s'), $taskInfo->completed_percent, $dataPost['completed_percent']);
+                }
+                
+                $taskInfo->completed_percent = $dataPost['completed_percent'];                
             }
             
             if ($taskInfo->save() === false) {
@@ -167,10 +179,10 @@ class TaskPostController extends ApiController {
             $taskPost->employee_id = \Yii::$app->user->getId();
             $taskPost->parent_employee_id = 0;
             $taskPost->parent_id = 0;
-            $taskPost->content = $dataPost['description'];
-            $taskPost->content_parse = strip_tags($dataPost['description']);
+            $taskPost->content = $logTask . $dataPost['description'];
+            $taskPost->content_parse = strip_tags($logTask . $dataPost['description']);
             $taskPost->is_log_history = 0;
-            if (!$taskPost->save()) {
+            if ($taskPost->save() === false) {
                 throw new \Exception('Save record to table task post fail');
             }
 
@@ -230,7 +242,7 @@ class TaskPostController extends ApiController {
             $collection = [
                 'id' => $taskPost->id,
                 'time' => date('H:i d-m-Y ', $taskPost->datetime_created),
-                'content' => $dataPost['description'],
+                'content' => $logTask . $dataPost['description'],
                 'employee_name' => \Yii::$app->user->identity->fullName,
                 'profile_image_path' => \Yii::$app->user->identity->image,
                 'actionDelete' => true,

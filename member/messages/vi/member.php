@@ -132,5 +132,6 @@ return [
     'retrieve password success' => 'Chúc mừng bạn đã lấy lại được mật khẩu thành công',
     'You must select at least one jpeg, gif, png image file' => 'You must select at least one jpeg, gif, png image file',
     'Only accept jpeg, gif, png image' => 'Only accept jpeg, gif, png image',
-    
+    'Update number of working is more %s hour(s)' => '<li>Cập nhật số giờ làm thêm<i> %s </i>giờ</li>',
+    'Change completed percent from %s to %s' => '<li>Thay đổi phần trăm hoàn thành từ <i> %s </i> thành <i> %s </i></li>',
 ];

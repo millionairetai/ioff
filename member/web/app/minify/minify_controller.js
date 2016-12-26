@@ -3213,7 +3213,8 @@ appRoot.controller('viewTaskCtrl', ['socketService','$sce', 'fileService', '$sco
                 }
                 
                 $scope.collection = response.objects;
-                static_postnew = response.objects;
+                //initialize value for completed percent of input task post
+                $scope.taskPostData.completed_percent = response.objects.task.completed_percent;
             }, function (response) {
                 if (response.objects.no_data == true) {
                     $location.path('/task');
@@ -3256,7 +3257,7 @@ appRoot.controller('viewTaskCtrl', ['socketService','$sce', 'fileService', '$sco
     $scope.closeMoreAssignee = function () {
         $scope.limitAssignee = 5;
     };
-
+    
   //removeFile
     $scope.deleteFile = function (index, id) {
         dialogMessage.open('confirm', $rootScope.$lang.confirm_delete_file, function () {
@@ -3301,12 +3302,12 @@ appRoot.controller('viewTaskCtrl', ['socketService','$sce', 'fileService', '$sco
    //function add task post
     $scope.taskPostData = {
         worked_hour: '',
-        completed_percent: $scope.collection.task,
+        completed_percent: 0,
         description: '',
         taskId: taskId,
     };
     
-    //Check if show hide show input log tim
+    //Check if show hide show input log time
     $scope.isCanLogTime = function(assignees, auth) {
         if (angular.isUndefined(assignees)) {
             return false;
@@ -3314,7 +3315,6 @@ appRoot.controller('viewTaskCtrl', ['socketService','$sce', 'fileService', '$sco
         var i = 0;
         for (i = 0; i < assignees.length; i++) {
            if (assignees[i].id == auth.user_id){
-                console.log(assignees[i]);
                 return true;
             }
         }
@@ -3334,13 +3334,21 @@ appRoot.controller('viewTaskCtrl', ['socketService','$sce', 'fileService', '$sco
 
             fd.append("task", angular.toJson($scope.taskPostData));
             TaskPostService.addTaskPost(fd, function (response) {
+                //In case of user isn't fill up anything into form, we don't anything...Here, we return true.
+                if (response.objects.length == 0) {
+                    return true;
+                }
+                
                 alertify.success($rootScope.$lang.task_post_add_success);
-                $scope.taskPostData = {
-                    worked_hour: '',
-                    description: '',
-                    taskId: taskId
-                };
-
+                //update again total worked hour and completed percent
+                if ($scope.taskPostData.worked_hour) {
+                    $scope.collection.task.worked_hour = parseInt($scope.collection.task.worked_hour) + parseInt($scope.taskPostData.worked_hour);   
+                }
+                //Empty current form.
+                $scope.collection.task.complete_percent = $scope.taskPostData.completed_percent;
+                $scope.taskPostData.worked_hour = '';
+                $scope.taskPostData.description = '';
+                
                 $scope.files = [];
                 $scope.releases = response.objects.collection;
                 //check if file is null, we will have errror with unshift function.
@@ -3784,10 +3792,9 @@ appRoot.controller('editTaskPostCtrl', ['$scope', 'TaskPostService', '$uibModalI
 }]);
 
 //edit task post
-appRoot.controller('detailWorkedHourEmployeeCtrl', ['$scope', '$uibModalInstance', '$rootScope', 'alertify', 'taskId', 'taskService',
-    function ($scope, $uibModalInstance, $rootScope, alertify, taskId, taskService) {
+appRoot.controller('detailWorkedHourEmployeeCtrl', ['$scope', '$uibModalInstance', 'taskId', 'taskService',
+    function ($scope, $uibModalInstance, taskId, taskService) {
        $scope.employees = [];
-       
        taskService.getDetaiWorkedHourEmployee({taskId: taskId}, function(response) {
            $scope.employees = response.objects;
        });

@@ -313,8 +313,8 @@ appRoot.factory('calendarService', ['apiService','$rootScope','alertify', functi
             }
         };
     }]);
-appRoot.factory('commonService', ['apiService', 'taskService', 'projectService', 'calendarService', '$rootScope',
-    function (apiService, taskService, projectService, calendarService, $rootScope) {
+appRoot.factory('commonService', ['apiService', '$rootScope',
+    function (apiService, $rootScope) {
 
         return {
             get: function (controller, id, success, error) {
@@ -919,10 +919,7 @@ appRoot.factory('TaskPostService', ['apiService', '$rootScope', 'alertify', 'val
                 if (validateService.required(object.worked_hour) && !validateService.integer(object.worked_hour)) {
                     message += $rootScope.$lang.worked_hour_must_be_number + "<br/>";
                 }
-
-                if (object.description.length == 0) {
-                    message += $rootScope.$lang.task_description_error_empty + "<br/>";
-                }
+                
                 if (message.length > 0) {
                     alertify.error(message);
                     return false;

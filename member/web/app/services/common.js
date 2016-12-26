@@ -1,5 +1,5 @@
-appRoot.factory('commonService', ['apiService', 'taskService', 'projectService', 'calendarService', '$rootScope',
-    function (apiService, taskService, projectService, calendarService, $rootScope) {
+appRoot.factory('commonService', ['apiService', '$rootScope',
+    function (apiService, $rootScope) {
 
         return {
             get: function (controller, id, success, error) {
