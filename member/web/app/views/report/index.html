@@ -7,73 +7,71 @@
             </div>
         </div>
         <div class="box-body">
-            <div class="col-md-6">
-                <!-- Custom Tabs -->
-                <div class="nav-tabs-custom">
-                    <ul class="nav nav-tabs">
-                        <li class="active"><a href="/report/#tab_1" data-toggle="tab">{{$root.$lang.project}}</a></li>
-                        <li><a href="/report/#tab_2" data-toggle="tab">{{$root.$lang.employee}}</a></li>
-                    </ul>
-                    <div id="report-tab" class="tab-content">
-                        <div class="tab-pane active" id="tab_1">
+            <!-- Custom Tabs -->
+            <div class="nav-tabs-custom">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="/report/#tab_1" data-toggle="tab">{{$root.$lang.project}}</a></li>
+                    <li><a href="/report/#tab_2" data-toggle="tab">{{$root.$lang.employee}}</a></li>
+                </ul>
+                <div id="report-tab" class="tab-content">
+                    <div class="tab-pane active" id="tab_1">
+                        <div class="col-sm-9 pull-right">
+                            <select class="form-control" ng-model="projectId" 
+                                    ng-change="getTaskReport()"
+                                    ng-options="option.name for option in projects">
+                                <option value=''>--</option>
+                            </select>
+                        </div>
+                        <br /><br />
+                        <div class="row">
+                            <br /><br />
+                            <div class="col-md-12">
+                                <b> {{$root.$lang.total_task}} :</b> {{totalTask}}
+                                <canvas id="doughnut" class="chart chart-doughnut" chart-options="chart.options" chart-data="chart.taskdataReport" chart-labels="chart.taskReportLabels" chart-colors="chart.colors"></canvas> 
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.tab-pane -->
+                    <div class="tab-pane" id="tab_2">
+                        <table class="table">
+                            <tbody>
+                                <tr>
                             <div class="col-sm-9 pull-right">
-                                <select class="form-control" ng-model="projectId" 
-                                        ng-change="getTaskReport()"
+                                <select class="form-control" ng-model="empTabProjectId" 
+                                        ng-change="getEmployeeTaskReport()"
                                         ng-options="option.name for option in projects">
                                     <option value=''>--</option>
                                 </select>
+                                <br />
                             </div>
-                            <br /><br />
-                            <div class="row">
-                                <br /><br />
-                                <div class="col-md-12">
-                                    <b> {{$root.$lang.total_task}} :</b> {{totalTask}}
-                                    <canvas id="doughnut" class="chart chart-doughnut" chart-options="chart.options" chart-data="chart.taskdataReport" chart-labels="chart.taskReportLabels" chart-colors="chart.colors"></canvas> 
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /.tab-pane -->
-                        <div class="tab-pane" id="tab_2">
-                            <table class="table">
-                                <tbody>
-                                    <tr>
-                                <div class="col-sm-9 pull-right">
-                                    <select class="form-control" ng-model="empTabProjectId" 
-                                            ng-change="getEmployeeTaskReport()"
-                                            ng-options="option.name for option in projects">
-                                        <option value=''>--</option>
-                                    </select>
-                                    <br />
-                                </div>
-                                <b>{{$root.$lang.total_hour}}:</b> {{empTaskTotalHour}} {{$root.$lang.hour}}
-                                </tr>
-                                <tr>
-                                    <th style="width: 10px">#</th>
-                                    <th>{{$root.$lang.employee}}</th>
-                                    <th>{{$root.$lang.number_worked_hour}}</th>
-                                    <th>%</th>
-                                    <th style="width: 40px"></th>
-                                </tr>
-                                <tr ng-repeat="(key, empTaskReport) in empTaskReports">
-                                    <td>{{key + 1}}.</td>
-                                    <td><img src="{{empTaskReport.avatar}}" class="img-circle user-image" alt="User Image">{{empTaskReport.employee_fullname}}</td>
-                                    <td>{{empTaskReport.total_hour}} {{$root.$lang.hour}}</td>
-                                    <td>
-                                        <div class="progress progress-xs">
-                                            <div class="progress-bar progress-bar-danger" style="width: {{empTaskReport.hour_percent}}%"></div>
-                                        </div>
-                                    </td>
-                                    <td><span class="badge bg-red">{{empTaskReport.hour_percent}}%</span></td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <!-- /.tab-pane -->
+                            <b>{{$root.$lang.total_hour}}:</b> {{empTaskTotalHour}} {{$root.$lang.hour}}
+                            </tr>
+                            <tr>
+                                <th style="width: 10px">#</th>
+                                <th>{{$root.$lang.employee}}</th>
+                                <th>{{$root.$lang.number_worked_hour}}</th>
+                                <th>%</th>
+                                <th style="width: 40px"></th>
+                            </tr>
+                            <tr ng-repeat="(key, empTaskReport) in empTaskReports">
+                                <td>{{key + 1}}.</td>
+                                <td><img src="{{empTaskReport.avatar}}" class="img-circle user-image" alt="User Image">{{empTaskReport.employee_fullname}}</td>
+                                <td>{{empTaskReport.total_hour}} {{$root.$lang.hour}}</td>
+                                <td>
+                                    <div class="progress progress-xs">
+                                        <div class="progress-bar progress-bar-danger" style="width: {{empTaskReport.hour_percent}}%"></div>
+                                    </div>
+                                </td>
+                                <td><span class="badge bg-red">{{empTaskReport.hour_percent}}%</span></td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <!-- /.tab-content -->
+                    <!-- /.tab-pane -->
                 </div>
-                <!-- nav-tabs-custom -->
+                <!-- /.tab-content -->
             </div>
+            <!-- nav-tabs-custom -->
         </div><!-- /.box-body -->
     </div><!-- /.box -->
 
