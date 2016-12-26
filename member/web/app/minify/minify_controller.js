@@ -752,6 +752,12 @@ appRoot.controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService',
                 employee_id = $scope.collection.event.employee_id;
             });
         };
+        //Add show and hide for comment form.
+        $scope.isOpenCommentForm = true;
+        $scope.ToggleCommentForm = function() {
+            $scope.isOpenCommentForm = $scope.isOpenCommentForm == true ? false : true;
+        }
+        
         $scope.getInfoEvent();
 
         //function add event post

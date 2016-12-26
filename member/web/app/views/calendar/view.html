@@ -88,7 +88,10 @@
                 </div><!--box body-->
             </div>
             <div class="box box-solid header-event">
-                <div class="box-body">
+                <br />
+                <a class="pull-right" href ng-click="ToggleCommentForm()"> <span ng-if="isOpenCommentForm == true">{{$root.$lang.hide}} </span><span ng-if="isOpenCommentForm == false">{{$root.$lang.show}} </span>{{$root.$lang.input_comment}}</a>&nbsp;&nbsp;
+                <br />
+                <div class="box-body" ng-show="isOpenCommentForm">
                     <form class="form-horizontal">
                         <textarea class="form-control"  data-ui-tinymce ng-model="eventPostData.description" rows="5"></textarea>
                         <br/>
