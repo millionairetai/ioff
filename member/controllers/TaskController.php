@@ -998,7 +998,7 @@ class TaskController extends ApiController {
         if (!empty($dataPost['fileList'])) {
             $content .= '<li>' . \Yii::t('member', 'add file') . '</li>';
             foreach ($dataPost['fileList'] as $key => $file) {
-                $content .= '<div class="padding-left-20"><i><a href="' . \Yii::$app->params['PathUpload'] . DIRECTORY_SEPARATOR . $file['path'] . '">' . $file['name'] . '</a></i></div>';
+                $content .= '<div class="padding-left-20"><i>' . $file['name'] . '</i></div>';
             }
         }
 

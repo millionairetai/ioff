@@ -794,7 +794,7 @@ appRoot.factory('taskService', ['apiService','$rootScope','alertify', function (
                     message += $rootScope.$lang.name_less_than_255_character + "<br/>";
                 }
                 
-                if(object.project_id.length == 0 || object.project_id.length == null){
+                if(object.project_id == 0 || object.project_id == null){
                     message += $rootScope.$lang.task_project_name_error_empty + "<br/>";
                 }
                 
