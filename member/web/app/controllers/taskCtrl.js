@@ -523,7 +523,7 @@ appRoot.controller('viewTaskCtrl', ['socketService','$sce', 'fileService', '$sco
                     $scope.collection.task.worked_hour = parseInt($scope.collection.task.worked_hour) + parseInt($scope.taskPostData.worked_hour);   
                 }
                 //Empty current form.
-                $scope.collection.task.complete_percent = $scope.taskPostData.completed_percent;
+                $scope.collection.task.completed_percent = $scope.taskPostData.completed_percent;
                 $scope.taskPostData.worked_hour = '';
                 $scope.taskPostData.description = '';
                 
