@@ -550,7 +550,7 @@ class Task extends \common\components\db\ActiveRecord {
      */
     public static function getEmployeeTaskReportByProjectId($projectId) {
         $report = Employee::find()
-                        ->select(['SUM(task.worked_hour) as total_hour', 'employee.firstname', 'employee.lastname', 'employee.id', 'employee.profile_image_path',
+                        ->select(['SUM(task_assignment.worked_hour) as total_hour', 'employee.firstname', 'employee.lastname', 'employee.id', 'employee.profile_image_path',
                             'employee.company_id'])
                         ->leftJoin('task_assignment', 'task_assignment.employee_id=employee.id')
                         ->leftJoin('task', 'task_assignment.task_id=task.id')
