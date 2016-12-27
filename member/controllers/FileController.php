@@ -11,7 +11,6 @@ use common\models\EventPost;
 use common\models\Employee;
 
 class FileController extends ApiController {
-    
     /*
      * Function remove file screen view project when click button delete
      */
@@ -47,13 +46,13 @@ class FileController extends ApiController {
     /*
      * Action download file.
      */
-    public function actionDownloadFile() {
+    public function actionDownloadFile1() {
         $fileId = \Yii::$app->request->get('fileId', 0);
 
         if ($fileId) {
 
             $file = File::find()->select(['id', 'name', 'path', 'datetime_created', 'owner_object', 'owner_id'])->where(['id' => $fileId])->one();
-            $path = \Yii::$app->params['PathUpload'] .  DIRECTORY_SEPARATOR . $file->path;
+            $path = \Yii::$app->params['PathUpload'] . DIRECTORY_SEPARATOR . $file->path;
             $name = $file->name;
             if (!file_exists($path)) {
                 $objects['collection']['error'] = true;
@@ -97,6 +96,25 @@ class FileController extends ApiController {
 
                     default:
                 } //end switch  
+            }
+        }
+    }
+
+    /*
+     * Action download file.
+     */
+    public function actionDownloadFile() {
+        $fileId = \Yii::$app->request->get('fileId', 0);
+        if ($fileId) {
+            $file = File::getById($fileId, ['id', 'name', 'path', 'datetime_created', 'owner_object', 'owner_id']);
+            if ($file) {
+                $path = \Yii::$app->params['PathUpload'] . DIRECTORY_SEPARATOR . $file->path;
+                if (!file_exists($path)) {
+                    $objects['collection']['error'] = true;
+                    return $this->sendResponse(false, \Yii::t('file', "File does not exist"), $objects['collection']);
+                }
+                return \Yii::$app->response->sendFile($path, $file->name);
+                
             }
         }
     }
