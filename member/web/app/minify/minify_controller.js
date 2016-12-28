@@ -3350,12 +3350,14 @@ appRoot.controller('viewTaskCtrl', ['socketService','$sce', 'fileService', '$sco
                 }
                 
                 alertify.success($rootScope.$lang.task_post_add_success);
-                //update again total worked hour and completed percent
+                //update again total worked hour and synchronize completed percent, thoery
                 if ($scope.taskPostData.worked_hour) {
                     $scope.collection.task.worked_hour = parseInt($scope.collection.task.worked_hour) + parseInt($scope.taskPostData.worked_hour);   
                 }
-                //Empty current form.
                 $scope.collection.task.completed_percent = $scope.taskPostData.completed_percent;
+                $scope.collection.task.theory = parseInt($scope.collection.task.estimate_hour) > 0 ? 
+                        Math.floor((parseInt($scope.collection.task.worked_hour) /parseInt($scope.collection.task.estimate_hour)) * 100) : 0;
+                //Empty current form.
                 $scope.taskPostData.worked_hour = '';
                 $scope.taskPostData.description = '';
                 
@@ -3378,7 +3380,6 @@ appRoot.controller('viewTaskCtrl', ['socketService','$sce', 'fileService', '$sco
                 $scope.taskPostFile = angular.merge($scope.taskPostFile, response.objects.files);
             });
         }
-        console.log($scope.collection.task.completed_percent);
     }
     
     //get event post

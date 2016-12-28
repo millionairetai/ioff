@@ -71,6 +71,7 @@
                                 <strong>{{$root.$lang.task_start_date}}:</strong> {{collection.task.start_datetime| date : "fullDate" }}
                                 <br/>
                                 <strong>{{$root.$lang.expire_time}}:</strong> {{collection.task.duedatetime| date : "fullDate" }}<br />
+                                <strong>{{$root.$lang.task_estimate_time}}:</strong> {{collection.task.estimate_hour}} {{$root.$lang.hour}}</a><br />
                                 <strong>{{$root.$lang.total_worked_hour}}:</strong> <a class="worked-hour" href ng-click="getDetailWorkedHourEmployee(collection.task.id)">{{collection.task.worked_hour}} {{$root.$lang.hour}}</a>
                             </td>
                             <td></td>

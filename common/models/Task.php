@@ -345,18 +345,18 @@ class Task extends \common\components\db\ActiveRecord {
         
         //Get file list.
         $fileList = File::getFileByOwnerIdAndTable($taskId, self::tableName());
-        $theory = $task->estimate_hour > 0 ? ((int) (($task->worked_hour / $task->estimate_hour) * 100)) : 0;
+        $theory = $task->estimate_hour > 0 ? floor((($task->worked_hour / $task->estimate_hour) * 100)) : 0;
         $startDateTime = !empty($task->start_datetime) ? date('Y-m-d', $task->start_datetime) : null;
         $duedatetime   = !empty($task->duedatetime)    ? date('Y-m-d', $task->duedatetime) : null;
         $creatorTask = [
-                'id'         => $task->created_employee_id,
-                'image'      => !empty($task->employee) ? $task->employee->getImage() : null,
+                'id'        => $task->created_employee_id,
+                'image'     => !empty($task->employee) ? $task->employee->getImage() : null,
                 'fullname'  => !empty($task->employee) ? $task->employee->getFullName() : null,
         ];
         
         $assigner = [
-                'id'         => $task->employee_id,
-                'image'      => !empty($task->assigner) ? $task->assigner->getImage() : null,
+                'id'        => $task->employee_id,
+                'image'     => !empty($task->assigner) ? $task->assigner->getImage() : null,
                 'fullname'  => !empty($task->assigner) ? $task->assigner->getFullName() : null,
         ];
         
