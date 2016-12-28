@@ -206,6 +206,9 @@ class Project extends \common\components\db\ActiveRecord {
 
         $projectParent = Project::findOne($project->parent_id);
 
+        //Get status corresponding status and priority name for project.
+        $priority = Priority::getByPriorityIdAndOwnerTable($project->priority_id, 'project');
+        $status = Status::getByStatusIdAndOwnerTable($project->status_id, 'project');
         return [
             'project_info' => [
                 'project_id' => $project->id,
@@ -215,9 +218,9 @@ class Project extends \common\components\db\ActiveRecord {
                 'manager_project_id' => $project->manager_project_id,
                 'image' => isset($project->employee) ? $project->employee->getImage() : null,
                 'priority_id' => $project->priority_id,
-                'priority_name' => $project->priority->name,
+                'priority_name' => !empty($priority['name']) ? $priority['name'] : '',
                 'status_id' => $project->status_id,
-                'status_name' => $project->status->name,
+                'status_name' => !empty($status['name'])?  $status['name'] : '',
                 'completed_percent' => $project->completed_percent,
                 'estimate_hour' => $project->estimate_hour,
                 'is_public' => $project->is_public,
