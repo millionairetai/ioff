@@ -52,7 +52,7 @@
                         <li>
                             <div infinite-scroll-distance="3">
                             <!-- inner menu: contains the actual data -->
-                            <ul class="menu">
+                            <ul class="menu" scrolly="getNotifications()">
                                 <li ng-repeat="notification in notifications"><!-- start message -->
                                     <a href="#">
                                         <div class="pull-left">
@@ -62,7 +62,7 @@
                                             {{notification.type}}
                                         </h4>
                                         <p ng-bind-html="getHtml(notification.content)"></p>
-                                        <small style="color:#888888;"><i class="fa fa-clock-o"></i> {{notification.datetime_created*1000 | date : 'medium'}}</small>
+                                        <small style="color:#888888;"><i class="fa fa-clock-o"></i> {{notification.datetime_created * 1000 | date : 'medium'}}</small>
                                     </a>
                                 </li><!-- end message -->
                             </ul>
