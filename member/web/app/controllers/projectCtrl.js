@@ -257,8 +257,8 @@ appRoot.controller('addProjectCtrl', ['socketService','$scope', 'projectService'
 
 //Display info project
 var $dataEditProject = [];
-appRoot.controller('viewProjectCtrl', ['$scope', 'projectService', 'fileService', 'projectPostService', '$uibModal', '$rootScope', 'dialogMessage', '$routeParams', 'alertify', '$sce', 'PER_PAGE_VIEW_MORE', 
-    function ($scope, projectService, fileService, projectPostService, $uibModal, $rootScope, dialogMessage, $routeParams, alertify, $sce, PER_PAGE_VIEW_MORE) {
+appRoot.controller('viewProjectCtrl', ['$scope', 'projectService', 'fileService', 'projectPostService', '$uibModal', '$rootScope', 'dialogMessage', '$routeParams', 'alertify', '$sce', 'PER_PAGE_VIEW_MORE', 'socketService',
+    function ($scope, projectService, fileService, projectPostService, $uibModal, $rootScope, dialogMessage, $routeParams, alertify, $sce, PER_PAGE_VIEW_MORE, socketService) {
         //get info project
         var projectId = $routeParams.projectId;
         $scope.collection = [];
@@ -345,7 +345,6 @@ appRoot.controller('viewProjectCtrl', ['$scope', 'projectService', 'fileService'
                 }
 
                 fd.append("project", angular.toJson($scope.project));
-
                 projectPostService.addProjectPost(fd, function (response) {
                     alertify.success($rootScope.$lang.project_update_success);
                     $rootScope.$emit('add_project_post_success', {});
@@ -356,8 +355,11 @@ appRoot.controller('viewProjectCtrl', ['$scope', 'projectService', 'fileService'
                     $scope.files = [];
                     $scope.release  = $scope.collection.file_info;
                     $scope.releases = response.objects.files;
-                    $scope.releases = $scope.releases.concat($scope.release);
-                    $scope.collection.file_info = $scope.releases;
+                    if ($scope.releases) {
+                        $scope.releases = $scope.releases.concat($scope.release);
+                        $scope.collection.file_info = $scope.releases;
+                    }
+                    socketService.emit('notify', 'ok');
                 });
             }
         }

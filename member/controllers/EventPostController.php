@@ -168,7 +168,7 @@ class EventPostController extends ApiController {
             $notifications = [];
             foreach ($arrayEmployees as $item) {
                 $notifications[] = [
-                    'owner_id' => $eventPost->id,
+                    'owner_id' => $eventInfo->id,
                     'owner_table' => EventPost::tableName(),
                     'employee_id' => $item['id'],
                     'owner_employee_id' => \Yii::$app->user->getId(),

@@ -368,13 +368,13 @@
             expire_time: 'Expired date',
             //report
             total_task: 'Total task',
-            total_hour: 'Total hour',
-            number_worked_hour: 'Work hour',            
+            total_hour: 'Total hour',          
             about: 'about',
             input_comment:' input comment',
             worked_hour_must_be_number: 'Worked hour must be number',
             total_worked_hour: 'Total of worked hour',
-            number_worked_hour:'Number of work hour'
+            number_worked_hour:'Number of work hour',
+            you_have_i_notfication: 'You have %i notification(s)'
         };
     });
 })(window.angular);

@@ -5,7 +5,7 @@ appRoot.factory('notifyService', ['apiService', '$rootScope', 'alertify', functi
                 apiService.post('notification/count', data, success, error, 0);
             },
             getNotifications: function (data, success, error) {
-                apiService.get('notification/get-notifications', data, success, error, 0);
+                apiService.post('notification/get-notifications', data, success, error, 0);
             }
         };
     }]);

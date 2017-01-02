@@ -38,7 +38,8 @@ class Activity extends \common\components\db\ActiveRecord
     const TYPE_EDIT_EVENT   = 'edit_event';
     const TYPE_CREATE_EVENT_POST = 'create_event_post';
     const TYPE_CREATE_PROJECT = 'create_project';
-    const TYPE_CREATE_EDIT_PROJECT = 'edit_project';
+//    const TYPE_CREATE_EDIT_PROJECT = 'edit_project';
+    const TYPE_EDIT_PROJECT = 'edit_project';
     const TYPE_CREATE_PROJECT_POST = 'create_project_post';
     const TYPE_REGISTER_ACCOUNT = 'register_account';
     

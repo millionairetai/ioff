@@ -319,11 +319,12 @@ class CalendarController extends ApiController {
                 foreach ($mergeEmployee['employees'] AS $key => $val) {
                     $dataInsertNotification[] = [
                         'owner_id' => $ob->id,
+                        
                         'owner_table' => Event::tableName(),
                         'employee_id' => $val,
                         'type' => Activity::TYPE_EDIT_EVENT,
                         'content' => Notification::makeContent(\Yii::t('common', 'edited'), $ob->name),
-                        'owner_employee_id' => 0
+                        'owner_employee_id' => Yii::$app->user->identity->id,
                     ];
 
                     $dataInsertInvitee[] = [

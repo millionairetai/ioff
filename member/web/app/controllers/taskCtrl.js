@@ -546,6 +546,7 @@ appRoot.controller('viewTaskCtrl', ['socketService','$sce', 'fileService', '$sco
                 temp = temp.concat($scope.releases);
                 $scope.taskPost = temp.concat($scope.taskPost);
                 $scope.taskPostFile = angular.merge($scope.taskPostFile, response.objects.files);
+                socketService.emit('notify', 'ok');
             });
         }
     }

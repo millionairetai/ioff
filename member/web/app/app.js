@@ -32,11 +32,42 @@ appRoot.run(function ($rootScope, socketService, notifyService, taskService, com
             $rootScope.sum_notify = respone.objects;
         });
     });
+
+    $rootScope.myNotifi = {
+        notifi: null,
+        total: 0,
+        end: false,
+        page: 1
+    };
+    $rootScope.resetMyNotify = function () {
+        $rootScope.myNotifi = {
+            notifi: null,
+            total: 0,
+            end: false,
+            page: 1
+        };
+    }
     //Get notification items to show 
     $rootScope.getNotifications = function () {
-        notifyService.getNotifications({}, function (respone) {
-            $rootScope.notifications = respone.objects.collection;
+        if ($rootScope.myNotifi.end) {
+            return true;
+        }
+
+        notifyService.getNotifications({currentPage: $rootScope.myNotifi.page}, function (respone) {
+            if ($rootScope.myNotifi.notifi) {
+                $rootScope.myNotifi.notifi = $rootScope.myNotifi.notifi.concat(respone.objects.notifications);
+            } else {
+                $rootScope.myNotifi.notifi = respone.objects.notifications;
+            }
+            
+            $rootScope.myNotifi.total = respone.objects.totalCount;
+            if (respone.objects.notifications.length < 10) {
+                $rootScope.myNotifi.end = true;
+                return true;
+            }
         });
+
+        $rootScope.myNotifi.page++;
     }
     //
     $rootScope.getHtml = function (html) {
@@ -75,7 +106,7 @@ appRoot.run(function ($rootScope, socketService, notifyService, taskService, com
         if ($rootScope.myTasks.end) {
             return true;
         }
-        
+
         taskService.getMyTaskForDropdown({currentPage: $rootScope.myTasks.page}, function (respone) {
             if ($rootScope.myTasks.task) {
                 $rootScope.myTasks.task = $rootScope.myTasks.task.concat(respone.objects.collection);
@@ -89,7 +120,7 @@ appRoot.run(function ($rootScope, socketService, notifyService, taskService, com
                 $rootScope.myTasks.end = true;
                 return true;
             }
-            
+
             $rootScope.myTasks.page++;
         });
     }

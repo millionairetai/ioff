@@ -43,30 +43,29 @@
             <ul class="nav navbar-nav">
                 <!-- Notifications: style can be found in dropdown.less -->
                 <li class="dropdown messages-menu">
-                    <a  class="dropdown-toggle cursor-pointer" data-toggle="dropdown" ng-click="getNotifications()">
+                    <a  class="dropdown-toggle cursor-pointer" data-toggle="dropdown" ng-click="resetMyNotify();getNotifications()">
                         <i class="fa fa-bell-o"></i>
-                        <span class="label label-warning">{{$root.sum_notify}}</span>
+                        <span ng-hide="(myNotifi.total==0) && ($root.sum_notify==0)" class="label label-warning">{{$root.sum_notify}}</span>
                     </a>
                     <ul class="dropdown-menu">
-                        <li class="header">Bạn có {{$root.sum_notify}} thông báo</li>
+                        <li class="header">{{$root.$lang.you_have_i_notfication.replace('%i', $root.sum_notify)}}</li>
                         <li>
-                            <div infinite-scroll-distance="3">
+                            <!--<div infinite-scroll-distance="3">-->
                             <!-- inner menu: contains the actual data -->
                             <ul class="menu" scrolly="getNotifications()">
-                                <li ng-repeat="notification in notifications"><!-- start message -->
-                                    <a href="#">
+                                <li ng-repeat="notification in myNotifi.notifi"><!-- start message -->
+                                    <a href="{{notification.url}}">
                                         <div class="pull-left">
-                                            <img src="/flies/employee/6.jpg" class="img-circle" alt="User Image">
+                                            <img src="{{notification.avatar}}" class="img-circle" alt="User Image">
                                         </div>
-                                        <h4>
-                                            {{notification.type}}
-                                        </h4>
-                                        <p ng-bind-html="getHtml(notification.content)"></p>
+                                        <p>
+                                            <strong>{{notification.employee_name}}</strong> {{notification.activity_action}} <strong>{{notification.activity_object}}</strong>
+                                        </p>
                                         <small style="color:#888888;"><i class="fa fa-clock-o"></i> {{notification.datetime_created * 1000 | date : 'medium'}}</small>
                                     </a>
                                 </li><!-- end message -->
                             </ul>
-                            </div>
+                            <!--</div>-->
                         </li>
                         <li class="footer"><a href="#/notify">{{$root.$lang.see_all}}</a></li>
                     </ul>

@@ -497,11 +497,11 @@ class TaskController extends ApiController {
                 foreach ($mergeEmployee['employees'] as $key => $val) {
                     $dataInsertNotification[] = [
                         'owner_id' => $task->id,
+                        'owner_employee_id' => Yii::$app->user->identity->id,
                         'owner_table' => Task::tableName(),
                         'employee_id' => $val,
                         'type' => Activity::TYPE_EDIT_TASK,
                         'content' => Notification::makeContent(\Yii::t('common', 'edited'), $task->name),
-                        'owner_employee_id' => 0
                     ];
 
                     if ($task->sms) {

@@ -217,7 +217,7 @@ class TaskPostController extends ApiController {
             $notifications = [];
             foreach ($arrayEmployees as $item) {
                 $notifications[] = [
-                    'owner_id' => $taskPost->id,
+                    'owner_id' => $taskInfo->id,
                     'owner_table' => TaskPost::tableName(),
                     'employee_id' => $item['id'],
                     'owner_employee_id' => \Yii::$app->user->getId(),

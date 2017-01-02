@@ -458,8 +458,8 @@ appRoot.controller('addEventCtrl', ['$rootScope', 'data', '$scope', 'calendarSer
 
 //Display info detail of calendar
 var $dataEditEvent = [];
-appRoot.controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService', 'EventPostService', '$uibModal', '$rootScope', 'dialogMessage', '$routeParams', 'alertify', '$sce', 'PER_PAGE_VIEW_MORE','$location',
-    function ($scope, calendarService, fileService, EventPostService, $uibModal, $rootScope, dialogMessage, $routeParams, alertify, $sce, PER_PAGE_VIEW_MORE, $location) {
+appRoot.controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService', 'EventPostService', '$uibModal', '$rootScope', 'dialogMessage', '$routeParams', 'alertify', '$sce', 'PER_PAGE_VIEW_MORE','$location', 'socketService',
+    function ($scope, calendarService, fileService, EventPostService, $uibModal, $rootScope, dialogMessage, $routeParams, alertify, $sce, PER_PAGE_VIEW_MORE, $location, socketService) {
         var eventId = $routeParams.eventId;
         //set paramter for layout
         $scope.collection = [];
@@ -527,6 +527,7 @@ appRoot.controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService',
                     temp = temp.concat($scope.releases);
                     $scope.eventPost = temp.concat($scope.eventPost);
                     $scope.eventPostFile = angular.merge($scope.eventPostFile, response.objects.files);
+                    socketService.emit('notify', 'ok');
                 });
             }
         }

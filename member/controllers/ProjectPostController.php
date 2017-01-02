@@ -153,10 +153,9 @@ class ProjectPostController extends ApiController {
             
             $arrayEmployees = $employeeList;
             $dataInsert = [];
-            
             foreach ($arrayEmployees as $item) {
                 $dataInsert['notification'][] = [
-                    'owner_id'          => $projectPost->id,
+                    'owner_id'          => $projectInfo->id,
                     'owner_table'       => ProjectPost::TABLE_PROJECTPOST,
                     'employee_id'       => $item['id'],
                     'owner_employee_id' => \Yii::$app->user->getId(),

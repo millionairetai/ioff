@@ -364,9 +364,10 @@ class ProjectController extends ApiController {
                 foreach ($arrayEmployees as $item) {
                     $dataUpdate['notification'][] = [
                         'owner_id' => $ob->id,
+                        'owner_employee_id' => Yii::$app->user->identity->id,
                         'owner_table' => Notification::TABLE_PROJECT,
                         'employee_id' => $item->id,
-                        'type' => 'create_project',
+                        'type' => Activity::TYPE_EDIT_PROJECT,
                         'content' => $content,
                         'owner_employee_id' => \Yii::$app->user->getId(),
                     ];

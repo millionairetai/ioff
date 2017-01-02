@@ -736,8 +736,8 @@ appRoot.controller('addEventCtrl', ['$rootScope', 'data', '$scope', 'calendarSer
 
 //Display info detail of calendar
 var $dataEditEvent = [];
-appRoot.controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService', 'EventPostService', '$uibModal', '$rootScope', 'dialogMessage', '$routeParams', 'alertify', '$sce', 'PER_PAGE_VIEW_MORE','$location',
-    function ($scope, calendarService, fileService, EventPostService, $uibModal, $rootScope, dialogMessage, $routeParams, alertify, $sce, PER_PAGE_VIEW_MORE, $location) {
+appRoot.controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService', 'EventPostService', '$uibModal', '$rootScope', 'dialogMessage', '$routeParams', 'alertify', '$sce', 'PER_PAGE_VIEW_MORE','$location', 'socketService',
+    function ($scope, calendarService, fileService, EventPostService, $uibModal, $rootScope, dialogMessage, $routeParams, alertify, $sce, PER_PAGE_VIEW_MORE, $location, socketService) {
         var eventId = $routeParams.eventId;
         //set paramter for layout
         $scope.collection = [];
@@ -805,6 +805,7 @@ appRoot.controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService',
                     temp = temp.concat($scope.releases);
                     $scope.eventPost = temp.concat($scope.eventPost);
                     $scope.eventPostFile = angular.merge($scope.eventPostFile, response.objects.files);
+                    socketService.emit('notify', 'ok');
                 });
             }
         }
@@ -2236,8 +2237,8 @@ appRoot.controller('addProjectCtrl', ['socketService','$scope', 'projectService'
 
 //Display info project
 var $dataEditProject = [];
-appRoot.controller('viewProjectCtrl', ['$scope', 'projectService', 'fileService', 'projectPostService', '$uibModal', '$rootScope', 'dialogMessage', '$routeParams', 'alertify', '$sce', 'PER_PAGE_VIEW_MORE', 
-    function ($scope, projectService, fileService, projectPostService, $uibModal, $rootScope, dialogMessage, $routeParams, alertify, $sce, PER_PAGE_VIEW_MORE) {
+appRoot.controller('viewProjectCtrl', ['$scope', 'projectService', 'fileService', 'projectPostService', '$uibModal', '$rootScope', 'dialogMessage', '$routeParams', 'alertify', '$sce', 'PER_PAGE_VIEW_MORE', 'socketService',
+    function ($scope, projectService, fileService, projectPostService, $uibModal, $rootScope, dialogMessage, $routeParams, alertify, $sce, PER_PAGE_VIEW_MORE, socketService) {
         //get info project
         var projectId = $routeParams.projectId;
         $scope.collection = [];
@@ -2324,7 +2325,6 @@ appRoot.controller('viewProjectCtrl', ['$scope', 'projectService', 'fileService'
                 }
 
                 fd.append("project", angular.toJson($scope.project));
-
                 projectPostService.addProjectPost(fd, function (response) {
                     alertify.success($rootScope.$lang.project_update_success);
                     $rootScope.$emit('add_project_post_success', {});
@@ -2335,8 +2335,11 @@ appRoot.controller('viewProjectCtrl', ['$scope', 'projectService', 'fileService'
                     $scope.files = [];
                     $scope.release  = $scope.collection.file_info;
                     $scope.releases = response.objects.files;
-                    $scope.releases = $scope.releases.concat($scope.release);
-                    $scope.collection.file_info = $scope.releases;
+                    if ($scope.releases) {
+                        $scope.releases = $scope.releases.concat($scope.release);
+                        $scope.collection.file_info = $scope.releases;
+                    }
+                    socketService.emit('notify', 'ok');
                 });
             }
         }
@@ -3378,6 +3381,7 @@ appRoot.controller('viewTaskCtrl', ['socketService','$sce', 'fileService', '$sco
                 temp = temp.concat($scope.releases);
                 $scope.taskPost = temp.concat($scope.taskPost);
                 $scope.taskPostFile = angular.merge($scope.taskPostFile, response.objects.files);
+                socketService.emit('notify', 'ok');
             });
         }
     }
