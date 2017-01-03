@@ -115,6 +115,8 @@ return [
     'error calendar name is existed' => 'Calendar name is existed',
     'has any employees in this project' => 'Do not has any employees in this project',
     //task
+    'task' => 'Task',
+    'follow' => 'Follow',
     'Do not has any employees in this project' => 'Do not has any employees in this project',
     //Employee
     'Confirming registration on' => 'Confirming registration on', 

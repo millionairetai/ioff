@@ -1081,8 +1081,8 @@ class TaskController extends ApiController {
                     'id' => $task['id'],
                     'color' => "#00a65a",
                     'start' => date('Y-m-d'),
-                    'end' => !empty($duedatetime) ? date('Y-m-d H:i:s', $duedatetime) : date('Y-m-d', $duedatetime),
-                    'title' => 'Task: ' . $task['name'],
+                    'end' => !empty($duedatetime) ? date('Y-m-d', $duedatetime) . " 23:59:59" : date('Y-m-d', $duedatetime),
+                    'title' => Yii::t('member', 'task') . ': ' . $task['name'],
                     'isTask' => true,
                 ];
             }
@@ -1102,8 +1102,8 @@ class TaskController extends ApiController {
                     'id' => $task['id'],
                     'color' => "#3b91ad",
                     'start' => date('Y-m-d'),
-                    'end' => !empty($duedatetime) ? date('Y-m-d H:i:s', $duedatetime) : date('Y-m-d', $duedatetime),
-                    'title' => 'Follow: ' . $task['name'],
+                    'end' => !empty($duedatetime) ? date('Y-m-d', $duedatetime) . " 23:59:59" : date('Y-m-d', $duedatetime),
+                    'title' => Yii::t('member', 'follow') . ': ' . $task['name'],
                     'isTask' => true,
                 ];
             }

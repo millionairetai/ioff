@@ -109,6 +109,9 @@ return [
     'task group' => 'Loại công việc',
     'error calendar name is existed' => 'Tên lịch đã tồn tại',
     'Do not has any employees in this project' => 'Không có bất kỳ nhân viên nào trong dự án này',
+    //task
+    'task' => 'Công việc',
+    'follow' => 'Theo dõi',
     //Employee
     'Confirming registration on' => 'Xác nhận đăng ký trên', 
     'to the terms' => 'với những điều khoản',
