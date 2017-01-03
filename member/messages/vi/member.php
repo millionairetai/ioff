@@ -16,6 +16,13 @@ return [
     'Can not save data' => 'Không thể lưu dữ liệu',
     'you do not have authoirity for this action' => 'Bạn không có quyền cho hành động này',
     'Update post error' => 'Cập nhật bài đăng bị lỗi',
+     //validate common
+    'validate_required' => '{attribute} không được bỏ trống',
+    'validate_integer' => '{attribute} phải là số nguyên',
+    'validate_string' => '{attribute} phải là chuỗi ký tự',
+    'validate_boolean' => '{attribute} phải là kiểu boolean',
+    'validate_max_length' => '{attribute} phải nhỏ hơn 255 ký tự',
+    'validate_time' => 'Ngày kết thúc phải lớn hơn ngày bắt đầu',
     //----------------------------------Common language--------------------------------------------------//    
     //project
     'project manager' => 'Quản lý dự án',
