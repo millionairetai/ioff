@@ -277,8 +277,8 @@ appRoot.controller('authorityDetailCtrl', ['$scope', '$uibModalInstance', 'autho
             $uibModalInstance.dismiss('cancel');
         };
     }]);//show calendar
-appRoot.controller('calendarCtrl', ['$scope', '$uibModal', 'calendarService', 'taskService', '$timeout', 'settingSystem', 'uiCalendarConfig', 'listCalendar', '$rootScope', 'dialogMessage',
-    function ($scope, $uibModal, calendarService, taskService, $timeout, settingSystem, uiCalendarConfig, listCalendar, $rootScope, dialogMessage) {
+appRoot.controller('calendarCtrl', ['$scope', '$uibModal', 'calendarService', 'taskService', '$timeout', 'settingSystem', 'uiCalendarConfig', 'listCalendar', '$rootScope', 'dialogMessage', 'alertify',
+    function ($scope, $uibModal, calendarService, taskService, $timeout, settingSystem, uiCalendarConfig, listCalendar, $rootScope, dialogMessage, alertify) {
         var date = new Date();
         var d = date.getDate();
         var m = date.getMonth();
