@@ -2067,6 +2067,7 @@ appRoot.controller('addProjectCtrl', ['socketService','$scope', 'projectService'
             is_public: 0,
             status_id: 1,
             description: '',
+            description_parse: '',
             estimate_hour: 0,
             worked_hour: 0,
             sms : 0,
@@ -2193,6 +2194,7 @@ appRoot.controller('addProjectCtrl', ['socketService','$scope', 'projectService'
                                 fd.append("file_"+i, $scope.files[i]);
                             }
                             fd.append("project", angular.toJson($scope.project));
+                            $scope.project.description_parse = tinyMCE.activeEditor.getContent({format : 'text'});
                             projectService.addProject(fd,function(response){
                                 alertify.success($rootScope.$lang.project_notify_success);
                                 $rootScope.$emit('create_project_success', {message: 'hung'});

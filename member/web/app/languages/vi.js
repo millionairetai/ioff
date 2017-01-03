@@ -101,6 +101,8 @@
             user: 'Người dùng',
             hide: 'Ẩn',
             show: 'Hiện',
+            annoucement: 'Thông báo',
+            requestment: 'Yêu cầu',
             //-----------------------------------------End of common language.----------------------------------
             
             //project

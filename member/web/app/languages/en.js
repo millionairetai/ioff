@@ -102,6 +102,8 @@
             user: 'User',
             hide: 'Hide',
             show: 'Show',
+            annoucement: 'Annoucement',
+            requestment: 'Requestment',
             //-----------------------------------------End of common language.----------------------------------
             
             //project

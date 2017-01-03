@@ -14,6 +14,16 @@ use yii\helpers\Url;
             </li>
             <li>
                 <a href="#project">
+                    <i class="fa fa-bullhorn"></i> <span>{{$root.$lang.annoucement}}</span> 
+                </a>
+            </li>
+            <li>
+                <a href="#project">
+                    <i class="fa fa-asterisk"></i> <span>{{$root.$lang.requestment}}</span> 
+                </a>
+            </li>
+            <li>
+                <a href="#project">
                     <i class="fa fa-th"></i> <span>{{$root.$lang.project}}</span> 
                 </a>
             </li>

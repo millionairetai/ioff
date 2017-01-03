@@ -36,7 +36,7 @@ class ProjectController extends ApiController {
                 'status_id' => $item['status_id'],
                 'status' => $item['status_name'],
                 'completed_percent' => $item['completed_percent'],
-                'description' => strlen($item['description']) > 250 ? (substr($item['description'], 0, 70) . "...") : $item['description'],
+                'description_parse' => strlen($item['description_parse']) > 1000 ? (substr($item['description_parse'], 0, 1000) . "...") : $item['description_parse'],
                 'theory' => $item['estimate_hour'] > 0 ? ((int) (($item['worked_hour'] / $item['estimate_hour'] ) * 100)) : 0,
             ];
         }
@@ -59,7 +59,7 @@ class ProjectController extends ApiController {
                 'status_id' => $project['status_id'],
                 'status' => $project['status_name'],
                 'completed_percent' => $project['completed_percent'],
-                'description' => strlen($project['description']) > 250 ? (substr($project['description'], 0, 70) . "...") : $project['description'],
+                'description_parse' => strlen($project['description_parse']) > 250 ? (substr($project['description_parse'], 0, 70) . "...") : $project['description_parse'],
                 'theory' => $project['estimate_hour'] > 0 ? ((int) (($project['worked_hour'] / $project['estimate_hour'] ) * 100)) : 0,
             ];
         }
@@ -88,7 +88,6 @@ class ProjectController extends ApiController {
         try {
             $ob = new Project();
             $ob->attributes = $dataPost;
-            $ob->description_parse = $ob->description;
             $ob->start_datetime = $ob->start_datetime ? strtotime($ob->start_datetime) : null;
             $ob->duedatetime = $ob->duedatetime ? strtotime($ob->duedatetime) : null;
             if (isset($dataPost['manager']['id'])) {
