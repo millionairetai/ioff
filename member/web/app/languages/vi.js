@@ -103,6 +103,7 @@
             show: 'Hiện',
             annoucement: 'Thông báo',
             requestment: 'Yêu cầu',
+            name_must_less_than_255_characters: 'Tên phải nhỏ hơn 255 kí tự',            
             //-----------------------------------------End of common language.----------------------------------
             
             //project

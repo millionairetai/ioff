@@ -874,6 +874,10 @@ class CalendarController extends ApiController {
                     
                     return $this->sendResponse(false, [], []);
                 } else {
+                    //If you want to annouce error from validation.
+                    if ($this->_error) {
+                        return $this->sendResponse(true, \Yii::t('member', $this->_message), []);
+                    }
                     return $this->sendResponse(true, \Yii::t('member', 'error calendar name is existed'), []);
                 }
             }

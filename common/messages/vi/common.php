@@ -59,6 +59,8 @@ return [
     'error %s is existed' => '%s đã tồn tại',
     'department' => 'Phòng ban', 
     //Calendar
+    'Datetime Created' => 'Ngày tạo',
+    'Lastup Datetime' => 'Thời gian cập nhật gần đây nhất',
     'event_id' => 'Mã sự kiện',
     'event_company_id' => 'Công ty',
     'event_calendar_id' => 'Mã lịch',

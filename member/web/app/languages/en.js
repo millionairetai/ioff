@@ -104,6 +104,7 @@
             show: 'Show',
             annoucement: 'Annoucement',
             requestment: 'Requestment',
+            name_must_less_than_255_characters: 'Name must be less than 255 characters',            
             //-----------------------------------------End of common language.----------------------------------
             
             //project

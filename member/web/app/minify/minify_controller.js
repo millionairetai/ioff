@@ -476,7 +476,7 @@ appRoot.controller('addCalendarCtrl', ['$scope', '$rootScope', '$uibModalInstanc
         };
 
         $scope.add = function () {
-            if (calendarService.validateCalendarAdd($scope.calendar)) {
+            if (calendarService.validate($scope.calendar)) {
                 calendarService.addCalendar($scope.calendar, function (data) {
                     alertify.success($rootScope.$lang.add_calendar_success);
                     $uibModalInstance.close($scope.calendar);
@@ -499,7 +499,7 @@ appRoot.controller('editCalendarCtrl', ['$scope', '$rootScope', '$uibModalInstan
         };
 
         $scope.update = function () {
-            if (calendarService.validateCalendarAdd($scope.calendar)) {
+            if (calendarService.validate($scope.calendar)) {
                 calendarService.editCalendar($scope.calendar, function (data) {
                     calendar.description = $scope.calendar.description;
                     alertify.success($rootScope.$lang.update_calendar_success);

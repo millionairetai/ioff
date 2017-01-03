@@ -59,6 +59,8 @@ return [
     'error %s is existed' => '%s is existed',
     'department' => 'Department', 
     //calendar
+    'Datetime Created' => 'Datetime Created',
+    'Lastup Datetime' => 'Lastup Datetime',
     'event_id' => 'Event id',
     'event_company_id' => 'Company id',
     'event_calendar_id' => 'Calendar id',
