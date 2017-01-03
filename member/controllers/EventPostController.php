@@ -132,7 +132,7 @@ class EventPostController extends ApiController {
             $eventPost->parent_employee_id = 0;
             $eventPost->parent_id = 0;
             $eventPost->content = $dataPost['description'];
-            $eventPost->content_parse = strip_tags($dataPost['description']);
+            $eventPost->content_parse = $dataPost['description_parse'];
             $eventPost->is_log_history = 0;
             if (!$eventPost->save()) {
                 throw new \Exception('Save record to table project post fail');
@@ -244,7 +244,7 @@ class EventPostController extends ApiController {
                 throw new \Exception('Get event post info fail');
             }
             $eventPost->content = $request['content'];
-            $eventPost->content_parse = $request['content'];
+            $eventPost->content_parse = $request['content_parse'];
             if (!$eventPost->update()) {
                 throw new \Exception('Save record to table event post fail');
             }
