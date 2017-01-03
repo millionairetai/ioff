@@ -35,7 +35,6 @@ class TaskController extends ApiController {
         try {
             $task = new Task();
             $task->attributes = $postData;
-            $task->description_parse = strip_tags($task->description);
             $task->duedatetime = $task->duedatetime ? strtotime($task->duedatetime) : null;
             $task->employee_id = Yii::$app->user->getId();
 
@@ -232,7 +231,7 @@ class TaskController extends ApiController {
                 $collection[] = [
                     'id' => $task->id,
                     'name' => $task->name,
-                    'description' => strlen($task->description) > 400 ? (substr($task->description, 0, 400) . "...") : $task->description,
+                    'description_parse' => strlen($task->description_parse) > 1000 ? (substr($task->description_parse, 0, 1000) . "...") : $task->description_parse,
                     'creator' => ['fullname' => $creator->fullname, 'email' => $creator->email, 'image' => $creator->getImage()],
                     'followers' => $followers,
                     'assignees' => $assignees,
@@ -281,7 +280,7 @@ class TaskController extends ApiController {
                 $collection[] = [
                     'id' => $task->id,
                     'name' => $task->name,
-                    'description' => strlen($task->description) > 400 ? (substr($task->description, 0, 400) . "...") : $task->description,
+                    'description_parse' => strlen($task->description_parse) > 1000 ? (substr($task->description_parse, 0, 1000) . "...") : $task->description_parse,
                     'creator' => ['fullname' => $creator->fullname, 'email' => $creator->email, 'image' => $creator->getImage()],
                     'followers' => $followers,
                     'assignees' => $assignees,
@@ -331,7 +330,7 @@ class TaskController extends ApiController {
                 $collection[] = [
                     'id' => $task->id,
                     'name' => $task->name,
-                    'description' => strlen($task->description) > 400 ? (substr($task->description, 0, 400) . "...") : $task->description,
+                    'description_parse' => strlen($task->description_parse) > 1000 ? (substr($task->description_parse, 0, 1000) . "...") : $task->description_parse,
                     'creator' => ['fullname' => $creator->fullname, 'email' => $creator->email, 'image' => $creator->getImage()],
                     'followers' => $followers,
                     'assignees' => $assignees,

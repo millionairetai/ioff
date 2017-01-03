@@ -2980,6 +2980,7 @@ appRoot.controller('addTaskCtrl', ['socketService', '$scope', 'taskService', '$l
             priority_id: 3,
             completed_percent: 0,
             description: '',
+            description_parse: '',
             estimate_hour: 0,
             worked_hour: 0,
             parent_id: 0,
@@ -3167,6 +3168,7 @@ appRoot.controller('addTaskCtrl', ['socketService', '$scope', 'taskService', '$l
                             for (var i in $scope.files) {
                                 fd.append("file_" + i, $scope.files[i]);
                             }
+                            $scope.task.description_parse = tinyMCE.activeEditor.getContent({format : 'text'});
                             fd.append("task", angular.toJson($scope.task));
                             taskService.addTask(fd, function (response) {
                                 alertify.success($rootScope.$lang.task_notify_success);
