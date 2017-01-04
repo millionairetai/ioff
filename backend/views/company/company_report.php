@@ -1,55 +1,11 @@
 
 <section class="content">
     <div class="row">
-        <div class="col-md-4 col-sm-6 col-xs-12">
-            <div class="info-box">
-                <span class="info-box-icon bg-aqua"><i class="fa fa-building-o"></i></span>
-
-                <div class="info-box-content">
-                    <span class="info-box-text">Company</span>
-                    <span class="info-box-number">23 new company</span>
-                    <span class="progress-description">
-                        13 free, 10 fee
-                    </span>
-                </div>
-                <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-        <div class="col-md-4 col-sm-6 col-xs-12">
-            <div class="info-box">
-                <span class="info-box-icon bg-green"><i class="fa fa-usd"></i></span>
-
-                <div class="info-box-content">
-                    <span class="info-box-text">Revenue</span>
-                    <span class="info-box-number">198,000,00<small>VND</small></span>
-                </div>
-                <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-        <div class="col-md-4 col-sm-6 col-xs-12">
-            <div class="info-box">
-                <span class="info-box-icon bg-yellow"><i class="fa fa-line-chart"></i></span>
-
-                <div class="info-box-content">
-                    <span class="info-box-text">Percent</span>
-                    <span class="info-box-number">43<small>%</small></span>
-                </div>
-                <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-    </div>
-    <div class="row">
         <div class="col-md-8">
             <!-- Default box -->
             <div class="box">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Overview system</h3>
+                    <h3 class="box-title">Monthly Recap Report</h3>
                     <div class="box-tools pull-right">
                         <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
                         <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
@@ -58,21 +14,38 @@
                 <div class="box-body">
                     <form role="form" class="form-horizontal">
                         <div class="form-group">
-                            <p class="col-sm-8 help-block text-right">(Contains of today, week, month, year)</p>
-                            <div class=" col-sm-4">
-                                <select class="form-control">
+                            <div class="col-sm-offset-3 col-sm-6 text-right">
+                                (Contains of today, week, month, year)
+                                <select>
                                     <option>Today</option>
                                     <option>This week</option>
                                     <option>This month</option>
                                     <option>This year</option>
                                 </select>
                             </div>
+                            <div class=" col-sm-3">
+                                 Package:
+                                <select>
+                                    <option>Standard</option>
+                                    <option>advance</option>
+                                </select>
+                            </div>
                         </div>
                     </form>
-                    <h4>Used Storage</h4>
-                    <p>120GB/ 700GB</p>
                     <div class="row">
+                        <div class="col-md-5">
+                            <h4>Statistic system:</h4>
+                            <h5>509 companies</h5>
+                            <ul>
+                                <li>Total: 3948 companies</li>
+                                <li>Free: 984 companies</li>
+                                <li>Packages:</li>
+                            </ul>
+                        </div>
+
                         <div class="col-md-7">
+                            <h4>Used Storage</h4>
+                            <p>120GB/ 700GB</p>
                             <table>
                                 <tr>
                                     <td>
@@ -85,96 +58,14 @@
                                 </tr>
                             </table>
                         </div>
-                        <div class="col-md-5">
-                            <h4>Companies & Users</h4>
-                            <h5>509 companies</h5>
-                            <ul>
-                                <li>300 free</li>
-                                <li>209 fee</li>
-                            </ul>
-                            <b>Total: 1390 users</b>
-                        </div>
                     </div>
-                </div><!-- /.box-body -->
-                <div class="box-footer">
-                    Footer
-                </div><!-- /.box-footer-->
-            </div><!-- /.box -->
-            <div class="box">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Monthly Recap Report</h3>
-                    <div class="box-tools pull-right">
-                        <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
-                        <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
-                    </div>
-                </div>
-                <div class="box-body">
-                    <form role="form" class="form-horizontal">
-                        <div class="form-group">
-                            <p class="col-sm-8 help-block text-right">(Contains of today, week, month, year)</p>
-                            <div class=" col-sm-4">
-                                <select class="form-control">
-                                    <option>Today</option>
-                                    <option>This week</option>
-                                    <option>This month</option>
-                                    <option>This year</option>
-                                </select>
-                            </div>
-                        </div>
-                    </form>
-                    <canvas id="barChart"></canvas>
+                    <p class="text-center">
+                        <strong>Number of company this month</strong>
+                    </p>
+                    <canvas id="companyReportChart"></canvas>
                 </div><!-- /.box-body -->
             </div><!-- /.box -->
-
-            <div class="box">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Top saling</h3>
-                    <div class="box-tools pull-right">
-                        <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
-                        <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
-                    </div>
-                </div>
-                <div class="box-body">
-                    <form role="form" class="form-horizontal">
-                        <div class="form-group">
-                            <p class="col-sm-8 help-block text-right">(Contains of today, week, month, year)</p>
-                            <div class=" col-sm-4">
-                                <select class="form-control">
-                                    <option>Today</option>
-                                    <option>This week</option>
-                                    <option>This month</option>
-                                    <option>This year</option>
-                                </select>
-                            </div>
-                        </div>
-                    </form>
-                    <canvas id="horizontal-chart"></canvas>
-                </div><!-- /.box-body -->
-            </div><!-- /.box -->
-            <div class="box">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Config system</h3>
-                    <div class="box-tools pull-right">
-                        <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
-                        <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
-                    </div>
-                </div>
-                <div class="box-body">
-                    <table class="table table-striped">
-                        <tr>
-                            <th>Name:</th>
-                            <td>Centeroffice</td>
-                        </tr>
-                        <tr>
-                            <th>Maintain mode:</th>
-                            <td>FALSE</td>
-                        </tr>
-                    </table>
-                </div><!-- /.box-body -->
-            </div><!-- /.box -->
-
         </div>
-
         <div class="col-md-4 padding-left-md-0">
             <div class="box box-widget">
                 <div class="box-header with-border">

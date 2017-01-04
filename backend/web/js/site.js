@@ -73,12 +73,57 @@ var confixbarChart = {
         ]
     },
     options: {
+            scales: {
+                xAxes:[{
+                        barThickness: 20
+                }],
+                yAxes: [{
+                        ticks: {
+                            max: 100,
+                            min: 0,
+                            stepSize: 10
+                        }
+                    }]
+            },
         legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].fillColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
     }
 };
 
 var ctxbarChart = document.getElementById("barChart").getContext("2d");
 var myBarChart = new Chart(ctxbarChart, confixbarChart);
+}
+// BAR CHART
+if (document.getElementById("companyReportChart")) {
+    var confixbarChart = {
+        type: 'bar',
+        data: {
+            labels: ["1/2016", "2/2016", "3/2016", "4/2016", "5/2016", "6/2016", "7/2016","8/2016","9/2016","10/2016","11/2016","12/2016"],
+            datasets: [
+                {
+                    label: "Company",
+                    backgroundColor: "#00a65a",
+                    data: [12, 14, 21, 30, 45, 46, 55,60,80,84,90,94]
+                }
+            ]
+        },
+        options: {
+            scales: {
+                xAxes:[{
+                        barThickness: 20
+                }],
+                yAxes: [{
+                        ticks: {
+                            max: 100,
+                            min: 0,
+                            stepSize: 10
+                        }
+                    }]
+            },
+            legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].fillColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
+        }
+    };
+    var ctxbarChart = document.getElementById("companyReportChart").getContext("2d");
+    var myBarChart = new Chart(ctxbarChart, confixbarChart);
 }
 // HORIZONTAL CHART
 if (document.getElementById("horizontal-chart")) {
