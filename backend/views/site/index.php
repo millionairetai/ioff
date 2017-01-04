@@ -46,16 +46,16 @@
     </div>
     <div class="row">
         <div class="col-md-8">
-    <!-- Default box -->
-    <div class="box">
-        <div class="box-header with-border">
+            <!-- Default box -->
+            <div class="box">
+                <div class="box-header with-border">
                     <h3 class="box-title">Overview system</h3>
-            <div class="box-tools pull-right">
-                <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
-                <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
-            </div>
-        </div>
-        <div class="box-body">
+                    <div class="box-tools pull-right">
+                        <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
+                        <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
+                    </div>
+                </div>
+                <div class="box-body">
                     <form role="form" class="form-horizontal">
                         <div class="form-group">
                             <p class="col-sm-8 help-block text-right">(Contains of today, week, month, year)</p>
@@ -69,6 +69,7 @@
                             </div>
                         </div>
                     </form>
+                    <a class="pull-right" href="/company/report">View detail</a>
                     <h4>Used Storage</h4>
                     <p>120GB/ 700GB</p>
                     <div class="row">
@@ -95,11 +96,11 @@
                             <b>Total: 1390 users</b>
                         </div>
                     </div>
-        </div><!-- /.box-body -->
-        <div class="box-footer">
-            Footer
-        </div><!-- /.box-footer-->
-    </div><!-- /.box -->
+                </div><!-- /.box-body -->
+                <div class="box-footer">
+                    Footer
+                </div><!-- /.box-footer-->
+            </div><!-- /.box -->
             <div class="box">
                 <div class="box-header with-border">
                     <h3 class="box-title">Monthly Recap Report</h3>
@@ -122,7 +123,7 @@
                             </div>
                         </div>
                     </form>
-                        <canvas id="barChart"></canvas>
+                    <canvas id="barChart"></canvas>
                 </div><!-- /.box-body -->
             </div><!-- /.box -->
 
@@ -235,9 +236,9 @@
                     <div class="box-tools pull-right">
                         <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                         </button>
-        </div>
+                    </div>
                     <!-- /.box-tools -->
-    </div>
+                </div>
                 <!-- /.box-header -->
                 <div class="box-body">
                     <ul class="products-list product-list-in-box">

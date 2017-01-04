@@ -8,19 +8,19 @@ use yii\helpers\Url;
           <ul class="sidebar-menu">
             <li class="header">MAIN NAVIGATION</li>
             <li class="active treeview">
-                <a href="#">
-                <i class="fa fa-dashboard"></i> <span>Dashboard</span> <i class="fa fa-angle-left pull-right"></i>
+                <a href="/">
+                <i class="fa fa-dashboard"></i> <span>Màn hình chính</span> <i class="fa pull-right"></i>
               </a>
               
             </li>
             <li>
-              <a href="/controller/index">
-                <i class="fa fa-th"></i> <span>Nhóm chức năng</span> 
+                <a href="/invoice/revenue">
+                <i class="fa fa-money"></i> <span>Doanh thu</span> <i class="fa pull-right"></i>
               </a>
             </li>
             <li>
-              <a href="/action/index">
-                <i class="fa fa-calendar"></i> <span>Chức năng</span> 
+              <a href="/company/index">
+                <i class="fa fa-empire"></i> <span>Công ty</span> 
               </a>
             </li>
             <li>
@@ -29,8 +29,13 @@ use yii\helpers\Url;
               </a>
             </li>
             <li>
-              <a href="/company/index">
-                <i class="fa fa-empire"></i> <span>Công ty</span> 
+              <a href="/controller/index">
+                <i class="fa fa-th"></i> <span>Nhóm chức năng</span> 
+              </a>
+            </li>
+            <li>
+              <a href="/action/index">
+                <i class="fa  fa-certificate"></i> <span>Chức năng</span> 
               </a>
             </li>
             <li>
