@@ -75,4 +75,12 @@ class CompanyController extends \yii\web\Controller {
         throw new NotFoundHttpException('Can not delete company');
     }
 
+     /**
+     * report company
+     */   
+    public function actionReport()
+    {
+        return $this->render('company_report');
+    }
+
 }

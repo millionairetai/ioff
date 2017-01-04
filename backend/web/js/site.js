@@ -58,6 +58,8 @@ $(".knob").knob({
     }
 });
 Chart.defaults.global.legend.display = false;
+// BAR CHART
+if (document.getElementById("barChart")) {
 var confixbarChart = {
     type: 'bar',
     data: {
@@ -77,24 +79,35 @@ var confixbarChart = {
 
 var ctxbarChart = document.getElementById("barChart").getContext("2d");
 var myBarChart = new Chart(ctxbarChart, confixbarChart);
+}
 // HORIZONTAL CHART
+if (document.getElementById("horizontal-chart")) {
 var config = {
     type: 'horizontalBar',
     data: {
         labels: ["Eating", "Drinking", "Sleeping", "Designing", "Coding", "Cycling", "Running"],
         datasets: [{
                 label: "My First dataset",
-                backgroundColor: '#666666',
+                    backgroundColor: '#00a65a',
                 data: [65, 59, 90, 81, 56, 55, 40]
-            }, {
-                label: "My Second dataset",
-                backgroundColor: '#00a65a',
-                data: [28, 48, 40, 19, 96, 27, 100]
             }]
     },
     options: {
+            scales: {
+                yAxes:[{
+                        barThickness: 20
+                }],
+                xAxes: [{
+                        ticks: {
+                            max: 100,
+                            min: 0,
+                            stepSize: 10
+                        }
+                    }]
+            },
         legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].fillColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
     }
 };
 var ctxhorizontalChart = document.getElementById("horizontal-chart").getContext("2d");
 var horizontalChart = new Chart(ctxhorizontalChart, config);
+}
