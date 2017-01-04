@@ -21,6 +21,6 @@ class InvoiceController extends Controller
     
     public function actionPaymentDetail()
     {
-        return $this->render('payment_history');
+        return $this->render('payment_detail');
     }
 }

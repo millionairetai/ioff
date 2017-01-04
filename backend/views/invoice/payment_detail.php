@@ -1,178 +1,140 @@
-
+<section class="content-header">
+    <h1>Package Information
+        <small> - (20/2/2015 -20/2/2016)</small></h1>
+</section>
 <section class="content">
-    <div class="row">
-        <div class="col-md-4 col-sm-6 col-xs-12">
-            <div class="info-box">
-                <span class="info-box-icon bg-aqua"><i class="fa fa-building-o"></i></span>
-
-                <div class="info-box-content">
-                    <span class="info-box-text">Company</span>
-                    <span class="info-box-number">23 new company</span>
-                    <span class="progress-description">
-                        13 free, 10 fee
-                    </span>
-                </div>
-                <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-        <div class="col-md-4 col-sm-6 col-xs-12">
-            <div class="info-box">
-                <span class="info-box-icon bg-green"><i class="fa fa-usd"></i></span>
-
-                <div class="info-box-content">
-                    <span class="info-box-text">Revenue</span>
-                    <span class="info-box-number">198,000,00<small>VND</small></span>
-                </div>
-                <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-        <div class="col-md-4 col-sm-6 col-xs-12">
-            <div class="info-box">
-                <span class="info-box-icon bg-yellow"><i class="fa fa-line-chart"></i></span>
-
-                <div class="info-box-content">
-                    <span class="info-box-text">Percent</span>
-                    <span class="info-box-number">43<small>%</small></span>
-                </div>
-                <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-    </div>
     <div class="row">
         <div class="col-md-8">
             <!-- Default box -->
-            <div class="box">
+            <div class="box box-widget">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Overview system</h3>
-                    <div class="box-tools pull-right">
-                        <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
-                        <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
-                    </div>
-                </div>
-                <div class="box-body">
-                    <form role="form" class="form-horizontal">
-                        <div class="form-group">
-                            <p class="col-sm-8 help-block text-right">(Contains of today, week, month, year)</p>
-                            <div class=" col-sm-4">
-                                <select class="form-control">
-                                    <option>Today</option>
-                                    <option>This week</option>
-                                    <option>This month</option>
-                                    <option>This year</option>
-                                </select>
-                            </div>
-                        </div>
-                    </form>
-                    <h4>Used Storage</h4>
-                    <p>120GB/ 700GB</p>
-                    <div class="row">
-                        <div class="col-md-7">
-                            <table>
-                                <tr>
-                                    <td>
-                                        <input type="text" class="knob" value="120" data-width="150" data-height="150" data-skin="tron" data-thickness=.2 data-fgColor="#3c8dbc">
-                                    </td>
-                                    <td>
-                                        <p><b>Database: 40GB</b></p>
-                                        <p><b>File: 80GB</b></p>
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                        <div class="col-md-5">
-                            <h4>Companies & Users</h4>
-                            <h5>509 companies</h5>
-                            <ul>
-                                <li>300 free</li>
-                                <li>209 fee</li>
-                            </ul>
-                            <b>Total: 1390 users</b>
-                        </div>
-                    </div>
-                </div><!-- /.box-body -->
-                <div class="box-footer">
-                    Footer
-                </div><!-- /.box-footer-->
-            </div><!-- /.box -->
-            <div class="box">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Monthly Recap Report</h3>
-                    <div class="box-tools pull-right">
-                        <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
-                        <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
-                    </div>
-                </div>
-                <div class="box-body">
-                    <form role="form" class="form-horizontal">
-                        <div class="form-group">
-                            <p class="col-sm-8 help-block text-right">(Contains of today, week, month, year)</p>
-                            <div class=" col-sm-4">
-                                <select class="form-control">
-                                    <option>Today</option>
-                                    <option>This week</option>
-                                    <option>This month</option>
-                                    <option>This year</option>
-                                </select>
-                            </div>
-                        </div>
-                    </form>
-                    <canvas id="barChart"></canvas>
-                </div><!-- /.box-body -->
-            </div><!-- /.box -->
 
-            <div class="box">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Top saling</h3>
-                    <div class="box-tools pull-right">
-                        <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
-                        <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
-                    </div>
-                </div>
-                <div class="box-body">
-                    <form role="form" class="form-horizontal">
-                        <div class="form-group">
-                            <p class="col-sm-8 help-block text-right">(Contains of today, week, month, year)</p>
-                            <div class=" col-sm-4">
-                                <select class="form-control">
-                                    <option>Today</option>
-                                    <option>This week</option>
-                                    <option>This month</option>
-                                    <option>This year</option>
-                                </select>
+                    <div class="row">
+                        <div class="col-sm-3 col-xs-6">
+                            <div class="description-block border-right">
+                                <span class="description-percentage text-green"><i class="fa fa-caret-up"></i> 17%</span>
+                                <h5 class="description-header">$35,210.43</h5>
+                                <span class="description-text">TOTAL REVENUE</span>
                             </div>
+                            <!-- /.description-block -->
                         </div>
-                    </form>
-                    <canvas id="horizontal-chart"></canvas>
-                </div><!-- /.box-body -->
-            </div><!-- /.box -->
-            <div class="box">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Config system</h3>
-                    <div class="box-tools pull-right">
-                        <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
-                        <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
+                        <!-- /.col -->
+                        <div class="col-sm-3 col-xs-6">
+                            <div class="description-block border-right">
+                                <span class="description-percentage text-yellow"><i class="fa fa-caret-left"></i> 0%</span>
+                                <h5 class="description-header">$10,390.90</h5>
+                                <span class="description-text">TOTAL COST</span>
+                            </div>
+                            <!-- /.description-block -->
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-sm-3 col-xs-6">
+                            <div class="description-block border-right">
+                                <span class="description-percentage text-green"><i class="fa fa-caret-up"></i> 20%</span>
+                                <h5 class="description-header">$24,813.53</h5>
+                                <span class="description-text">TOTAL PROFIT</span>
+                            </div>
+                            <!-- /.description-block -->
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-sm-3 col-xs-6">
+                            <div class="description-block">
+                                <span class="description-percentage text-red"><i class="fa fa-caret-down"></i> 18%</span>
+                                <h5 class="description-header">1200</h5>
+                                <span class="description-text">GOAL COMPLETIONS</span>
+                            </div>
+                            <!-- /.description-block -->
+                        </div>
                     </div>
                 </div>
                 <div class="box-body">
-                    <table class="table table-striped">
-                        <tr>
-                            <th>Name:</th>
-                            <td>Centeroffice</td>
-                        </tr>
-                        <tr>
-                            <th>Maintain mode:</th>
-                            <td>FALSE</td>
-                        </tr>
+                    <table class="table borderless">
+                        <caption><h4>1. Invoice Address</h4></caption>
+                        <tbody>
+                            <tr>
+                                <th>Name company:</th>
+                                <td>Mắt bão corp</td>
+                            </tr>
+                            <tr>
+                                <th>Firstname:</th>
+                                <td>Trịnh</td>
+                            </tr>
+                            <tr>
+                                <th>Lastname:</th>
+                                <td>Giác Bậc</td>
+                            </tr>
+                            <tr>
+                                <th>Phone:</th>
+                                <td>093884039292</td>
+                            </tr>
+                            <tr>
+                                <th>Street/No:</th>
+                                <td>Nguyễn Tất Thành, phường 3, quận 1</td>
+                            </tr>
+                            <tr>
+                                <th>Zipcode:</th>
+                                <td>83</td>
+                            </tr>
+                            <tr>
+                                <th>City:</th>
+                                <td>Ho Chi Minh</td>
+                            </tr>
+                            <tr>
+                                <th>Country:</th>
+                                <td>Vietnam</td>
+                            </tr>
+                            <tr>
+                                <th>Email:</th>
+                                <td>giacbat@matbao.vn</td>
+                            </tr>
+                            <tr>
+                                <th>Business area:</th>
+                                <td>marketing</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table borderless">
+                        <caption><h4>2. Payment</h4></caption>
+                        <tbody>
+                            <tr>
+                                <th>Method payment:</th>
+                                <td>Credit card</td>
+                            </tr>
+                            <tr>
+                                <th colspan="2">Red Invoice</th>
+                            </tr>
+                            <tr>
+                                <th>Name company:</th>
+                                <td>Mắt bão corp</td>
+                            </tr>
+                            <tr>
+                                <th>Type of company:</th>
+                                <td>Ho Chi Minh</td>
+                            </tr>
+                            <tr>
+                                <th>Tax code:</th>
+                                <td>Giác Bậc</td>
+                            </tr>
+                            <tr>
+                                <th>City:</th>
+                                <td>Ho Chi Minh</td>
+                            </tr>
+                            <tr>
+                                <th>Province:</th>
+                                <td>Ho Chi Minh</td>
+                            </tr>
+                            <tr>
+                                <th>Address:</th>
+                                <td>Input address of ward...</td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div><!-- /.box-body -->
+                <div class="box-footer">
+                    <p class="text-right"><a href="javascript:void(0)" class="btn btn-success btn-flat">Back</a></p>
+                </div><!-- /.box-footer-->
             </div><!-- /.box -->
-
+            
         </div>
 
         <div class="col-md-4 padding-left-md-0">
