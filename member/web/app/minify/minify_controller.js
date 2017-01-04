@@ -303,7 +303,7 @@ appRoot.controller('calendarCtrl', ['$scope', '$uibModal', 'calendarService', 't
                 selectable: true,
                 eventLimit: 4,
                 timezone: "local",
-                lang: settingSystem.language,
+                locale: settingSystem.language,
 //                height: 'auto',
                 select: function (start, end, allDay) {
                     if (!$rootScope.auth.is_admin) {
@@ -354,7 +354,7 @@ appRoot.controller('calendarCtrl', ['$scope', '$uibModal', 'calendarService', 't
                     $scope.resetEvents(start, end);
                 },
                 header: {
-                    left: 'month agendaWeek agendaDay',
+                    left: 'month agendaWeek agendaDay listWeek',
                     center: 'title prev,next',
                     right: 'today'
                 },
