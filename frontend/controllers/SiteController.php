@@ -162,6 +162,12 @@ class SiteController extends Controller {
     }
 
     /**
+     * Displays about page.
+     */
+    public function actionTerm() {
+        return $this->render('term');
+    }
+    /**
      * Signs user up.
      *
      * @return mixed
