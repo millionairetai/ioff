@@ -28,6 +28,10 @@ class AppAsset extends AssetBundle
         'js/jquery.slimscroll.min.js',
         'js/fastclick.min.js',
         'js/app.js',
+        'js/plugin/chartjs/Chart.min.js',
+        'js/plugin/knob/jquery.knob.js',
+        'js/plugin/morris/raphael.js',
+        'js/plugin/morris/morris.min.js',
         'js/site.js',
     ];
     public $depends = [

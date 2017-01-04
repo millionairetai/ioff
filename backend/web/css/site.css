@@ -221,3 +221,16 @@ header.main-header{
         position: fixed;
     }
 }
+/* Dashboard */
+.products-list .item .item-info .item-title{
+    margin: 0;
+    padding: 0;
+    font-weight: 600;
+}
+.products-list .item .item-info .item-price{
+    display: block;
+}
+.products-list .item .item-info small{
+    display: block;
+    color: #999;
+}

@@ -30,10 +30,8 @@ AppAsset::register($this);
             <?php echo \backend\widgets\Menu::widget(); ?>
             <div class="content-wrapper">
                 <!-- Content Header (Page header) -->
-                <section class="content-header">
                     <?= Alert::widget() ?>
                     <?= $content ?>
-                </section>
             </div>
         </div>
 
