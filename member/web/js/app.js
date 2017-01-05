@@ -172,7 +172,8 @@ $(function () {
     $(".navbar .menu").slimscroll({
       height: "400px",
       alwaysVisible: false,
-      size: o.navbarMenuSlimscrollWidth
+      size: "7px"
+//      size: o.navbarMenuSlimscrollWidth
     }).css("width", "100%");
   }
 
