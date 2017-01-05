@@ -30,6 +30,9 @@ a:focus{
 .cl_red{
     color: red;
 }
+.border-left-5xcccccc{
+    border-left: 5px solid #cccccc;
+}
 /* */
 .content .box{
     margin-bottom: 10px;
