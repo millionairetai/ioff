@@ -1421,3 +1421,30 @@ div.task-creator{
         width: 280px;
     }
 }
+/* annoucement activity page */
+#annoucement ul{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+#annoucement ul li{
+    padding: 10px;
+    overflow: hidden;
+}
+#annoucement ul li img{
+    width: 40px;
+}
+#annoucement ul li h4{
+    padding: 0;
+    margin: 0 0 0 55px;
+    color: #428bca;
+    font-size: 15px;
+    position: relative;
+    font-weight: bold;
+}
+#annoucement ul li p{
+    padding: 0;
+    margin: 0 0 0 55px;
+}
+
+/* ---end of annoucement activity page ---- */

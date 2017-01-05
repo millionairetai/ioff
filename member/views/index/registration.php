@@ -44,7 +44,7 @@ $this->title = Yii::t('member', 'Registration employee');
                             <div aria-checked="false" aria-disabled="false">
                                 <?php echo $form->field($registration, 'agree', ['template' => '{input}'])->label(false)->checkbox(); ?>
                             </div> 
-                            <a href="<?= Yii::$app->params['frontendDomain'] ?>/index/term"><?= Yii::t('member', 'to the terms') ?></a>
+                            <a href="<?= Yii::$app->params['frontendDomain'] ?>/site/term"><?= Yii::t('member', 'to the terms') ?></a>
                         </label>
                     </div>
                 </div>
