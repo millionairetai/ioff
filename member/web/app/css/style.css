@@ -1162,6 +1162,89 @@ div.task-creator{
     border-radius: 128px;
     margin-top: -32px;
 }
+/*-Beginning of Activity requestment and annoucment-*/
+#activity .box-contain-card{
+    float: left;
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 30px;
+}
+#activity .box-contain-card .spinner-person{
+    float: left;
+    background: #00c0ef;
+    margin-right: 15px;
+    text-align: center;
+    padding: 5px 5px 2px;
+}
+#activity .box-contain-card .spinner-person i{
+    font-size: 18px;
+    color: #fff;
+}
+
+#activity .box-contain-card .box-complete{
+    border: 1px solid #ddd;
+    position: relative;
+    padding: 15px;
+    margin-top: 30px;
+    float: left;
+    margin-right: 30px;
+}
+#activity .box-contain-card .box-complete+a{
+    margin-top: 45px;
+}
+#activity .box-contain-card .box-complete label{
+    background: #fff;
+    position: absolute;
+    top: -12px;
+    left: 10px;
+    z-index: 1;
+    padding: 0 10px;
+}
+#activity .box-contain-card .box-complete label i{
+    color: #00a65a;
+}
+#activity .box-contain-card .box-complete .circle-success,
+#activity .box-contain-card .box-complete .circle-primary{
+    width: 40px;
+    height: 40px;
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    position: relative;
+}
+#activity .box-contain-card .box-complete .circle-primary img{
+    border: 3px solid #365899;
+    color: #fff;
+    border-radius: 50%;
+    max-width: 100%;
+}
+#activity .box-contain-card .box-complete .circle-success img{
+    border: 3px solid #00a65a;
+    color: #fff;
+    border-radius: 50%;
+    max-width: 100%;
+}
+#activity .box-contain-card .box-complete .pass-status{
+    overflow: hidden;
+    width: 40px;
+    height: 40px;
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    color: #00a65a;
+}
+#activity .box-contain-card .box-complete .circle-success img+i{
+    font-size: 14px;
+    position: absolute;
+    bottom: -5px;
+    right: 0;
+    z-index: 9;
+    color: #00a65a;
+    background: #fff;
+    border-radius: 50%;
+}
+
+//*-End of Activity requestment and annoucment-*/
 
 .item-event{
     border-bottom: 1px solid #ccc;
