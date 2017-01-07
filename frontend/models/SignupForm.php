@@ -19,6 +19,7 @@ class SignupForm extends Model {
     public $lastname;
     public $email;
     public $password;
+    public $rePassword;
     public $plan_type_id;
 
     /**
@@ -36,9 +37,10 @@ class SignupForm extends Model {
             ['email', 'required'],
             ['email', 'email'],
             ['email', 'string', 'max' => 255],
-            ['email', 'unique', 'targetClass' => '\common\models\Employee', 'message' => 'This email address has already been taken.'],
+            ['email', 'unique', 'targetClass' => '\common\models\Employee', 'message' => Yii::t('common','This email address has already been taken')],
             ['password', 'required'],
             ['password', 'string', 'min' => 6],
+            ['rePassword', 'compare', 'compareAttribute'=>'password', 'message'=> Yii::t('common', "Passwords don't match"),],
             ['plan_type_id', 'required'],
             ['plan_type_id', 'integer',],
         ];

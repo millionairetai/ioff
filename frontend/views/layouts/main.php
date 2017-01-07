@@ -38,8 +38,8 @@ AppAsset::register($this);
                         <li><a href="javascript:void(0)" onclick="jumpto('#pricelist');">Bảng giá</a></li>
                         <li><a href="javascript:void(0)">Hình ảnh</a></li>
                         <li><a href="javascript:void(0)" onclick="jumpto('#customer');">Khách hàng</a></li>
-                        <li><a href="/site/contact">Hỗ trợ</a></li>
-                        <li><a href="javascript:void(0)">Tin tức</a></li>
+                        <li><a href="/site/contact">Liên hệ</a></li>
+                        <!--<li><a href="javascript:void(0)">Tin tức</a></li>-->
                         <li><a href="javascript:void(0)">Về iOffice</a></li>
                     </ul>
                 </nav>
@@ -51,7 +51,7 @@ AppAsset::register($this);
                         <a href="javascript:void(0)" class="btn btn-default">Đăng nhập</a>
                     </div>
                     <div id="loginform" role="dialog">
-                        <form class="form-inline">
+<!--                        <form class="form-inline">
                             <div class="form-group">
                                 <label class="sr-only" for="exampleInputEmail3">Email address</label>
                                 <input type="email" class="form-control noround" id="exampleInputEmail3" placeholder="Email">
@@ -61,8 +61,8 @@ AppAsset::register($this);
                                 <input type="password" class="form-control noround" id="exampleInputPassword3" placeholder="Password">
                             </div>
                             <button type="submit" class="btn btn-default noround">Đăng nhập</button>
-                        </form>
-                        <a href="javascript:void(0)">Quên tài khoản</a>
+                        </form>-->
+                        <a href="<?= Yii::$app->params['companyDomain'] ?>">Đăng nhập</a>
                     </div>
                 </div>
             </div>

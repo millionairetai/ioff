@@ -58,6 +58,11 @@ return [
     'Owner' => 'Owner',
     'error %s is existed' => '%s is existed',
     'department' => 'Department', 
+    'This email address has already been taken' => 'This email address has already been taken',
+    "Passwords don't match" => "Passwords don't match", 
+    'Congratulation. You have signed up successfully' => 'Congratulation. You have signed up successfully',
+    'Go to login page' => 'Go to login page',
+    'There was an error sending email' => 'There was an error sending email',
     //calendar
     'Datetime Created' => 'Datetime Created',
     'Lastup Datetime' => 'Lastup Datetime',

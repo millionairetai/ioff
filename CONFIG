@@ -122,3 +122,6 @@ Run command:
     For example: cd c:\xampp\htdocs\centeroffice
  2. Run command 
     npm install -g bower
+
+//-----------------------------CONFIG WHEN UPLOAD SERVER----------------------//
+1. CREATE FOLDER UPLOAD

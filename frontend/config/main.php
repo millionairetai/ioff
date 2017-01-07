@@ -38,6 +38,15 @@ return [
                 '<controller>/<action>' => '<controller>/<action>',
             ],
         ],
+         'i18n' => [
+            'translations' => [
+                'frontend*' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@frontend/messages',
+                    'on missingTranslation' => ['common\components\events\TranslationEventHandler', 'handleMissingTranslation'],
+                ],
+            ],
+        ],
     /*
       'urlManager' => [
       'enablePrettyUrl' => true,

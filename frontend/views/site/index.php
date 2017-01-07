@@ -5,7 +5,7 @@ use yii\bootstrap\ActiveForm;
 use yii\helpers\ArrayHelper;
 use common\models\PlanType;
 
-$this->title = 'iofficez - Connect employee';
+$this->title = 'iofficez - Kết nối nhân viên';
 ?>
 <section id="register" class="contain-box">
     <div  class="container clearfix">
@@ -23,6 +23,8 @@ $this->title = 'iofficez - Connect employee';
             <?= $form->field($model, 'email')->label(false)->textInput(['placeholder' => Yii::t('common', 'Email'), 'class' => 'form-control noround']) ?>
 
             <?= $form->field($model, 'password')->label(false)->passwordInput(['placeholder' => Yii::t('common', 'Password'), 'class' => 'form-control noround']) ?>
+            
+            <?= $form->field($model, 'rePassword')->label(false)->passwordInput(['placeholder' => Yii::t('common', 'Re-Password'), 'class' => 'form-control noround']) ?>
 
             <?=
             $form->field($model, 'plan_type_id')->label(false)->dropDownList(
@@ -32,7 +34,7 @@ $this->title = 'iofficez - Connect employee';
 
             <p><a href="#">Xem thông tin chi tiết các gói</a></p>
 
-            <p>Bằng cách nhấp vào đăng ký, bạn đồng ý với các <a href="#">điều khoản của chúng tôi</a> và rằng bạn đã đọc <a href="#">chính sách dữ liệu</a>của chúng tôi, bao gồm sử dụng cookie.</p>
+            <p>Bằng cách nhấp vào đăng ký, bạn đồng ý với các <a href="/site/term">điều khoản của chúng tôi</a> và rằng bạn đã đọc <a href="/site/term">chính sách dữ liệu</a> của chúng tôi, bao gồm sử dụng cookie.</p>
 
             <div class="form-group">
                 <?= Html::submitButton(Yii::t('common', 'Register'), ['class' => 'btn btn-primary noround', 'name' => 'signup-button']) ?>
@@ -169,24 +171,20 @@ $this->title = 'iofficez - Connect employee';
                 <h4>Free</h4>
                 <p>0$/tháng</p>
                 <p>
-                    5 người dùng<br/>
+                    Tối đa 5 người dùng<br/>
                     500MB lưu trữ<br/>
-                    Function 1<br/>
-                    Function 2<br/>
-                    Function 3
+                    Sử dụng tất cả các chức năng
                 </p>
             </div>
         </div>
         <div class="price-standard">
             <div class="item-pricelist text-center border-solid">
                 <h4>Standard</h4>
-                <p>0$/tháng</p>
+                <p>$/tháng</p>
                 <p>
-                    10 người dùng<br/>
-                    5GB lưu trữ<br/>
-                    Function 1<br/>
-                    Function 2<br/>
-                    Function 3
+                    Được chọn người dùng tối đa <br/>
+                    Được chọn dung lượng lưu trữ tối đa<br/>
+                    Sử dụng tất cả các chức năng
                 </p>
             </div>
         </div>
@@ -196,10 +194,10 @@ $this->title = 'iofficez - Connect employee';
                 <p>50$/tháng</p>
                 <p>
                     Người dùng không giới hạn<br/>
-                    100GB lưu trữ<br/>
+                    10GB lưu trữ đầu miễn phí<br/>
+                    Thêm 5GB/5$/tháng<br/>
                     Sử dụng tất cả các chức năng
-                </p>
-                <p>Thêm 10GB/10$/tháng</p>
+                    
             </div>
         </div>
     </div><!--Container-->

@@ -74,8 +74,7 @@ class SiteController extends Controller {
         $subscribeModel = new SubscribeForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->signup()) {
-//                return $this->redirect('http://company.iofficez.dev');
-                Yii::$app->session->setFlash('success', 'You sign up successfully.');
+                Yii::$app->session->setFlash('success', Yii::t('common', 'Congratulation. You have signed up successfully') . '. <a href="'. Yii::$app->params['companyDomain'] .'">' . Yii::t('common', 'Go to login page') . '</a>');
             } else {
                 Yii::$app->session->setFlash('error', 'There was an error registering account.');
             }
@@ -83,9 +82,9 @@ class SiteController extends Controller {
             return $this->refresh();
         } else if ($subscribeModel->load(Yii::$app->request->post()) && $subscribeModel->validate()) {
             if ($subscribeModel->add()) {
-                Yii::$app->session->setFlash('success', 'You have just been subscribed successfully');
+                Yii::$app->session->setFlash('success', Yii::t('frontend', 'Congratulation! You have just been subscribed successfully'));
             } else {
-                Yii::$app->session->setFlash('error', 'There was an error registering account.');
+                Yii::$app->session->setFlash('error', 'There was an error subscribe.');
             }
 
             return $this->refresh();
@@ -139,9 +138,9 @@ class SiteController extends Controller {
         $model = new ContactForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
             if ($model->add()) {
-                Yii::$app->session->setFlash('success', Yii::t('common', 'Thank you for contacting us. We will respond to you as soon as possible'));
+                Yii::$app->session->setFlash('success', Yii::t('frontend', 'Thank you for contacting us. We will respond to you as soon as possible'));
             } else {
-                Yii::$app->session->setFlash('error', Yii::t('common', 'There was an error sending email.'));
+                Yii::$app->session->setFlash('error', Yii::t('common', 'There was an error sending email'));
             }
 
             return $this->refresh();

@@ -58,6 +58,11 @@ return [
     'Owner' => 'Người sở hữu',
     'error %s is existed' => '%s đã tồn tại',
     'department' => 'Phòng ban', 
+    'This email address has already been taken' => 'Email này đã được sử dụng',
+    "Passwords don't match" => 'Hai mật khẩu không giống nhau',
+    'Congratulation. You have signed up successfully' => 'Xin chúc mừng. Bạn vừa mới đăng ký thành công',
+    'Go to login page' => 'Đi tới trang đăng nhập',
+    'There was an error sending email' => 'Có lỗi trong quá trình gửi email',
     //Calendar
     'Datetime Created' => 'Ngày tạo',
     'Lastup Datetime' => 'Thời gian cập nhật gần đây nhất',
