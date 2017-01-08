@@ -216,6 +216,11 @@ class TaskPostController extends ApiController {
             $arrayEmployees = !empty($dataPost['employeeList']) ? $dataPost['employeeList'] : [];
             $notifications = [];
             foreach ($arrayEmployees as $item) {
+                //No insert notification for current employee logining.
+                if (\Yii::$app->user->getId() == $item['id']) {
+                    continue;
+                }
+                
                 $notifications[] = [
                     'owner_id' => $taskInfo->id,
                     'owner_table' => TaskPost::tableName(),

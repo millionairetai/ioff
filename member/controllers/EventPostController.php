@@ -167,6 +167,11 @@ class EventPostController extends ApiController {
             $arrayEmployees = !empty($dataPost['employeeList']) ? $dataPost['employeeList'] : [];
             $notifications = [];
             foreach ($arrayEmployees as $item) {
+                //No insert notification for current employee logining.
+                if (\Yii::$app->user->getId() == $item['id']) {
+                    continue;
+                }
+                
                 $notifications[] = [
                     'owner_id' => $eventInfo->id,
                     'owner_table' => EventPost::tableName(),

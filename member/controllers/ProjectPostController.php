@@ -154,6 +154,10 @@ class ProjectPostController extends ApiController {
             $arrayEmployees = $employeeList;
             $dataInsert = [];
             foreach ($arrayEmployees as $item) {
+                //No insert notification & email for current employee logining.
+                if (\Yii::$app->user->getId() == $item['id']) {
+                    continue;
+                }
                 $dataInsert['notification'][] = [
                     'owner_id'          => $projectInfo->id,
                     'owner_table'       => ProjectPost::TABLE_PROJECTPOST,
@@ -169,6 +173,7 @@ class ProjectPostController extends ApiController {
                 $employee->sendMail($dataSend, $themeEmail);
                 //send sms
                 $project = new Project();
+                //////
                 if ($project->sms) {
                     $dataInsert['sms'][] = [
                         'owner_id'    => $projectPost->id,
@@ -180,6 +185,7 @@ class ProjectPostController extends ApiController {
                         'agency_gateway' => 'esms'
                     ];
                 }
+                ///////////
             }
 
             if (!empty($dataInsert['notification'])) {
