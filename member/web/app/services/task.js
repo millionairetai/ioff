@@ -114,10 +114,10 @@ appRoot.factory('taskService', ['apiService','$rootScope','alertify', function (
                 apiService.post('task/get-my-follow-task-for-calendar',data,success,error);
             },
             getTaskReport: function(data,success,error) {
-                apiService.get('task/get-task-report',data,success,error);
+                apiService.get('report/get-task-report',data,success,error);
             },
             getEmpTaskReport: function(data,success,error) {
-                apiService.get('task/get-employee-task-report',data,success,error);
+                apiService.get('report/get-employee-task-report',data,success,error);
             },
             getDetaiWorkedHourEmployee: function(data,success,error) {
                 apiService.get('task/get-detail-worked-hour-employee',data,success,error);
