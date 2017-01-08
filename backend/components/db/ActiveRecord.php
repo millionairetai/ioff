@@ -16,6 +16,10 @@ class ActiveRecord extends \yii\db\ActiveRecord {
     const STATUS_ENABLE  = 0;
     const STATUS_DISABLE = 1;
     const STATUS_ALL     = false;
+        
+    //Constant for true, false, public, private.
+    const VAL_TRUE  = 1;
+    const VAL_FALSE = 0;
     
     //Gender
     const GENDER_MALE   = 1;

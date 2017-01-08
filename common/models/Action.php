@@ -119,7 +119,7 @@ class Action extends \backend\components\db\ActiveRecord {
                 ->leftJoin('controller', 'action.controller_id=controller.id')
                 ->leftJoin('translation', 'translation.owner_id=action.id AND owner_table="action"')
                 ->leftJoin('language', 'translation.language_id=language.id')
-                ->where(['language.language_code' => \Yii::$app->language])
+                ->where(['language.language_code' => \Yii::$app->language, 'is_check' => self::VAL_TRUE])
                 ->asArray()
                 ->all();
     }

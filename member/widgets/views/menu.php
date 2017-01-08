@@ -57,7 +57,7 @@ use yii\helpers\Url;
                     <i class="fa fa-bars"></i> <span>{{$root.$lang.department}}</span> 
                 </a>
             </li>
-            <li>
+            <li ng-show="$root.auth.is_admin">
                 <a href="#report">
                     <i class="fa fa-line-chart"></i> <span>{{$root.$lang.report}}</span> 
                 </a>
