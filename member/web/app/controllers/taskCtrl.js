@@ -721,7 +721,7 @@ appRoot.controller('editTaskCtrl', ['socketService', 'data', '$scope', 'taskServ
 
         //status
         $scope.beforpopup = function () {
-            taskService.getParentTaskList({project_id: $scope.task.project_id}, function (data) {
+            taskService.getParentTaskList({project_id: $scope.task.project_id, task_id:data.task.id}, function (data) {
                 $scope.parentTasks = data.objects.collection;
             });
             taskService.getTaskGroupList({project_id: $scope.task.project_id}, function (data) {

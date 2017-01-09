@@ -167,7 +167,9 @@ class TaskController extends ApiController {
         $collection = [];
         $tasks = Task::find()
                 ->select(['id', 'name'])
-                ->where(['project_id' => \Yii::$app->request->get('project_id')])
+                ->where(['project_id' => \Yii::$app->request->get('project_id'),])
+                //No get itself
+                ->andWhere('id<>' . \Yii::$app->request->get('task_id'))
                 ->andCompanyId()
                 ->all();
 
