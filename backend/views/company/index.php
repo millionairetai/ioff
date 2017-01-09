@@ -13,9 +13,9 @@ use yii\grid\SerialColumn;
 <div class="box box-primary">
     <div class="box-header">
         <h3 class="box-title"><?= Yii::t('backend', 'Company list') ?></h3>
-        <div class="tool-right">
+<!--        <div class="tool-right">
             <a class="btn btn-info ng-binding" href="add"><i class="fa fa-plus-square"></i> ThÃªm</a>
-        </div>
+        </div>-->
     </div><!-- /.box-header -->      
     <div class="box-body list-item">
         <?=

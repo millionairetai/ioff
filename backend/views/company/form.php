@@ -44,7 +44,7 @@ use common\models\PlanType;
         ?>
         <?=
             $form->field($model, 'status_id')->dropdownList(
-                    Status::find()->select(['name', 'id'])->indexBy('id')->column(), ['prompt' => Yii::t('common', 'Select')]
+                    Status::find()->select(['name', 'id'])->where(['owner_table'=>'company'])->indexBy('id')->column(), ['prompt' => Yii::t('common', 'Select')]
             );
         ?>
         <?=
