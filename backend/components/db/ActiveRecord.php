@@ -119,7 +119,29 @@ class ActiveRecord extends \yii\db\ActiveRecord {
             },
         ];
     }
-     
+    
+    /**
+     * Get record by id
+     * 
+     * @param integer $id
+     * @param array $columns
+     * @return ActiveQuery
+     */
+    public static function getById($id, $columns = [], $isReturnObj = true) {
+        $return = self::find();
+        if (!empty($columns)) {
+            $return = $return->select($columns);
+        }
+        
+        $return->andWhere(['id' => $id]);
+                
+        if ($isReturnObj) {
+            return $return->one();
+        }
+        
+        return $return->asArray()->one();
+    }  
+    
     /**
      * BatchInsert
      * 

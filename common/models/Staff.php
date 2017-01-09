@@ -43,14 +43,17 @@ class Staff extends \backend\components\db\ActiveRecord  implements IdentityInte
     public function rules() {
         return [
             [['authority_id', 'job_id', 'leaving_date', 'datetime_created', 'lastup_datetime', 'created_employee_id', 'lastup_employee_id'], 'integer'],
-            [['name', 'email', 'username', 'password'], 'required'],
+            [['name', 'username', 'password'], 'required'],
+            ['username', 'unique',],
             [['disabled'], 'boolean'],
             [['name', 'address'], 'string', 'max' => 255],
-            [['email'], 'string', 'max' => 99],
+            ['email', 'required'],
+            ['email', 'email'],
+            ['email', 'unique', 'targetClass' => '\common\models\Staff', 'message' => Yii::t('common','This email address has already been taken')],
             [['phone_no'], 'string', 'max' => 20],
             [['username'], 'string', 'max' => 128],
-            [['password'], 'string', 'max' => 64],
-            [['re_password'], 'string', 'max' => 64]
+            ['password', 'string', 'min' => 6],
+            ['re_password', 'compare', 'compareAttribute'=>'password', 'message'=> Yii::t('common', "Passwords don't match"),]
         ];
     }
 
@@ -85,7 +88,8 @@ class Staff extends \backend\components\db\ActiveRecord  implements IdentityInte
     public function search($params) {
         $query = static::find()
 //                ->select(['staff.*', 'job.name as job_name'])
-                ->joinWith(['job']);
+                ->joinWith(['job'])
+                ->orderBy('staff.datetime_created DESC');
 //                ->joinWith(['authority']);
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
@@ -99,7 +103,7 @@ class Staff extends \backend\components\db\ActiveRecord  implements IdentityInte
         $query->andFilterWhere(['like', 'email', $this->email]);
         $query->andFilterWhere(['like', 'address', $this->address]);
         $query->andFilterWhere(['like', 'username', $this->username]);
-        $query->orFilterWhere(['like', 'job.name', $this->name]);
+        $query->andFilterWhere(['like', 'phone_no', $this->phone_no]);
 
         return $dataProvider;
     }

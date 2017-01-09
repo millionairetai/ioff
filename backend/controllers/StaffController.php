@@ -5,6 +5,7 @@ namespace backend\controllers;
 use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
+use backend\models\ChangePasswordForm;
 
 class StaffController extends \yii\web\Controller {
 
@@ -31,9 +32,13 @@ class StaffController extends \yii\web\Controller {
 
         if (isset($staff)) {
             $this->_model->attributes = $staff;
-
-            if ($this->_model->save()) {
-                return $this->redirect(['staff/index']);
+//            $this->_model->generateAuthKey();
+            if ($this->_model->validate()) {
+                $this->_model->setPassword($this->_model->password);
+                if ($this->_model->save(false)) {
+                    //Send email to staff.
+                    return $this->redirect(['staff/index']);
+                }
             }
         }
 
@@ -79,6 +84,23 @@ class StaffController extends \yii\web\Controller {
         }
 
         throw new NotFoundHttpException('Can not delete staff');
+    }
+
+    /**
+     * Change password for staff
+     */
+    public function actionChangePassword() {
+        $model = new ChangePasswordForm();
+        if (Yii::$app->request->post()) {
+            $model->attributes = Yii::$app->request->post('ChangePasswordForm');
+            if ($model->changePassword(Yii::$app->user->identity->id)) {
+                Yii::$app->session->setFlash('success', 'Thay đổi mật khẩu thành công.');
+            } else {
+                Yii::$app->session->setFlash('error', 'Thay đổi mật khẩu thất bại');
+            }
+        }
+
+        return $this->render('change_password', ['model' => $model]);
     }
 
 }

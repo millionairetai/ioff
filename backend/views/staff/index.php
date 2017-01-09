@@ -14,7 +14,7 @@ use yii\grid\SerialColumn;
     <div class="box-header">
         <h3 class="box-title"><?= Yii::t('backend', 'Staff list') ?></h3>
         <div class="tool-right">
-            <a class="btn btn-info ng-binding" href="add"><i class="fa fa-plus-square"></i> ThÃªm</a>
+            <a class="btn btn-info ng-binding" href="add"><i class="fa fa-plus-square"></i> Thêm</a>
         </div>
     </div><!-- /.box-header -->      
     <div class="box-body list-item">
@@ -29,12 +29,12 @@ use yii\grid\SerialColumn;
                 'email',
                 'address',
                 'phone_no',
-                [
-                    'attribute' => 'name',
-                    'label' => Yii::t('backend', 'Job'),
-                    'value' => 'job.name',
-                    'filter' => [ 'Sale' => 'Sale', 'Absent' => 'Absent', 'Leave' => 'Leave',],
-                ],
+//                [
+//                    'attribute' => 'name',
+//                    'label' => Yii::t('backend', 'Job'),
+//                    'value' => 'job.name',
+//                    'filter' => [ 'Sale' => 'Sale', 'Absent' => 'Absent', 'Leave' => 'Leave',],
+//                ],
 //                [
 //                    'label' => 'Authority name',
 //                    'value' => 'authority.name',

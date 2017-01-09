@@ -35,15 +35,15 @@ use common\models\Authority;
             <?= $form->field($model, 'password')->passwordInput() ?>
             <?= $form->field($model, 're_password')->passwordInput() ?>
         <?php } ?>
-        <?=
-            $form->field($model, 'job_id')->dropdownList(
-                    Job::find()->select(['name', 'id'])->indexBy('id')->column(), ['prompt' => Yii::t('common', 'Select')]
-            );
+        <?php
+//            $form->field($model, 'job_id')->dropdownList(
+//                    Job::find()->select(['name', 'id'])->indexBy('id')->column(), ['prompt' => Yii::t('common', 'Select')]
+//            );
         ?>
-        <?=
-            $form->field($model, 'authority_id')->dropdownList(
-                    Authority::find()->select(['name', 'id'])->indexBy('id')->column(), ['prompt' => Yii::t('common', 'Select')]
-            );
+        <?php
+//            $form->field($model, 'authority_id')->dropdownList(
+//                    Authority::find()->select(['name', 'id'])->indexBy('id')->column(), ['prompt' => Yii::t('common', 'Select')]
+//            );
         ?>
     </div>
 
