@@ -68,6 +68,7 @@ appRoot.run(function ($rootScope, socketService, notifyService, taskService, com
         });
 
         $rootScope.myNotifi.page++;
+        socketService.emit('notify', 'ok');
     }
     //
     $rootScope.getHtml = function (html) {

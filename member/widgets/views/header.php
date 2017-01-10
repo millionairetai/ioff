@@ -45,7 +45,7 @@
                 <li class="dropdown messages-menu">
                     <a  class="dropdown-toggle cursor-pointer" data-toggle="dropdown" ng-click="resetMyNotify();getNotifications()">
                         <i class="fa fa-bell-o"></i>
-                        <span ng-hide="(myNotifi.total==0) && ($root.sum_notify==0)" class="label label-warning">{{$root.sum_notify}}</span>
+                        <span ng-hide="($root.sum_notify==0)" class="label label-warning">{{$root.sum_notify}}</span>
                     </a>
                     <ul class="dropdown-menu">
                         <li class="header">{{$root.$lang.you_have_i_notfication.replace('%i', $root.sum_notify)}}</li>

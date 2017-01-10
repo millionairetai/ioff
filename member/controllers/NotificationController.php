@@ -23,11 +23,14 @@ class NotificationController extends ApiController {
      */
     public function actionGetNotifications() {
         $collection = [];
+        $notificationIds = [];
         $employee = new \common\models\Employee();
+        
         try {
             $result = Notification::getByEmployeeId(Yii::$app->user->identity->id, Yii::$app->request->post('currentPage'));
             if ($result['notification']) {
                 foreach ($result['notification'] as $notification) {
+                    $notificationIds[] = $notification['id'];
                     $employee->firstname = $notification['firstname'];
                     $employee->lastname = $notification['lastname'];
                     $employee->profile_image_path = $notification['profile_image_path'];
@@ -42,6 +45,10 @@ class NotificationController extends ApiController {
                 }
             }
 
+            //Update is_seen.
+            if (!empty($notificationIds)) {
+                Notification::updateAll(['is_seen'=> Notification::VAL_TRUE], ['id' => $notificationIds]);
+            }
             $objects = [];
             $objects['notifications'] = $collection;
             $objects['totalCount'] = $result['totalRow'][0]['total_row'];
