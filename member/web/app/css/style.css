@@ -1567,3 +1567,45 @@ div.task-creator{
 }
 
 /* ---end of annoucement activity page ---- */
+
+/*-- Start of Notify page -- */
+ul.list-notify{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+ul.list-notify .item-notify{
+    overflow: hidden;
+    padding: 10px;
+    border-bottom: 1px solid #dddfe2;
+}
+ul.list-notify .item-notify.new{
+    background: #ecf0f7;
+}
+ul.list-notify .item-notify:hover{
+    background: #f4f4f4;
+}
+ul.list-notify .item-notify:last-child{
+    border-bottom: none;
+}
+.item-notify img{
+    width: 65px;
+    height: 65px;
+    float: left;
+}
+.item-notify h4{
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    margin: 0 0 5px 80px;
+}
+.item-notify h4 small{
+    font-weight: normal;
+    font-size: 14px;
+}
+.item-notify p{
+    color: #999999;
+    margin: 0 0 0 80px;
+}
+
+/*-- End of Notify page -- */

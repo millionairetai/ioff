@@ -74,7 +74,7 @@ appRoot.config(function ($routeProvider, $httpProvider) {
             //notify
             .when('/notify', {
                 templateUrl: 'app/views/notify/index.html',
-                controller: 'NotifyCtrl'
+                controller: 'notifyCtrl'
             })
             //notify
             .when('/search', {
