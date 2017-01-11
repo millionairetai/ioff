@@ -95,7 +95,7 @@ appRoot.config(function ($routeProvider, $httpProvider) {
             })
             .when('/activity', {
                 templateUrl: 'app/views/activity/index.html',
-                controller: 'ActivityCtrl'
+                controller: 'activityCtrl'
             })
             .when('/company', {
                 templateUrl: 'app/views/company/index.html',
