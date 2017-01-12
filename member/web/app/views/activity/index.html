@@ -7,7 +7,6 @@
                         <h3 class="box-title">Activity stream</h3>            
                         <div class="box-tools pull-right">
                             <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
-                            <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
                         </div>
                     </div>
                     <div class="box-body">
@@ -35,7 +34,7 @@
                                 <div class="image"><img class="img-circle" src="{{activity.avatar}}" alt="User Image"></div>
                                 <dl class="infomation">
                                     <dt><a href="#/viewEmployee/{{activity.employee_id}}">{{activity.employee_name}}</a></dt>
-                                    <dd class="description">Shared publicly - 7:30 PM Today</dd>
+                                    <dd class="description">{{activity.datetime_created}}</dd>
                                 </dl>
                                 <dl class="content-event" ng-switch="activity.activity_type">
                                     <dd class="top-event clearfix" ng-switch-when="event">
@@ -47,7 +46,7 @@
                                             </time>
                                         </div>
                                         <div class="event-infomation">
-                                            <p><b>Event name: BarCamp Saigon 2016</b></p>
+                                            <p><b>{{activity.activity_action}} <a href="#">{{activity.activity_object}}</a></b></p>
                                             <p><b>Event date and time:</b> Sunday, November 13 at 8 AM - 5 PM</p>
                                         </div>
                                     </dd>
@@ -82,9 +81,9 @@
                                         </div>
                                         <div class="event-infomation">
                                             <p>
-                                                <b>Millionaire Tai changed task Fill in profile data</b><br/>
-                                                Changed: Millionaire Tai<br/>
-                                                Reponsible: Millionaire Tai
+                                                <b><a href="#/viewEmployee/{{activity.employee_id}}">{{activity.employee_name}}</a> {{activity.activity_action}} <a href="#">{{activity.activity_object}}</a></b><br/>
+                                                Changed: <a href="#">Millionaire Tai</a><br/>
+                                                Reponsible: <a href="#">Millionaire Tai</a>
                                             </p>
                                         </div>
                                     </dd>
@@ -153,22 +152,7 @@
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
-
-                            <!-- post text -->
-                            <p>Far far away, behind the word mountains, far from the
-                                countries Vokalia and Consonantia, there live the blind
-                                texts. Separated they live in Bookmarksgrove right at</p>
-
-                            <p>the coast of the Semantics, a large language ocean.
-                                A small river named Duden flows by their place and supplies
-                                it with the necessary regelialia. It is a paradisematic
-                                country, in which roasted parts of sentences fly into
-                                your mouth.</p>
-
-                            <div class="like-contain clearfix">
-                                <button type="button" class="btn btn-default btn-xs like-button pull-left"><i class="fa fa-thumbs-o-up"></i> Like</button>
-                                <span class="pull-left text-muted">45 likes - 2 comments</span>
-                            </div>
+                           {{activity.activity_content_parse}}
                         </div>
                         <!-- /.box-body -->
                         <div class="box-footer box-comments">

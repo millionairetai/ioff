@@ -31,15 +31,16 @@ class ActivityController extends ApiController {
                     $employee->lastname = $activity['lastname'];
                     $employee->profile_image_path = $activity['profile_image_path'];
                     $collection[] = [
-//                        'url' => $this->_makeUrlFromId($notification),
+//                        'url' => $this->_makeUrlFromId($activity),
                         'activity_type' => $activity['owner_table'],
                         'activity_action' => $activity['type'],
                         'avatar' => $employee->image,
                         'employee_id' => $activity['employee_id'],
                         'employee_name' => $employee->fullname,
-//                        'activity_action' => $this->_changeActivityTypeToText($notification['type']),
-//                        'activity_object' => $this->_getActivityName($notification),
-                        'datetime_created' => $activity['datetime_created'],
+                        'activity_action' => $this->_changeActivityTypeToText($activity['type']),
+                        'activity_object' => $this->_getActivityName($activity),
+                        'activity_content_parse' => $this->_getActivityDescriptionParse($activity),
+                        'datetime_created' => \Yii::$app->formatter->asDateTime($activity['datetime_created']),
                     ];
                 }
             }
@@ -52,6 +53,32 @@ class ActivityController extends ApiController {
 //        }
     }
 
+    /**
+     * Change activity type to text. Ex: create_project -> 'created project'
+     * 
+     * @param string $typeActivity - Ex: create_project -> 'created project'
+     * @return string
+     */
+    private function _getActivityDescriptionParse($activity) {
+         $descriptionParse = '';
+        if (!empty($activity['event_description_parse'])) {
+            $descriptionParse = $activity['event_description_parse'];
+        }
+
+        if (!empty($activity['project_description_parse'])) {
+            $descriptionParse = $activity['project_description_parse'];
+        }
+
+        if (!empty($activity['task_description_parse'])) {
+            $descriptionParse = $activity['task_description_parse'];
+        }
+         
+        if (strlen($descriptionParse) > 500) {
+            $descriptionParse = substr($descriptionParse, 0, 500) . '...';
+        }
+        return $descriptionParse;
+    }
+    
     /**
      * Change activity type to text. Ex: create_project -> 'created project'
      * 
@@ -100,33 +127,33 @@ class ActivityController extends ApiController {
      *      Ex: project, task, event, task post, project post, event post.,
      *      the rest is empty. 
      * 
-     * @param array $notification
+     * @param array $activity
      * @return string
      */
-    private function _getActivityName($notification) {
+    private function _getActivityName($activity) {
         $actiAction = '';
-        if (!empty($notification['project_name'])) {
-            $actiAction = $notification['project_name'];
+        if (!empty($activity['project_name'])) {
+            $actiAction = $activity['project_name'];
         }
 
-        if (!empty($notification['task_name'])) {
-            $actiAction = $notification['task_name'];
+        if (!empty($activity['task_name'])) {
+            $actiAction = $activity['task_name'];
         }
 
-        if (!empty($notification['event_name'])) {
-            $actiAction = $notification['event_name'];
+        if (!empty($activity['event_name'])) {
+            $actiAction = $activity['event_name'];
         }
 
-        if (!empty($notification['task_p_name'])) {
-            $actiAction = $notification['task_p_name'];
+        if (!empty($activity['task_p_name'])) {
+            $actiAction = $activity['task_p_name'];
         }
 
-        if (!empty($notification['event_p_name'])) {
-            $actiAction = $notification['event_p_name'];
+        if (!empty($activity['event_p_name'])) {
+            $actiAction = $activity['event_p_name'];
         }
 
-        if (!empty($notification['project_p_name'])) {
-            $actiAction = $notification['project_p_name'];
+        if (!empty($activity['project_p_name'])) {
+            $actiAction = $activity['project_p_name'];
         }
 
         return $actiAction;
@@ -137,33 +164,33 @@ class ActivityController extends ApiController {
      *      Ex: project_id, task_id, event_id, task_p_id, project_p_id, event_p_id,
      *      the rest is empty. 
      * 
-     * @param array $notification
+     * @param array $activity
      * @return string
      */
-    private function _makeUrlFromId($notification) {
+    private function _makeUrlFromId($activity) {
         $url = '';
-        if (!empty($notification['project_id'])) {
-            $url = '#/viewProject/' . $notification['project_id'];
+        if (!empty($activity['project_id'])) {
+            $url = '#/viewProject/' . $activity['project_id'];
         }
 
-        if (!empty($notification['task_id'])) {
-            $url = '#/viewTask/' . $notification['task_id'];
+        if (!empty($activity['task_id'])) {
+            $url = '#/viewTask/' . $activity['task_id'];
         }
 
-        if (!empty($notification['event_id'])) {
-            $url = '#/viewEvent/' . $notification['event_id'];
+        if (!empty($activity['event_id'])) {
+            $url = '#/viewEvent/' . $activity['event_id'];
         }
 
-        if (!empty($notification['task_p_id'])) {
-            $url = '#/viewTask/' . $notification['task_p_id'];
+        if (!empty($activity['task_p_id'])) {
+            $url = '#/viewTask/' . $activity['task_p_id'];
         }
 
-        if (!empty($notification['project_p_id'])) {
-            $url = '#/viewProject/' . $notification['project_p_id'];
+        if (!empty($activity['project_p_id'])) {
+            $url = '#/viewProject/' . $activity['project_p_id'];
         }
 
-        if (!empty($notification['event_p_id'])) {
-            $url = '#/viewEvent/' . $notification['event_p_id'];
+        if (!empty($activity['event_p_id'])) {
+            $url = '#/viewEvent/' . $activity['event_p_id'];
         }
 
         return $url;

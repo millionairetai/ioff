@@ -17,7 +17,7 @@ use Yii;
  * @property string $lastup_employee_id
  * @property boolean $disabled
  */
-class Invitee extends \yii\db\ActiveRecord
+class Invitee extends \common\components\db\ActiveRecord 
 {
     /**
      * @inheritdoc
@@ -63,13 +63,13 @@ class Invitee extends \yii\db\ActiveRecord
      * @param array $dataInsert
      * @return boolean
      */
-    public static function batchInsert($dataInsert) {
-        if (!empty($dataInsert)) {
-            if (!\Yii::$app->db->createCommand()->batchInsert(self::tableName(), array_keys($dataInsert[0]), $dataInsert)->execute()) {
-                throw new \Exception('Save record to table invitee fail');
-            }
-        }
-        
-        return true;
-    }
+//    public static function batchInsert($dataInsert) {
+//        if (!empty($dataInsert)) {
+//            if (!\Yii::$app->db->createCommand()->batchInsert(self::tableName(), array_keys($dataInsert[0]), $dataInsert)->execute()) {
+//                throw new \Exception('Save record to table invitee fail');
+//            }
+//        }
+//        
+//        return true;
+//    }
 }

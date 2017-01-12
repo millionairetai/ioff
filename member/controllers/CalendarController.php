@@ -186,9 +186,10 @@ class CalendarController extends ApiController {
                 $remind = [];
 
                 foreach ($arrayEmployees as $item) {
+                    $invitee[] = ['event_id' => $ob->id,'employee_id' => $item->id,];
                     //save notification
                     $notifications[] = [$ob->id, Notification::TABLE_EVENT, $item->id, \Yii::$app->user->getId(), "create_event", $content];
-
+                    
                     //event confirmation
                     $eventConfirmations[] = [$ob->id, $item->id, 0];
 
@@ -202,7 +203,11 @@ class CalendarController extends ApiController {
                         $remind[] = [$item->id, $ob->id, Remind::TABLE_EVENT, $ob->name, $ob->start_datetime - ($dataPost['redmind'] * 60), $dataPost['redmind'], 0, 0];
                     }
                 }
-
+                
+                if (!empty($invitee)) {
+                    Invitee::batchInsert($invitee);
+                }
+                
                 if (!empty($notifications)) {
                     if (!Yii::$app->db->createCommand()->batchInsert(
                                     Notification::tableName(), ['owner_id', 'owner_table', 'employee_id', 'owner_employee_id', 'type', 'content'], $notifications)->execute()) {
