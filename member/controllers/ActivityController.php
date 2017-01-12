@@ -20,6 +20,7 @@ class ActivityController extends ApiController {
     public function actionGetActivity() {
         $objects = [];
         $collection = [];
+        $item = null;
         $employee = new \common\models\Employee();
 
 //        try {
@@ -30,19 +31,33 @@ class ActivityController extends ApiController {
                     $employee->firstname = $activity['firstname'];
                     $employee->lastname = $activity['lastname'];
                     $employee->profile_image_path = $activity['profile_image_path'];
-                    $collection[] = [
+                    $item = [
 //                        'url' => $this->_makeUrlFromId($activity),
                         'activity_type' => $activity['owner_table'],
-                        'activity_action' => $activity['type'],
+                        'activity_action' => $this->_changeActivityTypeToText($activity['type']),
                         'avatar' => $employee->image,
                         'employee_id' => $activity['employee_id'],
                         'employee_name' => $employee->fullname,
-                        'activity_action' => $this->_changeActivityTypeToText($activity['type']),
+                        'datetime_created' => \Yii::$app->formatter->asDateTime($activity['datetime_created']),
                         'activity_object' => $this->_getActivityName($activity),
                         'activity_content_parse' => $this->_getActivityDescriptionParse($activity),
-                        'datetime_created' => \Yii::$app->formatter->asDateTime($activity['datetime_created']),
                     ];
+                    
+                    switch ($activity['owner_table']) {
+                        case 'task':
+                            $item['task']=[
+                                'name' => $this->_getActivityName($activity),
+                            ];
+                            break;
+                        case 'event':
+                            break;
+                        case 'project':
+                            break;
+                    }
+                    
+                    $collection[] = $item;
                 }
+                
             }
 
             $objects['activities'] = $collection;
