@@ -25,16 +25,20 @@
                 </div><!-- /.box new post -->
 
                 <div id="activity">
-                    <div  class="box box-widget">
+                    <div class="box box-widget" ng-repeat="activity in activity.data">
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                            </button>
+                        </div>
                         <div class="box-header with-border">
                             <div class="imgleft">
-                                <div class="image"><img class="img-circle" src="http://company.iofficez.dev/flies/employee/11.jpg" alt="User Image"></div>
+                                <div class="image"><img class="img-circle" src="{{activity.avatar}}" alt="User Image"></div>
                                 <dl class="infomation">
-                                    <dt><a href="#">Jonathan Burke Jr.</a></dt>
+                                    <dt><a href="#/viewEmployee/{{activity.employee_id}}">{{activity.employee_name}}</a></dt>
                                     <dd class="description">Shared publicly - 7:30 PM Today</dd>
                                 </dl>
-                                <dl class="content-event">
-                                    <dd class="top-event clearfix">
+                                <dl class="content-event" ng-switch="activity.activity_type">
+                                    <dd class="top-event clearfix" ng-switch-when="event">
                                         <div class="calendar-event">
                                             <time datetime="2014-09-20" class="icon">
                                                 <em class="ng-binding">Thứ Năm</em>
@@ -47,7 +51,7 @@
                                             <p><b>Event date and time:</b> Sunday, November 13 at 8 AM - 5 PM</p>
                                         </div>
                                     </dd>
-                                    <dd class="top-event clearfix">
+                                    <dd class="top-event clearfix" ng-switch-when="file">
                                         <div class="calendar-event">
                                             <p><b>File:</b></p>
                                         </div>
@@ -60,7 +64,19 @@
                                             </p>
                                         </div>
                                     </dd>
-                                    <dd class="top-event clearfix">
+                                    <dd class="top-event clearfix" ng-switch-when="project">
+                                        <div class="task-event">
+                                            <i class="fa fa-fw fa-clock-o"></i> Project
+                                        </div>
+                                        <div class="event-infomation">
+                                            <p>
+                                                <b>Millionaire Tai changed task Fill in project data</b><br/>
+                                                Changed: Millionaire Tai<br/>
+                                                Reponsible: Millionaire Tai
+                                            </p>
+                                        </div>
+                                    </dd>
+                                    <dd class="top-event clearfix" ng-switch-when="task">
                                         <div class="task-event">
                                             <i class="fa fa-fw fa-clock-o"></i> Task
                                         </div>
@@ -72,7 +88,7 @@
                                             </p>
                                         </div>
                                     </dd>
-                                    <dd class="top-event clearfix">
+                                    <dd class="top-event clearfix" ng-switch-when="photo">
                                         <div class="photo-event">
                                             <p><b>Photo:</b></p>
                                         </div>
@@ -86,7 +102,7 @@
                                             </div>
                                         </div>
                                     </dd>
-                                    <dd class="top-event clearfix">
+                                    <dd class="top-event clearfix"  ng-switch-when="register">
                                         <p><b>A new employee has been added</b></p>
                                         <a class="employee-card" href="">
                                             <h4 class="employee-card-name">Atilla Vago</h4>
@@ -94,7 +110,7 @@
                                             <img class="employee-card-avatar" src="http://company.iofficez.dev/flies/employee/11.jpg" alt="">
                                         </a>
                                     </dd>
-                                    <dd class="top-event clearfix">
+                                    <dd class="top-event clearfix" ng-switch-when="annoucement">
                                         <div class="clearfix">
                                             <div class="box-contain-card bg-success col-md-4">
                                                 <p class="">Belfast City, United Kingdom</p>
@@ -102,7 +118,7 @@
                                             </div>
                                         </div>
                                     </dd>
-                                    <dd class="top-event clearfix">
+                                    <dd class="top-event clearfix" ng-switch-when="requestment">
                                         <p><b>General request</b></p>
                                         <div class="clearfix">
                                             <div class="box-contain-card">
@@ -133,11 +149,6 @@
                                 </dl>
                             </div>
                             <!-- /.user-block -->
-                            <div class="box-tools">
-                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                                </button>
-                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-                            </div>
                             <!-- /.box-tools -->
                         </div>
                         <!-- /.box-header -->
@@ -210,6 +221,8 @@
                     </div>
                 </div><!-- activity-wall-->
             </div>
+
+
             <div class="col-md-3 padding-left-md-0">
                 <div id="annoucement" class="box box-danger box-solid">
                     <div class="box-header with-border">
