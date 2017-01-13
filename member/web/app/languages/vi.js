@@ -389,7 +389,9 @@
             input_comment:' nhập bình luận',
             worked_hour_must_be_number: 'Số giờ làm phải là số',
             total_worked_hour: 'Tổng giờ làm',
-            you_have_i_notfication: 'Bạn có %i thông báo'
+            you_have_i_notfication: 'Bạn có %i thông báo',
+            //activity
+            a_new_employee_has_been_added: 'Một nhân viên mới vừa mới được thêm'
         };
     });
 })(window.angular);

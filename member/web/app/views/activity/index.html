@@ -40,14 +40,14 @@
                                     <dd class="top-event clearfix" ng-switch-when="event">
                                         <div class="calendar-event">
                                             <time datetime="2014-09-20" class="icon">
-                                                <em class="ng-binding">Thứ Năm</em>
-                                                <strong class="ng-binding">Tháng 9</strong>
-                                                <span class="ng-binding">8</span>
+                                                <em class="ng-binding">{{activity.event.dayofweek}}</em>
+                                                <strong class="ng-binding">{{activity.event.month}}</strong>
+                                                <span class="ng-binding">{{activity.event.day}}</span>
                                             </time>
                                         </div>
                                         <div class="event-infomation">
-                                            <p><b>{{activity.activity_action}} <a href="#">{{activity.activity_object}}</a></b></p>
-                                            <p><b>Event date and time:</b> Sunday, November 13 at 8 AM - 5 PM</p>
+                                            <p><b><a href="#/viewEmployee/{{activity.employee_id}}">{{activity.employee_name}}</a> {{activity.activity_action}} <a href="#/viewEvent/{{activity.event.id}}">{{activity.event.name}}</a></b></p>
+                                            <p><b>Event date and time:</b> {{activity.event.startdatetitme}}</p>
                                         </div>
                                     </dd>
                                     <dd class="top-event clearfix" ng-switch-when="file">
@@ -65,11 +65,11 @@
                                     </dd>
                                     <dd class="top-event clearfix" ng-switch-when="project">
                                         <div class="task-event">
-                                            <i class="fa fa-fw fa-clock-o"></i> Project
+                                            <i class="fa fa-fw fa-clock-o"></i> {{$root.$lang.project}}
                                         </div>
                                         <div class="event-infomation">
                                             <p>
-                                                <b>Millionaire Tai changed task Fill in project data</b><br/>
+                                                <b><a href="#/viewEmployee/{{activity.employee_id}}">{{activity.employee_name}}</a> {{activity.activity_action}} <a href="#/viewProject/{{activity.project.id}}">{{activity.project.name}}</a></b><br/>
                                                 Changed: Millionaire Tai<br/>
                                                 Reponsible: Millionaire Tai
                                             </p>
@@ -77,11 +77,11 @@
                                     </dd>
                                     <dd class="top-event clearfix" ng-switch-when="task">
                                         <div class="task-event">
-                                            <i class="fa fa-fw fa-clock-o"></i> Task
+                                            <i class="fa fa-fw fa-clock-o"></i> {{$root.$lang.task}}
                                         </div>
                                         <div class="event-infomation">
                                             <p>
-                                                <b><a href="#/viewEmployee/{{activity.employee_id}}">{{activity.employee_name}}</a> {{activity.activity_action}} <a href="#">{{activity.task.name}}</a></b><br/>
+                                                <b><a href="#/viewEmployee/{{activity.employee_id}}">{{activity.employee_name}}</a> {{activity.activity_action}} <a href="#/viewTask/{{activity.task.id}}">{{activity.task.name}}</a></b><br/>
                                                 Changed: <a href="#">Millionaire Tai</a><br/>
                                                 Reponsible: <a href="#">Millionaire Tai</a>
                                             </p>
@@ -101,12 +101,12 @@
                                             </div>
                                         </div>
                                     </dd>
-                                    <dd class="top-event clearfix"  ng-switch-when="register">
-                                        <p><b>A new employee has been added</b></p>
-                                        <a class="employee-card" href="">
-                                            <h4 class="employee-card-name">Atilla Vago</h4>
-                                            <span class="employee-card-location">Belfast City, United Kingdom</span>
-                                            <img class="employee-card-avatar" src="http://company.iofficez.dev/flies/employee/11.jpg" alt="">
+                                    <dd class="top-event clearfix"  ng-switch-when="employee">
+                                        <p><b>{{$root.$lang.a_new_employee_has_been_added}}</b></p>
+                                        <a class="employee-card" href="#/viewEmployee/{{activity.employee.id}}">
+                                            <h4 class="employee-card-name">{{activity.employee.fullname}}</h4>
+                                            <span class="employee-card-location">{{activity.employee.department}}</span>
+                                            <img class="employee-card-avatar" src="{{activity.employee.avatar}}" alt="">
                                         </a>
                                     </dd>
                                     <dd class="top-event clearfix" ng-switch-when="annoucement">

@@ -13,6 +13,7 @@ use common\models\ProjectEmployee;
 use member\models\ChangePasswordForm;
 use common\models\File;
 use yii\validators\ImageValidator;
+use common\models\Activity;
 
 class EmployeeController extends ApiController {
 
@@ -253,9 +254,23 @@ class EmployeeController extends ApiController {
                     
                     $employee->setPassword($employee->password);
                     $employee->generateAuthKey();
+                    $transaction = \Yii::$app->db->beginTransaction();
                     if ($employee->save() !== false) {
+                        //Save activity
+                       //update table activity
+                        $activity = new Activity();
+                        $activity->owner_id = $employee->id;
+                        $activity->owner_table = Activity::TABLE_EMPLOYEE;
+                        $activity->parent_employee_id = 0;
+                        $activity->employee_id = \Yii::$app->user->getId();
+                        $activity->type = Activity::TYPE_ADD_ACCOUNT;
+                        $activity->content = '';
+                        if ($activity->save() === false) {
+                            throw new \Exception('Save record to table Activity fail');
+                        }
                         //Send email to that employee to annouce.
                         $employee->sendMail($dataSend, EmailTemplate::getTheme(EmailTemplate::SUCCESS_EMPLOYEE_REGISTRATION));
+                        $transaction->commit();
                         return $this->sendResponse($this->_error, $this->_message, []);
                     }
                 }
@@ -265,6 +280,7 @@ class EmployeeController extends ApiController {
             
             throw new \Exception($this->_message);
         } catch (\Exception $ex) {
+            $transaction->rollBack();
             $this->_error = true;
             return $this->sendResponse($this->_error, $this->_message, []);
         }

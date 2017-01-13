@@ -42,6 +42,7 @@ class Activity extends \common\components\db\ActiveRecord
     const TYPE_EDIT_PROJECT = 'edit_project';
     const TYPE_CREATE_PROJECT_POST = 'create_project_post';
     const TYPE_REGISTER_ACCOUNT = 'register_account';
+    const TYPE_ADD_ACCOUNT = 'add_account';
     
     /**
      * @inheritdoc
@@ -108,11 +109,12 @@ class Activity extends \common\components\db\ActiveRecord
     public static function getActivityWallByEmployeeId($employeeId, $offset, $perPage = 10) {
         $companyId = Yii::$app->user->identity->company_id;
         $sql = " SELECT SQL_CALC_FOUND_ROWS employee.id AS employee_id, employee.firstname, employee.lastname, employee.profile_image_path,  " 
-            .  " activity.`type`, activity.owner_table ,activity.`total_comment`, activity.`total_like`, activity.datetime_created,"
+            .  " activity.id AS activity_id, activity.`type`, activity.owner_table ,activity.`total_comment`, activity.`total_like`, activity.datetime_created,"
             .  " task.id AS task_id, task.name AS task_name, task.description_parse AS task_description_parse,"
             .  " project.id AS project_id, project.name AS project_name, project.description_parse AS project_description_parse,"
             .  " event.id AS event_id, event.name AS event_name, event.description_parse AS event_description_parse, event.start_datetime AS event_start_datetime, "
-            .  " event.end_datetime AS event_end_datetime, event.is_all_day "  
+            .  " event.end_datetime AS event_end_datetime, event.is_all_day, "  
+            .  " employee_owner.department_id, employee_owner.firstname AS new_employeee_firstname, employee_owner.lastname AS new_employeee_lastname, employee_owner.profile_image_path AS new_employeee_profile_image_path, employee_owner.id AS new_employeee_id"
             .  " FROM activity "
             .  "     LEFT JOIN employee "
             .  "         ON activity.employee_id = employee.id AND employee.disabled = 0 "
@@ -122,10 +124,12 @@ class Activity extends \common\components\db\ActiveRecord
             .  "         ON activity.owner_id = project.id AND activity.owner_table='project' AND (project.is_public=1 OR EXISTS(SELECT project_id FROM project_employee WHERE project_id=project.id AND project_employee.employee_id={$employeeId})) AND project.disabled=0 "
             .  "     LEFT JOIN event "
             .  "         ON activity.owner_id = event.id AND activity.owner_table='event' AND (event.is_public=1 OR EXISTS(SELECT event_id FROM invitee WHERE event_id=event.id AND invitee.employee_id={$employeeId})) AND event.disabled=0"
+            .  "     LEFT JOIN employee AS employee_owner "
+            .  "         ON activity.owner_id = employee_owner.id AND activity.owner_table='employee' AND employee_owner.disabled=0"
             .  " WHERE activity.company_id={$companyId} AND activity.disabled=0 "
             .  " ORDER BY activity.datetime_created DESC "
             .  " LIMIT " . ($offset - 1) * $perPage  .", " . $offset * $perPage ;
-            
+        
             return [
                 'activities' => \Yii::$app->getDb()->createCommand($sql)->queryAll(),
                 'totalRow' => \Yii::$app->getDb()->createCommand('SELECT FOUND_ROWS() AS total_row')->queryAll(),

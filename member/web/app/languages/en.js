@@ -377,7 +377,9 @@
             worked_hour_must_be_number: 'Worked hour must be number',
             total_worked_hour: 'Total of worked hour',
             number_worked_hour:'Number of work hour',
-            you_have_i_notfication: 'You have %i notification(s)'
+            you_have_i_notfication: 'You have %i notification(s)',
+            //activity
+            a_new_employee_has_been_added: 'A new employee has been added'
         };
     });
 })(window.angular);
