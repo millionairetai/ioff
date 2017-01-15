@@ -906,8 +906,8 @@ label.assignee-to,label.follow-to{
     margin-left: 5px;
 }
 
- /*task list*/
- 
+/*task list*/
+
 .task-row{
     padding-top: 20px;
     padding-bottom: 20px;
@@ -926,7 +926,7 @@ div#name-desc{
 div.assignee-to{
     min-width: 15%;
 }
-    
+
 ul.users-list.assignee-to{
     /*width: 60%*/
 }
@@ -1023,7 +1023,7 @@ div.task-creator{
     }
     .list-employee .item-employee:nth-child(2n+1){
         clear: both;
-}
+    }
     .list-employee .item-employee:nth-child(3n+1){
         clear: none;
     }
@@ -1412,6 +1412,14 @@ div.task-creator{
 }
 #detail-company table table th{
     width: 100px;
+}
+#detail-company .data-storage{
+    min-width: 450px;
+}
+@media (max-width: 768px){
+    #detail-company .data-storage{
+        min-width: 180px;
+    }
 }
 /* Authority detail */
 #authority{
