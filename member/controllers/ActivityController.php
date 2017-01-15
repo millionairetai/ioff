@@ -4,6 +4,7 @@ namespace member\controllers;
 
 use Yii;
 use common\models\Activity;
+use common\models\Comment;
 
 class ActivityController extends ApiController {
 
@@ -107,14 +108,36 @@ class ActivityController extends ApiController {
                     continue;
                 }
 
-                $collection[] = $item;
+                $collection[$activity['activity_id']] = $item;
             }
             
+//            var_dump(Comment::getCommentByActivityIds($activityIds));die;
             //Get comment and bind into array from activityId.
+            if ($comments = Comment::getCommentByActivityIds($activityIds)) {
+                //Bind to activity
+                foreach ($comments as $comment) {
+                    $employee->firstname = $comment['firstname'];
+                    $employee->lastname = $comment['lastname'];
+                    $employee->profile_image_path = $comment['profile_image_path'];
+                    $collection[$comment['activity_id']]['comments'][$comment['comment_id']] = [
+                        'content' => $comment['content'],
+                        'datetime' => \Yii::$app->formatter->asDateTime($comment['datetime_created']),
+                        'total_like' => $comment['total_like'],
+                        'employee' => [
+                            'avatar' => $employee->image,
+                            'fullname' => $employee->fullname,
+                        ],
+                    ];
+                }
+            }
+
         }
 
         $objects['activities'] = $collection;
         $objects['totalCount'] = $result['totalRow'][0]['total_row'];
+        $objects['profile'] = [
+            'avatar' => Yii::$app->user->identity->image
+        ];
         return $this->sendResponse(false, "", $objects);
 //        } catch (\Exception $ex) {
 //            return $this->sendResponse(true, \Yii::t('member', 'error_system'), '');

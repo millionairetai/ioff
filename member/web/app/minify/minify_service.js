@@ -319,6 +319,14 @@ appRoot.factory('calendarService', ['apiService','$rootScope','alertify', functi
             }
         };
     }]);
+appRoot.factory('commentService', ['apiService', function (apiService) {
+
+        return {
+            like: function (data, success, error) {
+                return apiService.post('comment/like', data, success, error);
+            }
+        };
+    }]);
 appRoot.factory('commonService', ['apiService', '$rootScope',
     function (apiService, $rootScope) {
 

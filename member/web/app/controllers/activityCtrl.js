@@ -1,5 +1,7 @@
-appRoot.controller('activityCtrl', ['$scope', '$uibModal', '$rootScope', 'alertify', 'PER_PAGE', 'MAX_PAGE_SIZE', 'activityService',
-    function ($scope, $uibModal, $rootScope, alertify, PER_PAGE, MAX_PAGE_SIZE, activityService) {
+appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activityService', 'commonService', 'commentService',
+    function ($scope, $rootScope, alertify, activityService, commonService, commentService) {
+        $scope.profile = null;
+        $scope.comment = '';
         $scope.activity = {
             data: null,
             total: 0,
@@ -19,6 +21,7 @@ appRoot.controller('activityCtrl', ['$scope', '$uibModal', '$rootScope', 'alerti
                     $scope.activity.data = response.objects.activities;
                 }
 
+                $scope.profile = response.objects.profile;
                 $scope.activity.total = response.objects.totalCount;
                 if (response.objects.activities.length < 10) {
                     $scope.activity.end = true;
@@ -29,5 +32,25 @@ appRoot.controller('activityCtrl', ['$scope', '$uibModal', '$rootScope', 'alerti
             $scope.activity.page++;
         }
 
+        $scope.saveComment = function (activityId, content) {
+            commonService.add('comment', {activity_id: activityId, content: content}, function (response) {
+                //Append to current comment.
+                if (!angular.isDefined($scope.activity.data[activityId]['comments'])) {
+                    $scope.activity.data[activityId]['comments'] = response.objects.comments;
+                } else {
+                    $scope.activity.data[activityId]['comments'] = angular.extend($scope.activity.data[activityId]['comments'], response.objects.comments);
+                }
+
+                alertify.success($rootScope.$lang.add_success);
+            });
+        }
+        
+        $scope.like = function(activityId, commentId) {
+            commentService.like({commentId: commentId}, function (response) {
+                $scope.activity.data[activityId]['comments'][commentId].total_like = parseInt($scope.activity.data[activityId]['comments'][commentId].total_like) + 1;
+                alertify.success($rootScope.$lang.update_success);
+            });
+        }
+        
         $scope.getActivity();
     }]);

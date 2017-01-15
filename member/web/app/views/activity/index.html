@@ -24,7 +24,7 @@
                 </div><!-- /.box new post -->
 
                 <div id="activity">
-                    <div class="box box-widget" ng-repeat="activity in activity.data">
+                    <div class="box box-widget" ng-repeat="(key, activity) in activity.data">
                         <div class="box-tools pull-right">
                             <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
                             </button>
@@ -156,50 +156,31 @@
                         </div>
                         <!-- /.box-body -->
                         <div class="box-footer box-comments">
-                            <div class="box-comment">
+                            <div class="box-comment" ng-repeat="(keyComment,comment) in activity.comments">
                                 <!-- User image -->
-                                <img class="img-circle img-sm" src="http://company.iofficez.dev/flies/employee/11.jpg" alt="User Image">
+                                <img class="img-circle img-sm" src="{{comment.employee.avatar}}" alt="User Image">
 
                                 <div class="comment-text">
                                     <span class="username">
-                                        Maria Gonzales
-                                        <span class="text-muted pull-right">8:03 PM Today</span>
+                                        {{comment.employee.fullname}}
+                                        <span class="text-muted pull-right">{{comment.datetime}}</span>
                                     </span><!-- /.username -->
-                                    It is a long established fact that a reader will be distracted
-                                    by the readable content of a page when looking at its layout.
-                                    <p><a href="" class="like-comment"><b>Like</b></a> <span class="img-circle btn-primary"><i class="fa fa-fw fa-thumbs-o-up"></i></span> 10</p>
+                                    {{comment.content}}
+                                    <p><a href="" class="like-comment" ng-click="like(key, keyComment)"><b>Like</b></a> <span class="img-circle btn-primary"><i class="fa fa-fw fa-thumbs-o-up"></i></span>  {{comment.total_like}}</p>
                                 </div>
                                 <!-- /.comment-text -->
 
                             </div>
-                            <!-- /.box-comment -->
-                            <div class="box-comment">
-                                <!-- User image -->
-                                <img class="img-circle img-sm" src="http://company.iofficez.dev/flies/employee/11.jpg" alt="User Image">
-
-                                <div class="comment-text">
-                                    <span class="username">
-                                        Nora Havisham
-                                        <span class="text-muted pull-right">8:03 PM Today</span>
-                                    </span><!-- /.username -->
-                                    The point of using Lorem Ipsum is that it has a more-or-less
-                                    normal distribution of letters, as opposed to using
-                                    'Content here, content here', making it look like readable English.
-                                    <p><a href="" class="like-comment"><b>Like</b></a> <span class="img-circle btn-primary"><i class="fa fa-fw fa-thumbs-o-up"></i></span> 10</p>
-                                </div>
-                                <!-- /.comment-text -->
-                            </div>
-                            <!-- /.box-comment -->
                         </div>
                         <!-- /.box-footer -->
                         <div class="box-footer">
-                            <form action="#" method="post">
-                                <img class="img-responsive img-circle img-sm" src="http://company.iofficez.dev/flies/employee/11.jpg" alt="Alt Text">
+                            <!--<form action="#" method="post">-->
+                                <img class="img-responsive img-circle img-sm" src="{{profile.avatar}}" alt="Alt Text">
                                 <!-- .img-push is used to add margin to elements next to floating images -->
                                 <div class="img-push">
-                                    <input type="text" class="form-control input-sm" placeholder="Press enter to post comment">
+                                    <input type="text" class="form-control input-sm" ng-model="comment[key]" my-enter="saveComment(key, comment[key]);comment[key] = '';"  placeholder="{{$root.$lang.press_enter_to_post_comment}}">
                                 </div>
-                            </form>
+                            <!--</form>-->
                         </div>
                         <!-- /.box-footer -->
                     </div>
