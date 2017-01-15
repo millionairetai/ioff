@@ -380,7 +380,8 @@
             you_have_i_notfication: 'You have %i notification(s)',
             //activity
             a_new_employee_has_been_added: 'A new employee has been added',
-            press_enter_to_post_comment: 'Press enter to post comment'
+            press_enter_to_post_comment: 'Press enter to post comment',
+            like_success: 'Like successfully'
         };
     });
 })(window.angular);

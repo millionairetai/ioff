@@ -62,10 +62,12 @@ class Comment extends \common\components\db\ActiveRecord {
     }
 
     public static function getCommentByActivityIds($activityIds) {
+        $employeeId = Yii::$app->user->identity->id;
         return self::find()
-                        ->select([ 'comment.id AS comment_id', 'activity_id', 'content', 'total_like', 'comment.datetime_created', 
-                            'employee.firstname', 'employee.lastname', 'employee.profile_image_path'])
+                        ->select([ 'comment.id AS comment_id', 'activity_id', 'content', 'total_like', 'comment.datetime_created', 'comment.employee_id AS comment_employee_id',
+                            'employee.firstname', 'employee.lastname', 'employee.profile_image_path', 'like.employee_id AS like_employee_id'])
                         ->leftJoin('employee', 'comment.employee_id=employee.id')
+                        ->leftJoin('like', 'comment.id=like.owner_id AND like.owner_table="comment" AND like.employee_id=' . $employeeId)
                         ->where(['activity_id' => $activityIds])
                         ->orderBy('activity_id DESC')
 //                        ->indexBy('activity_id')

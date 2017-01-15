@@ -48,7 +48,8 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
         $scope.like = function(activityId, commentId) {
             commentService.like({commentId: commentId}, function (response) {
                 $scope.activity.data[activityId]['comments'][commentId].total_like = parseInt($scope.activity.data[activityId]['comments'][commentId].total_like) + 1;
-                alertify.success($rootScope.$lang.update_success);
+                $scope.activity.data[activityId]['comments'][commentId].is_liked = true;
+                alertify.success($rootScope.$lang.like_success);
             });
         }
         

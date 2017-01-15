@@ -6,5 +6,11 @@ appRoot.filter('arrayIntersect', function(){
                });
     };
 });
-
 //Array diff under score difference
+
+appRoot.filter('num', function() {
+    return function(input) {
+      return parseInt(input, 10);
+    }
+});
+

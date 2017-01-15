@@ -392,7 +392,8 @@
             you_have_i_notfication: 'Bạn có %i thông báo',
             //activity
             a_new_employee_has_been_added: 'Một nhân viên mới vừa mới được thêm',
-            press_enter_to_post_comment: 'Nhấn enter để đăng bình luận'
+            press_enter_to_post_comment: 'Nhấn enter để đăng bình luận',
+            like_success: 'Thích thành công'
         };
     });
 })(window.angular);

@@ -123,9 +123,11 @@ class ActivityController extends ApiController {
                         'content' => $comment['content'],
                         'datetime' => \Yii::$app->formatter->asDateTime($comment['datetime_created']),
                         'total_like' => $comment['total_like'],
+                        'is_liked' => !empty($comment['like_employee_id']) ? true : false,
                         'employee' => [
                             'avatar' => $employee->image,
                             'fullname' => $employee->fullname,
+                            'id' => $comment['comment_employee_id'],
                         ],
                     ];
                 }
@@ -136,7 +138,8 @@ class ActivityController extends ApiController {
         $objects['activities'] = $collection;
         $objects['totalCount'] = $result['totalRow'][0]['total_row'];
         $objects['profile'] = [
-            'avatar' => Yii::$app->user->identity->image
+            'avatar' => Yii::$app->user->identity->image,
+            'id' => Yii::$app->user->identity->id,
         ];
         return $this->sendResponse(false, "", $objects);
 //        } catch (\Exception $ex) {

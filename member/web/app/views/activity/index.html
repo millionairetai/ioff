@@ -166,7 +166,7 @@
                                         <span class="text-muted pull-right">{{comment.datetime}}</span>
                                     </span><!-- /.username -->
                                     {{comment.content}}
-                                    <p><a href="" class="like-comment" ng-click="like(key, keyComment)"><b>Like</b></a> <span class="img-circle btn-primary"><i class="fa fa-fw fa-thumbs-o-up"></i></span>  {{comment.total_like}}</p>
+                                    <p><a ng-hide="comment.is_liked" href="" class="like-comment" ng-click="like(key, keyComment)"><b>Like</b></a> <span ng-show="comment.total_like|num"><span class="img-circle btn-primary"><i class="fa fa-fw fa-thumbs-o-up"></i></span>  {{comment.total_like}}</span></p>
                                 </div>
                                 <!-- /.comment-text -->
 
