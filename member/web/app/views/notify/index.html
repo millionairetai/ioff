@@ -15,13 +15,13 @@
                     <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
                 </div>
             </div>
-            <div class="box-body">
+            <div class="box-body" infinite-scroll="getNotificationList()" infinite-scroll-disabled="myNotifi.busy">
                 <div ng-show="myNotifi.notifi.length">
                     {{$root.$lang.you_have_i_notfication.replace('%i', $root.sum_notify)}}
                 </div>
                 <div class="row">
                     <div class="col-md-9">
-                        <ul class="list-notify" infinite-scroll="getNotificationList()">
+                        <ul class="list-notify">
                             <li class="item-notify" ng-repeat="notification in myNotifi.notifi">
                                 <a href="{{notification.url}}">
                                     <img class="img-circle" src="{{notification.avatar}}" alt="User Image">

@@ -23,7 +23,7 @@
                     </div>
                 </div><!-- /.box new post -->
 
-                <div id="activity">
+                <div id="activity" infinite-scroll-disabled="activity.busy" infinite-scroll="getActivity()">
                     <div class="box box-widget" ng-repeat="(key, activity) in activity.data">
                         <div class="box-tools pull-right">
                             <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -152,7 +152,7 @@
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body">
-                           {{activity.activity_content_parse}}
+                            {{activity.activity_content_parse}}
                         </div>
                         <!-- /.box-body -->
                         <div class="box-footer box-comments">
@@ -162,11 +162,11 @@
 
                                 <div class="comment-text">
                                     <span class="username">
-                                        {{comment.employee.fullname}}
+                                        <a href="#/viewEmployee/{{comment.employee.id}}">{{comment.employee.fullname}}</a>
                                         <span class="text-muted pull-right">{{comment.datetime}}</span>
                                     </span><!-- /.username -->
                                     {{comment.content}}
-                                    <p><a ng-hide="comment.is_liked" href="" class="like-comment" ng-click="like(key, keyComment)"><b>Like</b></a> <span ng-show="comment.total_like|num"><span class="img-circle btn-primary"><i class="fa fa-fw fa-thumbs-o-up"></i></span>  {{comment.total_like}}</span></p>
+                                    <p><a ng-hide="comment.is_liked" href="" class="like-comment" ng-click="like(key, keyComment)"><b>Like</b></a> <span ng-show="comment.total_like | num"><span class="img-circle btn-primary"><i class="fa fa-fw fa-thumbs-o-up"></i></span>  {{comment.total_like}}</span></p>
                                 </div>
                                 <!-- /.comment-text -->
 
@@ -175,11 +175,11 @@
                         <!-- /.box-footer -->
                         <div class="box-footer">
                             <!--<form action="#" method="post">-->
-                                <img class="img-responsive img-circle img-sm" src="{{profile.avatar}}" alt="Alt Text">
-                                <!-- .img-push is used to add margin to elements next to floating images -->
-                                <div class="img-push">
-                                    <input type="text" class="form-control input-sm" ng-model="comment[key]" my-enter="saveComment(key, comment[key]);comment[key] = '';"  placeholder="{{$root.$lang.press_enter_to_post_comment}}">
-                                </div>
+                            <img class="img-responsive img-circle img-sm" src="{{profile.avatar}}" alt="Alt Text">
+                            <!-- .img-push is used to add margin to elements next to floating images -->
+                            <div class="img-push">
+                                <input type="text" class="form-control input-sm" ng-model="comment[key]" my-enter="saveComment(key, comment[key]);comment[key] = '';"  placeholder="{{$root.$lang.press_enter_to_post_comment}}">
+                            </div>
                             <!--</form>-->
                         </div>
                         <!-- /.box-footer -->

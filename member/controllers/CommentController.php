@@ -9,21 +9,7 @@ use common\models\Like;
 class CommentController extends ApiController {
 
     /**
-     * Get list of actions
-     */
-    public function actionIndex() {
-        
-    }
-
-    /**
-     * Get activity of company for this employee
-     */
-    public function actionGets() {
-        
-    }
-
-    /**
-     * Get activity of company for this employee
+     * Add comment
      */
     public function actionAdd() {
         try {

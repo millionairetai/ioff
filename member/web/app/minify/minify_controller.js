@@ -6,27 +6,37 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
             data: null,
             total: 0,
             end: false,
-            page: 1
+            page: 1,
+            busy:false
         };
-
+        
         $scope.getActivity = function () {
-            if ($scope.activity.end) {
+            if ($scope.activity.end || $scope.activity.busy) {
                 return true;
             }
 
+            $scope.activity.busy = true;
             activityService.getActivity({currentPage: $scope.activity.page}, function (response) {
                 if ($scope.activity.data) {
-                    $scope.activity.data = $scope.activity.data.concat(response.objects.activities);
+                     console.log($scope.activity.data);
+//                    var temp = [];
+//                    temp = temp.concat($scope.activity.data);
+//                    $scope.activity.data = temp.concat(response.objects.activities);              
+//                    $scope.activity.data = $scope.activity.data.concat(response.objects.activities);
+                    $scope.activity.data = angular.extend($scope.activity.data, response.objects.activities);
+
+                    
                 } else {
                     $scope.activity.data = response.objects.activities;
                 }
-
+                                
                 $scope.profile = response.objects.profile;
                 $scope.activity.total = response.objects.totalCount;
                 if (response.objects.activities.length < 10) {
                     $scope.activity.end = true;
                     return true;
                 }
+                 $scope.activity.busy = false;
             });
 
             $scope.activity.page++;
@@ -2041,15 +2051,17 @@ appRoot.controller('notifyCtrl', ['$scope', 'notifyService', 'socketService',
             notifi: null,
             total: 0,
             end: false,
-            page: 1
+            page: 1,
+            busy: false
         };
 
         //Get notification items to show 
         $scope.getNotificationList = function () {
-            if ($scope.myNotifi.end) {
+            if ($scope.myNotifi.end || $scope.myNotifi.busy) {
                 return true;
             }
 
+            $scope.myNotifi.busy = true;
             notifyService.getNotifications({currentPage: $scope.myNotifi.page}, function (respone) {
                 if ($scope.myNotifi.notifi) {
                     $scope.myNotifi.notifi = $scope.myNotifi.notifi.concat(respone.objects.notifications);
@@ -2062,6 +2074,7 @@ appRoot.controller('notifyCtrl', ['$scope', 'notifyService', 'socketService',
                     $scope.myNotifi.end = true;
                     return true;
                 }
+                $scope.myNotifi.busy = false;
             });
 
             $scope.myNotifi.page++;

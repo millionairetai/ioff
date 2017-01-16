@@ -6,27 +6,37 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
             data: null,
             total: 0,
             end: false,
-            page: 1
+            page: 1,
+            busy:false
         };
-
+        
         $scope.getActivity = function () {
-            if ($scope.activity.end) {
+            if ($scope.activity.end || $scope.activity.busy) {
                 return true;
             }
 
+            $scope.activity.busy = true;
             activityService.getActivity({currentPage: $scope.activity.page}, function (response) {
                 if ($scope.activity.data) {
-                    $scope.activity.data = $scope.activity.data.concat(response.objects.activities);
+                     console.log($scope.activity.data);
+//                    var temp = [];
+//                    temp = temp.concat($scope.activity.data);
+//                    $scope.activity.data = temp.concat(response.objects.activities);              
+//                    $scope.activity.data = $scope.activity.data.concat(response.objects.activities);
+                    $scope.activity.data = angular.extend($scope.activity.data, response.objects.activities);
+
+                    
                 } else {
                     $scope.activity.data = response.objects.activities;
                 }
-
+                                
                 $scope.profile = response.objects.profile;
                 $scope.activity.total = response.objects.totalCount;
                 if (response.objects.activities.length < 10) {
                     $scope.activity.end = true;
                     return true;
                 }
+                 $scope.activity.busy = false;
             });
 
             $scope.activity.page++;
