@@ -9,7 +9,7 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
             page: 1,
             busy:false
         };
-        
+        var temp = [];
         $scope.getActivity = function () {
             if ($scope.activity.end || $scope.activity.busy) {
                 return true;
@@ -17,19 +17,17 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
 
             $scope.activity.busy = true;
             activityService.getActivity({currentPage: $scope.activity.page}, function (response) {
-                if ($scope.activity.data) {
-                     console.log($scope.activity.data);
-//                    var temp = [];
-//                    temp = temp.concat($scope.activity.data);
-//                    $scope.activity.data = temp.concat(response.objects.activities);              
-//                    $scope.activity.data = $scope.activity.data.concat(response.objects.activities);
-                    $scope.activity.data = angular.extend($scope.activity.data, response.objects.activities);
-
-                    
+                temp = Object.keys(response.objects.activities).map(function(k) { return response.objects.activities[k] });                
+                temp.reverse();
+                
+                if ($scope.activity.data === null) {
+                    $scope.activity.data = temp;
                 } else {
-                    $scope.activity.data = response.objects.activities;
+                    $scope.activity.data = $scope.activity.data.concat(temp);
                 }
-                                
+                
+                console.log($scope.activity.data);
+                
                 $scope.profile = response.objects.profile;
                 $scope.activity.total = response.objects.totalCount;
                 if (response.objects.activities.length < 10) {
