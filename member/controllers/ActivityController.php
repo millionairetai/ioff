@@ -27,150 +27,147 @@ class ActivityController extends ApiController {
         $employee = new \common\models\Employee();
 
 //        try {
-        $result = Activity::getActivityWallByEmployeeId(Yii::$app->user->identity->id, Yii::$app->request->get('currentPage'));
-        $activities = $result['activities'];
-        if ($activities) {
-            foreach ($activities as $activity) {
-                $activityIds[] = $activity['activity_id'];
-                $employee->firstname = $activity['firstname'];
-                $employee->lastname = $activity['lastname'];
-                $employee->profile_image_path = $activity['profile_image_path'];
-                $item = [
-//                        'url' => $this->_makeUrlFromId($activity),
-                    'activity_id' => $activity['activity_id'],
-                    'activity_type' => $activity['owner_table'],
-                    'activity_action' => $this->_changeActivityTypeToText($activity['type']),
-                    'avatar' => $employee->image,
-                    'employee_id' => $activity['employee_id'],
-                    'employee_name' => $employee->fullname,
-                    'datetime_created' => \Yii::$app->formatter->asDateTime($activity['datetime_created']),
-                    'activity_object' => $this->_getActivityName($activity),
-                    'activity_content_parse' => $this->_getActivityDescriptionParse($activity),
-                ];
-
-                switch ($activity['owner_table']) {
-                    case 'task': {
-                            $item['task'] = [
-                                'name' => $this->_getActivityName($activity),
-                                'id' => $activity['task_id']
-                            ];
-
-                            if (empty($item['task']['name'])) {
-                                $isSkip = true;
-                            }
-                        }
-                        break;
-                    case 'event': {
-                            $item['event'] = [
-                                'dayofweek' => $this->_getDayofWeek($activity['event_start_datetime'], Yii::$app->language),
-                                'month' => $this->_getMonth($activity['event_start_datetime'], Yii::$app->language),
-                                'day' => \Yii::$app->formatter->asDate($activity['event_start_datetime'], 'd'),
-                                'name' => $activity['event_name'],
-                                'id' => $activity['event_id'],
-                                'startdatetitme' => \Yii::$app->formatter->asDateTime($activity['event_start_datetime']),
-                            ];
-
-                            if (empty($item['event']['name'])) {
-                                $isSkip = true;
-                            }
-                        }
-
-                        break;
-                    case 'event_post': {
-                            $item['event_post'] = [
-                                'dayofweek' => $this->_getDayofWeek($activity['event_start_datetime'], Yii::$app->language),
-                                'month' => $this->_getMonth($activity['event_start_datetime'], Yii::$app->language),
-                                'day' => \Yii::$app->formatter->asDate($activity['event_start_datetime'], 'd'),
-                                'name' => $activity['event_name'],
-                                'id' => $activity['event_id'],
-                                'startdatetitme' => \Yii::$app->formatter->asDateTime($activity['event_start_datetime']),
-                            ];
-
-                            if (empty($item['event']['name'])) {
-                                $isSkip = true;
-                            }
-                        }
-
-                        break;
-                    case 'project': {
-                            $item['project'] = [
-                                'name' => $this->_getActivityName($activity),
-                                'id' => $activity['project_id'],
-                            ];
-
-                            //skip item which don't have data because thatuser doesn't have authority
-                            if (empty($item['project']['name'])) {
-                                $isSkip = true;
-                            }
-                            break;
-                        }
-                    case 'project_post': {
-                            $item['project_post'] = [
-                                'name' => $this->_getActivityName($activity),
-                                'id' => $activity['p_project_id'],
-                            ];
-
-                            //skip item which don't have data because thatuser doesn't have authority
-                            if (empty($item['project_post']['name'])) {
-                                $isSkip = true;
-                            }
-                            break;
-                        }                        
-                    case 'employee': {
-                            $employee->firstname = $activity['new_employeee_firstname'];
-                            $employee->lastname = $activity['new_employeee_lastname'];
-                            $employee->profile_image_path = $activity['new_employeee_profile_image_path'];
-                            $employee->department_id = $activity['department_id'];
-                            $item['employee'] = [
-                                'fullname' => $employee->fullname,
-                                'avatar' => $employee->image,
-                                'department' => !empty($employee->department->name) ? $employee->department->name : '',
-                                'id' => $activity['new_employeee_id'],
-                            ];
-
-                            break;
-                        }
-                }
-
-                if ($isSkip) {
-                    $isSkip = false;
-                    continue;
-                }
-
-                $collection[$activity['activity_id']] = $item;
-            }
-            
-//            var_dump(Comment::getCommentByActivityIds($activityIds));die;
-            //Get comment and bind into array from activityId.
-            if ($comments = Comment::getCommentByActivityIds($activityIds)) {
-                //Bind to activity
-                foreach ($comments as $comment) {
-                    $employee->firstname = $comment['firstname'];
-                    $employee->lastname = $comment['lastname'];
-                    $employee->profile_image_path = $comment['profile_image_path'];
-                    $collection[$comment['activity_id']]['comments'][$comment['comment_id']] = [
-                        'content' => $comment['content'],
-                        'datetime' => \Yii::$app->formatter->asDateTime($comment['datetime_created']),
-                        'total_like' => $comment['total_like'],
-                        'is_liked' => !empty($comment['like_employee_id']) ? true : false,
-                        'employee' => [
-                            'avatar' => $employee->image,
-                            'fullname' => $employee->fullname,
-                            'id' => $comment['comment_employee_id'],
-                        ],
+            $result = Activity::getActivityWallByEmployeeId(Yii::$app->user->identity->id, Yii::$app->request->get('currentPage'));
+            $activities = $result['activities'];
+            if ($activities) {
+                foreach ($activities as $activity) {
+                    $activityIds[] = $activity['activity_id'];
+                    $employee->firstname = $activity['firstname'];
+                    $employee->lastname = $activity['lastname'];
+                    $employee->profile_image_path = $activity['profile_image_path'];
+                    $item = [
+                        'activity_id' => $activity['activity_id'],
+                        'activity_type' => $activity['owner_table'],
+                        'activity_action' => $this->_changeActivityTypeToText($activity['type']),
+                        'avatar' => $employee->image,
+                        'employee_id' => $activity['employee_id'],
+                        'employee_name' => $employee->fullname,
+                        'datetime_created' => \Yii::$app->formatter->asDateTime($activity['datetime_created']),
+                        'activity_object' => $this->_getActivityName($activity),
+                        'activity_content_parse' => $this->_getActivityDescriptionParse($activity),
                     ];
+
+                    switch ($activity['owner_table']) {
+                        case 'task': {
+                                $item['task'] = [
+                                    'name' => $this->_getActivityName($activity),
+                                    'id' => $activity['task_id']
+                                ];
+
+                                if (empty($item['task']['name'])) {
+                                    $isSkip = true;
+                                }
+                            }
+                            break;
+                        case 'event': {
+                                $item['event'] = [
+                                    'dayofweek' => $this->_getDayofWeek($activity['event_start_datetime'], Yii::$app->language),
+                                    'month' => $this->_getMonth($activity['event_start_datetime'], Yii::$app->language),
+                                    'day' => \Yii::$app->formatter->asDate($activity['event_start_datetime'], 'd'),
+                                    'name' => $activity['event_name'],
+                                    'id' => $activity['event_id'],
+                                    'startdatetitme' => \Yii::$app->formatter->asDateTime($activity['event_start_datetime']),
+                                ];
+
+                                if (empty($item['event']['name'])) {
+                                    $isSkip = true;
+                                }
+                            }
+
+                            break;
+                        case 'event_post': {
+                                $item['event_post'] = [
+                                    'dayofweek' => $this->_getDayofWeek($activity['p_event_start_datetime'], Yii::$app->language),
+                                    'month' => $this->_getMonth($activity['p_event_start_datetime'], Yii::$app->language),
+                                    'day' => \Yii::$app->formatter->asDate($activity['p_event_start_datetime'], 'd'),
+                                    'name' => $activity['p_event_name'],
+                                    'id' => $activity['p_event_id'],
+                                    'startdatetitme' => \Yii::$app->formatter->asDateTime($activity['p_event_start_datetime']),
+                                ];
+
+                                if (empty($item['event_post']['name'])) {
+                                    $isSkip = true;
+                                }
+                            }
+
+                            break;
+                        case 'project': {
+                                $item['project'] = [
+                                    'name' => $this->_getActivityName($activity),
+                                    'id' => $activity['project_id'],
+                                ];
+
+                                //skip item which don't have data because thatuser doesn't have authority
+                                if (empty($item['project']['name'])) {
+                                    $isSkip = true;
+                                }
+                                break;
+                            }
+                        case 'project_post': {
+                                $item['project_post'] = [
+                                    'name' => $this->_getActivityName($activity),
+                                    'id' => $activity['p_project_id'],
+                                ];
+
+                                //skip item which don't have data because thatuser doesn't have authority
+                                if (empty($item['project_post']['name'])) {
+                                    $isSkip = true;
+                                }
+                                break;
+                            }
+                        case 'employee': {
+                                $employee->firstname = $activity['new_employeee_firstname'];
+                                $employee->lastname = $activity['new_employeee_lastname'];
+                                $employee->profile_image_path = $activity['new_employeee_profile_image_path'];
+                                $employee->department_id = $activity['department_id'];
+                                $item['employee'] = [
+                                    'fullname' => $employee->fullname,
+                                    'avatar' => $employee->image,
+                                    'department' => !empty($employee->department->name) ? $employee->department->name : '',
+                                    'id' => $activity['new_employeee_id'],
+                                ];
+
+                                break;
+                            }
+                    }
+
+                    if ($isSkip) {
+                        $isSkip = false;
+                        continue;
+                    }
+
+                    $collection[$activity['activity_id']] = $item;
+                }
+
+                //Get comment and bind into array from activityId.
+                if ($comments = Comment::getCommentByActivityIds($activityIds)) {
+                    //Bind to activity
+                    foreach ($comments as $comment) {
+                        $employee->firstname = $comment['firstname'];
+                        $employee->lastname = $comment['lastname'];
+                        $employee->profile_image_path = $comment['profile_image_path'];
+                        $collection[$comment['activity_id']]['comments'][$comment['comment_id']] = [
+                            'content' => $comment['content'],
+                            'datetime' => \Yii::$app->formatter->asDateTime($comment['datetime_created']),
+                            'total_like' => $comment['total_like'],
+                            'is_liked' => !empty($comment['like_employee_id']) ? true : false,
+                            'employee' => [
+                                'avatar' => $employee->image,
+                                'fullname' => $employee->fullname,
+                                'id' => $comment['comment_employee_id'],
+                            ],
+                        ];
+                    }
                 }
             }
 
-        }
-
-        $objects['activities'] = $collection;
-        $objects['totalCount'] = $result['totalRow'][0]['total_row'];
-        $objects['profile'] = [
-            'avatar' => Yii::$app->user->identity->image,
-            'id' => Yii::$app->user->identity->id,
-        ];
-        return $this->sendResponse(false, "", $objects);
+            $objects['activities'] = $collection;
+            $objects['totalCount'] = $result['totalRow'][0]['total_row'];
+            $objects['profile'] = [
+                'avatar' => Yii::$app->user->identity->image,
+                'id' => Yii::$app->user->identity->id,
+            ];
+            return $this->sendResponse(false, "", $objects);
 //        } catch (\Exception $ex) {
 //            return $this->sendResponse(true, \Yii::t('member', 'error_system'), '');
 //        }
@@ -179,6 +176,7 @@ class ActivityController extends ApiController {
     private function _getItem() {
         
     }
+
     /**
      * Change activity type to text. Ex: create_project -> 'created project'
      * 
@@ -197,6 +195,18 @@ class ActivityController extends ApiController {
 
         if (!empty($activity['task_description_parse'])) {
             $descriptionParse = $activity['task_description_parse'];
+        }
+        
+        if (!empty($activity['p_event_description_parse'])) {
+            $descriptionParse = $activity['p_event_description_parse'];
+        }
+
+        if (!empty($activity['p_project_description_parse'])) {
+            $descriptionParse = $activity['p_project_description_parse'];
+        }
+
+        if (!empty($activity['p_task_description_parse'])) {
+            $descriptionParse = $activity['p_task_description_parse'];
         }
 
         if (strlen($descriptionParse) > 500) {

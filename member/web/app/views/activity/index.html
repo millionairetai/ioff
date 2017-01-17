@@ -50,6 +50,19 @@
                                             <p><b>Event date and time:</b> {{activity.event.startdatetitme}}</p>
                                         </div>
                                     </dd>
+                                    <dd class="top-event clearfix" ng-switch-when="event_post">
+                                        <div class="calendar-event">
+                                            <time datetime="2014-09-20" class="icon">
+                                                <em class="ng-binding">{{activity.event_post.dayofweek}}</em>
+                                                <strong class="ng-binding">{{activity.event_post.month}}</strong>
+                                                <span class="ng-binding">{{activity.event_post.day}}</span>
+                                            </time>
+                                        </div>
+                                        <div class="event-infomation">
+                                            <p><b><a href="#/viewEmployee/{{activity.employee_id}}">{{activity.employee_name}}</a> {{activity.activity_action}} <a href="#/viewEvent/{{activity.event_post.id}}">{{activity.event_post.name}}</a></b></p>
+                                            <p><b>Event date and time:</b> {{activity.event_post.startdatetitme}}</p>
+                                        </div>
+                                    </dd>
                                     <dd class="top-event clearfix" ng-switch-when="file">
                                         <div class="calendar-event">
                                             <p><b>File:</b></p>
