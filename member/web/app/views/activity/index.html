@@ -75,6 +75,16 @@
                                             </p>
                                         </div>
                                     </dd>
+                                    <dd class="top-event clearfix" ng-switch-when="project_post">
+                                        <div class="task-event">
+                                            <i class="fa fa-fw fa-clock-o"></i> Đăng trong dự án
+                                        </div>
+                                        <div class="event-infomation">
+                                            <p>
+                                                <b><a href="#/viewEmployee/{{activity.employee_id}}">{{activity.employee_name}}</a> {{activity.activity_action}} <a href="#/viewProject/{{activity.project_post.id}}">{{activity.project_post.name}}</a></b><br/>
+                                            </p>
+                                        </div>
+                                    </dd>
                                     <dd class="top-event clearfix" ng-switch-when="task">
                                         <div class="task-event">
                                             <i class="fa fa-fw fa-clock-o"></i> {{$root.$lang.task}}
@@ -178,7 +188,7 @@
                             <img class="img-responsive img-circle img-sm" src="{{profile.avatar}}" alt="Alt Text">
                             <!-- .img-push is used to add margin to elements next to floating images -->
                             <div class="img-push">
-                                <input type="text" class="form-control input-sm" ng-model="comment[key]" my-enter="saveComment(key, comment[key]);comment[key] = '';"  placeholder="{{$root.$lang.press_enter_to_post_comment}}">
+                                <input type="text" class="form-control input-sm" ng-model="comment[key]" my-enter="saveComment(key, activity.activity_id, comment[key]);comment[key] = '';"  placeholder="{{$root.$lang.press_enter_to_post_comment}}">
                             </div>
                             <!--</form>-->
                         </div>

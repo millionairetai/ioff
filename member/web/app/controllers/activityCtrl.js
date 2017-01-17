@@ -28,6 +28,8 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
                     $scope.activity.data = $scope.activity.data.concat(temp);
                 }
                 
+                console.log($scope.activity.data);
+                
                 $scope.profile = response.objects.profile;
                 $scope.activity.total = response.objects.totalCount;
                 if (response.objects.activities.length < 10) {
@@ -40,13 +42,13 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
             $scope.activity.page++;
         }
 
-        $scope.saveComment = function (activityId, content) {
+        $scope.saveComment = function (index, activityId, content) {
             commonService.add('comment', {activity_id: activityId, content: content}, function (response) {
                 //Append to current comment.
-                if (!angular.isDefined($scope.activity.data[activityId]['comments'])) {
-                    $scope.activity.data[activityId]['comments'] = response.objects.comments;
+                if (!angular.isDefined($scope.activity.data[index]['comments'])) {
+                    $scope.activity.data[index]['comments'] = response.objects.comments;
                 } else {
-                    $scope.activity.data[activityId]['comments'] = angular.extend($scope.activity.data[activityId]['comments'], response.objects.comments);
+                    $scope.activity.data[index]['comments'] = angular.extend($scope.activity.data[index]['comments'], response.objects.comments);
                 }
 
                 alertify.success($rootScope.$lang.add_success);

@@ -37,6 +37,7 @@ class ActivityController extends ApiController {
                 $employee->profile_image_path = $activity['profile_image_path'];
                 $item = [
 //                        'url' => $this->_makeUrlFromId($activity),
+                    'activity_id' => $activity['activity_id'],
                     'activity_type' => $activity['owner_table'],
                     'activity_action' => $this->_changeActivityTypeToText($activity['type']),
                     'avatar' => $employee->image,
@@ -75,6 +76,22 @@ class ActivityController extends ApiController {
                         }
 
                         break;
+                    case 'event_post': {
+                            $item['event_post'] = [
+                                'dayofweek' => $this->_getDayofWeek($activity['event_start_datetime'], Yii::$app->language),
+                                'month' => $this->_getMonth($activity['event_start_datetime'], Yii::$app->language),
+                                'day' => \Yii::$app->formatter->asDate($activity['event_start_datetime'], 'd'),
+                                'name' => $activity['event_name'],
+                                'id' => $activity['event_id'],
+                                'startdatetitme' => \Yii::$app->formatter->asDateTime($activity['event_start_datetime']),
+                            ];
+
+                            if (empty($item['event']['name'])) {
+                                $isSkip = true;
+                            }
+                        }
+
+                        break;
                     case 'project': {
                             $item['project'] = [
                                 'name' => $this->_getActivityName($activity),
@@ -87,6 +104,18 @@ class ActivityController extends ApiController {
                             }
                             break;
                         }
+                    case 'project_post': {
+                            $item['project_post'] = [
+                                'name' => $this->_getActivityName($activity),
+                                'id' => $activity['p_project_id'],
+                            ];
+
+                            //skip item which don't have data because thatuser doesn't have authority
+                            if (empty($item['project_post']['name'])) {
+                                $isSkip = true;
+                            }
+                            break;
+                        }                        
                     case 'employee': {
                             $employee->firstname = $activity['new_employeee_firstname'];
                             $employee->lastname = $activity['new_employeee_lastname'];
@@ -249,9 +278,9 @@ class ActivityController extends ApiController {
 //            $actiAction = $activity['lastname'];
 //        }
 //
-//        if (!empty($activity['profile'])) {
-//            $actiAction = $activity['project_p_name'];
-//        }
+        if (!empty($activity['p_project_name'])) {
+            $actiAction = $activity['p_project_name'];
+        }
 
         return $actiAction;
     }
