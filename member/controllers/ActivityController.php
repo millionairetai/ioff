@@ -59,6 +59,17 @@ class ActivityController extends ApiController {
                                 }
                             }
                             break;
+                        case 'task_post': {
+                                $item['task_post'] = [
+                                    'name' => $this->_getActivityName($activity),
+                                    'id' => $activity['p_task_id']
+                                ];
+
+                                if (empty($item['task_post']['name'])) {
+                                    $isSkip = true;
+                                }
+                            }
+                            break;
                         case 'event': {
                                 $item['event'] = [
                                     'dayofweek' => $this->_getDayofWeek($activity['event_start_datetime'], Yii::$app->language),
@@ -284,10 +295,10 @@ class ActivityController extends ApiController {
 //            $actiAction = $activity['firstname'];
 //        }
 //
-//        if (!empty($activity['lastname'])) {
-//            $actiAction = $activity['lastname'];
-//        }
-//
+        if (!empty($activity['p_task_name'])) {
+            $actiAction = $activity['p_task_name'];
+        }
+
         if (!empty($activity['p_project_name'])) {
             $actiAction = $activity['p_project_name'];
         }

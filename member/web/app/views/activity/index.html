@@ -110,6 +110,16 @@
                                             </p>
                                         </div>
                                     </dd>
+                                    <dd class="top-event clearfix" ng-switch-when="task_post">
+                                        <div class="task-event">
+                                            <i class="fa fa-fw fa-clock-o"></i> Đăng trong công việc
+                                        </div>
+                                        <div class="event-infomation">
+                                            <p>
+                                                <b><a href="#/viewEmployee/{{activity.employee_id}}">{{activity.employee_name}}</a> {{activity.activity_action}} <a href="#/viewTask/{{activity.task_post.id}}">{{activity.task_post.name}}</a></b><br/>
+                                            </p>
+                                        </div>
+                                    </dd>
                                     <dd class="top-event clearfix" ng-switch-when="photo">
                                         <div class="photo-event">
                                             <p><b>Photo:</b></p>
