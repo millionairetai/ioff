@@ -112,7 +112,7 @@ class Activity extends \common\components\db\ActiveRecord
             .  " activity.id AS activity_id, activity.`type`, activity.owner_table ,activity.`total_comment`, activity.`total_like`, activity.datetime_created,"
             .  " task.id AS task_id, task.name AS task_name, task.description_parse AS task_description_parse,"
             .  " project.id AS project_id, project.name AS project_name, project.description_parse AS project_description_parse,"
-            .  " event.id AS event_id, event.name AS event_name, event.description_parse AS event_description_parse, event.start_datetime AS event_start_datetime, "
+            .  " event.id AS event_id, event.name AS event_name, event.description_parse AS event_description_parse, event.start_datetime AS event_start_datetime, event.end_datetime AS event_end_datetime, "
             .  " event.end_datetime AS event_end_datetime, event.is_all_day, "  
             .  " employee_owner.department_id, employee_owner.firstname AS new_employeee_firstname, employee_owner.lastname AS new_employeee_lastname, employee_owner.profile_image_path AS new_employeee_profile_image_path, employee_owner.id AS new_employeee_id, "
             .  " p_project.name AS p_project_name, p_project.id AS p_project_id, "

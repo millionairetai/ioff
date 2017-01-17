@@ -104,7 +104,9 @@
             show: 'Show',
             annoucement: 'Annoucement',
             requestment: 'Requestment',
-            name_must_less_than_255_characters: 'Name must be less than 255 characters',            
+            name_must_less_than_255_characters: 'Name must be less than 255 characters',          
+            start: 'Bắt đầu', 
+            end: 'Kết thúc',
             //-----------------------------------------End of common language.----------------------------------
             
             //project
@@ -381,7 +383,9 @@
             //activity
             a_new_employee_has_been_added: 'A new employee has been added',
             press_enter_to_post_comment: 'Press enter to post comment',
-            like_success: 'Like successfully'
+            like_success: 'Like successfully',
+            posted_in_project : 'Posted in project',
+            posted_in_task: 'Posted in task'
         };
     });
 })(window.angular);

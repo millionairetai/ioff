@@ -103,7 +103,9 @@
             show: 'Hiện',
             annoucement: 'Thông báo',
             requestment: 'Yêu cầu',
-            name_must_less_than_255_characters: 'Tên phải nhỏ hơn 255 kí tự',            
+            name_must_less_than_255_characters: 'Tên phải nhỏ hơn 255 kí tự',   
+            start: 'Bắt đầu', 
+            end: 'Kết thúc',
             //-----------------------------------------End of common language.----------------------------------
             
             //project
@@ -393,7 +395,9 @@
             //activity
             a_new_employee_has_been_added: 'Một nhân viên mới vừa mới được thêm',
             press_enter_to_post_comment: 'Nhấn enter để đăng bình luận',
-            like_success: 'Thích thành công'
+            like_success: 'Thích thành công',
+            posted_in_project : 'Đăng trong dự án',
+            posted_in_task: 'Đăng trong công việc'
         };
     });
 })(window.angular);

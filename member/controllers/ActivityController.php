@@ -26,7 +26,7 @@ class ActivityController extends ApiController {
         $item = null;
         $employee = new \common\models\Employee();
 
-//        try {
+        try {
             $result = Activity::getActivityWallByEmployeeId(Yii::$app->user->identity->id, Yii::$app->request->get('currentPage'));
             $activities = $result['activities'];
             if ($activities) {
@@ -78,6 +78,7 @@ class ActivityController extends ApiController {
                                     'name' => $activity['event_name'],
                                     'id' => $activity['event_id'],
                                     'startdatetitme' => \Yii::$app->formatter->asDateTime($activity['event_start_datetime']),
+                                    'enddatetitme' => \Yii::$app->formatter->asDateTime($activity['event_end_datetime']),
                                 ];
 
                                 if (empty($item['event']['name'])) {
@@ -94,6 +95,7 @@ class ActivityController extends ApiController {
                                     'name' => $activity['p_event_name'],
                                     'id' => $activity['p_event_id'],
                                     'startdatetitme' => \Yii::$app->formatter->asDateTime($activity['p_event_start_datetime']),
+                                    'enddatetitme' => \Yii::$app->formatter->asDateTime($activity['p_event_end_datetime']),
                                 ];
 
                                 if (empty($item['event_post']['name'])) {
@@ -179,9 +181,9 @@ class ActivityController extends ApiController {
                 'id' => Yii::$app->user->identity->id,
             ];
             return $this->sendResponse(false, "", $objects);
-//        } catch (\Exception $ex) {
-//            return $this->sendResponse(true, \Yii::t('member', 'error_system'), '');
-//        }
+        } catch (\Exception $ex) {
+            return $this->sendResponse(true, \Yii::t('member', 'error_system'), '');
+        }
     }
 
     private function _getItem() {
@@ -207,7 +209,7 @@ class ActivityController extends ApiController {
         if (!empty($activity['task_description_parse'])) {
             $descriptionParse = $activity['task_description_parse'];
         }
-        
+
         if (!empty($activity['p_event_description_parse'])) {
             $descriptionParse = $activity['p_event_description_parse'];
         }
@@ -291,10 +293,6 @@ class ActivityController extends ApiController {
             $actiAction = $activity['event_name'];
         }
 
-//        if (!empty($activity['firstname'])) {
-//            $actiAction = $activity['firstname'];
-//        }
-//
         if (!empty($activity['p_task_name'])) {
             $actiAction = $activity['p_task_name'];
         }
