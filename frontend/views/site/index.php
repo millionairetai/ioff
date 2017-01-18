@@ -169,35 +169,38 @@ $this->title = 'iofficez - Kết nối nhân viên';
         <div class="price-free">
             <div class="item-pricelist text-center border-solid">
                 <h4>Free</h4>
-                <p>0$/tháng</p>
+                <p class="price">0$/tháng</p>
                 <p>
                     Tối đa 5 người dùng<br/>
                     500MB lưu trữ<br/>
                     Sử dụng tất cả các chức năng
                 </p>
+                <p class="text-center"><a href="javascript:void(0)" class="btn btn-primary noround">Đăng ký</a></p>
             </div>
         </div>
         <div class="price-standard">
             <div class="item-pricelist text-center border-solid">
                 <h4>Standard</h4>
-                <p>$/tháng</p>
+                <p class="price">$/tháng</p>
                 <p>
                     Được chọn người dùng tối đa <br/>
                     Được chọn dung lượng lưu trữ tối đa<br/>
                     Sử dụng tất cả các chức năng
                 </p>
+                <p class="text-center"><a href="javascript:void(0)" class="btn btn-primary noround">Đăng ký</a></p>
             </div>
         </div>
         <div class="price-professional">
             <div class="item-pricelist text-center border-solid">
                 <h4>Professional</h4>
-                <p>50$/tháng</p>
+                <p class="price">50$/tháng</p>
                 <p>
                     Người dùng không giới hạn<br/>
                     10GB lưu trữ đầu miễn phí<br/>
                     Thêm 5GB/5$/tháng<br/>
                     Sử dụng tất cả các chức năng
-                    
+                </p>
+                <p class="text-center"><a href="javascript:void(0)" class="btn btn-primary noround">Đăng ký</a></p>
             </div>
         </div>
     </div><!--Container-->

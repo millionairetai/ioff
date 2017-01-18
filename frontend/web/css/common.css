@@ -64,9 +64,14 @@ nav ul li a{
     padding: 0 10px;
     color: #444;
     border-right: 1px solid #1c75bc;
+    font-weight: 400;
 }
 nav ul li:last-child a{
     border-right: none;
+}
+nav ul li a:hover,nav ul li a.active{
+    text-decoration: none;
+    color: #1c75bc;
 }
 /* REPONSIVE */
 @media (min-width:768px){

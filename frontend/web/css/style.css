@@ -39,8 +39,17 @@
     vertical-align: bottom;
 }
 #feature .item-feature dl dt{
-    margin-bottom: 10px;
-    font-weight: 400;
+    margin-bottom: 30px;
+    font-weight: 400;position: relative;
+}
+#feature .item-feature dl dt:after{
+    position: absolute;
+    width: 30px;
+    left: 50%;
+    bottom: -15px;
+    transform: translateX(-50%);
+    content: "";
+    border-bottom: 1px solid #868686;
 }
 #feature .item-feature dl dd{
     font-size: 14px;
@@ -71,24 +80,42 @@
     border: 1px solid #ddd;
 }
 .price-free,.price-professional{
-    width: 30%;padding: 0 20px;
+    width: 33.33333333%;padding: 0 30px;
     float: left;
 }
 .price-standard{
-    width: 40%;padding: 0 20px;
-    float: left;
+    width: 33.33333333%;
+    float: left;padding: 0 30px;
 }
 #pricelist h4{
     color: #1c75bc;
+    margin: 0 0 15px;
+    padding: 0 15px;
+}
+#pricelist p{
+    padding:  0 15px;
+}
+#pricelist p.price{
+    background: #1c75bc;
+    color: #fff;
+    padding: 5px 0;
+    font-weight: 400;
 }
 #pricelist .item-pricelist{
     height: 100%;
-    padding: 20px;
+    padding: 15px 0 50px;
     box-shadow: 0px 0px 10px 1px #eee;
     -moz-box-shadow: 0px 0px 10px 1px #eee;
     -webkit-box-shadow: 0px 0px 10px 1px #eee;
     -o-box-shadow: 0px 0px 10px 1px #eee;
     -ms-box-shadow: 0px 0px 10px 1px #eee;
+    position: relative;
+}
+#pricelist .item-pricelist p>a.btn{
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
 }
 /* REPONSIVE */
 @media (max-width: 661px){
