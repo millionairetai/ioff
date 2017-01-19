@@ -152,4 +152,5 @@ return [
     'edited event' => 'edited event ',
     'edited task' => 'edited task ',
     'edited project' => 'edited project',
+    'content' => 'Content',
 ];

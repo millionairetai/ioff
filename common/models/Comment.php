@@ -51,7 +51,7 @@ class Comment extends \common\components\db\ActiveRecord {
             'employee_id' => Yii::t('member', 'Employee ID'),
             'parent_employee_id' => Yii::t('member', 'Parent Employee ID'),
             'activity_id' => Yii::t('member', 'Activity ID'),
-            'content' => Yii::t('member', 'Content'),
+            'content' => Yii::t('member', 'content'),
             'total_like' => Yii::t('member', 'Total Like'),
             'datetime_created' => Yii::t('member', 'Datetime Created'),
             'lastup_datetime' => Yii::t('member', 'Lastup Datetime'),

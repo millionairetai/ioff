@@ -36,10 +36,10 @@ class CommentController extends ApiController {
                 $this->_message = $this->parserMessage($comment->getErrors());
             }
 
-            throw new \Exception($this->_message);
+            throw new \Exception('Can not initialize object');
         } catch (\Exception $ex) {
             $this->_error = true;
-            return $this->sendResponse($this->_error, $this->_message, []);
+            return $this->sendResponse($this->_error, \Yii::t('member', 'error_system'), []);
         }
 
         return $this->sendResponse(false, "", $comment);
@@ -56,24 +56,24 @@ class CommentController extends ApiController {
                 $like = new Like();
                 $like->employee_id = Yii::$app->user->identity->id;
                 $like->owner_id = $commentId;
-                $like->owner_table = 'comment';
+                $like->owner_table = Like::TABLE_COMMENT;
                 if ($like->save() === false) {
                     throw new \Exception('Can not like');
                 }
                 //increase like 1 step in comment
                 Comment::updateAllCounters(['total_like' => 1], ['id' => $commentId]);
                 $transaction->commit();
-                return $this->sendResponse($this->_error, $this->_message, '');
+                return $this->sendResponse($this->_error, '', []);
             }
 
             throw new \Exception('Can not like');
         } catch (\Exception $ex) {
             $transaction->rollBack();
             $this->_error = true;
-            return $this->sendResponse($this->_error, $this->_message, []);
+            return $this->sendResponse($this->_error, \Yii::t('member', 'error_system'), []);
         }
 
-        return $this->sendResponse(false, "", '');
+        return $this->sendResponse(false, '', []);
     }
 
 }

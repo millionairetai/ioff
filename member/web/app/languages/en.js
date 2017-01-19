@@ -107,6 +107,7 @@
             name_must_less_than_255_characters: 'Name must be less than 255 characters',          
             start: 'Bắt đầu', 
             end: 'Kết thúc',
+            i_can_not_be_blank: '%i% can not be blank',
             //-----------------------------------------End of common language.----------------------------------
             
             //project

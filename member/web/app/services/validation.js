@@ -30,6 +30,9 @@ appRoot.factory('validateService', ['apiService', function (apiService) {
                 return this.run(file.type, /^(image\/gif)|(image\/jpg)|(image\/jpeg)|(image\/pjpeg)|(image\/png)$/);
             },
             required: function(text) {
+                if (text == '' || angular.isUndefined(text) || text == null) {
+                    return false;
+                }
                 text = text.trim();
                 return text.length > 0;
             }

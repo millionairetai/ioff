@@ -146,4 +146,5 @@ return [
     'edited event' => 'đã chỉnh sửa sự kiện ',
     'edited task' => 'đã chỉnh sửa công việc ',
     'edited project' => 'đã chỉnh sửa dự án',
+    'content' => 'Nội dung',
 ];

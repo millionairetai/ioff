@@ -111,7 +111,7 @@ class RegistrationForm extends Model {
             $activity->owner_id = $this->_employee->id;
             $activity->owner_table = Activity::TABLE_EMPLOYEE;
             $activity->parent_employee_id = 0;
-            $activity->employee_id = 0;
+            $activity->employee_id = $this->_employee->id;
             $activity->type = Activity::TYPE_REGISTER_ACCOUNT;
             $activity->content = $this->_employee->fullname . ' join our intranet';
             if (!$activity->save()) {

@@ -106,6 +106,7 @@
             name_must_less_than_255_characters: 'Tên phải nhỏ hơn 255 kí tự',   
             start: 'Bắt đầu', 
             end: 'Kết thúc',
+            i_can_not_be_blank: '%i% không thể để trống',
             //-----------------------------------------End of common language.----------------------------------
             
             //project

@@ -9,13 +9,6 @@ use common\models\Comment;
 class ActivityController extends ApiController {
 
     /**
-     * Get list of actions
-     */
-    public function actionIndex() {
-//    return $this->sendResponse(false, "", Action::getTranslation());
-    }
-
-    /**
      * Get activity of company for this employee
      */
     public function actionGetActivity() {
@@ -175,7 +168,7 @@ class ActivityController extends ApiController {
             }
 
             $objects['activities'] = $collection;
-            $objects['totalCount'] = $result['totalRow'][0]['total_row'];
+            $objects['totalCount'] = !empty($result['totalRow'][0]['total_row']) ? $result['totalRow'][0]['total_row'] : 0;
             $objects['profile'] = [
                 'avatar' => Yii::$app->user->identity->image,
                 'id' => Yii::$app->user->identity->id,

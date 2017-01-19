@@ -20,6 +20,9 @@ use Yii;
  */
 class Like extends \common\components\db\ActiveRecord
 {
+     const TABLE_COMMENT = "comment";  
+     const TABLE_ACTIVITY = "activity";  
+     
     /**
      * @inheritdoc
      */

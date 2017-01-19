@@ -1,5 +1,5 @@
-appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activityService', 'commonService', 'commentService',
-    function ($scope, $rootScope, alertify, activityService, commonService, commentService) {
+appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activityService', 'commonService', 'commentService', 'validateService',
+    function ($scope, $rootScope, alertify, activityService, commonService, commentService, validateService) {
         $scope.profile = null;
         $scope.comment = '';
         $scope.activity = {
@@ -21,14 +21,11 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
                 temp = Object.keys(response.objects.activities).map(function(k) { return response.objects.activities[k] });                
                 //Reverse max key to top head, beause they have just created.
                 temp.reverse();
-                
                 if ($scope.activity.data === null) {
                     $scope.activity.data = temp;
                 } else {
                     $scope.activity.data = $scope.activity.data.concat(temp);
                 }
-                
-                console.log($scope.activity.data);
                 
                 $scope.profile = response.objects.profile;
                 $scope.activity.total = response.objects.totalCount;
@@ -43,6 +40,9 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
         }
 
         $scope.saveComment = function (index, activityId, content) {
+            if (!validateService.required(content)) {
+                return false;
+            }
             commonService.add('comment', {activity_id: activityId, content: content}, function (response) {
                 //Append to current comment.
                 if (!angular.isDefined($scope.activity.data[index]['comments'])) {
@@ -55,10 +55,10 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
             });
         }
         
-        $scope.like = function(activityId, commentId) {
+        $scope.likeComment = function(indexActivity, commentId) {
             commentService.like({commentId: commentId}, function (response) {
-                $scope.activity.data[activityId]['comments'][commentId].total_like = parseInt($scope.activity.data[activityId]['comments'][commentId].total_like) + 1;
-                $scope.activity.data[activityId]['comments'][commentId].is_liked = true;
+                $scope.activity.data[indexActivity]['comments'][commentId].total_like = parseInt($scope.activity.data[indexActivity]['comments'][commentId].total_like) + 1;
+                $scope.activity.data[indexActivity]['comments'][commentId].is_liked = true;
                 alertify.success($rootScope.$lang.like_success);
             });
         }

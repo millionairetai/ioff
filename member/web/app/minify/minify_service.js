@@ -9,12 +9,9 @@ appRoot.factory('actionService', ['apiService', function (apiService) {
 appRoot.factory('activityService', ['apiService', function (apiService) {
 
         return {
-            searchEmployee: function (data, success, error) {
-                return apiService.post('employee/search', data, success, error);
-            },
             getActivity: function (data, success, error) {
                 return apiService.get('activity/get-activity', data, success, error);
-            },
+            }
         };
     }]);
 appRoot.factory('apiService', ['$rootScope', '$http', '$location', 'alertify', function ($rootScope, $http, $location, alertify) {
@@ -1083,6 +1080,9 @@ appRoot.factory('validateService', ['apiService', function (apiService) {
                 return this.run(file.type, /^(image\/gif)|(image\/jpg)|(image\/jpeg)|(image\/pjpeg)|(image\/png)$/);
             },
             required: function(text) {
+                if (text == '' || angular.isUndefined(text) || text == null) {
+                    return false;
+                }
                 text = text.trim();
                 return text.length > 0;
             }
