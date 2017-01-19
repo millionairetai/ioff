@@ -29,7 +29,7 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
                 
                 $scope.profile = response.objects.profile;
                 $scope.activity.total = response.objects.totalCount;
-                if (response.objects.activities.length < 10) {
+                if (temp.length < 10) {
                     $scope.activity.end = true;
                     return true;
                 }

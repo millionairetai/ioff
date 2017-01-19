@@ -22,7 +22,13 @@
                         </div>
                     </div>
                 </div><!-- /.box new post -->
-
+                <div id="activity1" ng-show="!activity.data.length">
+                    <div class="box box-widget">
+                        <div class="box-header with-border">
+                            {{$root.$lang.no_data}}
+                        </div>
+                    </div>
+                </div>
                 <div id="activity" infinite-scroll-disabled="activity.busy" infinite-scroll="getActivity()">
                     <div class="box box-widget" ng-repeat="(indexActivity, activity) in activity.data">
                         <div class="box-tools pull-right">
