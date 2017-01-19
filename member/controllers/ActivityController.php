@@ -24,7 +24,6 @@ class ActivityController extends ApiController {
             $activities = $result['activities'];
             if ($activities) {
                 foreach ($activities as $activity) {
-                    $activityIds[] = $activity['activity_id'];
                     $employee->firstname = $activity['firstname'];
                     $employee->lastname = $activity['lastname'];
                     $employee->profile_image_path = $activity['profile_image_path'];
@@ -142,6 +141,8 @@ class ActivityController extends ApiController {
                         continue;
                     }
 
+                    //Get list activityId to get comment list.
+                    $activityIds[] = $activity['activity_id'];
                     $collection[$activity['activity_id']] = $item;
                 }
 
