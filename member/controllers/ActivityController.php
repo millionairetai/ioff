@@ -6,6 +6,7 @@ use Yii;
 use common\models\Activity;
 use common\models\Like;
 use common\models\Comment;
+use common\models\ActivityPost;
 
 class ActivityController extends ApiController {
 
@@ -215,7 +216,63 @@ class ActivityController extends ApiController {
         return $this->sendResponse(false, '', []);
     }
 
-    
+    /**
+     * Like activity
+     */
+    public function actionAddMessage() {
+        $transaction = \Yii::$app->db->beginTransaction();
+        try {
+            if ($activityPost = new ActivityPost()) {
+                $activityPost->attributes = Yii::$app->request->post();
+                $activityPost->employee_id = Yii::$app->user->identity->id;
+                $activityPost->company_id = Yii::$app->user->identity->company_id;
+                $activityPost->is_public = Yii::$app->request->post('all');
+                $activityPost->content_parse = strip_tags($activityPost->content);
+                if ($activityPost->save() === false) {
+                    $this->_message = $this->parserMessage($activityPost->getErrors());
+                    return $this->sendResponse(true, $this->_message, []);
+                }
+                //Insert into activity
+                $activity = new Activity();
+                $activity->owner_id = $activityPost->id;
+                $activity->owner_table = Activity::TABLE_ACTIVITY_POST;
+                $activity->parent_employee_id = 0;
+                $activity->employee_id = \Yii::$app->user->getId();
+                $activity->type = Activity::TYPE_CREATE_ACTIVITY_POST;
+                $activity->content = '';
+                if ($activity->save() === false) {
+                    throw new \Exception('Save record to table Activity fail');
+                }
+
+                $return = [
+                    'total_comment' => 0,
+                    'total_like' => 0,
+                    'is_liked' => false,
+                    'activity_id' => $activity->id,
+                    'activity_type' => $activity->type,
+                    'activity_action' => 'post activity',
+                    'avatar' => Yii::$app->user->identity->image,
+                    'employee_id' => Yii::$app->user->identity->id,
+                    'employee_name' => Yii::$app->user->identity->fullname,
+                    'datetime_created' => \Yii::$app->formatter->asDateTime($activity->datetime_created),
+                    'activity_object' => $activityPost->content,
+                    'activity_content_parse' => $activityPost->content_parse,
+                ];
+
+                $transaction->commit();
+                return $this->sendResponse($this->_error, $this->_message, ['activity' => $return]);
+            }
+
+            throw new \Exception('Can not initialize object');
+        } catch (\Exception $ex) {
+            $transaction->rollBack();
+            $this->_error = true;
+            return $this->sendResponse($this->_error, \Yii::t('member', 'error_system'), []);
+        }
+
+        return $this->sendResponse(false, "", $comment);
+    }
+
     private function _getItem() {
         
     }
@@ -250,6 +307,10 @@ class ActivityController extends ApiController {
 
         if (!empty($activity['p_task_description_parse'])) {
             $descriptionParse = $activity['p_task_description_parse'];
+        }
+        
+        if (!empty($activity['activity_post_content_parse'])) {
+            $descriptionParse = $activity['activity_post_content_parse'];
         }
 
         if (strlen($descriptionParse) > 500) {

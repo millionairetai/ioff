@@ -29,6 +29,7 @@ class Activity extends \common\components\db\ActiveRecord
     const TABLE_EVENT = "event"; 
     const TABLE_TASK = "task"; 
     const TABLE_EMPLOYEE = "employee"; 
+    const TABLE_ACTIVITY_POST = "activity_post"; 
     
     //const for type of activity
     const TYPE_CREATE_TASK = 'create_task';
@@ -43,6 +44,7 @@ class Activity extends \common\components\db\ActiveRecord
     const TYPE_CREATE_PROJECT_POST = 'create_project_post';
     const TYPE_REGISTER_ACCOUNT = 'register_account';
     const TYPE_ADD_ACCOUNT = 'add_account';
+    const TYPE_CREATE_ACTIVITY_POST = 'create_activity_post';
     
     /**
      * @inheritdoc
@@ -118,7 +120,8 @@ class Activity extends \common\components\db\ActiveRecord
             .  " p_project.name AS p_project_name, p_project.id AS p_project_id, "
             .  " p_event.id AS p_event_id, p_event.name AS p_event_name, p_event.description_parse AS p_event_description_parse, p_event.start_datetime AS p_event_start_datetime, p_event.end_datetime AS p_event_end_datetime, p_event.is_all_day AS p_is_all_day, "
             .  " p_task.id AS p_task_id, p_task.name AS p_task_name, p_task.description_parse AS p_task_description_parse,"
-            .  " like.employee_id AS like_employee_id"  
+            .  " like.employee_id AS like_employee_id,"
+            .  " activity_post.content AS activity_post_content, activity_post.content_parse  AS activity_post_content_parse"  
             .  " FROM activity "
             .  "     LEFT JOIN employee "
             .  "         ON activity.employee_id = employee.id AND employee.disabled=0 "
@@ -142,6 +145,8 @@ class Activity extends \common\components\db\ActiveRecord
             .  "         ON activity.owner_id = task_post.id AND activity.owner_table='task_post' AND (EXISTS(SELECT * FROM task WHERE task.id=task_post.task_id AND task.is_public=1 AND task.disabled=0) OR EXISTS(SELECT * FROM task_assignment WHERE task_assignment.task_id=task_post.task_id AND task_assignment.employee_id = {$employeeId} AND task_assignment.disabled=0) OR EXISTS(SELECT * FROM follower WHERE follower.task_id=task_post.task_id AND follower.employee_id={$employeeId} AND follower.disabled=0)) AND task_post.disabled = 0 "
             .  "     LEFT JOIN task AS p_task"
             .  "         ON task_post.task_id=p_task.id AND p_task.disabled=0 "
+            .  "     LEFT JOIN activity_post "
+            .  "         ON activity_post.id=activity.owner_id AND activity.owner_table='activity_post' AND activity_post.disabled=0 "
             .  "     LEFT JOIN `like`"
             .  "         ON activity.id=like.owner_id AND like.owner_table='activity' AND like.employee_id={$employeeId} AND like.disabled=0 "      
             .  " WHERE activity.company_id={$companyId} AND activity.disabled=0 "

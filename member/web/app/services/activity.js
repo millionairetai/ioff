@@ -6,6 +6,9 @@ appRoot.factory('activityService', ['apiService', function (apiService) {
             },
             like: function (data, success, error) {
                 return apiService.post('activity/like', data, success, error);
-            }
+            },
+            addMessage: function (data, success, error) {
+                return apiService.post('activity/add-message', data, success, error);
+            },
         };
     }]);

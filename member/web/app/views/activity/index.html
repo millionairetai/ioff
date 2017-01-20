@@ -12,13 +12,19 @@
                     <div class="box-body">
                         <div class="form-group">
                             <ul class="option_-h">
-                                <li><a href="javascript:void(0)"><i class="fa fa-fw fa-file-o"></i><span>File</span></a></li>
+                                <li><a href="javascript:void(0)"><i class="fa fa-fw fa-file-o"></i><span>Message</span></a></li>
                                 <li><a href="javascript:void(0)"><i class="fa fa-fw fa-clock-o"></i><span>Event</span></a></li>
                             </ul>
-                            <textarea class="form-control textarea" placeholder="Enter text ..."></textarea>
+                            <textarea class="form-control textarea" ng-model="message.content" placeholder="Enter text ..."></textarea>
                         </div>
                         <div class="form-group">
-                            <button type="submit" class="btn btn-info pull-right">Post</button>
+                            <input ng-hide="message.option" type="checkbox" ng-model="message.all" icheck /> {{$root.$lang.project_choose_all}}
+                        </div>
+                        <div class="form-group">
+                            <input type="checkbox" ng-model="message.option" icheck ng-click="message.option=true;" /> Tùy chọn
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-info pull-right" ng-click="addMessage()">Post</button>
                         </div>
                     </div>
                 </div><!-- /.box new post -->
@@ -43,6 +49,9 @@
                                     <dd class="description">{{activity.datetime_created}}</dd>
                                 </dl>
                                 <dl class="content-event" ng-switch="activity.activity_type">
+                                    <dd class="top-event clearfix" ng-switch-when="activity_post">
+                                        
+                                    </dd>
                                     <dd class="top-event clearfix" ng-switch-when="event">
                                         <div class="calendar-event">
                                             <time datetime="2014-09-20" class="icon">
