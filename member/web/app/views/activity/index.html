@@ -191,8 +191,8 @@
                         <div class="box-body">
                             {{activity.activity_content_parse}}
                              <div class="like-contain clearfix">
-                                <button type="button" class="btn btn-default btn-xs like-button pull-left"><i class="fa fa-thumbs-o-up"></i> Like</button>
-                                <span class="pull-left text-muted">45 likes - 2 comments</span>
+                                <button ng-hide="activity.is_liked" ng-click="likeActivity(indexActivity, activity.activity_id)" type="button" class="btn btn-default btn-xs like-button pull-left"><i class="fa fa-thumbs-o-up"></i> {{$root.$lang.like}}</button>
+                                <span class="pull-left text-muted"><span ng-show="activity.total_like|num">{{activity.total_like}} {{$root.$lang.likes}}</span> <span ng-show="(activity.total_like|num) && (activity.total_comment|num)"> - </span> <span ng-show="activity.total_comment|num">{{activity.total_comment}} {{$root.$lang.comments}}</span></span>
                             </div>
                         </div>
                         <!-- /.box-body -->
@@ -207,7 +207,7 @@
                                         <span class="text-muted pull-right">{{comment.datetime}}</span>
                                     </span><!-- /.username -->
                                     {{comment.content}}
-                                    <p><a ng-hide="comment.is_liked" href="" class="like-comment" ng-click="likeComment(indexActivity, keyComment)"><b>Like</b></a> <span ng-show="comment.total_like | num"><span class="img-circle btn-primary"><i class="fa fa-fw fa-thumbs-o-up"></i></span>  {{comment.total_like}}</span></p>
+                                    <p><a ng-hide="comment.is_liked" href="" class="like-comment" ng-click="likeComment(indexActivity, keyComment)"><b>{{$root.$lang.like}}</b></a> <span ng-show="comment.total_like | num"><span class="img-circle btn-primary"><i class="fa fa-fw fa-thumbs-o-up"></i></span>  {{comment.total_like}}</span></p>
                                 </div>
                                 <!-- /.comment-text -->
 

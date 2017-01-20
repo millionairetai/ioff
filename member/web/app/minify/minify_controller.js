@@ -50,7 +50,7 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
                 } else {
                     $scope.activity.data[index]['comments'] = angular.extend($scope.activity.data[index]['comments'], response.objects.comments);
                 }
-
+                $scope.activity.data[index].total_comment = parseInt($scope.activity.data[index].total_comment) + 1;
                 alertify.success($rootScope.$lang.add_success);
             });
         }
@@ -59,6 +59,14 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
             commentService.like({commentId: commentId}, function (response) {
                 $scope.activity.data[indexActivity]['comments'][commentId].total_like = parseInt($scope.activity.data[indexActivity]['comments'][commentId].total_like) + 1;
                 $scope.activity.data[indexActivity]['comments'][commentId].is_liked = true;
+                alertify.success($rootScope.$lang.like_success);
+            });
+        }
+        
+        $scope.likeActivity = function(indexActivity, activityId) {
+            activityService.like({activityId: activityId}, function (response) {
+                $scope.activity.data[indexActivity].total_like = parseInt($scope.activity.data[indexActivity].total_like) + 1;
+                $scope.activity.data[indexActivity].is_liked = true;
                 alertify.success($rootScope.$lang.like_success);
             });
         }

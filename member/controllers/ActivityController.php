@@ -4,6 +4,7 @@ namespace member\controllers;
 
 use Yii;
 use common\models\Activity;
+use common\models\Like;
 use common\models\Comment;
 
 class ActivityController extends ApiController {
@@ -28,6 +29,9 @@ class ActivityController extends ApiController {
                     $employee->lastname = $activity['lastname'];
                     $employee->profile_image_path = $activity['profile_image_path'];
                     $item = [
+                        'total_comment' => $activity['total_comment'],
+                        'total_like' => $activity['total_like'],
+                        'is_liked' => !empty($activity['like_employee_id']) ? true : false,
                         'activity_id' => $activity['activity_id'],
                         'activity_type' => $activity['owner_table'],
                         'activity_action' => $this->_changeActivityTypeToText($activity['type']),
@@ -180,6 +184,38 @@ class ActivityController extends ApiController {
         }
     }
 
+    /**
+     * Like activity
+     */
+    public function actionLike() {
+        try {
+            $transaction = \Yii::$app->db->beginTransaction();
+            if ($activityId = Yii::$app->request->post('activityId')) {
+                //save into like table.
+                $like = new Like();
+                $like->employee_id = Yii::$app->user->identity->id;
+                $like->owner_id = $activityId;
+                $like->owner_table = Like::TABLE_ACTIVITY;
+                if ($like->save() === false) {
+                    throw new \Exception('Can not like');
+                }
+                //increase like 1 step in comment
+                Activity::updateAllCounters(['total_like' => 1], ['id' => $activityId]);
+                $transaction->commit();
+                return $this->sendResponse($this->_error, '', []);
+            }
+
+            throw new \Exception('Can not like');
+        } catch (\Exception $ex) {
+            $transaction->rollBack();
+            $this->_error = true;
+            return $this->sendResponse($this->_error, \Yii::t('member', 'error_system'), []);
+        }
+
+        return $this->sendResponse(false, '', []);
+    }
+
+    
     private function _getItem() {
         
     }

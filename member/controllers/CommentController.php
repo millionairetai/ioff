@@ -12,12 +12,15 @@ class CommentController extends ApiController {
      * Add comment
      */
     public function actionAdd() {
+        $transaction = \Yii::$app->db->beginTransaction();
         try {
             if ($comment = new Comment()) {
                 $comment->attributes = Yii::$app->request->post();
                 $comment->employee_id = Yii::$app->user->identity->id;
                 $comment->company_id = Yii::$app->user->identity->company_id;
                 if ($comment->save() !== false) {
+                    //increase total_comment in activity table one step.
+                    \common\models\Activity::updateAllCounters(['total_comment' => 1], ['id' => $comment->activity_id]);
                     $return = [
                         $comment->id => [
                             'content' => $comment->content,
@@ -29,7 +32,7 @@ class CommentController extends ApiController {
                             ],
                         ]
                     ];
-
+                    $transaction->commit();
                     return $this->sendResponse($this->_error, $this->_message, ['comments' => $return]);
                 }
 
@@ -38,6 +41,7 @@ class CommentController extends ApiController {
 
             throw new \Exception('Can not initialize object');
         } catch (\Exception $ex) {
+            $transaction->rollBack();
             $this->_error = true;
             return $this->sendResponse($this->_error, \Yii::t('member', 'error_system'), []);
         }

@@ -117,7 +117,8 @@ class Activity extends \common\components\db\ActiveRecord
             .  " employee_owner.department_id, employee_owner.firstname AS new_employeee_firstname, employee_owner.lastname AS new_employeee_lastname, employee_owner.profile_image_path AS new_employeee_profile_image_path, employee_owner.id AS new_employeee_id, "
             .  " p_project.name AS p_project_name, p_project.id AS p_project_id, "
             .  " p_event.id AS p_event_id, p_event.name AS p_event_name, p_event.description_parse AS p_event_description_parse, p_event.start_datetime AS p_event_start_datetime, p_event.end_datetime AS p_event_end_datetime, p_event.is_all_day AS p_is_all_day, "
-            .  " p_task.id AS p_task_id, p_task.name AS p_task_name, p_task.description_parse AS p_task_description_parse"
+            .  " p_task.id AS p_task_id, p_task.name AS p_task_name, p_task.description_parse AS p_task_description_parse,"
+            .  " like.employee_id AS like_employee_id"  
             .  " FROM activity "
             .  "     LEFT JOIN employee "
             .  "         ON activity.employee_id = employee.id AND employee.disabled=0 "
@@ -141,6 +142,8 @@ class Activity extends \common\components\db\ActiveRecord
             .  "         ON activity.owner_id = task_post.id AND activity.owner_table='task_post' AND (EXISTS(SELECT * FROM task WHERE task.id=task_post.task_id AND task.is_public=1 AND task.disabled=0) OR EXISTS(SELECT * FROM task_assignment WHERE task_assignment.task_id=task_post.task_id AND task_assignment.employee_id = {$employeeId} AND task_assignment.disabled=0) OR EXISTS(SELECT * FROM follower WHERE follower.task_id=task_post.task_id AND follower.employee_id={$employeeId} AND follower.disabled=0)) AND task_post.disabled = 0 "
             .  "     LEFT JOIN task AS p_task"
             .  "         ON task_post.task_id=p_task.id AND p_task.disabled=0 "
+            .  "     LEFT JOIN `like`"
+            .  "         ON activity.id=like.owner_id AND like.owner_table='activity' AND like.employee_id={$employeeId} AND like.disabled=0 "      
             .  " WHERE activity.company_id={$companyId} AND activity.disabled=0 "
             .  " ORDER BY activity.datetime_created DESC "
             .  " LIMIT " . ($offset - 1) * $perPage  .", " . $offset * $perPage ;

@@ -386,7 +386,10 @@
             press_enter_to_post_comment: 'Press enter to post comment',
             like_success: 'Like successfully',
             posted_in_project : 'Posted in project',
-            posted_in_task: 'Posted in task'
+            posted_in_task: 'Posted in task',
+            comments: 'comment(s)',
+            like: 'Like',
+            likes: 'like(s)'
         };
     });
 })(window.angular);

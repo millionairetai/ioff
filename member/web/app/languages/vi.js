@@ -398,7 +398,10 @@
             press_enter_to_post_comment: 'Nhấn enter để đăng bình luận',
             like_success: 'Thích thành công',
             posted_in_project : 'Đăng trong dự án',
-            posted_in_task: 'Đăng trong công việc'
+            posted_in_task: 'Đăng trong công việc',
+            comments: 'bình luận',
+            like: 'Thích',
+            likes: 'thích'
         };
     });
 })(window.angular);
