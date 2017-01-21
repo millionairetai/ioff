@@ -7,6 +7,8 @@ use common\models\Activity;
 use common\models\Like;
 use common\models\Comment;
 use common\models\ActivityPost;
+use common\models\ActivityPostParticipant;
+use common\models\ActivityPostEmployee;
 
 class ActivityController extends ApiController {
 
@@ -45,6 +47,12 @@ class ActivityController extends ApiController {
                     ];
 
                     switch ($activity['owner_table']) {
+                        case 'activity_post': {
+                                if (empty($activity['activity_post_content'])) {
+                                    $isSkip = true;
+                                }
+                            }
+                            break;
                         case 'task': {
                                 $item['task'] = [
                                     'name' => $this->_getActivityName($activity),
@@ -222,11 +230,12 @@ class ActivityController extends ApiController {
     public function actionAddMessage() {
         $transaction = \Yii::$app->db->beginTransaction();
         try {
+            $post = Yii::$app->request->post();
             if ($activityPost = new ActivityPost()) {
                 $activityPost->attributes = Yii::$app->request->post();
                 $activityPost->employee_id = Yii::$app->user->identity->id;
                 $activityPost->company_id = Yii::$app->user->identity->company_id;
-                $activityPost->is_public = Yii::$app->request->post('all');
+                $activityPost->is_public = Yii::$app->request->post('option') ? false : true;
                 $activityPost->content_parse = strip_tags($activityPost->content);
                 if ($activityPost->save() === false) {
                     $this->_message = $this->parserMessage($activityPost->getErrors());
@@ -242,6 +251,11 @@ class ActivityController extends ApiController {
                 $activity->content = '';
                 if ($activity->save() === false) {
                     throw new \Exception('Save record to table Activity fail');
+                }
+
+                //Add in activity post participant, activity post employee.
+                if (!$activityPost->is_public) {
+                    $this->_insertActivityPostSlaveTable($post, $activityPost);
                 }
 
                 $return = [
@@ -277,6 +291,46 @@ class ActivityController extends ApiController {
         
     }
 
+    private function _insertActivityPostSlaveTable($post, $activityPost) {
+        $departmentIds = [];
+        $employeeIds = [];
+        foreach ((array) $post['departments'] as $departmentId) {
+            $departmentIds[] = $departmentId;
+            $activityPostPartcipant[] = [
+                'activity_post_id' => $activityPost['id'],
+                'owner_id' => $departmentId,
+                'owner_table' => 'department',
+            ];
+        }
+
+        foreach ((array) $post['employees'] as $employee) {
+            $employeeIds[] = $employee['id'];
+            $activityPostPartcipant[] = [
+                'activity_post_id' => $activityPost['id'],
+                'owner_id' => $employee['id'],
+                'owner_table' => 'employee',
+            ];
+        }
+
+        if (!empty($activityPostPartcipant)) {
+            ActivityPostParticipant::batchInsert($activityPostPartcipant);
+        }
+
+        //Insert into activity post employee.
+        ///Get employee id.
+        $employeeIds = \common\models\Employee::getEmployeeIdByDepartmentIdAndEmployeeId($departmentIds, $employeeIds);
+        if ($employeeIds) {
+            foreach ($employeeIds as $employeeId) {
+                $activityPostEmployee[] = [
+                    'activity_post_id' => $activityPost['id'],
+                    'employee_id' => $employeeId,
+                ];
+            }
+
+            ActivityPostEmployee::batchInsert($activityPostEmployee);
+        }
+    }
+
     /**
      * Change activity type to text. Ex: create_project -> 'created project'
      * 
@@ -308,7 +362,7 @@ class ActivityController extends ApiController {
         if (!empty($activity['p_task_description_parse'])) {
             $descriptionParse = $activity['p_task_description_parse'];
         }
-        
+
         if (!empty($activity['activity_post_content_parse'])) {
             $descriptionParse = $activity['activity_post_content_parse'];
         }

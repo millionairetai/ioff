@@ -9,6 +9,6 @@ appRoot.factory('activityService', ['apiService', function (apiService) {
             },
             addMessage: function (data, success, error) {
                 return apiService.post('activity/add-message', data, success, error);
-            },
+            }
         };
     }]);

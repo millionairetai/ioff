@@ -627,4 +627,36 @@ class Employee extends ActiveRecord implements IdentityInterface {
                     ->one();
         
     }
+    
+    /**
+     * Get Employeee Id by department Id and employee Id
+     * 
+     * @param array $departments
+     * @param array $employees
+     * 
+     * @return array
+     */
+    public static function getEmployeeIdByDepartmentIdAndEmployeeId($departmentIds = [], $employeeIds = []) {
+        $result = [];
+        $employeeIds = empty($employeeIds) ? null : $employeeIds;
+        $departmentIds = empty($departmentIds) ? null : $departmentIds;
+        //Get employee is actived.
+        $employees = self::find()
+                ->select([self::tableName() . '.id'])
+//                ->leftJoin(Status::tableName(), Status::tableName() . '.id=' . self::tableName() . '.status_id')
+                ->andWhere([self::tableName() . '.id' => $employeeIds])
+                ->orWhere(['department_id' => $departmentIds])
+//                ->andWhere(['column_name' => self::COLUNM_NAME_ACTIVE])
+                ->andCompanyId(false, self::tableName())
+                ->asArray()
+                ->all();
+
+        if (!empty($employees)) {
+            foreach ($employees as $employee) {
+                $result[] = $employee['id'];
+            }
+        }
+
+        return $result;
+    }
 }

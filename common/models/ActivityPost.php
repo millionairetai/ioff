@@ -35,10 +35,10 @@ class ActivityPost extends \common\components\db\ActiveRecord
     public function rules()
     {
         return [
-            [['company_id', 'employee_id', 'is_public', 'datetime_created', 'lastup_datetime', 'created_employee_id', 'lastup_employee_id'], 'integer'],
+            [['company_id', 'employee_id', 'datetime_created', 'lastup_datetime', 'created_employee_id', 'lastup_employee_id'], 'integer'],
             [['content'], 'required'],
             [['content', 'content_parse'], 'string'],
-            [['disabled'], 'boolean']
+            [['disabled', 'is_public'], 'boolean']
         ];
     }
 

@@ -1,5 +1,5 @@
-appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activityService', 'commonService', 'commentService', 'validateService',
-    function ($scope, $rootScope, alertify, activityService, commonService, commentService, validateService) {
+appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activityService', 'commonService', 'commentService', 'validateService', 'departmentService', 'employeeService',
+    function ($scope, $rootScope, alertify, activityService, commonService, commentService, validateService, departmentService, employeeService) {
         $scope.profile = null;
         $scope.comment = '';
         $scope.activity = {
@@ -18,6 +18,19 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
             departments: [],
             employees: []
         };
+        
+                //get all department
+        departmentService.allDepartment({}, function (data) {
+            $scope.departments = data.objects;
+        });
+
+        //add employee
+        $scope.getEmployees = function (keyword) {
+            employeeService.searchEmployee({keyword: keyword}, function (response) {
+                $scope.employees = response.objects;
+            });
+        };
+        
         var temp = [];
         $scope.getActivity = function () {
             if ($scope.activity.end || $scope.activity.busy) {
@@ -86,8 +99,17 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
             activityService.addMessage($scope.message, function (response) {
                 $scope.message.content = '';
                 $scope.activity.data.unshift(response.objects.activity);
+                $scope.message.employees = [];
+                $scope.message.departments = [];
+                $scope.message.option = false;
+                $scope.message.all = true;
                 alertify.success($rootScope.$lang.add_success);
             });
+        }
+        
+        $scope.a = function () {
+            $scope.message.option = true;
+            $scope.message.all = false;
         }
         
         $scope.getActivity();
