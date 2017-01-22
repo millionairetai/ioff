@@ -146,7 +146,7 @@ class Activity extends \common\components\db\ActiveRecord
             .  "     LEFT JOIN task AS p_task"
             .  "         ON task_post.task_id=p_task.id AND p_task.disabled=0 "
             .  "     LEFT JOIN activity_post "
-            .  "         ON activity_post.id=activity.owner_id AND activity.owner_table='activity_post' AND (activity_post.is_public=1 OR EXISTS(SELECT * FROM activity_post_employee WHERE activity_post_employee.activity_post_id=activity_post.id AND activity_post_employee.employee_id={$employeeId} AND activity_post_employee.disabled=0)) AND activity_post.disabled=0 "
+            .  "         ON activity_post.id=activity.owner_id AND activity.owner_table='activity_post' AND (activity_post.is_public=1 OR activity_post.created_employee_id={$employeeId} OR EXISTS(SELECT * FROM activity_post_employee WHERE activity_post_employee.activity_post_id=activity_post.id AND activity_post_employee.employee_id={$employeeId} AND activity_post_employee.disabled=0)) AND activity_post.disabled=0 "
             .  "     LEFT JOIN `like`"
             .  "         ON activity.id=like.owner_id AND like.owner_table='activity' AND like.employee_id={$employeeId} AND like.disabled=0 "      
             .  " WHERE activity.company_id={$companyId} AND activity.disabled=0 "

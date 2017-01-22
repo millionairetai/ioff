@@ -29,6 +29,7 @@ class CommentController extends ApiController {
                             'employee' => [
                                 'avatar' => Yii::$app->user->identity->image,
                                 'fullname' => Yii::$app->user->identity->fullname,
+                                'id' => Yii::$app->user->identity->id,
                             ],
                         ]
                     ];

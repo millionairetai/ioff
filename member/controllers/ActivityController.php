@@ -367,9 +367,9 @@ class ActivityController extends ApiController {
             $descriptionParse = $activity['activity_post_content_parse'];
         }
 
-        if (strlen($descriptionParse) > 500) {
-            $descriptionParse = substr($descriptionParse, 0, 500) . '...';
-        }
+//        if (strlen($descriptionParse) > 500) {
+//            $descriptionParse = substr($descriptionParse, 0, 500) . '...';
+//        }
         return $descriptionParse;
     }
 
