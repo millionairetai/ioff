@@ -264,7 +264,7 @@ class ActivityController extends ApiController {
                     'is_liked' => false,
                     'activity_id' => $activity->id,
                     'activity_type' => $activity->type,
-                    'activity_action' => 'post activity',
+//                    'activity_action' => 'post activity',
                     'avatar' => Yii::$app->user->identity->image,
                     'employee_id' => Yii::$app->user->identity->id,
                     'employee_name' => Yii::$app->user->identity->fullname,
@@ -291,6 +291,14 @@ class ActivityController extends ApiController {
         
     }
 
+    /**
+     * Like activity
+     * 
+     * @param array $post - post from user.
+     * @param array $activityPost - array of activity post.
+     * 
+     * @return boolean
+     */
     private function _insertActivityPostSlaveTable($post, $activityPost) {
         $departmentIds = [];
         $employeeIds = [];
@@ -299,7 +307,7 @@ class ActivityController extends ApiController {
             $activityPostPartcipant[] = [
                 'activity_post_id' => $activityPost['id'],
                 'owner_id' => $departmentId,
-                'owner_table' => 'department',
+                'owner_table' => ActivityPostParticipant::TABLE_DEPARTMENT,
             ];
         }
 
@@ -308,7 +316,7 @@ class ActivityController extends ApiController {
             $activityPostPartcipant[] = [
                 'activity_post_id' => $activityPost['id'],
                 'owner_id' => $employee['id'],
-                'owner_table' => 'employee',
+                'owner_table' => ActivityPostParticipant::TABLE_EMPLOYEE,
             ];
         }
 
@@ -329,6 +337,8 @@ class ActivityController extends ApiController {
 
             ActivityPostEmployee::batchInsert($activityPostEmployee);
         }
+        
+        return true;
     }
 
     /**

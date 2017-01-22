@@ -20,6 +20,10 @@ use Yii;
  */
 class ActivityPostParticipant extends \common\components\db\ActiveRecord
 {
+    //Table for owner_table column.
+    const TABLE_DEPARTMENT = 'department';
+    const TABLE_EMPLOYEE = 'employee';
+    
     /**
      * @inheritdoc
      */

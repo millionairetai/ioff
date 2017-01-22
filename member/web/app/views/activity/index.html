@@ -4,7 +4,7 @@
             <div class="col-md-9">
                 <div class="box box-solid">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Activity stream</h3>            
+                        <h3 class="box-title">{{$root.$lang.activity}}</h3>            
                         <div class="box-tools pull-right">
                             <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
                         </div>
@@ -12,16 +12,16 @@
                     <div class="box-body">
                         <div class="form-group">
                             <ul class="option_-h">
-                                <li><a href="javascript:void(0)"><i class="fa fa-fw fa-file-o"></i><span>Message</span></a></li>
+                                <li><a href="javascript:void(0)"><i class="fa fa-fw fa-file-o"></i><span>{{$root.$lang.message}}</span></a></li>
                                 <li><a href="javascript:void(0)"><i class="fa fa-fw fa-clock-o"></i><span>Event</span></a></li>
                             </ul>
-                            <textarea class="form-control textarea" ng-model="message.content" placeholder="Enter text ..."></textarea>
+                            <textarea class="form-control textarea" ng-model="message.content" placeholder="{{$root.$lang.what_do_you_think}}? ..."></textarea>
                         </div>
                         <div ng-hide="message.option" class="form-group">
                             <input type="checkbox" ng-model="message.all" icheck /> {{$root.$lang.project_choose_all}}
                         </div>
                         <div class="form-group">
-                            <input type="checkbox" ng-model="message.option" icheck ng-click="a()" /> Tùy chọn hiển thị
+                            <input type="checkbox" ng-model="message.option" icheck ng-click="message.option = true;message.all = false;" /> {{$root.$lang.display_option}}
                         </div>
                         <div class="option-message" ng-show="message.option">
                             <div class="form-group">
@@ -29,7 +29,7 @@
                                     <label for="inputEmail3" class="control-label">{{$root.$lang.project_department}}</label>
                                     <div id="container-department">
                                         <label ng-repeat="department in departments">
-                                            <input type="checkbox" checklist-model="message.departments" checklist-value="department.id" icheck ng-change="clickCheckAll()"> {{department.name}}
+                                            <input type="checkbox" checklist-model="message.departments" checklist-value="department.id" icheck /> {{department.name}}
                                         </label>
                                     </div>
                                 </div>
@@ -38,7 +38,6 @@
                             <br />
                             <div class="form-group">
                                 <label for="inputEmail3" class="col-sm-3 control-label">{{$root.$lang.project_members}}</label>
-
                                 <div class="col-sm-9">
                                     <ui-select multiple  ng-model="message.employees" theme="bootstrap" ng-disabled="disabled"  on-select="selectMember($item, $model)">
                                         <ui-select-match placeholder="">
@@ -56,7 +55,6 @@
                                                     <div class="clearBoth"></div>
                                                 </div>
                                             </div>
-
                                         </ui-select-choices>
                                     </ui-select>
                                 </div>
@@ -65,11 +63,11 @@
 
                         <br />
                         <div class="form-group">
-                            <button type="submit" class="btn btn-info pull-right" ng-click="addMessage()">Post</button>
+                            <button type="submit" class="btn btn-flat btn-primary pull-right" ng-click="addMessage()">{{$root.$lang.post}}</button>
                         </div>
                     </div>
                 </div><!-- /.box new post -->
-                <div id="activity1" ng-show="!activity.data.length">
+                <div id="activity_no_data" ng-show="!activity.data.length">
                     <div class="box box-widget">
                         <div class="box-header with-border">
                             {{$root.$lang.no_data}}

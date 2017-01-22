@@ -107,10 +107,10 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
             });
         }
         
-        $scope.a = function () {
-            $scope.message.option = true;
-            $scope.message.all = false;
-        }
+//        $scope.a = function () {
+//            $scope.message.option = true;
+//            $scope.message.all = false;
+//        }
         
         $scope.getActivity();
     }]);

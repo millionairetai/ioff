@@ -631,10 +631,10 @@ class Employee extends ActiveRecord implements IdentityInterface {
     /**
      * Get Employeee Id by department Id and employee Id
      * 
-     * @param array $departments
-     * @param array $employees
+     * @param array $departmentIds
+     * @param array $employeeIds
      * 
-     * @return array
+     * @return array - array of employee id
      */
     public static function getEmployeeIdByDepartmentIdAndEmployeeId($departmentIds = [], $employeeIds = []) {
         $result = [];
@@ -647,7 +647,7 @@ class Employee extends ActiveRecord implements IdentityInterface {
                 ->andWhere([self::tableName() . '.id' => $employeeIds])
                 ->orWhere(['department_id' => $departmentIds])
 //                ->andWhere(['column_name' => self::COLUNM_NAME_ACTIVE])
-                ->andCompanyId(false, self::tableName())
+                ->andCompanyId()
                 ->asArray()
                 ->all();
 

@@ -389,7 +389,9 @@
             posted_in_task: 'Posted in task',
             comments: 'comment(s)',
             like: 'Like',
-            likes: 'like(s)'
+            likes: 'like(s)',
+            display_option: 'Display option',
+            what_do_you_think: 'What do you think'
         };
     });
 })(window.angular);

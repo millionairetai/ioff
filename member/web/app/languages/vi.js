@@ -401,7 +401,9 @@
             posted_in_task: 'Đăng trong công việc',
             comments: 'bình luận',
             like: 'Thích',
-            likes: 'thích'
+            likes: 'thích',
+            display_option: 'Tùy chọn hiển thị',
+            what_do_you_think: 'Bạn đang nghĩ gì' 
         };
     });
 })(window.angular);
