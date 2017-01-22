@@ -20,6 +20,14 @@ appRoot.factory('activityService', ['apiService', function (apiService) {
             }
         };
     }]);
+appRoot.factory('activityPostService', ['apiService', function (apiService) {
+
+        return {
+            addMessage: function (data, success, error) {
+                return apiService.post('activity-post/add', data, success, error);
+            }
+        };
+    }]);
 appRoot.factory('apiService', ['$rootScope', '$http', '$location', 'alertify', function ($rootScope, $http, $location, alertify) {
 
         return {

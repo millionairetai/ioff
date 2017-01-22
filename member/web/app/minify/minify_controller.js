@@ -1,5 +1,5 @@
-appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activityService', 'commonService', 'commentService', 'validateService', 'departmentService', 'employeeService',
-    function ($scope, $rootScope, alertify, activityService, commonService, commentService, validateService, departmentService, employeeService) {
+appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activityService', 'commonService', 'commentService', 'validateService', 'departmentService', 'employeeService', 'activityPostService',
+    function ($scope, $rootScope, alertify, activityService, commonService, commentService, validateService, departmentService, employeeService, activityPostService) {
         $scope.profile = null;
         $scope.comment = '';
         $scope.activity = {
@@ -96,7 +96,7 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
         }
 
         $scope.addMessage = function () {
-            activityService.addMessage($scope.message, function (response) {
+            activityPostService.addMessage($scope.message, function (response) {
                 $scope.message.content = '';
                 $scope.activity.data.unshift(response.objects.activity);
                 $scope.message.employees = [];
