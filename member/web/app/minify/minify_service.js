@@ -17,7 +17,7 @@ appRoot.factory('activityService', ['apiService', function (apiService) {
             },
             addMessage: function (data, success, error) {
                 return apiService.post('activity/add-message', data, success, error);
-            },
+            }
         };
     }]);
 appRoot.factory('apiService', ['$rootScope', '$http', '$location', 'alertify', function ($rootScope, $http, $location, alertify) {
