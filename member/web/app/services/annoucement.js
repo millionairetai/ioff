@@ -6,6 +6,9 @@ appRoot.factory('annoucementService', ['apiService', function (apiService) {
             }, 
             add: function (data, success, error) {
                 return apiService.post('annoucement/add', data, success, error);
+            },
+            getAnnoucements: function (data, success, error) {
+                return apiService.get('annoucement/get-annoucements', data, success, error);
             }
         };
     }]);

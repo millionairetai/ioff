@@ -338,41 +338,27 @@
 
 
             <div class="col-md-3 padding-left-md-0">
-                <div id="annoucement" class="box box-danger box-solid">
+                <div id="annoucement" class="box box-danger box-solid" ng-show="annoucements.totalPage > 0">
                     <div class="box-header with-border">
                         <h4 class="box-title">Annoucement</h4>
                     </div>
                     <div class="box-body no-padding">
                         <ul>
-                            <li>
+                            <li ng-repeat="annoucement in annoucements.data">
                                 <div class="pull-left">
-                                    <img src="img/avatar5.png" class="img-circle" alt="User Image">
+                                    <img src="{{annoucement.employee.avatar}}" class="img-circle" alt="User Image">
                                 </div>
-                                <h4>Million Tài</h4>
-                                <p>Annoucement</p>
-                            </li>
-                            <li>
-                                <div class="pull-left">
-                                    <img src="img/avatar5.png" class="img-circle" alt="User Image">
-                                </div>
-                                <h4>Million Tài</h4>
-                                <p>Annoucement</p>
-                            </li>
-                            <li>
-                                <div class="pull-left">
-                                    <img src="img/avatar5.png" class="img-circle" alt="User Image">
-                                </div>
-                                <h4>Million Tài</h4>
-                                <p>Annoucement</p>
+                                <h4><a href="#/viewEmployee/{{annoucement.employee.id}}">{{annoucement.employee.fullname}}</a></h4>
+                                <p><a href="#/activity/{{annoucement.activity.id}}">{{annoucement.title}}</a></p>
                             </li>
                         </ul>
                     </div>
                     <div class="box-footer">
-                        <a href="javascript:void(0)" class="btn btn-primary">Mark as read</a>
+                        <!--<a href="javascript:void(0)" class="btn btn-primary">Mark as read</a>-->
                         <div class="pull-right">
-                            <a href="javascript:void(0)"><i class="fa fa-angle-left"></i></a>
-                            <span>1 / 1</span>
-                            <a href="javascript:void(0)"><i class="fa fa-angle-right"></i></a>
+                            <a href="javascript:void(0)" ng-click="getAnnoucements('previous')"><i class="fa fa-angle-left"></i></a>
+                            <span>{{annoucements.currentPage}} / {{annoucements.totalPage}}</span>
+                            <a href="javascript:void(0)" ng-click="getAnnoucements('next')"><i class="fa fa-angle-right"></i></a>
                         </div>
                     </div>
                     <!-- /.box-body -->

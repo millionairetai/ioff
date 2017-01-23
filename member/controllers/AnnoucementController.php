@@ -68,4 +68,38 @@ class AnnoucementController extends ApiController {
         return $this->sendResponse(false, "", []);
     }
 
+    public function actionGetAnnoucements($currentPage) {
+        $objects = [];
+        $collection = [];
+        try {
+            $annoucements = Annoucement::getAnnoucements($currentPage);
+            if (!empty($annoucements['annoucements'])) {
+                foreach ($annoucements['annoucements'] as $annoucement) {
+                    $collection[$annoucement->id] = [
+                        'employee' => [
+                            'fullname' => $annoucement->employee->fullname,
+                            'avatar' => $annoucement->employee->image,
+                            'id' => $annoucement->employee->id,
+                        ],
+                        'title' => $annoucement->title,
+                        'id' => $annoucement->id,
+                    ];
+                }
+
+                if ($activities = Activity::getActivityIdsByAnnoucementIds(array_keys($collection))) {
+                    foreach ($activities as $key => $activity) {
+                        $collection[$key]['activity'] = ['id' => $activity['id']];
+                    }
+                }
+            }
+
+
+            $objects['annoucements'] = $collection;
+            $objects['totalPage'] = $annoucements['totalPage'];
+            return $this->sendResponse(false, "", $objects);
+        } catch (\Exception $ex) {
+            return $this->sendResponse(true, \Yii::t('member', 'error_system'), '');
+        }
+    }
+
 }

@@ -1,6 +1,11 @@
 appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activityService', 'commonService', 'commentService', 'validateService', 'departmentService', 'employeeService', 'activityPostService', 'annoucementService', '$routeParams',
     function ($scope, $rootScope, alertify, activityService, commonService, commentService, validateService, departmentService, employeeService, activityPostService, annoucementService, $routeParams) {
         var id = $routeParams.activityId;
+        $scope.annoucements = {
+            data: [],
+            totalPage: 0,
+            currentPage: 1
+        };
         $scope.profile = null;
         $scope.comment = '';
         $scope.activity = {
@@ -142,6 +147,28 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
                 alertify.success($rootScope.$lang.add_success);
             });
         }
+        
+        $scope.getAnnoucements =  function(typePage) {
+            if (typePage == 'next') {
+                if ($scope.annoucements.currentPage >= $scope.annoucements.totalPage) {
+                    return false;
+                }
+                $scope.annoucements.currentPage = $scope.annoucements.currentPage + 1;
+            }
+            
+            if (typePage == 'previous') {
+                if ($scope.annoucements.currentPage == 1) {
+                    return false;
+                }
+                $scope.annoucements.currentPage = $scope.annoucements.currentPage - 1;
+            }
+            
+            annoucementService.getAnnoucements({currentPage: $scope.annoucements.currentPage}, function (response) {
+                $scope.annoucements.data =  response.objects.annoucements;
+                $scope.annoucements.totalPage = response.objects.totalPage;
+//                $scope.annoucements.currentPage = response.objects.totalPage;
+            });
+        }
 
 
 //        $scope.a = function () {
@@ -150,6 +177,7 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
 //        }
 
         $scope.getActivity();
+        $scope.getAnnoucements('all');
     }]);//list auhthorities
 appRoot.controller('AuthorityCtrl', ['$scope', '$uibModal', 'authorityService', '$rootScope', 'alertify', 'PER_PAGE', 'MAX_PAGE_SIZE',
     function ($scope, $uibModal, authorityService, $rootScope, alertify, PER_PAGE, MAX_PAGE_SIZE) {

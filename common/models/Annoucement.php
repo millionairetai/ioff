@@ -66,4 +66,32 @@ class Annoucement extends \common\components\db\ActiveRecord
             'disabled' => Yii::t('member', 'Disabled'),
         ];
     }
+    
+    public static function getAnnoucements($currentPage, $perPage = 4)  {
+        $annoucements = self::find()->select(['annoucement.title', 'annoucement.id', 'annoucement.employee_id']);
+        
+        $totalItem = $annoucements->count();
+        $annoucements = $annoucements 
+                ->with('employee')
+//                ->joinWith('activity')
+                ->orderBy('annoucement.is_importance DESC, annoucement.datetime_created DESC')
+                ->limit($perPage)
+                ->offset(($currentPage - 1)* $perPage)
+//                ->asArray()
+                ->all();
+//        print_r($annoucements->createCommand()->rawSql);die;
+        return [
+            'totalPage' => ceil($totalItem / $perPage),
+            'annoucements' => $annoucements
+        ];
+                
+    }
+    
+    public function getEmployee() {
+        return $this->hasOne(Employee::className(), ['id' => 'employee_id']);
+    }
+    
+//    public function getActivity() {
+//        return $this->hasOne(Activity::className(), ['id' => 'owner_id', 'owner_table' => 'annoucement'])->select('activity.id');
+//    }
 }

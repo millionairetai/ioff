@@ -163,4 +163,13 @@ class Activity extends \common\components\db\ActiveRecord
                 'totalRow' => \Yii::$app->getDb()->createCommand('SELECT FOUND_ROWS() AS total_row')->queryAll(),
             ];
     }
+    
+    public static function getActivityIdsByAnnoucementIds($annoucementIds) {
+        return self::find()->select(['id', 'owner_id'])
+                ->where(['owner_id' => $annoucementIds, 'owner_table' => 'annoucement'])
+                ->indexBy('owner_id')
+                ->asArray()
+                ->all();
+        
+    }
 }
