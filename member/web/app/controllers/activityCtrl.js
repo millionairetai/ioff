@@ -1,5 +1,6 @@
-appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activityService', 'commonService', 'commentService', 'validateService', 'departmentService', 'employeeService', 'activityPostService',
-    function ($scope, $rootScope, alertify, activityService, commonService, commentService, validateService, departmentService, employeeService, activityPostService) {
+appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activityService', 'commonService', 'commentService', 'validateService', 'departmentService', 'employeeService', 'activityPostService', 'annoucementService', '$routeParams',
+    function ($scope, $rootScope, alertify, activityService, commonService, commentService, validateService, departmentService, employeeService, activityPostService, annoucementService, $routeParams) {
+        var id = $routeParams.activityId;
         $scope.profile = null;
         $scope.comment = '';
         $scope.activity = {
@@ -18,8 +19,8 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
             departments: [],
             employees: []
         };
-        
-                //get all department
+
+        //get all department
         departmentService.allDepartment({}, function (data) {
             $scope.departments = data.objects;
         });
@@ -30,7 +31,7 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
                 $scope.employees = response.objects;
             });
         };
-        
+
         var temp = [];
         $scope.getActivity = function () {
             if ($scope.activity.end || $scope.activity.busy) {
@@ -106,11 +107,47 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
                 alertify.success($rootScope.$lang.add_success);
             });
         }
-        
+
+        $scope.initializeTab = function ($event) {
+            if ($event != '') {
+                $event.preventDefault();
+            }
+        }
+
+        //-------------annoucment -------//
+        $scope.annoucemnt = {
+            title: '',
+            description: '',
+            is_importance: false,
+            date_new_to: '',
+            sms: false
+//            departments: [],
+//            employees: []
+        };
+
+        $scope.addAnnoucement = function () {
+            if (!annoucementService.validate()) {
+                return false;
+            }
+
+            annoucementService.add($scope.annoucemnt, function (response) {
+                $scope.activity.data.unshift(response.objects.activity);
+                $scope.annoucemnt = {
+                    title: '',
+                    description: '',
+                    is_importance: false,
+                    date_new_to: '',
+                    sms: false
+                };
+                alertify.success($rootScope.$lang.add_success);
+            });
+        }
+
+
 //        $scope.a = function () {
 //            $scope.message.option = true;
 //            $scope.message.all = false;
 //        }
-        
+
         $scope.getActivity();
     }]);

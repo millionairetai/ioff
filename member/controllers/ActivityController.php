@@ -147,6 +147,14 @@ class ActivityController extends ApiController {
 
                                 break;
                             }
+                        case 'annoucement': {
+                                $item['annoucement'] = [
+                                    'title' => $activity['title'],
+                                    'content' => $activity['description'],
+                                    'is_importance' => (boolean)$activity['is_importance'],
+                                ];
+                            }
+                            break;
                     }
 
                     if ($isSkip) {

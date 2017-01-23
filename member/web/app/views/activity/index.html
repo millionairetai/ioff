@@ -9,63 +9,121 @@
                             <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
                         </div>
                     </div>
-                    <div class="box-body">
-                        <div class="form-group">
-                            <ul class="option_-h">
-                                <li><a href="javascript:void(0)"><i class="fa fa-fw fa-file-o"></i><span>{{$root.$lang.message}}</span></a></li>
-                                <li><a href="javascript:void(0)"><i class="fa fa-fw fa-clock-o"></i><span>Event</span></a></li>
-                            </ul>
-                            <textarea class="form-control textarea" ng-model="message.content" placeholder="{{$root.$lang.what_do_you_think}}? ..."></textarea>
-                        </div>
-                        <div ng-hide="message.option" class="form-group">
-                            <input type="checkbox" ng-model="message.all" icheck /> {{$root.$lang.project_choose_all}}
-                        </div>
-                        <div class="form-group">
-                            <input type="checkbox" ng-model="message.option" icheck ng-click="message.option = true;message.all = false;" /> {{$root.$lang.display_option}}
-                        </div>
-                        <div class="option-message" ng-show="message.option">
-                            <div class="form-group">
-                                <div class="col-sm-12" >
-                                    <label for="inputEmail3" class="control-label">{{$root.$lang.project_department}}</label>
-                                    <div id="container-department">
-                                        <label ng-repeat="department in departments">
-                                            <input type="checkbox" checklist-model="message.departments" checklist-value="department.id" icheck /> {{department.name}}
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <br />
-                            <div class="form-group">
-                                <label for="inputEmail3" class="col-sm-3 control-label">{{$root.$lang.project_members}}</label>
-                                <div class="col-sm-9">
-                                    <ui-select multiple  ng-model="message.employees" theme="bootstrap" ng-disabled="disabled"  on-select="selectMember($item, $model)">
-                                        <ui-select-match placeholder="">
-                                            <img class="img-circle" src="{{$item.image}}" height="30" width="30" />
-                                            {{$item.firstname}}
-                                        </ui-select-match>
-                                        <ui-select-choices refresh="getEmployees($select.search)" refresh-delay="1000" repeat="person in employees">
-                                            <div class="item-result ">
-                                                <div class="item-result-name">
-                                                    <img class="img-circle" src="{{person.image}}" height="50" width="50">
-                                                    <div class="container-employee-search-info">
-                                                        <strong >{{person.firstname}}</strong><br>
-                                                        <i >{{person.email}}</i>
-                                                    </div>
-                                                    <div class="clearBoth"></div>
+                    <div class="box-body">
+
+                        <div class="nav-tabs-custom"> <!-- Only required for left/right tabs -->
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a ng-click="initializeTab($event)" href="#message" data-toggle="tab">{{$root.$lang.message}}</a></li>
+                                <li><a ng-click="initializeTab($event)" href="#annoucement" data-toggle="tab">{{$root.$lang.annoucement}}</a></li>
+                                <li><a ng-click="initializeTab($event)" href="#requestment" data-toggle="tab">{{$root.$lang.requestment}}</a></li>
+                            </ul>
+                            <div class="tab-content">
+                                <div class="tab-pane active" id="message">
+                                    <textarea class="form-control textarea" ng-model="message.content" placeholder="{{$root.$lang.what_do_you_think}} ? ..."></textarea>
+                                    <br />
+                                    <div ng-hide="message.option" class="form-group">
+                                        <input type="checkbox" ng-model="message.all" icheck /> {{$root.$lang.project_choose_all}}
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="checkbox" ng-model="message.option" icheck ng-click="message.option = true;
+                                            message.all = false;" /> {{$root.$lang.display_option}}
+                                    </div>
+                                    <div class="option-message" ng-show="message.option">
+                                        <div class="form-group">
+                                            <div class="col-sm-12" >
+                                                <label for="inputEmail3" class="control-label">{{$root.$lang.project_department}}</label>
+                                                <div id="container-department">
+                                                    <label ng-repeat="department in departments">
+                                                        <input type="checkbox" checklist-model="message.departments" checklist-value="department.id" icheck /> {{department.name}}
+                                                    </label>
                                                 </div>
                                             </div>
-                                        </ui-select-choices>
-                                    </ui-select>
+                                        </div>
+
+                                        <br />
+                                        <div class="form-group">
+                                            <label for="inputEmail3" class="col-sm-3 control-label">{{$root.$lang.project_members}}</label>
+                                            <div class="col-sm-9">
+                                                <ui-select multiple  ng-model="message.employees" theme="bootstrap" ng-disabled="disabled"  on-select="selectMember($item, $model)">
+                                                    <ui-select-match placeholder="">
+                                                        <img class="img-circle" src="{{$item.image}}" height="30" width="30" />
+                                                        {{$item.firstname}}
+                                                    </ui-select-match>
+                                                    <ui-select-choices refresh="getEmployees($select.search)" refresh-delay="1000" repeat="person in employees">
+                                                        <div class="item-result ">
+                                                            <div class="item-result-name">
+                                                                <img class="img-circle" src="{{person.image}}" height="50" width="50">
+                                                                <div class="container-employee-search-info">
+                                                                    <strong >{{person.firstname}}</strong><br>
+                                                                    <i >{{person.email}}</i>
+                                                                </div>
+                                                                <div class="clearBoth"></div>
+                                                            </div>
+                                                        </div>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-flat btn-primary pull-right" ng-click="addMessage()">{{$root.$lang.post}}</button>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="annoucement">
+                                    <div class="form-group">
+                                        <div class="col-sm-6" >
+                                            <input type="text" class="form-control" ng-model="annoucemnt.title" placeholder="Title" /><br />
+                                        </div>
+                                        <label class="col-sm-2 control-label">Importance:</label>
+                                        <div class="col-sm-1" >
+                                            <input type="checkbox" ng-model="annoucemnt.is_importance" icheck /> 
+                                        </div>
+                                    </div><br />
+                                    <div class="form-group">
+                                        <div class="col-sm-12" >
+                                            <textarea class="form-control"  rows="5" ng-model="annoucemnt.description" placeholder="Content"></textarea>
+                                            <br />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">    
+                                        <label class="col-sm-2 control-label">End date:</label>
+                                        <div class="col-sm-3">
+                                            <p class="input-group">
+                                                <input type="text" class="form-control" uib-datepicker-popup="dd-MM-yyyy" ng-model="annoucemnt.date_new_to" is-open="open_start_datetime" datepicker-options="dateOptions" ng-required="true" close-text="{{$root.$lang.datepicker_close}}"  clear-text="{{$root.$lang.datepicker_clear}}" current-text="{{$root.$lang.datepicker_today}}" ng-focus="open_start_datetime = true" />
+                                                <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-default" ng-click="open_start_datetime = true"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                    <br />
+                                                </span>
+                                            </p>
+                                            <!--<input type="text"  class="form-control"  ng-model="task.duedatetime" datepicker-popup="dd-MM-yyyy"  datepicker-popup="mediumDate"  is-open="openTo" ng-click="openTo = true"  show-button-bar="false" />-->                                
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="form-group">
+                                        <label class="col-sm-1 control-label">Sms</label>
+                                        <div class="col-sm-9" >
+                                            <input type="checkbox" ng-model="annoucemnt.sms" icheck /> 
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-flat btn-primary pull-right" ng-click="addAnnoucement()">{{$root.$lang.post}}</button>
+                                    </div>
+                                </div>
+                                <div class="tab-pane" id="requestment">
+
+                                    bbbbbbbbbbbbbb
                                 </div>
                             </div>
                         </div>
 
-                        <br />
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-flat btn-primary pull-right" ng-click="addMessage()">{{$root.$lang.post}}</button>
-                        </div>
+                        <!--                        <div class="form-group">
+                                                    <button type="submit" class="btn btn-flat btn-primary pull-right" ng-click="addMessage()">{{$root.$lang.post}}</button>
+                                                </div>-->
+
                     </div>
+
                 </div><!-- /.box new post -->
                 <div id="activity_no_data" ng-show="!activity.data.length">
                     <div class="box box-widget">
@@ -197,8 +255,10 @@
                                     <dd class="top-event clearfix" ng-switch-when="annoucement">
                                         <div class="clearfix">
                                             <div class="box-contain-card bg-success col-md-4">
-                                                <p class="">Belfast City, UniKingdomted Kingdom</p>
-                                                <a href="" class="btn btn-success btn-sm">Mark as read</a>
+                                                <p class=""><h3>{{activity.annoucement.title}} <span ng-show="activity.annoucement.is_importance">(*)</span></h3><br />
+                                                    {{activity.annoucement.content}}
+                                                </p>
+                                                <!--<a href="" class="btn btn-success btn-sm">Mark as read</a>-->
                                             </div>
                                         </div>
                                     </dd>
