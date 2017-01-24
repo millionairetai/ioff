@@ -15,7 +15,7 @@
                         <div class="nav-tabs-custom"> <!-- Only required for left/right tabs -->
                             <ul class="nav nav-tabs">
                                 <li class="active"><a ng-click="initializeTab($event)" href="#message" data-toggle="tab">{{$root.$lang.message}}</a></li>
-                                <li><a ng-click="initializeTab($event)" href="#annoucement" data-toggle="tab">{{$root.$lang.annoucement}}</a></li>
+                                <li ng-show="$root.auth.annoucement.add || $root.auth.is_admin"><a ng-click="initializeTab($event)" href="#annoucement" data-toggle="tab">{{$root.$lang.annoucement}}</a></li>
                                 <li><a ng-click="initializeTab($event)" href="#requestment" data-toggle="tab">{{$root.$lang.requestment}}</a></li>
                             </ul>
                             <div class="tab-content">
@@ -73,22 +73,22 @@
                                 <div class="tab-pane" id="annoucement">
                                     <div class="form-group">
                                         <div class="col-sm-6" >
-                                            <input type="text" class="form-control" ng-model="annoucemnt.title" placeholder="Title" /><br />
+                                            <input type="text" class="form-control" ng-model="annoucemnt.title" placeholder="{{$root.$lang.title}}" /><br />
                                         </div>
-                                        <label class="col-sm-2 control-label">Importance:</label>
+                                        <label class="col-sm-2 control-label">{{$root.$lang.importance}}:</label>
                                         <div class="col-sm-1" >
                                             <input type="checkbox" ng-model="annoucemnt.is_importance" icheck /> 
                                         </div>
                                     </div><br />
                                     <div class="form-group">
                                         <div class="col-sm-12" >
-                                            <textarea class="form-control"  rows="5" ng-model="annoucemnt.description" placeholder="Content"></textarea>
+                                            <textarea class="form-control" rows="5" ng-model="annoucemnt.description" placeholder="{{$root.$lang.content}}"></textarea>
                                             <br />
                                         </div>
                                     </div>
 
                                     <div class="form-group">    
-                                        <label class="col-sm-2 control-label">End date:</label>
+                                        <label class="col-sm-3 control-label">{{$root.$lang.end_date}}:</label>
                                         <div class="col-sm-3">
                                             <p class="input-group">
                                                 <input type="text" class="form-control" uib-datepicker-popup="dd-MM-yyyy" ng-model="annoucemnt.date_new_to" is-open="open_start_datetime" datepicker-options="dateOptions" ng-required="true" close-text="{{$root.$lang.datepicker_close}}"  clear-text="{{$root.$lang.datepicker_clear}}" current-text="{{$root.$lang.datepicker_today}}" ng-focus="open_start_datetime = true" />
@@ -256,7 +256,7 @@
                                         <div class="clearfix">
                                             <div class="box-contain-card bg-success col-md-4">
                                                 <p class=""><h3>{{activity.annoucement.title}} <span ng-show="activity.annoucement.is_importance">(*)</span></h3><br />
-                                                    {{activity.annoucement.content}}
+                                                {{activity.annoucement.content}}
                                                 </p>
                                                 <!--<a href="" class="btn btn-success btn-sm">Mark as read</a>-->
                                             </div>
@@ -340,7 +340,7 @@
             <div class="col-md-3 padding-left-md-0">
                 <div id="annoucement" class="box box-danger box-solid" ng-show="annoucements.totalPage > 0">
                     <div class="box-header with-border">
-                        <h4 class="box-title">Annoucement</h4>
+                        <h4 class="box-title">{{$root.$lang.annoucement}}</h4>
                     </div>
                     <div class="box-body no-padding">
                         <ul>
@@ -349,7 +349,7 @@
                                     <img src="{{annoucement.employee.avatar}}" class="img-circle" alt="User Image">
                                 </div>
                                 <h4><a href="#/viewEmployee/{{annoucement.employee.id}}">{{annoucement.employee.fullname}}</a></h4>
-                                <p><a href="#/activity/{{annoucement.activity.id}}">{{annoucement.title}}</a></p>
+                                <p><a href="#/activity/{{annoucement.activity.id}}">{{annoucement.title}}<span ng-show="annoucement.is_importance">(*)</span></a></p>
                             </li>
                         </ul>
                     </div>

@@ -8,6 +8,7 @@ use common\models\Annoucement;
 
 class AnnoucementController extends ApiController {
 
+    //Add annoucement
     public function actionAdd() {
         $transaction = \Yii::$app->db->beginTransaction();
         try {
@@ -68,6 +69,7 @@ class AnnoucementController extends ApiController {
         return $this->sendResponse(false, "", []);
     }
 
+    //Get annoucement
     public function actionGetAnnoucements($currentPage) {
         $objects = [];
         $collection = [];
@@ -83,6 +85,7 @@ class AnnoucementController extends ApiController {
                         ],
                         'title' => $annoucement->title,
                         'id' => $annoucement->id,
+                        'is_importance' => $annoucement->is_importance,
                     ];
                 }
 
@@ -92,7 +95,6 @@ class AnnoucementController extends ApiController {
                     }
                 }
             }
-
 
             $objects['annoucements'] = $collection;
             $objects['totalPage'] = $annoucements['totalPage'];

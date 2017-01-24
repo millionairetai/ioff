@@ -8,7 +8,7 @@ use yii\helpers\Url;
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu">
             <li>
-                <a href="#activity">
+                <a href="#activity/all">
                     <i class="fa fa-thumbs-up"></i> <span>{{$root.$lang.activity}}</span> 
                 </a>
             </li>

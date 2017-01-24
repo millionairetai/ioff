@@ -113,7 +113,7 @@ appRoot.config(function ($routeProvider, $httpProvider) {
                 templateUrl: 'app/views/department/index.html',
                 controller: 'departmentCtrl'
             })
-            .otherwise({redirectTo: '/activity'});
+            .otherwise({redirectTo: '/activity/all'});
 
 });
 

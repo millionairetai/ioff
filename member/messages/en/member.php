@@ -153,4 +153,8 @@ return [
     'edited task' => 'edited task ',
     'edited project' => 'edited project',
     'content' => 'Content',
+    'Title' => 'Title',
+    'Description' => 'Description',
+    'Description Parse' => 'Description Parse',
+    'End date' => 'End date'    
 ];

@@ -110,7 +110,7 @@ class Activity extends \common\components\db\ActiveRecord
      * @param integer $employeeId
      * @return array
      */
-    public static function getActivityWallByEmployeeId($employeeId, $offset, $perPage = 10) {
+    public static function getActivityWallByEmployeeId($employeeId, $offset, $perPage = 10, array $conditions = []) {
         $companyId = Yii::$app->user->identity->company_id;
         $sql = " SELECT SQL_CALC_FOUND_ROWS employee.id AS employee_id, employee.firstname, employee.lastname, employee.profile_image_path,  " 
             .  " activity.id AS activity_id, activity.`type`, activity.owner_table ,activity.`total_comment`, activity.`total_like`, activity.datetime_created,"
@@ -153,23 +153,33 @@ class Activity extends \common\components\db\ActiveRecord
             .  "     LEFT JOIN annoucement"
             .  "         ON activity.owner_id=annoucement.id AND activity.owner_table='annoucement' AND annoucement.disabled=0"
             .  "     LEFT JOIN `like`"
-            .  "         ON activity.id=like.owner_id AND like.owner_table='activity' AND like.employee_id={$employeeId} AND like.disabled=0 "      
-            .  " WHERE activity.company_id={$companyId} AND activity.disabled=0 "
-            .  " ORDER BY activity.datetime_created DESC "
-            .  " LIMIT " . ($offset - 1) * $perPage  .", " . $offset * $perPage ;
+            .  "         ON activity.id=like.owner_id AND like.owner_table='activity' AND like.employee_id={$employeeId} AND like.disabled=0 ";
+            
+        $sql .=  " WHERE activity.company_id={$companyId} AND activity.disabled=0 ";
+        if (!empty($conditions['activity_id'])) {
+            $sql .= " AND activity.id=" . $conditions['activity_id'];
+        }
+            
+        $sql .= " ORDER BY activity.datetime_created DESC "
+             .   " LIMIT " . ($offset - 1) * $perPage  .", " . $offset * $perPage ;
         
             return [
                 'activities' => \Yii::$app->getDb()->createCommand($sql)->queryAll(),
                 'totalRow' => \Yii::$app->getDb()->createCommand('SELECT FOUND_ROWS() AS total_row')->queryAll(),
             ];
     }
-    
+
+    /**
+     * Get activity ids by annoucement ids
+     * 
+     * @param array $annoucementIds
+     * @return array
+     */
     public static function getActivityIdsByAnnoucementIds($annoucementIds) {
         return self::find()->select(['id', 'owner_id'])
                 ->where(['owner_id' => $annoucementIds, 'owner_table' => 'annoucement'])
                 ->indexBy('owner_id')
                 ->asArray()
                 ->all();
-        
     }
 }

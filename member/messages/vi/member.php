@@ -147,4 +147,8 @@ return [
     'edited task' => 'đã chỉnh sửa công việc ',
     'edited project' => 'đã chỉnh sửa dự án',
     'content' => 'Nội dung',
+    'Title' => 'Tiêu đề',
+    'Description' => 'Nội dung', 
+    'Description Parse' => 'Nội dung lọc code html',
+    'End date' => 'Ngày kết thúc'
 ];

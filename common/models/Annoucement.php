@@ -38,7 +38,7 @@ class Annoucement extends \common\components\db\ActiveRecord
     {
         return [
             [['company_id', 'employee_id', 'date_new_to', 'datetime_created', 'lastup_datetime', 'created_employee_id', 'lastup_employee_id'], 'integer'],
-            [['title', 'description', 'description_parse'], 'required'],
+            [['title', 'description', 'description_parse', 'date_new_to'], 'required'],
             [['description', 'description_parse'], 'string'],
             [['is_importance', 'disabled'], 'boolean'],
             [['title'], 'string', 'max' => 255]
@@ -58,7 +58,7 @@ class Annoucement extends \common\components\db\ActiveRecord
             'description' => Yii::t('member', 'Description'),
             'description_parse' => Yii::t('member', 'Description Parse'),
             'is_importance' => Yii::t('member', 'Is Importance'),
-            'date_new_to' => Yii::t('member', 'Date New To'),
+            'date_new_to' => Yii::t('member', 'End date'),
             'datetime_created' => Yii::t('member', 'Datetime Created'),
             'lastup_datetime' => Yii::t('member', 'Lastup Datetime'),
             'created_employee_id' => Yii::t('member', 'Created Employee ID'),
@@ -67,31 +67,32 @@ class Annoucement extends \common\components\db\ActiveRecord
         ];
     }
     
+    /**
+     * Get annoucementl ist
+     * 
+     * @param integer $currentPage
+     * @param integer $perPage
+     * @return Active Record
+     */
     public static function getAnnoucements($currentPage, $perPage = 4)  {
-        $annoucements = self::find()->select(['annoucement.title', 'annoucement.id', 'annoucement.employee_id']);
-        
+        $annoucements = self::find()->select(['annoucement.title', 'annoucement.id', 'annoucement.employee_id', 'annoucement.is_importance']);
         $totalItem = $annoucements->count();
         $annoucements = $annoucements 
                 ->with('employee')
-//                ->joinWith('activity')
-                ->orderBy('annoucement.is_importance DESC, annoucement.datetime_created DESC')
+                ->where('annoucement.date_new_to >=' . strtotime(date('Y-m-d') . " 23:59:59"))
+                ->orderBy('annoucement.datetime_created DESC')
                 ->limit($perPage)
                 ->offset(($currentPage - 1)* $perPage)
-//                ->asArray()
                 ->all();
-//        print_r($annoucements->createCommand()->rawSql);die;
+
         return [
             'totalPage' => ceil($totalItem / $perPage),
             'annoucements' => $annoucements
         ];
-                
     }
     
     public function getEmployee() {
         return $this->hasOne(Employee::className(), ['id' => 'employee_id']);
     }
     
-//    public function getActivity() {
-//        return $this->hasOne(Activity::className(), ['id' => 'owner_id', 'owner_table' => 'annoucement'])->select('activity.id');
-//    }
 }

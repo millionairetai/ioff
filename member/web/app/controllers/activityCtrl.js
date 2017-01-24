@@ -1,6 +1,5 @@
 appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activityService', 'commonService', 'commentService', 'validateService', 'departmentService', 'employeeService', 'activityPostService', 'annoucementService', '$routeParams',
     function ($scope, $rootScope, alertify, activityService, commonService, commentService, validateService, departmentService, employeeService, activityPostService, annoucementService, $routeParams) {
-        var id = $routeParams.activityId;
         $scope.annoucements = {
             data: [],
             totalPage: 0,
@@ -13,7 +12,8 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
             total: 0,
             end: false,
             page: 1,
-            busy: false
+            busy: false,
+            activityId: $routeParams.activityId
         };
 
         //Message tab.
@@ -44,7 +44,7 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
             }
 
             $scope.activity.busy = true;
-            activityService.getActivity({currentPage: $scope.activity.page}, function (response) {
+            activityService.getActivity({currentPage: $scope.activity.page, activityId: $scope.activity.activityId}, function (response) {
                 //Must transform object to array because object automatically arrange item by numeric key.
                 temp = Object.keys(response.objects.activities).map(function (k) {
                     return response.objects.activities[k]
@@ -131,7 +131,7 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
         };
 
         $scope.addAnnoucement = function () {
-            if (!annoucementService.validate()) {
+            if (!annoucementService.validate($scope.annoucemnt)) {
                 return false;
             }
 
@@ -144,6 +144,7 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
                     date_new_to: '',
                     sms: false
                 };
+                $scope.getAnnoucements('');
                 alertify.success($rootScope.$lang.add_success);
             });
         }
@@ -164,17 +165,15 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
             }
             
             annoucementService.getAnnoucements({currentPage: $scope.annoucements.currentPage}, function (response) {
-                $scope.annoucements.data =  response.objects.annoucements;
+                temp = Object.keys(response.objects.annoucements).map(function (k) {
+                    return response.objects.annoucements[k]
+                });
+                //Reverse max key to top head, beause they have just created.
+                temp.reverse()
+                $scope.annoucements.data =  temp;
                 $scope.annoucements.totalPage = response.objects.totalPage;
-//                $scope.annoucements.currentPage = response.objects.totalPage;
             });
         }
-
-
-//        $scope.a = function () {
-//            $scope.message.option = true;
-//            $scope.message.all = false;
-//        }
 
         $scope.getActivity();
         $scope.getAnnoucements('all');

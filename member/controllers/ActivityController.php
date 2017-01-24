@@ -22,9 +22,13 @@ class ActivityController extends ApiController {
         $collection = [];
         $item = null;
         $employee = new \common\models\Employee();
+        $condition = [];
+        if (Yii::$app->request->get('activityId') && Yii::$app->request->get('activityId') != 'all') {
+            $condition['activity_id'] = Yii::$app->request->get('activityId');
+        }
 
         try {
-            $result = Activity::getActivityWallByEmployeeId(Yii::$app->user->identity->id, Yii::$app->request->get('currentPage'));
+            $result = Activity::getActivityWallByEmployeeId(Yii::$app->user->identity->id, Yii::$app->request->get('currentPage'), 10, $condition);
             $activities = $result['activities'];
             if ($activities) {
                 foreach ($activities as $activity) {

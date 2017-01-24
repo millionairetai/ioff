@@ -33,8 +33,13 @@ appRoot.factory('validateService', ['apiService', function (apiService) {
                 if (text == '' || angular.isUndefined(text) || text == null) {
                     return false;
                 }
-                text = text.trim();
-                return text.length > 0;
+                
+                if (angular.isString(text)) {
+                    text = text.trim();
+                    return text.length > 0;
+                }
+                
+                return true;
             }
         };
     }]);

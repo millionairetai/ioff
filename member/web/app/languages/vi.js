@@ -5,6 +5,7 @@
         $rootScope.$lang = {
             //-----------------------------------------Error languages here-----------------------------------
             error_name_empty: 'Tên không được để trống', 
+            i_can_not_be_blank: '%i% không thể để trống',
             //-----------------------------------------End of error languages.--------------------------------
             //-----------------------------------------Common languages here----------------------------------
             data_not_display : 'Không tìm thấy',
@@ -106,7 +107,8 @@
             name_must_less_than_255_characters: 'Tên phải nhỏ hơn 255 kí tự',   
             start: 'Bắt đầu', 
             end: 'Kết thúc',
-            i_can_not_be_blank: '%i% không thể để trống',
+            content: 'Nội dung',
+            end_date:'Ngày kết thúc',
             //-----------------------------------------End of common language.----------------------------------
             
             //project
@@ -403,7 +405,11 @@
             like: 'Thích',
             likes: 'thích',
             display_option: 'Tùy chọn hiển thị',
-            what_do_you_think: 'Bạn đang nghĩ gì' 
+            what_do_you_think: 'Bạn đang nghĩ gì',
+            title: 'Tiêu đề',
+            enddate_must_greater_one_day_than_now: 'Ngày kết thúc phải lớn hơn hiện tại một ngày',
+            date_cant_blank_and_format_ddmmYY: 'Ngày không được để trống và phải có dạng dd-mm-YY',
+            importance: 'Quan trọng'
         };
     });
 })(window.angular);
