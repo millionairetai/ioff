@@ -1,6 +1,5 @@
 appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activityService', 'commonService', 'commentService', 'validateService', 'departmentService', 'employeeService', 'activityPostService', 'annoucementService', '$routeParams',
     function ($scope, $rootScope, alertify, activityService, commonService, commentService, validateService, departmentService, employeeService, activityPostService, annoucementService, $routeParams) {
-//        var id = $routeParams.activityId;
         $scope.annoucements = {
             data: [],
             totalPage: 0,
@@ -14,7 +13,7 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
             end: false,
             page: 1,
             busy: false,
-            activityId:$routeParams.activityId
+            activityId: $routeParams.activityId
         };
 
         //Message tab.
@@ -50,6 +49,9 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
                 temp = Object.keys(response.objects.activities).map(function (k) {
                     return response.objects.activities[k]
                 });
+//                for (var x in response.objects.activities) {
+//                    temp.push(response.objects.activities[x]);
+//                }
                 //Reverse max key to top head, beause they have just created.
                 temp.reverse();
                 if ($scope.activity.data === null) {
@@ -132,9 +134,9 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
         };
 
         $scope.addAnnoucement = function () {
-//            if (!annoucementService.validate($scope.annoucemnt)) {
-//                return false;
-//            }
+            if (!annoucementService.validate($scope.annoucemnt)) {
+                return false;
+            }
 
             annoucementService.add($scope.annoucemnt, function (response) {
                 $scope.activity.data.unshift(response.objects.activity);
@@ -173,15 +175,8 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
                 temp.reverse()
                 $scope.annoucements.data =  temp;
                 $scope.annoucements.totalPage = response.objects.totalPage;
-//                $scope.annoucements.currentPage = response.objects.totalPage;
             });
         }
-
-
-//        $scope.a = function () {
-//            $scope.message.option = true;
-//            $scope.message.all = false;
-//        }
 
         $scope.getActivity();
         $scope.getAnnoucements('all');

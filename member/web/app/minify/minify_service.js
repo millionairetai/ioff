@@ -44,13 +44,13 @@ appRoot.factory('annoucementService', ['apiService', 'validateService', '$rootSc
 
                 if (!validateService.required(annoucement.date_new_to)) {
                     message += $rootScope.$lang.date_cant_blank_and_format_ddmmYY + '<br />';
-                } else{
-                        var enddate = moment(annoucement.date_new_to);
-                        var now = moment();
-                        if (enddate.diff(now) <= 0) {
-                            message += $rootScope.$lang.enddate_must_greater_one_day_than_now + "<br/>";
-                        }
+                } else {
+                    var enddate = moment(annoucement.date_new_to);
+                    var now = moment();
+                    if (enddate.diff(now) <= 0) {
+                        message += $rootScope.$lang.enddate_must_greater_one_day_than_now + "<br/>";
                     }
+                }
 
                 if (message.length > 0) {
                     alertify.error(message);

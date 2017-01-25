@@ -86,6 +86,7 @@ class AnnoucementController extends ApiController {
                         'title' => $annoucement->title,
                         'id' => $annoucement->id,
                         'is_importance' => $annoucement->is_importance,
+                        'date_created' => Yii::$app->formatter->asDate($annoucement->datetime_created),
                     ];
                 }
 
