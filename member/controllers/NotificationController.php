@@ -96,6 +96,9 @@ class NotificationController extends ApiController {
             case Activity::TYPE_EDIT_PROJECT:
                 return \Yii::t('member', 'edited project');
                 break;
+            case Activity::TYPE_CREATE_REQUESTMENT:
+                return \Yii::t('member', 'sent requesment to you');
+                break;
             default :
                 return $typeActivity;
         }
@@ -170,6 +173,12 @@ class NotificationController extends ApiController {
 
         if (!empty($notification['event_p_id'])) {
             $url = '#/viewEvent/' . $notification['event_p_id'];
+        }
+        
+        if (!empty($notification['requestment_id'])) {
+            //Get activity id by requestment_id.
+            $activity = Activity::getActivityIdByOwnerIdAndOwnerTable($notification['requestment_id'], 'requestment');
+            $url = '#/activity/' . $activity['id'];
         }
 
         return $url;

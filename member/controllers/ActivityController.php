@@ -9,6 +9,9 @@ use common\models\Comment;
 use common\models\ActivityPost;
 use common\models\ActivityPostParticipant;
 use common\models\ActivityPostEmployee;
+use common\models\RequestmentCategory;
+use common\models\Status;
+use common\models\Employee;
 
 class ActivityController extends ApiController {
 
@@ -21,13 +24,15 @@ class ActivityController extends ApiController {
         $objects = [];
         $collection = [];
         $item = null;
-        $employee = new \common\models\Employee();
+        $requestmentCategory = [];
+        $requestmentStatus = [];
         $condition = [];
+        $employee = new \common\models\Employee();
         if (Yii::$app->request->get('activityId') && Yii::$app->request->get('activityId') != 'all') {
             $condition['activity_id'] = Yii::$app->request->get('activityId');
         }
 
-        try {
+//        try {
             $result = Activity::getActivityWallByEmployeeId(Yii::$app->user->identity->id, Yii::$app->request->get('currentPage'), 10, $condition);
             $activities = $result['activities'];
             if ($activities) {
@@ -51,6 +56,39 @@ class ActivityController extends ApiController {
                     ];
 
                     switch ($activity['owner_table']) {
+                        case 'requestment': {
+                                if (empty($requestmentCategory)) {
+                                    $requestmentCategory = RequestmentCategory::getsIndexById();
+                                    $requestmentStatus = Status::getsByOwnerTableIndexById('requestment');
+                                }
+                                
+                                $requestmentEmployees = Employee::getsIndexByIdByIds([$activity['review_employee_id'], $activity['created_employee_id']]);
+                                $employee->attributes = $requestmentEmployees[$activity['review_employee_id']];
+                                $item['requestment'] = [
+                                    'title' => $activity['requestment_title'],
+                                    'content' => $activity['requestment_description'],
+                                    'avatar_to' => $employee->image,
+                                    'requestment_category' => $requestmentCategory[$activity['requestment_category_id']]['name'],
+                                    'status' => $requestmentStatus[$activity['requestment_status_id']]['column_name'],
+                                ];
+
+                                //Employee send requestment.
+                                $employee->attributes = $requestmentEmployees[$activity['created_employee_id']];
+                                $item['requestment']['avatar_from'] = $employee->image;
+                                //Date time
+                                if ($activity['requestment_from_datetime']) {
+                                    $item['requestment']['from_datetime'] = \Yii::$app->formatter->asDateTime($activity['requestment_from_datetime']);
+                                }
+
+                                if ($activity['requestment_to_datetime']) {
+                                    $item['requestment']['to_datetime'] = \Yii::$app->formatter->asDateTime($activity['requestment_to_datetime']);
+                                }
+
+                                if (empty($activity['requestment_description'])) {
+                                    $isSkip = true;
+                                }
+                            }
+                            break;
                         case 'activity_post': {
                                 if (empty($activity['activity_post_content'])) {
                                     $isSkip = true;
@@ -200,9 +238,9 @@ class ActivityController extends ApiController {
                 'id' => Yii::$app->user->identity->id,
             ];
             return $this->sendResponse(false, "", $objects);
-        } catch (\Exception $ex) {
-            return $this->sendResponse(true, \Yii::t('member', 'error_system'), '');
-        }
+//        } catch (\Exception $ex) {
+//            return $this->sendResponse(true, \Yii::t('member', 'error_system'), '');
+//        }
     }
 
     /**

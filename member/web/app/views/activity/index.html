@@ -112,16 +112,91 @@
                                     </div>
                                 </div>
                                 <div class="tab-pane" id="requestment">
+                                    <div class="form-group">
+                                        <div class="col-sm-6" >
+                                            <input type="text" class="form-control" ng-model="requestment.title" placeholder="{{$root.$lang.title}}" /><br />
+                                        </div>
+                                    </div><br />
+                                    <div class="form-group">
+                                        <div class="col-sm-12" >
+                                            <textarea class="form-control" rows="5" ng-model="requestment.description" placeholder="{{$root.$lang.content}}"></textarea>
+                                            <br />
+                                        </div>
+                                    </div>
 
-                                    bbbbbbbbbbbbbb
+                                    <div class="form-group">    
+                                        <label class="col-sm-3 control-label">From datetime:</label>
+                                        <div class="col-sm-3">
+                                            <p class="input-group">
+                                                <input type="text" class="form-control" uib-datepicker-popup="dd-MM-yyyy" ng-model="requestment.from_datetime" is-open="open_from_datetime" datepicker-options="dateOptions" ng-required="true" close-text="{{$root.$lang.datepicker_close}}"  clear-text="{{$root.$lang.datepicker_clear}}" current-text="{{$root.$lang.datepicker_today}}" ng-focus="open_from_datetime = true" />
+                                                <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-default" ng-click="open_from_datetime = true"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                    <br />
+                                                </span>
+                                            </p>
+                                        </div>
+
+                                        <label class="col-sm-3 control-label">To datetime:</label>
+                                        <div class="col-sm-3">
+                                            <p class="input-group">
+                                                <input type="text" class="form-control" uib-datepicker-popup="dd-MM-yyyy" ng-model="requestment.to_datetime" is-open="open_to_datetime" datepicker-options="dateOptions" ng-required="true" close-text="{{$root.$lang.datepicker_close}}"  clear-text="{{$root.$lang.datepicker_clear}}" current-text="{{$root.$lang.datepicker_today}}" ng-focus="open_to_datetime = true" />
+                                                <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-default" ng-click="open_to_datetime = true"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                    <br />
+                                                </span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-3 control-label ng-binding">Type</label>          
+                                        <div class="col-sm-5">
+                                            <select class="form-control" ng-model="requestment.requestment_category_id">
+                                                <option value=''>{{$root.$lang.project_choose_all}}</option>
+                                                <option ng-repeat="value in requestmentCategory" value="{{value.id}}">{{value.name}}</option>
+                                            </select>
+                                            <br />
+                                        </div>
+                                    </div> 
+
+                                    <div class="clearfix"></div>
+                                    <div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-3 control-label">To:</label>
+
+                                        <div class="col-sm-6">
+                                            <ui-select ng-model="requestment.review_employee" theme="bootstrap" ng-disabled="disabled" on-select="selectReviewer($item, $model)">
+                                                <ui-select-match placeholder="" id="manager-match">
+                                                    <span ng-show="requestment.review_employee"><i class="fa fa-remove red cursor-pointer"  ng-click="clearReviewer()" style="position: absolute;left: 37px;top: 0px;"></i></span>
+                                                    <img class="img-circle"  src="{{$select.selected.image}}" height="30" width="30" /> {{$select.selected.firstname}}
+                                                </ui-select-match>
+                                                <ui-select-choices refresh="getEmployees($select.search)" refresh-delay="1000" repeat="person in employees">
+                                                    <div class="item-result ">
+                                                        <div class="item-result-name">
+                                                            <img class="img-circle" src="{{person.image}}" height="50" width="50">
+                                                            <div class="container-employee-search-info">
+                                                                <strong >{{person.firstname}}</strong><br>
+                                                                <i >{{person.email}}</i>
+                                                            </div>
+                                                            <div class="clearBoth"></div>
+                                                        </div>
+                                                    </div>
+                                                </ui-select-choices>
+                                            </ui-select>
+                                            <br />
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="form-group">
+                                        <label class="col-sm-1 control-label">Sms</label>
+                                        <div class="col-sm-9" >
+                                            <input type="checkbox" ng-model="requestment.sms" icheck /> 
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-flat btn-primary pull-right" ng-click="addRequestment()">{{$root.$lang.post}}</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-
-                        <!--                        <div class="form-group">
-                                                    <button type="submit" class="btn btn-flat btn-primary pull-right" ng-click="addMessage()">{{$root.$lang.post}}</button>
-                                                </div>-->
-
                     </div>
 
                 </div><!-- /.box new post -->
@@ -263,31 +338,39 @@
                                         </div>
                                     </dd>
                                     <dd class="top-event clearfix" ng-switch-when="requestment">
-                                        <p><b>General request</b></p>
+                                        <p><span><strong>{{$root.$lang.requestment_category}}:</strong></span> {{activity.requestment.requestment_category}}</p>
                                         <div class="clearfix">
                                             <div class="box-contain-card">
                                                 <div class="spinner-person">
                                                     <i class="fa fa-spinner" aria-hidden="true"></i>
                                                 </div>
-                                                <p class="">Belfast City, United Kingdom</p>
+                                                <p class="">{{activity.requestment.title}}</p> <br />
+                                                <p><span ng-show="activity.requestment.from_datetime"><strong>{{$root.$lang.from_datetime}}</strong></span> {{activity.requestment.from_datetime}}<span ng-show="activity.requestment.to_datetime"><strong>, {{$root.$lang.to_datetime}}:</strong></span> {{activity.requestment.to_datetime}}</p>
+                                                <p><strong>{{$root.$lang.content}}: </strong>{{activity.requestment.content}}
+                                                </p>
                                                 <div class="clearfix"></div>
                                                 <div class="box-complete">
-                                                    <label><i class="fa fa-check-circle" aria-hidden="true"></i> Complete</label>
+                                                    <label ng-show="activity.requestment.status == 'requestment.completed'" ><i class="fa fa-check-circle" aria-hidden="true"></i> {{$root.$lang.completed}}</label>
+                                                    <label ng-show="activity.requestment.status == 'requestment.inprogress'" ><i class="fa fa-clock-o" aria-hidden="true"></i> {{$root.$lang.in_progress}}</label>
                                                     <div class="">
                                                         <div class="circle-primary">
-                                                            <img src="http://company.iofficez.dev/flies/employee/9.jpg" alt="">
+                                                            <img src="{{activity.requestment.avatar_from}}" alt="">
                                                         </div>
                                                         <div class="pass-status">
                                                             <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
                                                         </div>
                                                         <div class="circle-success">
-                                                            <img src="http://company.iofficez.dev/flies/employee/11.jpg" alt="">
-                                                            <i class="fa fa-check-circle" aria-hidden="true"></i>
+                                                            <img src="{{activity.requestment.avatar_to}}" alt="">
+                                                            <i ng-show="activity.requestment.status == 'requestment.completed'" class="fa fa-check-circle" aria-hidden="true"></i>
+                                                            <i ng-show="activity.requestment.status == 'requestment.inprogress'" class="fa fa-clock-o" aria-hidden="true"></i>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <a href="" class="btn btn-success btn-sm">complete</a>
+                                                <span ng-show="activity.requestment.status == 'requestment.inprogress'" class="btn btn-info btn-sm">{{$root.$lang.in_progress}}</span>
+                                                <span ng-show="activity.requestment.status == 'requestment.completed'" class="btn btn-success btn-sm">{{$root.$lang.completed}}</span>
                                             </div>
+                                            <button ng-show="activity.requestment.status == 'requestment.inprogress'" class="btn btn-flat btn-primary">{{$root.$lang.accept}}</button> &nbsp;
+                                            <button ng-show="activity.requestment.status == 'requestment.inprogress'" class="btn btn-flat btn-danger">{{$root.$lang.refuse}}</button>
                                         </div>
                                     </dd>
                                 </dl>

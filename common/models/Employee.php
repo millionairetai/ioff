@@ -659,4 +659,17 @@ class Employee extends ActiveRecord implements IdentityInterface {
 
         return $result;
     }
+    
+    /**
+     * Get employees by ids and index array by id
+     * @param array $ids
+     * @return array
+     */
+    public static function getsIndexByIdByIds($ids) {
+        return self::find()->select(['id', 'firstname', 'lastname', 'profile_image_path', 'email'])
+                ->where([ 'id' => $ids])
+                ->indexBy('id')
+                ->asArray()
+                ->all();
+    }
 }

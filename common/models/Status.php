@@ -128,4 +128,17 @@ class Status extends \common\components\db\ActiveRecord
                 ->asArray()
                 ->one();
     }
+ 
+    /**
+     * Get status by owner table and index array by id.
+     * @param string $ownerTable
+     * @return array
+     */
+    public static function getsByOwnerTableIndexById($ownerTable) {
+        return self::find()->select(['id', 'column_name'])
+                ->where(['owner_table' => $ownerTable])
+                ->indexBy('id')
+                ->asArray()
+                ->all();
+    }
 }

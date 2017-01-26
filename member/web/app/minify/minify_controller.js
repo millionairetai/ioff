@@ -1,5 +1,5 @@
-appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activityService', 'commonService', 'commentService', 'validateService', 'departmentService', 'employeeService', 'activityPostService', 'annoucementService', '$routeParams',
-    function ($scope, $rootScope, alertify, activityService, commonService, commentService, validateService, departmentService, employeeService, activityPostService, annoucementService, $routeParams) {
+appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activityService', 'commonService', 'commentService', 'validateService', 'departmentService', 'employeeService', 'activityPostService', 'annoucementService', '$routeParams', 'requestmentService',
+    function ($scope, $rootScope, alertify, activityService, commonService, commentService, validateService, departmentService, employeeService, activityPostService, annoucementService, $routeParams, requestmentService) {
         $scope.annoucements = {
             data: [],
             totalPage: 0,
@@ -49,9 +49,6 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
                 temp = Object.keys(response.objects.activities).map(function (k) {
                     return response.objects.activities[k]
                 });
-//                for (var x in response.objects.activities) {
-//                    temp.push(response.objects.activities[x]);
-//                }
                 //Reverse max key to top head, beause they have just created.
                 temp.reverse();
                 if ($scope.activity.data === null) {
@@ -151,32 +148,87 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
                 alertify.success($rootScope.$lang.add_success);
             });
         }
-        
-        $scope.getAnnoucements =  function(typePage) {
+
+        $scope.getAnnoucements = function (typePage) {
             if (typePage == 'next') {
                 if ($scope.annoucements.currentPage >= $scope.annoucements.totalPage) {
                     return false;
                 }
                 $scope.annoucements.currentPage = $scope.annoucements.currentPage + 1;
             }
-            
+
             if (typePage == 'previous') {
                 if ($scope.annoucements.currentPage == 1) {
                     return false;
                 }
                 $scope.annoucements.currentPage = $scope.annoucements.currentPage - 1;
             }
-            
+
             annoucementService.getAnnoucements({currentPage: $scope.annoucements.currentPage}, function (response) {
                 temp = Object.keys(response.objects.annoucements).map(function (k) {
                     return response.objects.annoucements[k]
                 });
                 //Reverse max key to top head, beause they have just created.
                 temp.reverse()
-                $scope.annoucements.data =  temp;
+                $scope.annoucements.data = temp;
                 $scope.annoucements.totalPage = response.objects.totalPage;
             });
         }
+
+        //requestment member
+        $scope.requestment = {
+            title: '',
+            description: '',
+            from_datetime: '',
+            to_datetime: '',
+            requestment_category_id: 0,
+            review_employee: [],
+            review_employee_id: 0,
+            sms: false
+//            departments: [],
+//            employees: []
+        };
+
+        commonService.gets('requestment-category', function (response) {
+            $scope.requestmentCategory = response.objects;
+        });
+
+        $scope.selectReviewer = function ($item, $model) {
+            $scope.getEmployees('');
+        };
+
+        //clear manager
+        $scope.clearReviewer = function () {
+            $scope.requestment.review_employee = null;
+        }
+
+        $scope.addRequestment = function () {
+            if (!requestmentService.validate($scope.requestment)) {
+                return false;
+            }
+
+            $scope.requestment.review_employee_id = $scope.requestment.review_employee.id;
+            requestmentService.add($scope.requestment, function (response) {
+                response.objects.requestment = angular.merge({
+                    requestment:{avatar_to:$scope.requestment.review_employee.image},
+                }, response.objects.requestment)
+                $scope.activity.data.unshift(response.objects.requestment);
+                $scope.requestment = {
+                    title: '',
+                    description: '',
+                    from_datetime: '',
+                    to_datetime: '',
+                    requestment_category_id: 0,
+                    review_employee: [],
+                    review_employee_id: 0,
+                    sms: false
+                };
+//                $scope.getAnnoucements('');
+                alertify.success($rootScope.$lang.add_success);
+            });
+        }
+
+
 
         $scope.getActivity();
         $scope.getAnnoucements('all');

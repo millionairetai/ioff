@@ -31,6 +31,7 @@ class Activity extends \common\components\db\ActiveRecord
     const TABLE_EMPLOYEE = "employee"; 
     const TABLE_ACTIVITY_POST = "activity_post";
     const TABLE_ANNOUCEMENT = 'annoucement';
+    const TABLE_REQUESTMENT = 'requestment';
     
     //const for type of activity
     const TYPE_CREATE_TASK = 'create_task';
@@ -47,6 +48,7 @@ class Activity extends \common\components\db\ActiveRecord
     const TYPE_ADD_ACCOUNT = 'add_account';
     const TYPE_CREATE_ACTIVITY_POST = 'create_activity_post';
     const TYPE_CREATE_ANNOUCEMENT = 'create_annoucement';
+    const TYPE_CREATE_REQUESTMENT = 'create_requestment';
     
     /**
      * @inheritdoc
@@ -124,7 +126,9 @@ class Activity extends \common\components\db\ActiveRecord
             .  " p_task.id AS p_task_id, p_task.name AS p_task_name, p_task.description_parse AS p_task_description_parse,"
             .  " like.employee_id AS like_employee_id,"
             .  " activity_post.content AS activity_post_content, activity_post.content_parse  AS activity_post_content_parse,"  
-            .  " annoucement.id, annoucement.title, annoucement.is_importance, annoucement.description, annoucement.date_new_to"
+            .  " annoucement.id, annoucement.title, annoucement.is_importance, annoucement.description, annoucement.date_new_to,"
+            .  " requestment.id AS requestment_id, requestment.title AS requestment_title, requestment.description AS requestment_description, requestment.requestment_category_id, requestment.review_employee_id, "
+            .  " requestment.status_id AS requestment_status_id, requestment.is_accept AS requestment_is_accept, requestment.from_datetime  AS requestment_from_datetime, requestment.to_datetime AS requestment_to_datetime, requestment.created_employee_id "
             .  " FROM activity "
             .  "     LEFT JOIN employee "
             .  "         ON activity.employee_id = employee.id AND employee.disabled=0 "
@@ -152,6 +156,8 @@ class Activity extends \common\components\db\ActiveRecord
             .  "         ON activity_post.id=activity.owner_id AND activity.owner_table='activity_post' AND (activity_post.is_public=1 OR activity_post.created_employee_id={$employeeId} OR EXISTS(SELECT * FROM activity_post_employee WHERE activity_post_employee.activity_post_id=activity_post.id AND activity_post_employee.employee_id={$employeeId} AND activity_post_employee.disabled=0)) AND activity_post.disabled=0 "
             .  "     LEFT JOIN annoucement"
             .  "         ON activity.owner_id=annoucement.id AND activity.owner_table='annoucement' AND annoucement.disabled=0"
+            .  "     LEFT JOIN requestment"
+            .  "         ON activity.owner_id=requestment.id AND activity.owner_table='requestment' AND requestment.disabled=0 "
             .  "     LEFT JOIN `like`"
             .  "         ON activity.id=like.owner_id AND like.owner_table='activity' AND like.employee_id={$employeeId} AND like.disabled=0 ";
             
@@ -181,5 +187,19 @@ class Activity extends \common\components\db\ActiveRecord
                 ->indexBy('owner_id')
                 ->asArray()
                 ->all();
+    }
+    
+    /**
+     * Get activity id by owner id and owner table
+     * 
+     * @param integer $ownerId
+     * @param string $ownerTable
+     * @return array
+     */
+    public static function getActivityIdByOwnerIdAndOwnerTable($ownerId, $ownerTable) {
+        return self::find()->select(['id', 'owner_id'])
+                ->where(['owner_id' => $ownerId, 'owner_table' => $ownerTable])
+                ->asArray()
+                ->one();
     }
 }

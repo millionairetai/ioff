@@ -109,6 +109,8 @@
             end: 'Kết thúc',
             content: 'Nội dung',
             end_date:'Ngày kết thúc',
+            completed: 'Hoàn thành',
+            in_progress: 'Đang xử lý',
             //-----------------------------------------End of common language.----------------------------------
             
             //project
@@ -409,7 +411,12 @@
             title: 'Tiêu đề',
             enddate_must_greater_one_day_than_now: 'Ngày kết thúc phải lớn hơn hiện tại một ngày',
             date_cant_blank_and_format_ddmmYY: 'Ngày không được để trống và phải có dạng dd-mm-YY',
-            importance: 'Quan trọng'
+            importance: 'Quan trọng',
+            requestment_category: 'Loại yêu cầu',
+            from_datetime: 'Từ lúc',
+            to_datetime: 'đến lúc',
+            accept: 'Chấp nhận',
+            refuse: 'Từ chối'
         };
     });
 })(window.angular);

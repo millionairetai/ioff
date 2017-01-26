@@ -110,6 +110,8 @@
             end: 'End',
             content: 'Content',
             end_date:'End date',
+            completed: 'Completed',
+            in_progress: 'In progress',
             //-----------------------------------------End of common language.----------------------------------
             
             //project
@@ -397,7 +399,12 @@
             title: 'Title',
             enddate_must_greater_one_day_than_now: 'Enddate must be greater one day than now',
             date_cant_blank_and_format_ddmmYY: 'Date can not blank and must be format of dd-mm-YY',
-            importance: 'Importance'
+            importance: 'Importance',
+            requestment_category: 'Requestment category',
+            from_datetime: 'From datetime',
+            to_datetime: 'to datetime',
+            accept: 'Accept',
+            refuse: 'Refuse'
         };
     });
 })(window.angular);

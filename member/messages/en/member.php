@@ -156,5 +156,6 @@ return [
     'Title' => 'Title',
     'Description' => 'Description',
     'Description Parse' => 'Description Parse',
-    'End date' => 'End date'    
+    'End date' => 'End date',
+    'sent requesment to you' => 'sent requesment to you',
 ];

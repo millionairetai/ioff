@@ -150,5 +150,6 @@ return [
     'Title' => 'Tiêu đề',
     'Description' => 'Nội dung', 
     'Description Parse' => 'Nội dung lọc code html',
-    'End date' => 'Ngày kết thúc'
+    'End date' => 'Ngày kết thúc',
+    'sent requesment to you' => 'đã gửi yêu cầu đến bạn',
 ];
