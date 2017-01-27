@@ -57,6 +57,10 @@ class ActivityController extends ApiController {
 
                     switch ($activity['owner_table']) {
                         case 'requestment': {
+                                if (empty($activity['requestment_description'])) {
+                                    $isSkip = true;
+                                    break;
+                                }
                                 if (empty($requestmentCategory)) {
                                     $requestmentCategory = RequestmentCategory::getsIndexById();
                                     $requestmentStatus = Status::getsByOwnerTableIndexById('requestment');
@@ -82,10 +86,6 @@ class ActivityController extends ApiController {
 
                                 if ($activity['requestment_to_datetime']) {
                                     $item['requestment']['to_datetime'] = \Yii::$app->formatter->asDateTime($activity['requestment_to_datetime']);
-                                }
-
-                                if (empty($activity['requestment_description'])) {
-                                    $isSkip = true;
                                 }
                             }
                             break;

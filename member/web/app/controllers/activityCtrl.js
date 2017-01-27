@@ -182,9 +182,10 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
             from_datetime: '',
             to_datetime: '',
             requestment_category_id: 0,
-            review_employee: [],
+            review_employee: null,
             review_employee_id: 0,
-            sms: false
+            sms: false,
+            is_public: true
 //            departments: [],
 //            employees: []
         };
@@ -219,9 +220,10 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
                     from_datetime: '',
                     to_datetime: '',
                     requestment_category_id: 0,
-                    review_employee: [],
+                    review_employee: null,
                     review_employee_id: 0,
-                    sms: false
+                    sms: false, 
+                    is_public: true
                 };
                 alertify.success($rootScope.$lang.add_success);
             });

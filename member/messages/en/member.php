@@ -158,4 +158,6 @@ return [
     'Description Parse' => 'Description Parse',
     'End date' => 'End date',
     'sent requesment to you' => 'sent requesment to you',
+    'Review employee' => 'Review employee',
+    'Requestment Category' => 'Requestment Category',
 ];

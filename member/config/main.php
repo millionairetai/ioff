@@ -13,7 +13,7 @@ return [
     'defaultRoute' => 'home/index',
     'bootstrap' => ['log'],
     'modules' => [],
-    'language' => 'en',
+    'language' => 'vi',
     'components' => [
         'user' => [
             'class' => 'common\components\web\User',

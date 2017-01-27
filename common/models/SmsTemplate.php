@@ -26,6 +26,7 @@ class SmsTemplate extends \common\components\db\ActiveRecord
     const EDIT_EVENT = 'edit_event';
     const CREATE_PROJECT = 'create_project';
     const CREATE_PROJECT_POST = 'create_project_post';
+    const CREATE_REQUESTMENT = 'create_requestment';    
     
     /**
      * @inheritdoc
@@ -191,4 +192,28 @@ class SmsTemplate extends \common\components\db\ActiveRecord
     
         return null;
     }
+    
+    /**
+     * Get sms theme
+     * 
+     * @param string $type
+     * @return string
+     */
+    public static function getTheme($type) {
+        $where = ['language_code' => \Yii::$app->language,];
+        switch ($type) {
+            case self::CREATE_REQUESTMENT:
+                $where += ['column_name' => self::CREATE_REQUESTMENT];
+                break;
+            default:
+                break;
+        }
+        
+        $theme = self::find()->select(['body', 'default_from_phone_no', 'column_name'])->where($where)->one();
+        if($theme) {
+            return $theme;
+        }
+        
+        return '';
+    }    
 }

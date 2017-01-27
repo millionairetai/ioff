@@ -29,6 +29,7 @@ class EmailTemplate extends \common\components\db\ActiveRecord
     const CREATE_PROJECT = 'create_project';
     const CREATE_PROJECT_POST = 'create_project_post';
     const CREATE_EVENT_POST = 'create_event_post';
+    const CREATE_REQUESTMENT = 'create_requestment';
     const INVITE_NEW_EMPLOYEE = 'invite_new_employee';
     const SUCCESS_COMPANY_REGISTRATION = 'success_company_registration';
     const SUCCESS_EMPLOYEE_REGISTRATION = 'success_employee_registration';
@@ -273,6 +274,10 @@ class EmailTemplate extends \common\components\db\ActiveRecord
             
             case self::REQUEST_PASSWORD_AGAIN:
                 $where += ['column_name' => self::REQUEST_PASSWORD_AGAIN];
+                break;
+            
+            case self::CREATE_REQUESTMENT:
+                $where += ['column_name' => self::CREATE_REQUESTMENT];
                 break;
             default:
                 break;

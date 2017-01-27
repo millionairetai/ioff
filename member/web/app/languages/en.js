@@ -6,6 +6,7 @@
             //-----------------------------------------Error languages here-----------------------------------
             error_name_empty: 'Tên không được để trống', 
             i_can_not_be_blank: '%i% can not be blank',
+            todatetime_must_be_greater_fromdatetime: 'To datetime must be greater than from datetime',
             //-----------------------------------------End of error languages.--------------------------------            
             //-----------------------------------------Common languages here----------------------------------
             data_not_display : 'not found',
@@ -112,6 +113,7 @@
             end_date:'End date',
             completed: 'Completed',
             in_progress: 'In progress',
+            public: 'Public',
             //-----------------------------------------End of common language.----------------------------------
             
             //project
@@ -404,7 +406,10 @@
             from_datetime: 'From datetime',
             to_datetime: 'to datetime',
             accept: 'Accept',
-            refuse: 'Refuse'
+            refuse: 'Refuse',
+            type: 'Type',
+            send_to: 'Send to',
+            review_employee: 'Review employee'
         };
     });
 })(window.angular);

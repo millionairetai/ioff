@@ -9,6 +9,8 @@ use common\models\RequestmentCategory;
 use common\models\Notification;
 use common\models\Sms;
 use common\models\Status;
+use common\models\EmailTemplate;
+use common\models\SmsTemplate;
 
 class RequestmentController extends ApiController {
 
@@ -22,7 +24,6 @@ class RequestmentController extends ApiController {
                 $statusRequestment = Status::getByOwnerTableAndColumnName('requestment', Requestment::STATUS_COLUMN_NAME_INPROGESS);
                 $requestment->from_datetime = !empty($requestment->from_datetime) ? strtotime($requestment->from_datetime) : 0;
                 $requestment->to_datetime = !empty($requestment->to_datetime) ? strtotime($requestment->to_datetime) : 0;
-//                $requestment->employee_id = Yii::$app->user->identity->id;
                 $requestment->company_id = Yii::$app->user->identity->company_id;
                 $requestment->description_parse = strip_tags($requestment->description);
                 $requestment->status_id = $statusRequestment['id'];
@@ -55,6 +56,25 @@ class RequestmentController extends ApiController {
                 
                 if ((new Notification())->insertByArr($insertArr) === false) {
                     throw new \Exception('Insert record to Notification table fail');
+                }
+                
+                //Send email
+                $themeEmail = EmailTemplate::getTheme(EmailTemplate::CREATE_REQUESTMENT);
+                $themeSms = SmsTemplate::getTheme(SmsTemplate::CREATE_REQUESTMENT);
+                $reviewEmployee = \Yii::$app->request->post('review_employee');
+                $dataSend = [
+                    '{employee name}' => $reviewEmployee['firstname'],
+                    '{creator name}' => \Yii::$app->user->identity->fullname,
+                    '{requestment title}' => $requestment->title,
+                    '{activity id}' => $activity->id,
+                    '{host}' => Yii::$app->params['companyDomain']
+                ];
+
+                $employee = new \common\models\Employee();
+                $employee->email = $reviewEmployee['email'];
+                $employee->sendMail($dataSend, $themeEmail);
+                if ($post['sms']) {
+                    $employee->sendSms($dataSend, $themeSms);
                 }
                 
                 $insertArr = [

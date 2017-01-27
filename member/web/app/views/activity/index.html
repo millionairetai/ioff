@@ -125,7 +125,7 @@
                                     </div>
 
                                     <div class="form-group">    
-                                        <label class="col-sm-3 control-label">From datetime:</label>
+                                        <label class="col-sm-3 control-label">{{$root.$lang.from_datetime}}:</label>
                                         <div class="col-sm-3">
                                             <p class="input-group">
                                                 <input type="text" class="form-control" uib-datepicker-popup="dd-MM-yyyy" ng-model="requestment.from_datetime" is-open="open_from_datetime" datepicker-options="dateOptions" ng-required="true" close-text="{{$root.$lang.datepicker_close}}"  clear-text="{{$root.$lang.datepicker_clear}}" current-text="{{$root.$lang.datepicker_today}}" ng-focus="open_from_datetime = true" />
@@ -136,7 +136,7 @@
                                             </p>
                                         </div>
 
-                                        <label class="col-sm-3 control-label">To datetime:</label>
+                                        <label class="col-sm-3 control-label">{{$root.$lang.to_datetime}}:</label>
                                         <div class="col-sm-3">
                                             <p class="input-group">
                                                 <input type="text" class="form-control" uib-datepicker-popup="dd-MM-yyyy" ng-model="requestment.to_datetime" is-open="open_to_datetime" datepicker-options="dateOptions" ng-required="true" close-text="{{$root.$lang.datepicker_close}}"  clear-text="{{$root.$lang.datepicker_clear}}" current-text="{{$root.$lang.datepicker_today}}" ng-focus="open_to_datetime = true" />
@@ -148,10 +148,10 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="inputEmail3" class="col-sm-3 control-label ng-binding">Type</label>          
+                                        <label for="inputEmail3" class="col-sm-3 control-label ng-binding">{{$root.$lang.type}}</label>          
                                         <div class="col-sm-5">
-                                            <select class="form-control" ng-model="requestment.requestment_category_id">
-                                                <option value=''>{{$root.$lang.project_choose_all}}</option>
+                                            <select class="form-control" ng-model="requestment.requestment_category_id" ng-init="requestment.requestment_category_id=null">
+                                                <option value>--</option>
                                                 <option ng-repeat="value in requestmentCategory" value="{{value.id}}">{{value.name}}</option>
                                             </select>
                                             <br />
@@ -160,13 +160,12 @@
 
                                     <div class="clearfix"></div>
                                     <div class="form-group">
-                                        <label for="inputEmail3" class="col-sm-3 control-label">To:</label>
-
+                                        <label for="inputEmail3" class="col-sm-3 control-label">{{$root.$lang.send_to}}:</label>
                                         <div class="col-sm-6">
                                             <ui-select ng-model="requestment.review_employee" theme="bootstrap" ng-disabled="disabled" on-select="selectReviewer($item, $model)">
                                                 <ui-select-match placeholder="" id="manager-match">
                                                     <span ng-show="requestment.review_employee"><i class="fa fa-remove red cursor-pointer"  ng-click="clearReviewer()" style="position: absolute;left: 37px;top: 0px;"></i></span>
-                                                    <img class="img-circle"  src="{{$select.selected.image}}" height="30" width="30" /> {{$select.selected.firstname}}
+                                                    <img class="img-circle" src="{{$select.selected.image}}" height="30" width="30" /> {{$select.selected.firstname}}
                                                 </ui-select-match>
                                                 <ui-select-choices refresh="getEmployees($select.search)" refresh-delay="1000" repeat="person in employees">
                                                     <div class="item-result ">
@@ -182,6 +181,13 @@
                                                 </ui-select-choices>
                                             </ui-select>
                                             <br />
+                                        </div>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">{{$root.$lang.public}}</label>
+                                        <div class="col-sm-9" >
+                                            <input type="checkbox" ng-model="requestment.is_public" icheck /> <br /><br />
                                         </div>
                                     </div>
                                     <div class="clearfix"></div>

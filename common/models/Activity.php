@@ -157,7 +157,7 @@ class Activity extends \common\components\db\ActiveRecord
             .  "     LEFT JOIN annoucement"
             .  "         ON activity.owner_id=annoucement.id AND activity.owner_table='annoucement' AND annoucement.disabled=0"
             .  "     LEFT JOIN requestment"
-            .  "         ON activity.owner_id=requestment.id AND activity.owner_table='requestment' AND requestment.disabled=0 "
+            .  "         ON activity.owner_id=requestment.id AND activity.owner_table='requestment' AND (requestment.is_public=1 OR requestment.review_employee_id={$employeeId} OR requestment.created_employee_id={$employeeId}) AND requestment.disabled=0 "
             .  "     LEFT JOIN `like`"
             .  "         ON activity.id=like.owner_id AND like.owner_table='activity' AND like.employee_id={$employeeId} AND like.disabled=0 ";
             

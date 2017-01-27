@@ -152,4 +152,6 @@ return [
     'Description Parse' => 'Nội dung lọc code html',
     'End date' => 'Ngày kết thúc',
     'sent requesment to you' => 'đã gửi yêu cầu đến bạn',
+    'Review employee' => 'Nhân viên phê duyệt',
+    'Requestment category' => 'Loại yêu cầu'
 ];

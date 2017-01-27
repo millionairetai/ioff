@@ -6,6 +6,7 @@
             //-----------------------------------------Error languages here-----------------------------------
             error_name_empty: 'Tên không được để trống', 
             i_can_not_be_blank: '%i% không thể để trống',
+            todatetime_must_be_greater_fromdatetime: 'Thời gian đến lúc phải lớn hơn thời gian từ lúc',
             //-----------------------------------------End of error languages.--------------------------------
             //-----------------------------------------Common languages here----------------------------------
             data_not_display : 'Không tìm thấy',
@@ -111,6 +112,7 @@
             end_date:'Ngày kết thúc',
             completed: 'Hoàn thành',
             in_progress: 'Đang xử lý',
+            public: 'Công khai',
             //-----------------------------------------End of common language.----------------------------------
             
             //project
@@ -416,7 +418,10 @@
             from_datetime: 'Từ lúc',
             to_datetime: 'đến lúc',
             accept: 'Chấp nhận',
-            refuse: 'Từ chối'
+            refuse: 'Từ chối',
+            type: 'Loại',
+            send_to: 'Gửi đến',
+            review_employee: 'Nhân viên phê duyệt'
         };
     });
 })(window.angular);

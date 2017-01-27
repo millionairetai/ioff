@@ -45,7 +45,7 @@ class Requestment extends \common\components\db\ActiveRecord
     {
         return [
             [['company_id', 'requestment_category_id', 'review_employee_id', 'from_datetime', 'to_datetime', 'datetime_created', 'lastup_datetime', 'created_employee_id', 'lastup_employee_id'], 'integer'],
-            [['title', 'description',], 'required'],
+            [['title', 'description', 'review_employee_id' , 'requestment_category_id'], 'required'],
             [['description', 'description_parse', 'refused_reason'], 'string'],
             [['is_accept', 'is_public', 'disabled'], 'boolean'],
             [['title'], 'string', 'max' => 255]
@@ -60,8 +60,8 @@ class Requestment extends \common\components\db\ActiveRecord
         return [
             'id' => Yii::t('member', 'ID'),
             'company_id' => Yii::t('member', 'Company ID'),
-            'requestment_category_id' => Yii::t('member', 'Requestment Category ID'),
-            'review_employee_id' => Yii::t('member', 'Review Employee ID'),
+            'requestment_category_id' => Yii::t('member', 'Requestment category'),
+            'review_employee_id' => Yii::t('member', 'Review employee'),
             'title' => Yii::t('member', 'Title'),
             'description' => Yii::t('member', 'Description'),
             'description_parse' => Yii::t('member', 'Description Parse'),
