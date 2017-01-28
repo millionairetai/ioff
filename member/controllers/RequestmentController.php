@@ -158,6 +158,18 @@ class RequestmentController extends ApiController {
                 throw new \Exception('Update record to table Requestment fail');
             }
 
+            //Insert into activity
+            $activity = new Activity();
+            $activity->owner_id = $requestment->id;
+            $activity->owner_table = Activity::TABLE_REQUESTMENT;
+            $activity->parent_employee_id = 0;
+            $activity->employee_id = \Yii::$app->user->getId();
+            $activity->type = ($post['type'] == 'accept' ? Activity::TYPE_ACCEPT_REQUESTMENT : Activity::TYPE_REFUSE_REQUESTMENT);
+            $activity->content = '';
+            if ($activity->save() === false) {
+                throw new \Exception('Save record to table Activity fail');
+            }
+
             //Write notification, activity
             $insertArr = [
                 'owner_id' => $post['requestmentId'],
