@@ -409,7 +409,9 @@
             refuse: 'Refuse',
             type: 'Type',
             send_to: 'Send to',
-            review_employee: 'Review employee'
+            review_employee: 'Review employee',
+            requestment_category_manage: 'Requestment category manage',
+            requestment_category_list: 'Requestment category list'
         };
     });
 })(window.angular);

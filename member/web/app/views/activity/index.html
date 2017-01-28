@@ -133,7 +133,7 @@
                                             <br />
                                         </div>
                                         <div class="col-sm-3">
-                                            <a href="#/requestment"> +Add</a>
+                                            <a ng-show="$root.auth.requestment_category.add || $root.auth.is_admin" href="#/requestmentCategory"> +{{$root.$lang.add}}</a>
                                             <br />
                                         </div>
                                     </div> 

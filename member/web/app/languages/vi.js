@@ -421,7 +421,9 @@
             refuse: 'Từ chối',
             type: 'Loại',
             send_to: 'Gửi đến',
-            review_employee: 'Nhân viên phê duyệt'
+            review_employee: 'Nhân viên phê duyệt',
+            requestment_category_manage: 'Quản lý loại yêu cầu',
+            requestment_category_list: 'Danh sách loại yêu cầu'
         };
     });
 })(window.angular);

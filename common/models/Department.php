@@ -58,8 +58,7 @@ class Department extends ActiveRecord
             'disabled' 			 => Yii::t('common', 'Disabled'),
         ];
     }
-    
-    
+        
     /**
      * Get all department
      * 

@@ -17,21 +17,19 @@ use Yii;
  * @property string $lastup_employee_id
  * @property boolean $disabled
  */
-class RequestmentCategory extends \common\components\db\ActiveRecord
-{
+class RequestmentCategory extends \common\components\db\ActiveRecord {
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'requestment_category';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['company_id', 'datetime_created', 'lastup_datetime', 'created_employee_id', 'lastup_employee_id'], 'integer'],
             [['name'], 'required'],
@@ -44,8 +42,7 @@ class RequestmentCategory extends \common\components\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => Yii::t('member', 'ID'),
             'company_id' => Yii::t('member', 'Company ID'),
@@ -58,12 +55,39 @@ class RequestmentCategory extends \common\components\db\ActiveRecord
             'disabled' => Yii::t('member', 'Disabled'),
         ];
     }
-    
+
+    /**
+     * Gets index by id.
+     * @return array
+     */
     public static function getsIndexById() {
         return self::find()->select(['id', 'name'])
-                ->indexBy('id')
-                ->andCompanyId()
+                        ->indexBy('id')
+                        ->andCompanyId()
+                        ->asArray()
+                        ->all();
+    }
+
+    /**
+     * Get requestment catergoies
+     * 
+     * @param interger $itemPerPage
+     * @param interger $currentPage
+     * @return array
+     */
+    public static function getAll($itemPerPage, $currentPage) {
+        $requestmentCategories = self::find()->select(['id', 'name'])->andCompanyId();
+        $totalCount = $requestmentCategories->count();
+        $requestmentCategories = $requestmentCategories->orderBy('datetime_created DESC')
+                ->limit($itemPerPage)
+                ->offset(($currentPage - 1) * $itemPerPage)
                 ->asArray()
                 ->all();
+
+        return [
+            'collection' => $requestmentCategories,
+            'totalItems' => $totalCount,
+        ];
     }
+
 }

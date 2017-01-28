@@ -1,7 +1,7 @@
 appRoot.config(function ($routeProvider, $httpProvider) {
     // enable http caching
 //    $httpProvider.defaults.cache = true;
-    
+
     //Router
     $routeProvider
             //main page
@@ -19,39 +19,39 @@ appRoot.config(function ($routeProvider, $httpProvider) {
                 controller: 'addProjectCtrl'
             })
             .when('/viewProject/:projectId', {
-            	templateUrl: 'app/views/project/view.html',
-            	controller: 'viewProjectCtrl'
+                templateUrl: 'app/views/project/view.html',
+                controller: 'viewProjectCtrl'
             })
             .when('/editProject', {
-            	templateUrl: 'app/views/project/edit.html',
-            	controller: 'editProjectCtrl'
+                templateUrl: 'app/views/project/edit.html',
+                controller: 'editProjectCtrl'
             })
             //calendar
             .when('/calendar', {
                 templateUrl: 'app/views/calendar/index.html',
                 controller: 'calendarCtrl',
-                resolve : {
-                    settingSystem : function($q, calendarService){
+                resolve: {
+                    settingSystem: function ($q, calendarService) {
                         var deferred = $q.defer();
-                        calendarService.getLanguage({},function(respone){
+                        calendarService.getLanguage({}, function (respone) {
                             deferred.resolve(respone.objects);
                         });
-                        
+
                         return deferred.promise;
                     },
-                    listCalendar : function($q, calendarService){
+                    listCalendar: function ($q, calendarService) {
                         var deferred = $q.defer();
-                        calendarService.listCalendars({},function(respone){
+                        calendarService.listCalendars({}, function (respone) {
                             deferred.resolve(respone.objects);
                         });
-                        
+
                         return deferred.promise;
                     }
                 }
             })
             .when('/viewEvent/:eventId', {
-            	templateUrl: 'app/views/calendar/view.html',
-            	controller: 'viewEventCtrl'
+                templateUrl: 'app/views/calendar/view.html',
+                controller: 'viewEventCtrl'
             })
             //authority
             .when('/authority', {
@@ -85,7 +85,7 @@ appRoot.config(function ($routeProvider, $httpProvider) {
                 templateUrl: 'app/views/employee/index.html',
                 controller: 'EmployeeCtrl'
             })
-             .when('/viewEmployee/:employeeId', {
+            .when('/viewEmployee/:employeeId', {
                 templateUrl: 'app/views/employee/profile.html',
                 controller: 'profileCtrl'
             })
@@ -112,6 +112,10 @@ appRoot.config(function ($routeProvider, $httpProvider) {
             .when('/department', {
                 templateUrl: 'app/views/department/index.html',
                 controller: 'departmentCtrl'
+            })
+            .when('/requestmentCategory', {
+                templateUrl: 'app/views/requestmentCategory/index.html',
+                controller: 'requestmentCategoryCtrl'
             })
             .otherwise({redirectTo: '/activity/all'});
 

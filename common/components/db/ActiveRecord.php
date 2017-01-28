@@ -224,6 +224,16 @@ class ActiveRecord extends \yii\db\ActiveRecord {
 
         return $return->asArray()->one();
     }
+    
+    /**
+     * Get by name
+     *
+     * @param string $name
+     * @return Active Record|false
+     */
+    public static function getByName($name) {
+        return self::find()->andWhere(['name' => $name])->andCompanyId()->one();
+    }
 
     /**
      * Get all row of table of a company

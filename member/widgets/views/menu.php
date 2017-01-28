@@ -62,6 +62,11 @@ use yii\helpers\Url;
                     <i class="fa fa-line-chart"></i> <span>{{$root.$lang.report}}</span> 
                 </a>
             </li>
+            <li ng-show="$root.auth.requestment_category.index || $root.auth.is_admin">
+                <a href="#requestmentCategory">
+                    <i class="fa fa-spinner"></i> <span>{{$root.$lang.requestment_category}}</span> 
+                </a>
+            </li>
             <li>
                 <a href="#company">
                     <i class="fa fa-file"></i> <span>{{$root.$lang.file}}</span> 
