@@ -69,11 +69,14 @@ class ActivityController extends ApiController {
                                 $requestmentEmployees = Employee::getsIndexByIdByIds([$activity['review_employee_id'], $activity['created_employee_id']]);
                                 $employee->attributes = $requestmentEmployees[$activity['review_employee_id']];
                                 $item['requestment'] = [
+                                    'id' => $activity['requestment_id'], 
                                     'title' => $activity['requestment_title'],
                                     'content' => $activity['requestment_description'],
                                     'avatar_to' => $employee->image,
                                     'requestment_category' => $requestmentCategory[$activity['requestment_category_id']]['name'],
                                     'status' => $requestmentStatus[$activity['requestment_status_id']]['column_name'],
+                                    'is_accept' => (boolean)$activity['requestment_is_accept'],
+                                    'is_show_button' => (Yii::$app->user->identity->id == $activity['review_employee_id'])
                                 ];
 
                                 //Employee send requestment.

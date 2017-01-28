@@ -49,6 +49,8 @@ class Activity extends \common\components\db\ActiveRecord
     const TYPE_CREATE_ACTIVITY_POST = 'create_activity_post';
     const TYPE_CREATE_ANNOUCEMENT = 'create_annoucement';
     const TYPE_CREATE_REQUESTMENT = 'create_requestment';
+    const TYPE_ACCEPT_REQUESTMENT = 'accept_requestment';
+    const TYPE_REFUSE_REQUESTMENT = 'refuse_requestment';
     
     /**
      * @inheritdoc

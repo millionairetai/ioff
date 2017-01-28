@@ -38,6 +38,9 @@ appRoot.factory('requestmentService', ['apiService', 'validateService', '$rootSc
             },
             getRequestments: function (data, success, error) {
                 return apiService.get('requestment/get-requestments', data, success, error);
+            },
+            process: function (data, success, error) {
+                return apiService.post('requestment/process', data, success, error);
             }
         };
     }]);

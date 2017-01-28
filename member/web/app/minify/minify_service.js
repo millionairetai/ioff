@@ -839,8 +839,6 @@ appRoot.factory('requestmentService', ['apiService', 'validateService', '$rootSc
 
         return {
             validate: function (requestment) {
-//return true;
-console.log(requestment);
                 var message = '';
                 if (!validateService.required(requestment.title)) {
                     message += $rootScope.$lang.i_can_not_be_blank.replace('%i%', $rootScope.$lang.title) + '<br />';
@@ -876,6 +874,9 @@ console.log(requestment);
             },
             getRequestments: function (data, success, error) {
                 return apiService.get('requestment/get-requestments', data, success, error);
+            },
+            process: function (data, success, error) {
+                return apiService.post('requestment/process', data, success, error);
             }
         };
     }]);

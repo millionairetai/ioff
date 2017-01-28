@@ -123,34 +123,10 @@
                                             <br />
                                         </div>
                                     </div>
-
-                                    <div class="form-group">    
-                                        <label class="col-sm-3 control-label">{{$root.$lang.from_datetime}}:</label>
-                                        <div class="col-sm-3">
-                                            <p class="input-group">
-                                                <input type="text" class="form-control" uib-datepicker-popup="dd-MM-yyyy" ng-model="requestment.from_datetime" is-open="open_from_datetime" datepicker-options="dateOptions" ng-required="true" close-text="{{$root.$lang.datepicker_close}}"  clear-text="{{$root.$lang.datepicker_clear}}" current-text="{{$root.$lang.datepicker_today}}" ng-focus="open_from_datetime = true" />
-                                                <span class="input-group-btn">
-                                                    <button type="button" class="btn btn-default" ng-click="open_from_datetime = true"><i class="glyphicon glyphicon-calendar"></i></button>
-                                                    <br />
-                                                </span>
-                                            </p>
-                                        </div>
-
-                                        <label class="col-sm-3 control-label">{{$root.$lang.to_datetime}}:</label>
-                                        <div class="col-sm-3">
-                                            <p class="input-group">
-                                                <input type="text" class="form-control" uib-datepicker-popup="dd-MM-yyyy" ng-model="requestment.to_datetime" is-open="open_to_datetime" datepicker-options="dateOptions" ng-required="true" close-text="{{$root.$lang.datepicker_close}}"  clear-text="{{$root.$lang.datepicker_clear}}" current-text="{{$root.$lang.datepicker_today}}" ng-focus="open_to_datetime = true" />
-                                                <span class="input-group-btn">
-                                                    <button type="button" class="btn btn-default" ng-click="open_to_datetime = true"><i class="glyphicon glyphicon-calendar"></i></button>
-                                                    <br />
-                                                </span>
-                                            </p>
-                                        </div>
-                                    </div>
                                     <div class="form-group">
                                         <label for="inputEmail3" class="col-sm-3 control-label ng-binding">{{$root.$lang.type}}</label>          
                                         <div class="col-sm-5">
-                                            <select class="form-control" ng-model="requestment.requestment_category_id" ng-init="requestment.requestment_category_id=null">
+                                            <select class="form-control" ng-model="requestment.requestment_category_id" ng-init="requestment.requestment_category_id = null">
                                                 <option value>--</option>
                                                 <option ng-repeat="value in requestmentCategory" value="{{value.id}}">{{value.name}}</option>
                                             </select>
@@ -185,16 +161,60 @@
                                     </div>
                                     <div class="clearfix"></div>
                                     <div class="form-group">
-                                        <label class="col-sm-2 control-label">{{$root.$lang.public}}</label>
-                                        <div class="col-sm-9" >
-                                            <input type="checkbox" ng-model="requestment.is_public" icheck /> <br /><br />
+                                        <div class="col-sm-12" >
+                                            <input type="checkbox" ng-model="moreOption" ng-init="moreOption = false;" icheck /> Thêm tùy chọn
+                                            <br /><br />
                                         </div>
                                     </div>
-                                    <div class="clearfix"></div>
-                                    <div class="form-group">
-                                        <label class="col-sm-1 control-label">Sms</label>
-                                        <div class="col-sm-9" >
-                                            <input type="checkbox" ng-model="requestment.sms" icheck /> 
+                                    <div ng-show="moreOption">
+                                        <div class="form-group">    
+                                            <label class="col-sm-3 control-label">{{$root.$lang.from_datetime}}:</label>
+                                            <div class="col-sm-3">
+                                                <p class="input-group">
+                                                    <input type="text" class="form-control" uib-datepicker-popup="dd-MM-yyyy" ng-model="requestment.from_datetime" is-open="open_from_datetime" datepicker-options="dateOptions" ng-required="true" close-text="{{$root.$lang.datepicker_close}}"  clear-text="{{$root.$lang.datepicker_clear}}" current-text="{{$root.$lang.datepicker_today}}" ng-focus="open_from_datetime = true" />
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-default" ng-click="open_from_datetime = true"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                        <br />
+                                                    </span>
+                                                </p>
+                                            </div>
+                                            <div class="input-group col-sm-2">
+                                                <input type="text" class="form-control" datetime-picker="HH:mm" ng-model="requestment.from_datetime" is-open="open_from_time" enable-date="false"  enable-time="true" button-bar="buttonBar" ng-focus="open_from_time = true" timepicker-options="timepickerOptions"/>
+                                                <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-default" ng-click="open_from_time = true"><i class="fa fa-clock-o"></i></button>
+                                                </span>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                            <label class="col-sm-3 control-label">{{$root.$lang.to_datetime}}:</label>
+                                            <div class="col-sm-3">
+                                                <p class="input-group">
+                                                    <input type="text" class="form-control" uib-datepicker-popup="dd-MM-yyyy" ng-model="requestment.to_datetime" is-open="open_to_datetime" datepicker-options="dateOptions" ng-required="true" close-text="{{$root.$lang.datepicker_close}}"  clear-text="{{$root.$lang.datepicker_clear}}" current-text="{{$root.$lang.datepicker_today}}" ng-focus="open_to_datetime = true" />
+                                                    <span class="input-group-btn">
+                                                        <button type="button" class="btn btn-default" ng-click="open_to_datetime = true"><i class="glyphicon glyphicon-calendar"></i></button>
+                                                        <br />
+                                                    </span>
+                                                </p>
+                                            </div>
+                                            <div class="input-group col-sm-2">
+                                                <input type="text" class="form-control" datetime-picker="HH:mm" ng-model="requestment.to_datetime" is-open="open_to_time" enable-date="false"  enable-time="true" button-bar="buttonBar" ng-focus="open_to_time = true" timepicker-options="timepickerOptions"/>
+                                                <span class="input-group-btn">
+                                                    <button type="button" class="btn btn-default" ng-click="open_to_time = true"><i class="fa fa-clock-o"></i></button>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">{{$root.$lang.public}}</label>
+                                            <div class="col-sm-9" >
+                                                <input type="checkbox" ng-model="requestment.is_public" icheck /> <br /><br />
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                        <div class="form-group">
+                                            <label class="col-sm-1 control-label">Sms</label>
+                                            <div class="col-sm-9" >
+                                                <input type="checkbox" ng-model="requestment.sms" icheck /> 
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -356,7 +376,8 @@
                                                 </p>
                                                 <div class="clearfix"></div>
                                                 <div class="box-complete">
-                                                    <label ng-show="activity.requestment.status == 'requestment.completed'" ><i class="fa fa-check-circle" aria-hidden="true"></i> {{$root.$lang.completed}}</label>
+                                                    <label ng-show="(activity.requestment.status == 'requestment.completed' && activity.requestment.is_accept == false)" ><i class="fa fa-ban" aria-hidden="true"></i> Từ chối</label>
+                                                    <label ng-show="(activity.requestment.status == 'requestment.completed' && activity.requestment.is_accept == true)" ><i class="fa fa-check-circle" aria-hidden="true"></i> {{$root.$lang.accept}}</label>
                                                     <label ng-show="activity.requestment.status == 'requestment.inprogress'" ><i class="fa fa-clock-o" aria-hidden="true"></i> {{$root.$lang.in_progress}}</label>
                                                     <div class="">
                                                         <div class="circle-primary">
@@ -367,16 +388,18 @@
                                                         </div>
                                                         <div class="circle-success">
                                                             <img src="{{activity.requestment.avatar_to}}" alt="">
-                                                            <i ng-show="activity.requestment.status == 'requestment.completed'" class="fa fa-check-circle" aria-hidden="true"></i>
+                                                            <i ng-show="activity.requestment.status == 'requestment.completed'&& activity.requestment.is_accept == false" class="fa fa-ban" aria-hidden="true"></i>
+                                                            <i ng-show="activity.requestment.status == 'requestment.completed'&& activity.requestment.is_accept == true" class="fa fa-check-circle" aria-hidden="true"></i>
                                                             <i ng-show="activity.requestment.status == 'requestment.inprogress'" class="fa fa-clock-o" aria-hidden="true"></i>
                                                         </div>
                                                     </div>
                                                 </div>
                                                 <span ng-show="activity.requestment.status == 'requestment.inprogress'" class="btn btn-info btn-sm">{{$root.$lang.in_progress}}</span>
-                                                <span ng-show="activity.requestment.status == 'requestment.completed'" class="btn btn-success btn-sm">{{$root.$lang.completed}}</span>
+                                                <span ng-show="activity.requestment.status == 'requestment.completed' && activity.requestment.is_accept == true" class="btn btn-success btn-sm">{{$root.$lang.accept}}</span>
+                                                <span ng-show="activity.requestment.status == 'requestment.completed' && activity.requestment.is_accept == false" class="btn btn-danger btn-sm">{{$root.$lang.refuse}}</span>
                                             </div>
-                                            <button ng-show="activity.requestment.status == 'requestment.inprogress'" class="btn btn-flat btn-primary">{{$root.$lang.accept}}</button> &nbsp;
-                                            <button ng-show="activity.requestment.status == 'requestment.inprogress'" class="btn btn-flat btn-danger">{{$root.$lang.refuse}}</button>
+                                            <button ng-click="processRequestment('accept', indexActivity, activity.requestment.id)" ng-show="activity.requestment.status == 'requestment.inprogress' && activity.requestment.is_show_button" class="btn btn-flat btn-primary">{{$root.$lang.accept}}</button> &nbsp;
+                                            <button ng-click="processRequestment('refuse', indexActivity, activity.requestment.id)" ng-show="activity.requestment.status == 'requestment.inprogress' && activity.requestment.is_show_button" class="btn btn-flat btn-danger">{{$root.$lang.refuse}}</button>
                                         </div>
                                     </dd>
                                 </dl>

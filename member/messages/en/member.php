@@ -152,6 +152,8 @@ return [
     'edited event' => 'edited event ',
     'edited task' => 'edited task ',
     'edited project' => 'edited project',
+    'accepted your requestment' => 'accepted your requestment',
+    'refused your requesment' => 'refused your requestment',
     'content' => 'Content',
     'Title' => 'Title',
     'Description' => 'Description',

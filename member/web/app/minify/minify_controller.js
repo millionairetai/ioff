@@ -1,5 +1,5 @@
-appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activityService', 'commonService', 'commentService', 'validateService', 'departmentService', 'employeeService', 'activityPostService', 'annoucementService', '$routeParams', 'requestmentService',
-    function ($scope, $rootScope, alertify, activityService, commonService, commentService, validateService, departmentService, employeeService, activityPostService, annoucementService, $routeParams, requestmentService) {
+appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activityService', 'commonService', 'commentService', 'validateService', 'departmentService', 'employeeService', 'activityPostService', 'annoucementService', '$routeParams', 'requestmentService', 'socketService',
+    function ($scope, $rootScope, alertify, activityService, commonService, commentService, validateService, departmentService, employeeService, activityPostService, annoucementService, $routeParams, requestmentService, socketService) {
         $scope.annoucements = {
             data: [],
             totalPage: 0,
@@ -181,7 +181,7 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
             description: '',
             from_datetime: '',
             to_datetime: '',
-            requestment_category_id: 0,
+            requestment_category_id: null,
             review_employee: null,
             review_employee_id: 0,
             sms: false,
@@ -219,17 +219,28 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
                     description: '',
                     from_datetime: '',
                     to_datetime: '',
-                    requestment_category_id: 0,
+                    requestment_category_id: null,
                     review_employee: null,
                     review_employee_id: 0,
                     sms: false, 
                     is_public: true
                 };
+                socketService.emit('notify', 'ok');
                 alertify.success($rootScope.$lang.add_success);
             });
         }
 
-
+        //Accept or refuse requestment
+        $scope.processRequestment = function(type, indexActivity, requestmentId) {
+            requestmentService.process({requestmentId: requestmentId, type: type}, function (response) {
+                $scope.activity.data[indexActivity].requestment.status = 'requestment.completed';
+                if (type == 'accept') {
+                    $scope.activity.data[indexActivity].requestment.is_accept = true;
+                }
+                socketService.emit('notify', 'ok');
+                alertify.success($rootScope.$lang.update_success);
+            });
+        }
 
         $scope.getActivity();
         $scope.getAnnoucements('all');

@@ -146,6 +146,8 @@ return [
     'edited event' => 'đã chỉnh sửa sự kiện ',
     'edited task' => 'đã chỉnh sửa công việc ',
     'edited project' => 'đã chỉnh sửa dự án',
+    'accepted your requestment' => 'đã chấp nhận yêu cầu của bạn',
+    'refused your requesment' => 'đã từ chối yêu cầu của bạn',
     'content' => 'Nội dung',
     'Title' => 'Tiêu đề',
     'Description' => 'Nội dung', 

@@ -99,6 +99,12 @@ class NotificationController extends ApiController {
             case Activity::TYPE_CREATE_REQUESTMENT:
                 return \Yii::t('member', 'sent requesment to you');
                 break;
+            case Activity::TYPE_ACCEPT_REQUESTMENT:
+                return \Yii::t('member', 'accepted your requestment');
+                break;
+            case Activity::TYPE_REFUSE_REQUESTMENT:
+                return \Yii::t('member', 'refused your requesment');
+                break;
             default :
                 return $typeActivity;
         }
