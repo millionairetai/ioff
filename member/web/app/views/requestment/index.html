@@ -1,0 +1,132 @@
+<div class="deparment-list-page">
+    <section class="content-header">
+        <h1>
+            {{$root.$lang.requestment_category_manage}}
+        </h1>
+        <div ng-show="$root.auth.requestment_category.add || $root.auth.is_admin" class="tool-right">
+            <a class="btn btn-flat btn-primary" ng-click="add()"><i class="fa fa-plus-square"></i> {{$root.$lang.add}}</a>
+        </div>
+    </section>
+    <section class="content">
+        <!-- Default box -->
+        <div class="box box-solid">
+            <div class="box-header with-border">
+                <h3 class="box-title">{{$root.$lang.requestment_category_list}}</h3>            
+                <div class="box-tools pull-right">
+                    <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
+                </div>
+            </div>
+            <div class="box-body">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a ng-click="initializeTab($event)" href="#my_request" data-toggle="tab">My request</a></li>
+                    <li><a ng-click="initializeTab($event)" href="#sent" data-toggle="tab">Sent</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="my_request">
+                        <div ng-show="true">
+                            <div class="">
+                                <div class="circle-primary">
+                                    <img src="/" alt="">
+                                </div>
+                                <div class="pass-status">
+                                    <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+                                </div>
+                                <div class="circle-success">
+                                    <img src="/" alt="">
+                                    <i class="fa fa-ban" aria-hidden="true"></i>
+                                    <i class="fa fa-check-circle" aria-hidden="true"></i>
+                                    <i class="fa fa-clock-o" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                            <div class="">
+                                <div class="circle-primary">
+                                    <img src="/" alt="">
+                                </div>
+                                <div class="pass-status">
+                                    <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+                                </div>
+                                <div class="circle-success">
+                                    <img src="/" alt="">
+                                    <i class="fa fa-ban" aria-hidden="true"></i>
+                                    <i class="fa fa-check-circle" aria-hidden="true"></i>
+                                    <i class="fa fa-clock-o" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                            <div class="">
+                                <div class="circle-primary">
+                                    <img src="/" alt="">
+                                </div>
+                                <div class="pass-status">
+                                    <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+                                </div>
+                                <div class="circle-success">
+                                    <img src="/" alt="">
+                                    <i class="fa fa-ban" aria-hidden="true"></i>
+                                    <i class="fa fa-check-circle" aria-hidden="true"></i>
+                                    <i class="fa fa-clock-o" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                            <div class="">
+                                <div class="circle-primary">
+                                    <img src="/" alt="">
+                                </div>
+                                <div class="pass-status">
+                                    <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+                                </div>
+                                <div class="circle-success">
+                                    <img src="/" alt="">
+                                    <i class="fa fa-ban" aria-hidden="true"></i>
+                                    <i class="fa fa-check-circle" aria-hidden="true"></i>
+                                    <i class="fa fa-clock-o" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                            <div class="">
+                                <div class="circle-primary">
+                                    <img src="/" alt="">
+                                </div>
+                                <div class="pass-status">
+                                    <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+                                </div>
+                                <div class="circle-success">
+                                    <img src="/" alt="">
+                                    <i class="fa fa-ban" aria-hidden="true"></i>
+                                    <i class="fa fa-check-circle" aria-hidden="true"></i>
+                                    <i class="fa fa-clock-o" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                            <div class="">
+                                <div class="circle-primary">
+                                    <img src="/" alt="">
+                                </div>
+                                <div class="pass-status">
+                                    <i class="fa fa-long-arrow-right" aria-hidden="true"></i>
+                                </div>
+                                <div class="circle-success">
+                                    <img src="/" alt="">
+                                    <i class="fa fa-ban" aria-hidden="true"></i>
+                                    <i class="fa fa-check-circle" aria-hidden="true"></i>
+                                    <i class="fa fa-clock-o" aria-hidden="true"></i>
+                                </div>
+                            </div>
+
+                            <div class="text-right" ng-show="totalItems > params.limit">
+                                <uib-pagination total-items="totalItems" ng-model="params.page" max-size="maxPageSize" class="pagination-sm"
+                                                boundary-links="true" first-text="&lsaquo;&lsaquo;" previous-text="&lsaquo;" next-text="&rsaquo;" last-text="&rsaquo;&rsaquo;" items-per-page="params.limit"
+                                                ng-change="getRequestmentCategories()" num-pages="numPages" rotate="false"></uib-pagination>                                  
+                            </div>
+                        </div>
+                        <div ng-show="!requestment.length">
+                            {{$root.$lang.no_data}}
+                        </div>                        
+                    </div>
+                    <div class="tab-pane active" id="sent">bbbb</div>
+                </div>
+
+
+
+                <div class="box-footer text-center" ></div><!-- /.box-footer-->
+
+            </div><!-- /.box -->
+        </div>
+    </section>
+</div>

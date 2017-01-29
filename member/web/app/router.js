@@ -117,6 +117,10 @@ appRoot.config(function ($routeProvider, $httpProvider) {
                 templateUrl: 'app/views/requestmentCategory/index.html',
                 controller: 'requestmentCategoryCtrl'
             })
+            .when('/requestment', {
+                templateUrl: 'app/views/requestment/index.html',
+                controller: 'requestmentCtrl'
+            })
             .otherwise({redirectTo: '/activity/all'});
 
 });

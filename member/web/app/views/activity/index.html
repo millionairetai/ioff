@@ -380,7 +380,7 @@
                                                 </p>
                                                 <div class="clearfix"></div>
                                                 <div class="box-complete">
-                                                    <label ng-show="(activity.requestment.status == 'requestment.completed' && activity.requestment.is_accept == false)" ><i class="fa fa-ban" aria-hidden="true"></i> Từ chối</label>
+                                                    <label ng-show="(activity.requestment.status == 'requestment.completed' && activity.requestment.is_accept == false)" ><i class="fa fa-ban" aria-hidden="true"></i> {{$root.$lang.refuse}}</label>
                                                     <label ng-show="(activity.requestment.status == 'requestment.completed' && activity.requestment.is_accept == true)" ><i class="fa fa-check-circle" aria-hidden="true"></i> {{$root.$lang.accept}}</label>
                                                     <label ng-show="activity.requestment.status == 'requestment.inprogress'" ><i class="fa fa-clock-o" aria-hidden="true"></i> {{$root.$lang.in_progress}}</label>
                                                     <div class="">
