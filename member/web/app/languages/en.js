@@ -411,7 +411,10 @@
             send_to: 'Send to',
             review_employee: 'Review employee',
             requestment_category_manage: 'Requestment category manage',
-            requestment_category_list: 'Requestment category list'
+            requestment_category_list: 'Requestment category list',
+            my_request: 'My request',
+            sent: 'Sent',
+            received: 'Received'
         };
     });
 })(window.angular);

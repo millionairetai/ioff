@@ -392,8 +392,8 @@
                                                         </div>
                                                         <div class="circle-success">
                                                             <img src="{{activity.requestment.avatar_to}}" alt="">
-                                                            <i ng-show="activity.requestment.status == 'requestment.completed'&& activity.requestment.is_accept == false" class="fa fa-ban" aria-hidden="true"></i>
-                                                            <i ng-show="activity.requestment.status == 'requestment.completed'&& activity.requestment.is_accept == true" class="fa fa-check-circle" aria-hidden="true"></i>
+                                                            <i ng-show="activity.requestment.status == 'requestment.completed' && activity.requestment.is_accept == false" class="fa fa-ban" aria-hidden="true"></i>
+                                                            <i ng-show="activity.requestment.status == 'requestment.completed' && activity.requestment.is_accept == true" class="fa fa-check-circle" aria-hidden="true"></i>
                                                             <i ng-show="activity.requestment.status == 'requestment.inprogress'" class="fa fa-clock-o" aria-hidden="true"></i>
                                                         </div>
                                                     </div>
@@ -480,16 +480,14 @@
                     <!-- /.box-body -->
                 </div>
 
-                <div class="box box-info box-solid">
+                <div class="box box-info box-solid" ng-show="(myNumberRequest.sent!=0 || myNumberRequest.received!=0)">
                     <div class="box-header with-border">
-                        <h4 class="box-title">WORKFLOWS</h4>
+                        <h4 class="box-title">{{$root.$lang.my_request}}</h4>
                     </div>
                     <div class="box-body no-padding">
                         <ul class="nav nav-stacked">
-                            <li><a href="#">Projects <span class="pull-right">31</span></a></li>
-                            <li><a href="#">Tasks <span class="pull-right badge bg-aqua">5</span></a></li>
-                            <li><a href="#">Completed Projects <span class="pull-right badge bg-green">12</span></a></li>
-                            <li><a href="#">Followers <span class="pull-right badge bg-red">842</span></a></li>
+                            <li><a href="#">{{$root.$lang.sent}} <span class="pull-right badge bg-aqua">{{myNumberRequest.sent}}</span></a></li>
+                            <li><a href="#">{{$root.$lang.received}} <span class="pull-right badge bg-green">{{myNumberRequest.received}}</span></a></li>
                         </ul>
                     </div>
                     <!-- /.box-body -->

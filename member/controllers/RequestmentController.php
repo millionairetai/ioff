@@ -192,4 +192,19 @@ class RequestmentController extends ApiController {
         }
     }
 
+    //Get number request
+    public function actionGetNumberRequest() {
+        $objects = [];
+        try {
+            $myNumberRequest = Requestment::getNumberRequestByEmployeeId(Yii::$app->user->identity->id);
+            $objects['myNumberRequest'] = [
+                'sent' => $myNumberRequest[0]['num_request'],
+                'received' => $myNumberRequest[1]['num_request'],
+            ];
+            return $this->sendResponse(false, "", $objects);
+        } catch (\Exception $ex) {
+            return $this->sendResponse(true, \Yii::t('member', 'error_system'), '');
+        }
+    }
+
 }

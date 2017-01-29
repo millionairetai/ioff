@@ -877,6 +877,9 @@ appRoot.factory('requestmentService', ['apiService', 'validateService', '$rootSc
             },
             process: function (data, success, error) {
                 return apiService.post('requestment/process', data, success, error);
+            },
+            getNumberRequest:  function (data, success, error) {
+                return apiService.get('requestment/get-number-request', data, success, error);
             }
         };
     }]);
@@ -904,7 +907,7 @@ appRoot.factory('requestmentCategoryService', ['apiService', '$rootScope', 'aler
             },
             delete: function (data, success, error) {
                 return apiService.post('requestment-category/delete', data, success, error);
-            },
+            }
         };
     }]);
 appRoot.factory('socketService', ['socketFactory', function (socketFactory) {

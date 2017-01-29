@@ -25,6 +25,12 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
             employees: []
         };
 
+        //My number request.
+        $scope.myNumberRequest = {
+            sent: 0,
+            received: 0
+        }
+
         //get all department
         departmentService.allDepartment({}, function (data) {
             $scope.departments = data.objects;
@@ -211,7 +217,7 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
             $scope.requestment.review_employee_id = $scope.requestment.review_employee.id;
             requestmentService.add($scope.requestment, function (response) {
                 response.objects.requestment = angular.merge({
-                    requestment:{avatar_to:$scope.requestment.review_employee.image},
+                    requestment: {avatar_to: $scope.requestment.review_employee.image},
                 }, response.objects.requestment)
                 $scope.activity.data.unshift(response.objects.requestment);
                 $scope.requestment = {
@@ -222,7 +228,7 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
                     requestment_category_id: null,
                     review_employee: null,
                     review_employee_id: 0,
-                    sms: false, 
+                    sms: false,
                     is_public: true
                 };
                 socketService.emit('notify', 'ok');
@@ -231,7 +237,7 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
         }
 
         //Accept or refuse requestment
-        $scope.processRequestment = function(type, indexActivity, requestmentId) {
+        $scope.processRequestment = function (type, indexActivity, requestmentId) {
             requestmentService.process({requestmentId: requestmentId, type: type}, function (response) {
                 $scope.activity.data[indexActivity].requestment.status = 'requestment.completed';
                 if (type == 'accept') {
@@ -242,6 +248,16 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
             });
         }
 
+        //Get number requestment
+        $scope.getNumberRequest = function () {
+            requestmentService.getNumberRequest({}, function (response) {
+                $scope.myNumberRequest.sent = response.objects.myNumberRequest.sent;
+                $scope.myNumberRequest.received = response.objects.myNumberRequest.received;
+            });
+        }
+
+        //Get data when just loading.
         $scope.getActivity();
         $scope.getAnnoucements('all');
+        $scope.getNumberRequest();
     }]);

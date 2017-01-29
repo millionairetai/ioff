@@ -25,27 +25,25 @@ use Yii;
  * @property string $lastup_employee_id
  * @property boolean $disabled
  */
-class Requestment extends \common\components\db\ActiveRecord
-{
+class Requestment extends \common\components\db\ActiveRecord {
+
     const STATUS_COLUMN_NAME_INPROGESS = 'requestment.inprogress';
     const STATUS_COLUMN_NAME_COMPLETED = 'requestment.completed';
-    
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'requestment';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['company_id', 'requestment_category_id', 'review_employee_id', 'from_datetime', 'to_datetime', 'datetime_created', 'lastup_datetime', 'created_employee_id', 'lastup_employee_id'], 'integer'],
-            [['title', 'description', 'review_employee_id' , 'requestment_category_id'], 'required'],
+            [['title', 'description', 'review_employee_id', 'requestment_category_id'], 'required'],
             [['description', 'description_parse', 'refused_reason'], 'string'],
             [['is_accept', 'is_public', 'disabled'], 'boolean'],
             [['title'], 'string', 'max' => 255]
@@ -55,8 +53,7 @@ class Requestment extends \common\components\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => Yii::t('member', 'ID'),
             'company_id' => Yii::t('member', 'Company ID'),
@@ -77,4 +74,38 @@ class Requestment extends \common\components\db\ActiveRecord
             'disabled' => Yii::t('member', 'Disabled'),
         ];
     }
+
+    /**
+     * Count get
+     * 
+     * @param interger $itemPerPage
+     * @param interger $currentPage
+     * @return array
+     */
+    public static function getNumberRequestByEmployeeId($employeeId) {
+        $query = (new \yii\db\Query())
+                        ->select('count(*) AS num_request')
+                        ->from('requestment')
+                        ->leftJoin('status', "requestment.status_id = status.id")
+                        ->where([
+                            'requestment.company_id' => \Yii::$app->user->getCompanyId(),
+                            'requestment.created_employee_id' => $employeeId,
+                            'status.column_name'    => 'requestment.inprogress',
+                        ])
+//                        ->count()
+                    ->union((new \yii\db\Query())
+                        ->select(['count(*) AS num_request'])
+                        ->from('requestment')
+                        ->leftJoin('status', "requestment.status_id = status.id")
+                        ->where([
+                            'requestment.company_id' => \Yii::$app->user->getCompanyId(),
+                            'requestment.review_employee_id' => $employeeId,
+                            'status.column_name'    => 'requestment.inprogress',
+                        ]), false);
+//                        ->count();
+
+        $sql = $query->createCommand()->getRawSql();
+        return self::findBySql($sql)->asArray()->all();
+    }
+
 }

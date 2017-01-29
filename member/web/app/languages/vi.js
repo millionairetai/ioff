@@ -423,7 +423,10 @@
             send_to: 'Gửi đến',
             review_employee: 'Nhân viên phê duyệt',
             requestment_category_manage: 'Quản lý loại yêu cầu',
-            requestment_category_list: 'Danh sách loại yêu cầu'
+            requestment_category_list: 'Danh sách loại yêu cầu', 
+            my_request: 'Yêu cầu của tôi',
+            sent: 'Đã gửi',
+            received: 'Đã nhận'
         };
     });
 })(window.angular);
