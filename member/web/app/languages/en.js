@@ -414,7 +414,8 @@
             requestment_category_list: 'Requestment category list',
             my_request: 'My request',
             sent: 'Sent',
-            received: 'Received'
+            received: 'Received',
+            more_option: 'More option'
         };
     });
 })(window.angular);

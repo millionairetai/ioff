@@ -90,9 +90,8 @@ class Requestment extends \common\components\db\ActiveRecord {
                         ->where([
                             'requestment.company_id' => \Yii::$app->user->getCompanyId(),
                             'requestment.created_employee_id' => $employeeId,
-                            'status.column_name'    => 'requestment.inprogress',
+                            'status.column_name'    => self::STATUS_COLUMN_NAME_INPROGESS,
                         ])
-//                        ->count()
                     ->union((new \yii\db\Query())
                         ->select(['count(*) AS num_request'])
                         ->from('requestment')
@@ -100,9 +99,8 @@ class Requestment extends \common\components\db\ActiveRecord {
                         ->where([
                             'requestment.company_id' => \Yii::$app->user->getCompanyId(),
                             'requestment.review_employee_id' => $employeeId,
-                            'status.column_name'    => 'requestment.inprogress',
-                        ]), false);
-//                        ->count();
+                            'status.column_name'    => self::STATUS_COLUMN_NAME_INPROGESS,
+                        ]), true);
 
         $sql = $query->createCommand()->getRawSql();
         return self::findBySql($sql)->asArray()->all();

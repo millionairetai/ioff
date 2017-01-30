@@ -195,6 +195,12 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
 //            departments: [],
 //            employees: []
         };
+        
+        // time picker
+        $scope.timepickerOptions = {
+            readonlyInput: false,
+            showMeridian: false
+        }
 
         commonService.gets('requestment-category', function (response) {
             $scope.requestmentCategory = response.objects;
@@ -218,7 +224,7 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
             requestmentService.add($scope.requestment, function (response) {
                 response.objects.requestment = angular.merge({
                     requestment: {avatar_to: $scope.requestment.review_employee.image},
-                }, response.objects.requestment)
+                }, response.objects.requestment);
                 $scope.activity.data.unshift(response.objects.requestment);
                 $scope.requestment = {
                     title: '',
@@ -231,6 +237,7 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
                     sms: false,
                     is_public: true
                 };
+                $scope.getNumberRequest();
                 socketService.emit('notify', 'ok');
                 alertify.success($rootScope.$lang.add_success);
             });

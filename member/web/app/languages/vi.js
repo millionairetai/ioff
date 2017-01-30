@@ -426,7 +426,8 @@
             requestment_category_list: 'Danh sách loại yêu cầu', 
             my_request: 'Yêu cầu của tôi',
             sent: 'Đã gửi',
-            received: 'Đã nhận'
+            received: 'Đã nhận',
+            more_option: 'Thêm tùy chọn'
         };
     });
 })(window.angular);

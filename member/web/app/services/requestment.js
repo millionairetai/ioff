@@ -43,7 +43,7 @@ appRoot.factory('requestmentService', ['apiService', 'validateService', '$rootSc
                 return apiService.post('requestment/process', data, success, error);
             },
             getNumberRequest:  function (data, success, error) {
-                return apiService.get('requestment/get-number-request', data, success, error);
+                return apiService.get('requestment/get-my-number-request', data, success, error);
             }
         };
     }]);
