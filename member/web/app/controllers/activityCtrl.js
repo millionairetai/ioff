@@ -250,6 +250,7 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
                 if (type == 'accept') {
                     $scope.activity.data[indexActivity].requestment.is_accept = true;
                 }
+                $scope.getNumberRequest();
                 socketService.emit('notify', 'ok');
                 alertify.success($rootScope.$lang.update_success);
             });
