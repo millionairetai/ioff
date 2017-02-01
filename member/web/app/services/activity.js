@@ -9,6 +9,9 @@ appRoot.factory('activityService', ['apiService', function (apiService) {
             },
             addMessage: function (data, success, error) {
                 return apiService.post('activity/add-message', data, success, error);
+            },
+            getProfileActivity: function (data, success, error) {
+                return apiService.get('activity/get-activity', data, success, error);
             }
         };
     }]);

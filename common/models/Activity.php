@@ -167,14 +167,18 @@ class Activity extends \common\components\db\ActiveRecord
         if (!empty($conditions['activity_id'])) {
             $sql .= " AND activity.id=" . $conditions['activity_id'];
         }
+        
+        if (!empty($conditions['employee_id'])) {
+            $sql .= " AND activity.employee_id=" . $conditions['employee_id'];
+        }
             
         $sql .= " ORDER BY activity.datetime_created DESC "
              .   " LIMIT " . ($offset - 1) * $perPage  .", " . $offset * $perPage ;
-        
-            return [
-                'activities' => \Yii::$app->getDb()->createCommand($sql)->queryAll(),
-                'totalRow' => \Yii::$app->getDb()->createCommand('SELECT FOUND_ROWS() AS total_row')->queryAll(),
-            ];
+
+        return [
+            'activities' => \Yii::$app->getDb()->createCommand($sql)->queryAll(),
+            'totalRow' => \Yii::$app->getDb()->createCommand('SELECT FOUND_ROWS() AS total_row')->queryAll(),
+        ];
     }
 
     /**

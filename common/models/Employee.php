@@ -489,7 +489,7 @@ class Employee extends ActiveRecord implements IdentityInterface {
 
         //check keyword
         if (!empty($keyword)) {
-            $query->andWhere(['like', 'firstname', $keyword]);
+            $query->andWhere('CONCAT(employee.firstname, employee.lastname) LIKE :name', [':name' => '%' . $keyword . '%']);
         }
 
         //check department

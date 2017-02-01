@@ -31,8 +31,12 @@ class ActivityController extends ApiController {
         if (Yii::$app->request->get('activityId') && Yii::$app->request->get('activityId') != 'all') {
             $condition['activity_id'] = Yii::$app->request->get('activityId');
         }
+        
+        if (Yii::$app->request->get('employeeId')) {
+            $condition['employee_id'] = Yii::$app->request->get('employeeId');
+        }
 
-//        try {
+        try {
             $result = Activity::getActivityWallByEmployeeId(Yii::$app->user->identity->id, Yii::$app->request->get('currentPage'), 10, $condition);
             $activities = $result['activities'];
             if ($activities) {
@@ -241,9 +245,9 @@ class ActivityController extends ApiController {
                 'id' => Yii::$app->user->identity->id,
             ];
             return $this->sendResponse(false, "", $objects);
-//        } catch (\Exception $ex) {
-//            return $this->sendResponse(true, \Yii::t('member', 'error_system'), '');
-//        }
+        } catch (\Exception $ex) {
+            return $this->sendResponse(true, \Yii::t('member', 'error_system'), '');
+        }
     }
 
     /**

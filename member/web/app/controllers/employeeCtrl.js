@@ -294,8 +294,8 @@ appRoot.controller('addEmployeeCtrl', ['$scope', '$uibModalInstance', '$rootScop
         };
     }]);
 
-appRoot.controller('profileCtrl', ['$scope', '$rootScope', 'alertify', '$timeout', '$filter', 'commonService', '$routeParams', 'employeeService', '$uibModal', '$location', '$window',
-    function ($scope, $rootScope, alertify, $timeout, $filter, commonService, $routeParams, employeeService, $uibModal, $location, $window) {
+appRoot.controller('profileCtrl', ['$scope', '$rootScope', 'alertify', '$timeout', '$filter', 'commonService', '$routeParams', 'employeeService', '$uibModal', '$location', '$window','activityService', 'commonService', 'commentService', 'validateService', 'departmentService', 'activityPostService', 'annoucementService', 'requestmentService', 'socketService',
+    function ($scope, $rootScope, alertify, $timeout, $filter, commonService, $routeParams, employeeService, $uibModal, $location, $window, activityService, commonService, commentService, validateService, departmentService, activityPostService, annoucementService, requestmentService, socketService) {
         var employeeId = $routeParams.employeeId;
         employeeService.getProfile({employeeId: employeeId}, function (respone) {
             $scope.employee = respone.objects;
@@ -364,6 +364,237 @@ appRoot.controller('profileCtrl', ['$scope', '$rootScope', 'alertify', '$timeout
             });
         };
 
+        //------------------------ Profile activity -------------------------------------//
+        //employee profile wall
+        $scope.annoucements = {
+            data: [],
+            totalPage: 0,
+            currentPage: 1
+        };
+        $scope.profile = null;
+        $scope.comment = '';
+        $scope.activity = {
+            data: null,
+            total: 0,
+            end: false,
+            page: 1,
+            busy: false,
+            activityId: $routeParams.activityId
+        };
+
+        //Message tab.
+        $scope.message = {
+            all: true,
+            content: '',
+            option: false,
+            departments: [],
+            employees: []
+        };
+
+        //My number request.
+//        $scope.myNumberRequest = {
+//            sent: 0,
+//            received: 0
+//        }
+
+        //get all department
+        departmentService.allDepartment({}, function (data) {
+            $scope.departments = data.objects;
+        });
+
+        //add employee
+        $scope.getEmployees = function (keyword) {
+            employeeService.searchEmployee({keyword: keyword}, function (response) {
+                $scope.employees = response.objects;
+            });
+        };
+
+        var temp = [];
+        $scope.getActivity = function () {
+            if ($scope.activity.end || $scope.activity.busy) {
+                return true;
+            }
+
+            $scope.activity.busy = true;
+            activityService.getProfileActivity({currentPage: $scope.activity.page, activityId: $scope.activity.activityId, employeeId: employeeId}, function (response) {
+                //Must transform object to array because object automatically arrange item by numeric key.
+                temp = Object.keys(response.objects.activities).map(function (k) {
+                    return response.objects.activities[k]
+                });
+                //Reverse max key to top head, beause they have just created.
+                temp.reverse();
+                if ($scope.activity.data === null) {
+                    $scope.activity.data = temp;
+                } else {
+                    $scope.activity.data = $scope.activity.data.concat(temp);
+                }
+
+                $scope.profile = response.objects.profile;
+                $scope.activity.total = response.objects.totalCount;
+                if ($scope.activity.data.length >= $scope.activity.total) {
+                    $scope.activity.end = true;
+                    return true;
+                }
+                $scope.activity.busy = false;
+            });
+
+            $scope.activity.page++;
+        }
+
+        $scope.saveComment = function (index, activityId, content) {
+            if (!validateService.required(content)) {
+                return false;
+            }
+            commonService.add('comment', {activity_id: activityId, content: content}, function (response) {
+                //Append to current comment.
+                if (!angular.isDefined($scope.activity.data[index]['comments'])) {
+                    $scope.activity.data[index]['comments'] = response.objects.comments;
+                } else {
+                    $scope.activity.data[index]['comments'] = angular.extend($scope.activity.data[index]['comments'], response.objects.comments);
+                }
+                $scope.activity.data[index].total_comment = parseInt($scope.activity.data[index].total_comment) + 1;
+                alertify.success($rootScope.$lang.add_success);
+            });
+        }
+
+        $scope.likeComment = function (indexActivity, commentId) {
+            commentService.like({commentId: commentId}, function (response) {
+                $scope.activity.data[indexActivity]['comments'][commentId].total_like = parseInt($scope.activity.data[indexActivity]['comments'][commentId].total_like) + 1;
+                $scope.activity.data[indexActivity]['comments'][commentId].is_liked = true;
+                alertify.success($rootScope.$lang.like_success);
+            });
+        }
+
+        $scope.likeActivity = function (indexActivity, activityId) {
+            activityService.like({activityId: activityId}, function (response) {
+                $scope.activity.data[indexActivity].total_like = parseInt($scope.activity.data[indexActivity].total_like) + 1;
+                $scope.activity.data[indexActivity].is_liked = true;
+                alertify.success($rootScope.$lang.like_success);
+            });
+        }
+
+        $scope.addMessage = function () {
+            activityPostService.addMessage($scope.message, function (response) {
+                $scope.message.content = '';
+                $scope.activity.data.unshift(response.objects.activity);
+                $scope.message.employees = [];
+                $scope.message.departments = [];
+                $scope.message.option = false;
+                $scope.message.all = true;
+                alertify.success($rootScope.$lang.add_success);
+            });
+        }
+
+        $scope.initializeTab = function ($event) {
+            if ($event != '') {
+                $event.preventDefault();
+            }
+        }
+
+        //-------------annoucment -------//
+        $scope.annoucemnt = {
+            title: '',
+            description: '',
+            is_importance: false,
+            date_new_to: '',
+            sms: false
+//            departments: [],
+//            employees: []
+        };
+
+        $scope.addAnnoucement = function () {
+            if (!annoucementService.validate($scope.annoucemnt)) {
+                return false;
+            }
+
+            annoucementService.add($scope.annoucemnt, function (response) {
+                $scope.activity.data.unshift(response.objects.activity);
+                $scope.annoucemnt = {
+                    title: '',
+                    description: '',
+                    is_importance: false,
+                    date_new_to: '',
+                    sms: false
+                };
+                alertify.success($rootScope.$lang.add_success);
+            });
+        }
+
+        //requestment member
+        $scope.requestment = {
+            title: '',
+            description: '',
+            from_datetime: '',
+            to_datetime: '',
+            requestment_category_id: null,
+            review_employee: null,
+            review_employee_id: 0,
+            sms: false,
+            is_public: true
+//            departments: [],
+//            employees: []
+        };
+
+        // time picker
+        $scope.timepickerOptions = {
+            readonlyInput: false,
+            showMeridian: false
+        }
+
+        commonService.gets('requestment-category', function (response) {
+            $scope.requestmentCategory = response.objects;
+        });
+
+        $scope.selectReviewer = function ($item, $model) {
+            $scope.getEmployees('');
+        };
+
+        //clear manager
+        $scope.clearReviewer = function () {
+            $scope.requestment.review_employee = null;
+        }
+
+        $scope.addRequestment = function () {
+            if (!requestmentService.validate($scope.requestment)) {
+                return false;
+            }
+
+            $scope.requestment.review_employee_id = $scope.requestment.review_employee.id;
+            requestmentService.add($scope.requestment, function (response) {
+                response.objects.requestment = angular.merge({
+                    requestment: {avatar_to: $scope.requestment.review_employee.image},
+                }, response.objects.requestment);
+                $scope.activity.data.unshift(response.objects.requestment);
+                $scope.requestment = {
+                    title: '',
+                    description: '',
+                    from_datetime: '',
+                    to_datetime: '',
+                    requestment_category_id: null,
+                    review_employee: null,
+                    review_employee_id: 0,
+                    sms: false,
+                    is_public: true
+                };
+                socketService.emit('notify', 'ok');
+                alertify.success($rootScope.$lang.add_success);
+            });
+        }
+
+        //Accept or refuse requestment
+        $scope.processRequestment = function (type, indexActivity, requestmentId) {
+            requestmentService.process({requestmentId: requestmentId, type: type}, function (response) {
+                $scope.activity.data[indexActivity].requestment.status = 'requestment.completed';
+                if (type == 'accept') {
+                    $scope.activity.data[indexActivity].requestment.is_accept = true;
+                }
+                socketService.emit('notify', 'ok');
+                alertify.success($rootScope.$lang.update_success);
+            });
+        }
+
+        //Get data when just loading.
+        $scope.getActivity();
     }]);
 
 appRoot.controller('updateProfileCtrl', ['$scope', '$rootScope', 'alertify', '$timeout', '$filter', 'commonService', '$routeParams', 'employeeService', '$uibModalInstance', 'employee',
@@ -442,14 +673,14 @@ appRoot.controller('changeProfileCtrl', ['$scope', '$rootScope', 'alertify', 'em
 
                     if (!validateService.avatar(files[0])) {
                         throw $rootScope.$lang.please_choose_png_gif_jpg_file;
-                    } 
-                    
+                    }
+
                     $scope.file = files[0];
                 }
                 catch (error) {
                     $scope.file = [];
                     alertify.error(error);
-                }  
+                }
             });
         };
 
@@ -470,9 +701,9 @@ appRoot.controller('changeProfileCtrl', ['$scope', '$rootScope', 'alertify', 'em
         $scope.changeProfile = function () {
             if ($scope.file.length <= 0) {
                 alertify.error($rootScope.$lang.please_choose_png_gif_jpg_file);
-                return; 
+                return;
             }
-            
+
             var fd = new FormData();
             fd.append("file", $scope.file);
             employeeService.changeAvatar(fd, function (response) {
