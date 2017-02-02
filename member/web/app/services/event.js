@@ -1,6 +1,9 @@
 appRoot.factory('eventService', ['apiService', '$rootScope', 'alertify', function (apiService, $rootScope, alertify) {
 
         return {
+            getUpcomingEvent: function (data, success, error) {
+                apiService.get('event/get-upcoming-event', data, success, error);
+            },
             listCalendars: function (data, success, error) {
                 apiService.post('calendar/index', data, success, error);
             },

@@ -157,6 +157,61 @@ class Event extends ActiveRecord {
     }
     
     /**
+    * Get upcoming event
+    * 
+    * @param type $employeeId
+    * @return array
+    */
+    public static function getUpcomingEventByEmployeeId($employeeId) {
+        $companyId = Yii::$app->user->identity->company_id;
+        $sql = " SELECT event.id, event.name, event.start_datetime, event.end_datetime, event.color,is_all_day "
+                . " FROM event "
+                . "        INNER JOIN calendar	"
+                . "                ON event.calendar_id= calendar.id "
+                . "                        AND calendar.company_id={$companyId} "
+                . "                        AND calendar.disabled=" . self::STATUS_ENABLE
+                . " WHERE ( "
+                . "       event.is_public=1 "
+                . "       OR event.created_employee_id={$employeeId}	 "
+                . "       OR (EXISTS( "
+                . "                      SELECT * "
+                . "                       FROM invitation "
+                . "                       WHERE invitation.event_id= event.id "
+                . "                               AND invitation.owner_id={$employeeId} "
+                . "                               AND invitation.owner_table='employee' "
+                . "                               AND invitation.company_id={$companyId} "
+                . "                               AND invitation.disabled=" . self::STATUS_ENABLE
+                . "                       ) "
+                . "               ) "
+                . "       OR(EXISTS( "
+                . "                       SELECT * "
+                . "                       FROM invitation "
+                . "                               INNER JOIN department "
+                . "                                       ON invitation.owner_id=department.id "
+                . "                                               AND invitation.owner_table='department' "
+                . "                                               AND department.company_id={$companyId} "
+                . "                                               AND department.disabled=" . self::STATUS_ENABLE
+                . "                               INNER JOIN employee "
+                . "                                       ON department.id=employee.department_id "
+                . "                                               AND employee.company_id={$companyId} "
+                . "                                               AND employee.id={$employeeId} "
+                . "                                               AND employee.disabled=" . self::STATUS_ENABLE
+                . "                       WHERE invitation.event_id=event.id "
+                . "                               AND invitation.company_id={$companyId} "
+                . "                               AND invitation.disabled=" . self::STATUS_ENABLE
+                . "                       ) "
+                . "               ) "
+                . "       ) "
+                . " AND event.company_id={$companyId} "
+                . " AND event.disabled=" . self::STATUS_ENABLE
+                . " AND event.start_datetime >=  " . strtotime(date('Y-m-d'))
+                . " ORDER BY event.start_datetime ASC"
+                . " LIMIT 0, 10";
+                
+            $command = \Yii::$app->getDb()->createCommand($sql);
+            return $command->queryAll();
+    }
+    /**
      * display info case is publuc
      */
     public function getIsPublic() {

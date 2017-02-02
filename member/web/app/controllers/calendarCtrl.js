@@ -1,6 +1,6 @@
 //show calendar
-appRoot.controller('calendarCtrl', ['$scope', '$uibModal', 'calendarService', 'taskService', '$timeout', 'settingSystem', 'uiCalendarConfig', 'listCalendar', '$rootScope', 'dialogMessage', 'alertify',
-    function ($scope, $uibModal, calendarService, taskService, $timeout, settingSystem, uiCalendarConfig, listCalendar, $rootScope, dialogMessage, alertify) {
+appRoot.controller('calendarCtrl', ['$scope', '$uibModal', 'calendarService', 'taskService', '$timeout', 'settingSystem', 'uiCalendarConfig', 'listCalendar', '$rootScope', 'dialogMessage', 'alertify', 'eventService',
+    function ($scope, $uibModal, calendarService, taskService, $timeout, settingSystem, uiCalendarConfig, listCalendar, $rootScope, dialogMessage, alertify, eventService) {
         var date = new Date();
         var d = date.getDate();
         var m = date.getMonth();
@@ -186,6 +186,15 @@ appRoot.controller('calendarCtrl', ['$scope', '$uibModal', 'calendarService', 't
                 });
             });
         };
+        
+        //Upcoming event.
+        $scope.getUpcomingEvent = function () {
+            eventService.getUpcomingEvent({}, function (response) {
+                $scope.upcomingEvents = response.objects.upcomingEvents;
+            });
+        }
+        
+        $scope.getUpcomingEvent();
     }]);
 
 //add Calendar 

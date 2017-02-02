@@ -114,6 +114,7 @@
             completed: 'Completed',
             in_progress: 'In progress',
             public: 'Public',
+            open: 'Open',
             //-----------------------------------------End of common language.----------------------------------
             
             //project
@@ -415,7 +416,8 @@
             my_request: 'My request',
             sent: 'Sent',
             received: 'Received',
-            more_option: 'More option'
+            more_option: 'More option',
+            upcoming_event: 'Upcoming Event'
         };
     });
 })(window.angular);

@@ -495,22 +495,21 @@
 
                 <div class="box box-solid">
                     <div class="box-header with-border">
-                        <h4 class="box-title">My task</h4>
+                        <h4 class="box-title">{{$root.$lang.my_task}}</h4>
                     </div>
                     <div class="box-body no-padding">
                         <ul class="nav nav-stacked">
-                            <li><a href="#">Projects <span class="pull-right badge bg-blue">31</span></a></li>
-                            <li><a href="#">Tasks <span class="pull-right badge bg-aqua">5</span></a></li>
-                            <li><a href="#">Completed Projects <span class="pull-right badge bg-green">12</span></a></li>
-                            <li><a href="#">Followers <span class="pull-right badge bg-red">842</span></a></li>
+                            <li><a href="#">{{$root.$lang.open}}<span class="pull-right badge bg-blue">{{myOverviewTask.open}}</span></a></li>
+                            <li><a href="#">{{$root.$lang.in_progress}} <span class="pull-right badge bg-aqua">{{myOverviewTask.inprogress}}</span></a></li>
+                            <li><a href="#">{{$root.$lang.completed}} <span class="pull-right badge bg-green">{{myOverviewTask.completed}}</span></a></li>
                         </ul>
                     </div>
                     <!-- /.box-body -->
                 </div>
 
-                <div class="box box-warning box-solid" event-fixed>
+                <div ng-show="upcomingEvents.length > 0"  class="box box-warning box-solid" event-fixed>
                     <div class="box-header with-border">
-                        <h3 class="box-title">Upcoming Event</h3>
+                        <h3 class="box-title">{{$root.$lang.upcoming_event}}</h3>
 
                         <div class="box-tools pull-right">
                             <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -519,22 +518,13 @@
                         <!-- /.box-tools -->
                     </div>
                     <!-- /.box-header -->
-                    <div class="box-body no-padding">
-                        <div class="item-event">
+                    <div class="box-body no-padding" ng-show="upcomingEvents.length > 0">
+                        <div ng-repeat="upcomingEvent in upcomingEvents" class="item-event">
                             <span class="fa fa-calendar"></span>
                             <dl>
-                                <dt>Event name</dt>
+                                <dt>{{upcomingEvent.name}}</dt>
                                 <dd>
-                                    30/09/2016
-                                </dd>
-                            </dl>
-                        </div>
-                        <div class="item-event">
-                            <span class="fa fa-calendar"></span>
-                            <dl>
-                                <dt>Event name</dt>
-                                <dd>
-                                    30/09/2016
+                                    {{upcomingEvent.start_datetime}}
                                 </dd>
                             </dl>
                         </div>

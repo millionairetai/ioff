@@ -1,5 +1,5 @@
-appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activityService', 'commonService', 'commentService', 'validateService', 'departmentService', 'employeeService', 'activityPostService', 'annoucementService', '$routeParams', 'requestmentService', 'socketService',
-    function ($scope, $rootScope, alertify, activityService, commonService, commentService, validateService, departmentService, employeeService, activityPostService, annoucementService, $routeParams, requestmentService, socketService) {
+appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activityService', 'commonService', 'commentService', 'validateService', 'departmentService', 'employeeService', 'activityPostService', 'annoucementService', '$routeParams', 'requestmentService', 'socketService', 'eventService', 'taskService',
+    function ($scope, $rootScope, alertify, activityService, commonService, commentService, validateService, departmentService, employeeService, activityPostService, annoucementService, $routeParams, requestmentService, socketService, eventService, taskService) {
         $scope.annoucements = {
             data: [],
             totalPage: 0,
@@ -30,6 +30,11 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
             sent: 0,
             received: 0
         }
+        //Upcoming event.
+        $scope.upcomingEvents = [];
+        
+        //My task.
+        $scope.myOverviewTask = [];
 
         //get all department
         departmentService.allDepartment({}, function (data) {
@@ -263,11 +268,28 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
                 $scope.myNumberRequest.received = response.objects.myNumberRequest.received;
             });
         }
+        
+        //-------------Right bar-------------------//
+        //Upcoming event.
+        $scope.getUpcomingEvent = function () {
+            eventService.getUpcomingEvent({}, function (response) {
+                $scope.upcomingEvents = response.objects.upcomingEvents;
+            });
+        }
+        
+        // My task.
+        $scope.getOverviewMytask = function () {
+            taskService.getOverviewMytask({}, function (response) {
+                $scope.myOverviewTask = response.objects.myOverviewTask;
+            });
+        }
 
         //Get data when just loading.
         $scope.getActivity();
         $scope.getAnnoucements('all');
         $scope.getNumberRequest();
+        $scope.getUpcomingEvent();
+        $scope.getOverviewMytask();
     }]);//list auhthorities
 appRoot.controller('AuthorityCtrl', ['$scope', '$uibModal', 'authorityService', '$rootScope', 'alertify', 'PER_PAGE', 'MAX_PAGE_SIZE',
     function ($scope, $uibModal, authorityService, $rootScope, alertify, PER_PAGE, MAX_PAGE_SIZE) {
@@ -544,8 +566,8 @@ appRoot.controller('authorityDetailCtrl', ['$scope', '$uibModalInstance', 'autho
             $uibModalInstance.dismiss('cancel');
         };
     }]);//show calendar
-appRoot.controller('calendarCtrl', ['$scope', '$uibModal', 'calendarService', 'taskService', '$timeout', 'settingSystem', 'uiCalendarConfig', 'listCalendar', '$rootScope', 'dialogMessage', 'alertify',
-    function ($scope, $uibModal, calendarService, taskService, $timeout, settingSystem, uiCalendarConfig, listCalendar, $rootScope, dialogMessage, alertify) {
+appRoot.controller('calendarCtrl', ['$scope', '$uibModal', 'calendarService', 'taskService', '$timeout', 'settingSystem', 'uiCalendarConfig', 'listCalendar', '$rootScope', 'dialogMessage', 'alertify', 'eventService',
+    function ($scope, $uibModal, calendarService, taskService, $timeout, settingSystem, uiCalendarConfig, listCalendar, $rootScope, dialogMessage, alertify, eventService) {
         var date = new Date();
         var d = date.getDate();
         var m = date.getMonth();
@@ -731,6 +753,15 @@ appRoot.controller('calendarCtrl', ['$scope', '$uibModal', 'calendarService', 't
                 });
             });
         };
+        
+        //Upcoming event.
+        $scope.getUpcomingEvent = function () {
+            eventService.getUpcomingEvent({}, function (response) {
+                $scope.upcomingEvents = response.objects.upcomingEvents;
+            });
+        }
+        
+        $scope.getUpcomingEvent();
     }]);
 
 //add Calendar 
@@ -2110,6 +2141,7 @@ appRoot.controller('profileCtrl', ['$scope', '$rootScope', 'alertify', '$timeout
             });
         };
 
+        //------------------------ Profile activity -------------------------------------//
         //employee profile wall
         $scope.annoucements = {
             data: [],
@@ -2137,10 +2169,10 @@ appRoot.controller('profileCtrl', ['$scope', '$rootScope', 'alertify', '$timeout
         };
 
         //My number request.
-        $scope.myNumberRequest = {
-            sent: 0,
-            received: 0
-        }
+//        $scope.myNumberRequest = {
+//            sent: 0,
+//            received: 0
+//        }
 
         //get all department
         departmentService.allDepartment({}, function (data) {
@@ -2333,7 +2365,6 @@ appRoot.controller('profileCtrl', ['$scope', '$rootScope', 'alertify', '$timeout
                 if (type == 'accept') {
                     $scope.activity.data[indexActivity].requestment.is_accept = true;
                 }
-//                $scope.getNumberRequest();
                 socketService.emit('notify', 'ok');
                 alertify.success($rootScope.$lang.update_success);
             });

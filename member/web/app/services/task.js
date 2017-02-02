@@ -121,6 +121,9 @@ appRoot.factory('taskService', ['apiService','$rootScope','alertify', function (
             },
             getDetaiWorkedHourEmployee: function(data,success,error) {
                 apiService.get('task/get-detail-worked-hour-employee',data,success,error);
+            },
+            getOverviewMytask: function(data,success,error) {
+                apiService.get('task/get-overview-my-task',data,success,error);
             }
         };
     }]);

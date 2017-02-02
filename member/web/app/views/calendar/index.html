@@ -63,35 +63,27 @@
                     </ul>
                 </div>
             </div>
-            <div class="box box-warning box-solid" event-fixed>
+            <div ng-show="upcomingEvents.length > 0" class="box box-warning box-solid" event-fixed>
                 <div class="box-header with-border">
-                    <h3 class="box-title">Upcoming Event</h3>
+                        <h3 class="box-title">{{$root.$lang.upcoming_event}}</h3>
 
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                        </button>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                            </button>
+                        </div>
+                        <!-- /.box-tools -->
                     </div>
-                    <!-- /.box-tools -->
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body no-padding">
-                    <div class="item-event">
-                        <span class="fa fa-calendar"></span>
-                        <dl>
-                            <dt>Event name</dt>
-                            <dd>
-                                30/09/2016
-                            </dd>
-                        </dl>
-                    </div>
-                    <div class="item-event">
-                        <span class="fa fa-calendar"></span>
-                        <dl>
-                            <dt>Event name</dt>
-                            <dd>
-                                30/09/2016
-                            </dd>
-                        </dl>
+                    <!-- /.box-header -->
+                    <div class="box-body no-padding">
+                        <div ng-repeat="upcomingEvent in upcomingEvents" class="item-event">
+                            <span class="fa fa-calendar"></span>
+                            <dl>
+                                <dt>{{upcomingEvent.name}}</dt>
+                                <dd>
+                                    {{upcomingEvent.start_datetime}}
+                                </dd>
+                            </dl>
+                        </div>
                     </div>
                 </div>
                 <!-- /.box-body -->

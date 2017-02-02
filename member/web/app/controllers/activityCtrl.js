@@ -1,5 +1,5 @@
-appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activityService', 'commonService', 'commentService', 'validateService', 'departmentService', 'employeeService', 'activityPostService', 'annoucementService', '$routeParams', 'requestmentService', 'socketService',
-    function ($scope, $rootScope, alertify, activityService, commonService, commentService, validateService, departmentService, employeeService, activityPostService, annoucementService, $routeParams, requestmentService, socketService) {
+appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activityService', 'commonService', 'commentService', 'validateService', 'departmentService', 'employeeService', 'activityPostService', 'annoucementService', '$routeParams', 'requestmentService', 'socketService', 'eventService', 'taskService',
+    function ($scope, $rootScope, alertify, activityService, commonService, commentService, validateService, departmentService, employeeService, activityPostService, annoucementService, $routeParams, requestmentService, socketService, eventService, taskService) {
         $scope.annoucements = {
             data: [],
             totalPage: 0,
@@ -30,6 +30,11 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
             sent: 0,
             received: 0
         }
+        //Upcoming event.
+        $scope.upcomingEvents = [];
+        
+        //My task.
+        $scope.myOverviewTask = [];
 
         //get all department
         departmentService.allDepartment({}, function (data) {
@@ -263,9 +268,26 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
                 $scope.myNumberRequest.received = response.objects.myNumberRequest.received;
             });
         }
+        
+        //-------------Right bar-------------------//
+        //Upcoming event.
+        $scope.getUpcomingEvent = function () {
+            eventService.getUpcomingEvent({}, function (response) {
+                $scope.upcomingEvents = response.objects.upcomingEvents;
+            });
+        }
+        
+        // My task.
+        $scope.getOverviewMytask = function () {
+            taskService.getOverviewMytask({}, function (response) {
+                $scope.myOverviewTask = response.objects.myOverviewTask;
+            });
+        }
 
         //Get data when just loading.
         $scope.getActivity();
         $scope.getAnnoucements('all');
         $scope.getNumberRequest();
+        $scope.getUpcomingEvent();
+        $scope.getOverviewMytask();
     }]);

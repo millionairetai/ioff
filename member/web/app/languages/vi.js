@@ -113,6 +113,7 @@
             completed: 'Hoàn thành',
             in_progress: 'Đang xử lý',
             public: 'Công khai',
+            open: 'Mở',
             //-----------------------------------------End of common language.----------------------------------
             
             //project
@@ -427,7 +428,8 @@
             my_request: 'Yêu cầu của tôi',
             sent: 'Đã gửi',
             received: 'Đã nhận',
-            more_option: 'Thêm tùy chọn'
+            more_option: 'Thêm tùy chọn',
+            upcoming_event: 'Sự  kiện sắp đến'
         };
     });
 })(window.angular);

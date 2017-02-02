@@ -568,4 +568,26 @@ class Task extends \common\components\db\ActiveRecord {
                 ->asArray()
                 ->all();
     }
+    
+    /**
+     * Get overview my task by employee id
+     * @param interger $employeeId
+     * @return array
+     */
+    public static function getOverviewMyTaskByEmployeeId($employeeId) {
+        $subTaskAssiQuery = TaskAssignment::find()
+                ->select('task_id')
+                ->where(['employee_id' => \Yii::$app->user->identity->id]);
+
+        return self::find()
+                        ->select(['count(task.id) AS num_task', 'status.column_name'])
+                        ->leftJoin('status', 'task.status_id=status.id')
+                        ->andWhere(['task.id' => $subTaskAssiQuery])
+                        ->andWhere(['not in', Status::tableName() . '.column_name', [self::STATUS_COLUMN_NAME_COMPLETED, self::STATUS_COLUMN_NAME_CLOSED]])
+                        ->andCompanyId(false, 'task')
+                        ->groupBy(['task.status_id'])
+                        ->indexBy('column_name')
+                        ->asArray()
+                        ->all();
+    }
 }

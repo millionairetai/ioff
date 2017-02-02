@@ -1169,4 +1169,24 @@ class TaskController extends ApiController {
         }
     }
     
+    /**
+     * Get overview my task.
+     */
+    public function actionGetOverviewMyTask() {
+        $objects['myOverviewTask'] = [
+            'open' => 0,
+            'inprogress' => 0,
+            'completed' => 0
+        ];
+        
+        if ($tasks = Task::getOverviewMyTaskByEmployeeId(Yii::$app->user->identity->id)) {
+            $objects['myOverviewTask'] = [
+                'open' => !empty($tasks['task.open']['num_task']) ? $tasks['task.open']['num_task'] : 0,
+                'inprogress' => !empty($tasks['task.inprogress']['num_task']) ? $tasks['task.inprogress']['num_task'] : 0,
+                'completed' => !empty($tasks['task.completed']['num_task']) ? $tasks['task.completed']['num_task'] : 0
+            ];
+        }
+        
+        return $this->sendResponse(false, '', $objects);
+    }
 }
