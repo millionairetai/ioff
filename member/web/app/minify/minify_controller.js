@@ -634,6 +634,8 @@ appRoot.controller('calendarCtrl', ['$scope', '$uibModal', 'calendarService', 't
                                 }
                             });
                         });
+                        //Get again all upcoming event
+                        $scope.getUpcomingEvent();
                     }, function () {
                     });
                 },
