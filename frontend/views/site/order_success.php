@@ -1,0 +1,86 @@
+<?php
+/* @var $this yii\web\View */
+/* @var $form yii\bootstrap\ActiveForm */
+/* @var $model \frontend\models\ContactForm */
+
+use yii\helpers\Html;
+use yii\bootstrap\ActiveForm;
+use yii\captcha\Captcha;
+
+$this->title = 'Contact';
+$this->params['breadcrumbs'][] = $this->title;
+?>
+
+<div class="container">
+    <ol class="breadcrumb">
+        <li><a href="/">Home</a></li>
+        <li class="active">Order</li>
+    </ol>
+</div>
+<article id="contact-page" class="container">
+    <section>
+        <div class="row">
+            <div class="col-md-8">
+                <!-- Default box -->
+                <div class="box box-widget">
+                    <div class="box-header with-border">
+                        <div class="row">
+                            <div class="col-sm-3 col-xs-6">
+                                <div class="description-block border-right">
+                                    <span class="description-text"><?= Yii::t('frontend', 'PLAN TYPE') ?></span>
+                                    <h5 class="description-header"><?= $packageInfo['package_name']; ?>
+                                    </h5>
+                                </div>
+                                <!-- /.description-block -->
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-sm-3 col-xs-6">
+                                <div class="description-block border-right">
+                                    <span class="description-text"><?= Yii::t('frontend', 'MAXIMUM USER') ?></span>
+                                    <h5 class="description-header"><?= $model->maxUser != 0 ? $model->maxUser : Yii::t('common', 'Unlimited'); ?>
+                                    </h5>
+                                </div>
+                                <!-- /.description-block -->
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-sm-3 col-xs-6">
+                                <div class="description-block border-right">
+                                    <span class="description-text"><?= Yii::t('frontend', 'MAXIMUM STORAGE') ?></span>
+                                    <h5 class="description-header"><?= $model->maxStorage; ?> GB
+
+                                    </h5>
+                                </div>
+                                <!-- /.description-block -->
+                            </div>
+                            <!-- /.col -->
+                            <div class="col-sm-3 col-xs-6">
+                                <div class="description-block">
+                                    <span class="description-text"><?= Yii::t('frontend', 'PRICE') ?></span>
+                                    <h5 class="description-header"><?= $packageInfo['total_money']; ?> VND/<?= empty($model->periodTime) ? Yii::t('common', 'Unlimited') : $model->periodTime; ?> <?= strtolower(Yii::t('common', 'month')); ?>
+                                    </h5>
+                                </div>
+                                <!-- /.description-block -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="box-body">
+                        <div>
+                            Đăng ký tài khoản thành công...
+                        </div>
+                        <div>
+                            Xin vui lòng chuyển khoản đến số tài khoản <?= Yii::$app->params['number_credit_card'] ?>
+                            <br />
+                            CÔNG TY CỔ PHẦN IPL<br />
+                            Ngân hàng ACB chi nhánh Hồ Chí Minh - Số TK: <?= Yii::$app->params['number_credit_card'] ?>. <br />
+                            Nội dung chuyển khoản: [tên người thanh toán][tên công ty] [sđt] thanh toán iOfficez.<br />
+                            *Lưu ý: sau khi chuyển khoản vui lòng liên hệ mail: <?= Yii::$app->params['support_email'] ?> hoặc hotline: <?= Yii::$app->params['hot_line_number'] ?> để được hỗ trợ tốt nhất.<br />
+
+                        </div>
+                    </div>
+                </div><!-- /.box -->
+
+            </div>
+        </div>
+    </section>
+</article>

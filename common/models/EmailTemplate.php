@@ -32,6 +32,7 @@ class EmailTemplate extends \common\components\db\ActiveRecord
     const CREATE_REQUESTMENT = 'create_requestment';
     const INVITE_NEW_EMPLOYEE = 'invite_new_employee';
     const SUCCESS_COMPANY_REGISTRATION = 'success_company_registration';
+    const SUCCESS_COMPANY_REGISTRATION_FREE = 'success_company_registration_free';
     const SUCCESS_EMPLOYEE_REGISTRATION = 'success_employee_registration';
     const REQUEST_PASSWORD_AGAIN = 'request_password_again';
     
@@ -278,6 +279,14 @@ class EmailTemplate extends \common\components\db\ActiveRecord
             
             case self::CREATE_REQUESTMENT:
                 $where += ['column_name' => self::CREATE_REQUESTMENT];
+                break;
+            
+            case self::SUCCESS_COMPANY_REGISTRATION:
+                $where += ['column_name' => self::SUCCESS_COMPANY_REGISTRATION];
+                break;
+            
+            case self::SUCCESS_COMPANY_REGISTRATION_FREE:
+                $where += ['column_name' => self::SUCCESS_COMPANY_REGISTRATION_FREE];
                 break;
             default:
                 break;

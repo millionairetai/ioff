@@ -11,6 +11,10 @@ use Yii;
  * @property string $name
  * @property string $column_name
  * @property string $description
+ * @property integer $max_user
+ * @property string $max_storage
+ * @property string $fee_user
+ * @property string $fee_storage
  * @property string $datetime_created
  * @property string $lastup_datetime
  * @property string $created_employee_id
@@ -22,9 +26,9 @@ class PlanType extends \common\components\db\ActiveRecord
     ////////////////////////////////////
     //Maybe change afterward
     ////////////////////////////////////
-    const FREE = 'Free';
-    const STANDARD = 'Standard';
-    const PREMIUM = 'Premium';
+    const COLUMN_NAME_FREE = 'free';
+    const COLUMN_NAME_STANDARD = 'standard';
+    const COLUMN_NAME_PREMIUM = 'premium';
     
     /**
      * @inheritdoc
@@ -40,9 +44,9 @@ class PlanType extends \common\components\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'column_name'], 'required'],
-            [['description', 'column_name'], 'string'],
-            [['datetime_created', 'lastup_datetime', 'created_employee_id', 'lastup_employee_id'], 'integer'],
+            [['name', 'column_name', 'max_storage'], 'required'],
+            [['description'], 'string'],
+            [['max_user', 'max_storage', 'fee_user', 'fee_storage', 'datetime_created', 'lastup_datetime', 'created_employee_id', 'lastup_employee_id'], 'integer'],
             [['disabled'], 'boolean'],
             [['name'], 'string', 'max' => 255],
             [['column_name'], 'string', 'max' => 50]
@@ -55,18 +59,22 @@ class PlanType extends \common\components\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => Yii::t('common', 'ID'),
-            'name' => Yii::t('common', 'Name'),
-            'column_name' => Yii::t('common', 'Column name'),
-            'description' => Yii::t('common', 'Description'),
-            'datetime_created' => Yii::t('common', 'Datetime Created'),
-            'lastup_datetime' => Yii::t('common', 'Lastup Datetime'),
-            'created_employee_id' => Yii::t('common', 'Created Employee ID'),
-            'lastup_employee_id' => Yii::t('common', 'Lastup Employee ID'),
-            'disabled' => Yii::t('common', 'Disabled'),
+            'id' => Yii::t('member', 'ID'),
+            'name' => Yii::t('member', 'Name'),
+            'column_name' => Yii::t('member', 'Column Name'),
+            'description' => Yii::t('member', 'Description'),
+            'max_user' => Yii::t('member', 'Max User'),
+            'max_storage' => Yii::t('member', 'Max Storage'),
+            'fee_user' => Yii::t('member', 'Fee User'),
+            'fee_storage' => Yii::t('member', 'Fee Storage'),
+            'datetime_created' => Yii::t('member', 'Datetime Created'),
+            'lastup_datetime' => Yii::t('member', 'Lastup Datetime'),
+            'created_employee_id' => Yii::t('member', 'Created Employee ID'),
+            'lastup_employee_id' => Yii::t('member', 'Lastup Employee ID'),
+            'disabled' => Yii::t('member', 'Disabled'),
         ];
     }
-    
+       
     /**
      * Get plan type by name
      * 
@@ -79,6 +87,32 @@ class PlanType extends \common\components\db\ActiveRecord
                     ->where(['name' => $name])
                     ->asArray()
                     ->one();
-    }    
+    } 
     
+    /**
+     * Get plan type by column name
+     * 
+     * @param string $name
+     * @return id
+     */
+    public static function getByColumnName($columnName) {
+        return self::find()
+                    ->select(['id', 'name',])
+                    ->where(['column_name' => $columnName])
+                    ->asArray()
+                    ->one();
+    }
+    
+    /**
+     * Get plan type by name
+     * 
+     * @param string $name
+     * @return id
+     */
+    public static function getsIndexByColumnName() {
+        return self::find()->select(['id', 'name', 'column_name', 'max_user', 'max_storage', 'fee_user', 'fee_storage'])
+                ->indexBy('column_name')
+                ->asArray()
+                ->all();
+    }
 }

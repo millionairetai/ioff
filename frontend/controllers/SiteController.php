@@ -1,4 +1,5 @@
 <?php
+
 namespace frontend\controllers;
 
 use Yii;
@@ -9,6 +10,7 @@ use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
 use frontend\models\SubscribeForm;
 use common\models\LoginForm;
+use common\models\PlanType;
 use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
@@ -73,13 +75,40 @@ class SiteController extends Controller {
         $model = new SignupForm();
         $subscribeModel = new SubscribeForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($model->signup()) {
-                Yii::$app->session->setFlash('success', Yii::t('common', 'Congratulation. You have signed up successfully') . '. <a href="'. Yii::$app->params['companyDomain'] .'">' . Yii::t('common', 'Go to login page') . '</a>');
-            } else {
-                Yii::$app->session->setFlash('error', 'There was an error registering account.');
+//            if (Yii::$app->request->post('complete-register')) {
+//                var_dump(Yii::$app->request->post('complete-register'));die;
+//                if ($model->signup()) {
+//                   Yii::$app->session->setFlash('success', Yii::t('common', 'Congratulation. You have signed up successfully') . '. <a href="'. Yii::$app->params['companyDomain'] .'">' . Yii::t('common', 'Go to login page') . '</a>');
+//               }    
+//            }
+            $planType = PlanType::getsIndexByColumnName();
+            $packageInfo = ['package_name' => $planType[$model->plan_type]['name']];
+            switch ($model->plan_type) {
+                case 'free':
+                    $model->periodTime = 0;
+                    $packageInfo += [
+                        'total_money' => 0,
+                        'number_month' => 'Unlimited',
+                    ];
+                    $model->maxUser = $planType[$model->plan_type]['max_user'];
+                    $model->maxStorage = $planType[$model->plan_type]['max_storage'];
+                    break;
+                case 'standard':
+                    $packageInfo += [
+                        'total_money' => ($planType[$model->plan_type]['fee_user'] * $model->maxUser + $planType[$model->plan_type]['fee_storage'] * $model->maxStorage) * $model->periodTime,
+                        'number_month' => $model->periodTime,
+                    ];
+                    break;
+                case 'premium':
+                    $model->maxUser = 0;
+                    $packageInfo += [
+                        'total_money' => ($planType[$model->plan_type]['fee_user'] + $planType[$model->plan_type]['fee_storage'] * $model->maxStorage) * $model->periodTime,
+                        'number_month' => $model->periodTime,
+                    ];
+                    break;
             }
 
-            return $this->refresh();
+            return $this->render('order', ['model' => $model, 'packageInfo' => $packageInfo]);
         } else if ($subscribeModel->load(Yii::$app->request->post()) && $subscribeModel->validate()) {
             if ($subscribeModel->add()) {
                 Yii::$app->session->setFlash('success', Yii::t('frontend', 'Congratulation! You have just been subscribed successfully'));
@@ -94,10 +123,56 @@ class SiteController extends Controller {
                         'subscribeModel' => $subscribeModel,
             ]);
         }
-        
+
         return $this->render('index');
     }
-    
+
+    /**
+     * Action order
+     *
+     */
+    public function actionOrder() {
+        $model = new SignupForm();
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            if ($model->signup()) {
+                $planType = PlanType::getsIndexByColumnName();
+                $packageInfo = ['package_name' => $planType[$model->plan_type]['name']];
+                switch ($model->plan_type) {
+                    case 'free':
+                        $model->periodTime = 0;
+                        $packageInfo += [
+                            'total_money' => 0,
+                            'number_month' => 'Unlimited',
+                        ];
+                        $model->maxUser = $planType[$model->plan_type]['max_user'];
+                        $model->maxStorage = $planType[$model->plan_type]['max_storage'];
+                        break;
+                    case 'standard':
+                        $packageInfo += [
+                            'total_money' => ($planType[$model->plan_type]['fee_user'] * $model->maxUser + $planType[$model->plan_type]['fee_storage'] * $model->maxStorage) * $model->periodTime,
+                            'number_month' => $model->periodTime,
+                        ];
+                        break;
+                    case 'premium':
+                        $model->maxUser = 0;
+                        $packageInfo += [
+                            'total_money' => ($planType[$model->plan_type]['fee_user'] + $planType[$model->plan_type]['fee_storage'] * $model->maxStorage) * $model->periodTime,
+                            'number_month' => $model->periodTime,
+                        ];
+                        break;
+                }
+
+//                Yii::$app->session->setFlash('success', Yii::t('common', 'Congratulation. You have signed up successfully') . '. <a href="'. Yii::$app->params['companyDomain'] .'">' . Yii::t('common', 'Go to login page') . '</a>');
+            } else {
+                Yii::$app->session->setFlash('error', 'There was an error registering account.');
+            }
+
+            return $this->render('order_success', ['model' => $model, 'packageInfo' => $packageInfo]);
+        }
+
+        return $this->redirect('/');
+    }
+
     /**
      * Logs in a user.
      *
@@ -166,6 +241,7 @@ class SiteController extends Controller {
     public function actionTerm() {
         return $this->render('term');
     }
+
     /**
      * Signs user up.
      *

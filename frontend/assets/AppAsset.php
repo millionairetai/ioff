@@ -17,10 +17,15 @@ class AppAsset extends AssetBundle
         'css/reset.css',
         'css/common.css',
         'css/style.css',
+        'js/plugin/ionslider/ion.rangeSlider.skinNice.css',
+        'js/plugin/ionslider/ion.rangeSlider.css',
+        'js/plugin/bootstrap-slider/slider.css',
     ];
     public $js = [
         'js/jquery.min.js',
         'js/bootstrap.min.js',
+        'js/plugin/ionslider/ion.rangeSlider.min.js',
+        'js/plugin/bootstrap-slider/bootstrap-slider.js',
         'js/fixHeight.js',
         'js/common.js'
     ];

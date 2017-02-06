@@ -355,6 +355,8 @@ class Employee extends ActiveRecord implements IdentityInterface {
         foreach ($dataSend as $key => $value) {
             $body = str_replace($key, $value, $body);
         }
+//        header("content-type: text/html; charset=UTF-8");  
+//        echo $body;die;
         /* \Yii::$app->mailer->compose()
           ->setFrom('from@domain.com')
           ->setTo($this->email)

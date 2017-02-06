@@ -4,6 +4,7 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\ArrayHelper;
 use common\models\PlanType;
+use common\models\PeriodTime;
 
 $this->title = 'iofficez - Kết nối nhân viên';
 ?>
@@ -27,11 +28,25 @@ $this->title = 'iofficez - Kết nối nhân viên';
             <?= $form->field($model, 'rePassword')->label(false)->passwordInput(['placeholder' => Yii::t('common', 'Re-Password'), 'class' => 'form-control noround']) ?>
 
             <?=
-            $form->field($model, 'plan_type_id')->label(false)->dropDownList(
-                    ArrayHelper::map(PlanType::find()->select(['id', 'name'])->all(), 'id', 'name'), ['prompt' => Yii::t('common', 'Select'), 'class' => 'form-control noround']
+            $form->field($model, 'plan_type')->label(false)->dropDownList(
+                    ArrayHelper::map(PlanType::find()->select(['column_name', 'name'])->all(), 'column_name', 'name'), ['prompt' => Yii::t('common', 'Select'), 'class' => 'form-control noround']
             )
             ?>
 
+            <div class="choose-info-plan-type">
+                <div class="max-user">
+                    <?= $form->field($model, 'maxUser')->label(false)->textInput(['class' => 'form-control noround', 'value' => '5;150']) ?>
+                </div>
+
+                <?= $form->field($model, 'maxStorage')->label(false)->textInput(['class' => 'form-control noround', 'value' => '5;500']) ?>
+                
+                <?=
+                    $form->field($model, 'periodTime')->label(false)->dropDownList(
+                            ArrayHelper::map(PeriodTime::find()->select(['month_value', 'name'])->all(), 'month_value', 'name'), ['prompt' => Yii::t('common', 'Select'), 'class' => 'form-control noround']
+                    )
+                ?>
+            </div>
+            
             <p><a href="#">Xem thông tin chi tiết các gói</a></p>
 
             <p>Bằng cách nhấp vào đăng ký, bạn đồng ý với các <a href="/site/term">điều khoản của chúng tôi</a> và rằng bạn đã đọc <a href="/site/term">chính sách dữ liệu</a> của chúng tôi, bao gồm sử dụng cookie.</p>

@@ -7,4 +7,7 @@ return [
     'frontendDomain' => 'http://iofficez.dev',
     'backendDomain' => 'htttp://backend.iofficez.dev',
     'companyDomain' => 'http://company.iofficez.dev',
+    'number_credit_card' => 1039390902,
+    'support_email' => 'support@iofficez.com',
+    'hot_line_number' => '1900283'
 ];
