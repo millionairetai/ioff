@@ -74,6 +74,7 @@ return [
     'Tax' => 'Tax',
     'month' => 'month',    
     'Unlimited' => 'Unlimited',
+    'description invoice' => '%s plan type, max user %s, max storage %s GB',    
     //calendar
     'Datetime Created' => 'Datetime Created',
     'Lastup Datetime' => 'Lastup Datetime',

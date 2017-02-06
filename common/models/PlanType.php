@@ -92,8 +92,8 @@ class PlanType extends \common\components\db\ActiveRecord
     /**
      * Get plan type by column name
      * 
-     * @param string $name
-     * @return id
+     * @param string $columnName
+     * @return array
      */
     public static function getByColumnName($columnName) {
         return self::find()
@@ -104,10 +104,8 @@ class PlanType extends \common\components\db\ActiveRecord
     }
     
     /**
-     * Get plan type by name
-     * 
-     * @param string $name
-     * @return id
+     * Get plan type index by column name
+     * @return array
      */
     public static function getsIndexByColumnName() {
         return self::find()->select(['id', 'name', 'column_name', 'max_user', 'max_storage', 'fee_user', 'fee_storage'])

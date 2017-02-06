@@ -28,7 +28,7 @@ class SignupForm extends Model {
     public $plan_type;
     public $maxUser = 0;
     public $maxStorage = 0;
-    public $periodTime = 0;
+    public $numberMonth = 0;
 
     /**
      * @inheritdoc
@@ -50,7 +50,7 @@ class SignupForm extends Model {
             ['password', 'string', 'min' => 6],
             ['rePassword', 'compare', 'compareAttribute' => 'password', 'message' => Yii::t('common', "Passwords don't match"),],
             ['plan_type', 'required'],
-            [['maxUser', 'maxStorage', 'periodTime'], 'integer',],
+            [['maxUser', 'maxStorage', 'numberMonth'], 'integer',],
         ];
     }
 
@@ -78,17 +78,21 @@ class SignupForm extends Model {
             return null;
         }
 
+        //Total money of invoice.
         $totalMoney = 0;
         $transaction = \Yii::$app->db->beginTransaction();
         try {
             //Write in company table.
             $company = new Company();
             $company->name = $this->companyName;
-            $planType = PlanType::getsIndexByColumnName($this->plan_type);
+            $planType = PlanType::getsIndexByColumnName();
             $company->plan_type_id = $planType[$this->plan_type]['id'];
-
             //Get status of company which is active.
             $status = Status::getByOwnerTableAndColumnName('company', Company::COLUNM_NAME_ACTIVE);
+            if (empty($status)) {
+                throw new \Exception('Save data to company table fail');
+            }
+
             $company->status_id = $status['id'];
             //Get free plan type
             if ($company->plan_type_id == $planType[PlanType::COLUMN_NAME_FREE]['id']) {
@@ -118,53 +122,20 @@ class SignupForm extends Model {
             $employee->last_ip_address = Yii::$app->request->getUserIP();
             $employee->setPassword($this->password);
             $employee->generateAuthKey();
-            if (!$employee->save(false)) {
+            if ($employee->save(false) === false) {
                 throw new \Exception('Save data to employee table fail');
             }
 
             //Update person create this company.
             $company->created_employee_id = $employee->id;
             $company->lastup_employee_id = $employee->id;
-            if (!$company->save(false)) {
+            if ($company->save(false) === false) {
                 throw new \Exception('Save employee id data to company table fail');
             }
 
             //Write in order and invoice
-            $this->_insertOrderInvoice($company, $employee, $planType);
-
-            //Send email to confirm.
-            if ($company->plan_type_id == $planType[PlanType::COLUMN_NAME_FREE]['id']) {
-                $themeEmail = EmailTemplate::getTheme(EmailTemplate::SUCCESS_COMPANY_REGISTRATION_FREE);
-            } else {
-                $themeEmail = EmailTemplate::getTheme(EmailTemplate::SUCCESS_COMPANY_REGISTRATION);
-            }
-
-            //Get total money.
-            switch ($this->plan_type) {
-                case 'free':
-                    $totalMoney = 0;
-                    break;
-                case 'standard':
-                    $totalMoney = $planType[$this->plan_type]['fee_user'] * $this->periodTime + $planType[$this->plan_type]['fee_storage'] * $this->periodTime;
-                    break;
-                case 'premium':
-                    $totalMoney = $planType[$this->plan_type]['fee_user'] + $planType[$this->plan_type]['fee_storage'] * $this->periodTime;
-                    break;
-            }
-            $dataSend = [
-                '{fullname}' => $employee->fullname,
-                '{name service}' => $company->name,
-                '{package name}' => $planType[$this->plan_type]['name'],
-                '{max user}' => !empty($this->maxUser) ? $this->maxUser : strtolower(Yii::t('common', 'Unlimited')),
-                '{max storage}' => $this->maxStorage,
-                '{total money}' => $totalMoney,
-                '{number credit card}' => Yii::$app->params['number_credit_card'],
-                '{support email}' => Yii::$app->params['support_email'],
-                '{hot line number}' => Yii::$app->params['hot_line_number'],
-                '{period time}' => $this->periodTime
-            ];
-
-            $employee->sendMail($dataSend, $themeEmail);
+            $invoiceOrderNo = $this->_insertOrderInvoice($company, $employee, $planType);
+            $this->_sendOrderAndInvoiceEmail($company, $employee, $planType, $invoiceOrderNo);
             $transaction->commit();
             return true;
         } catch (Exception $ex) {
@@ -175,6 +146,14 @@ class SignupForm extends Model {
         return true;
     }
 
+    /**
+     *  Insert order and invoice for company registration.
+     *  @param object $company
+     *  @param object $employee
+     *  @param object $planType
+     * 
+     *  @return boolean
+     */
     private function _insertOrderInvoice($company, $employee, $planType) {
         $order = new Order();
         $order->company_id = $company->id;
@@ -183,8 +162,6 @@ class SignupForm extends Model {
         //Get status for order.
         if ($company->plan_type_id == $planType[PlanType::COLUMN_NAME_FREE]['id']) {
             $status = Status::getByOwnerTableAndColumnName('order', Order::COLUNM_NAME_PAYED);
-            $order->expired_datetime = 0;
-            $order->duedate = 0;
         } else {
             $status = Status::getByOwnerTableAndColumnName('order', Order::COLUNM_NAME_WAIT_PAY);
             $order->expired_datetime = 0;
@@ -201,8 +178,7 @@ class SignupForm extends Model {
         $orderItem->company_id = $company->id;
         $orderItem->order_id = $order->id;
         $orderItem->plan_type_id = $planType[$this->plan_type]['id'];
-        /////////////////
-        $orderItem->period_time_id = !empty($this->periodTime) ? $this->periodTime : 0;
+        $orderItem->number_month = !empty($this->numberMonth) ? $this->numberMonth : 0;
         $orderItem->max_user_register = $this->maxUser;
         $orderItem->max_storage_register = $this->maxStorage;
         $orderItem->discount = 0;
@@ -229,7 +205,8 @@ class SignupForm extends Model {
         $invoiceDetail = new InvoiceDetail();
         $invoiceDetail->company_id = $company->id;
         $invoiceDetail->invoice_id = $invoice->id;
-        $invoiceDetail->period_time_id = 0;
+        //Free package -> number month = 0.
+        $invoiceDetail->number_month = 0;
         $invoiceDetail->plan_type_id = $planType[$this->plan_type]['id'];
         $invoiceDetail->max_user_register = $this->maxUser;
         $invoiceDetail->max_storage_register = $this->maxStorage;
@@ -237,6 +214,86 @@ class SignupForm extends Model {
             throw new \Exception('Save data to invoice detail table fail');
         }
 
+        return [
+            'invoiceNo' => $invoice->invoice_number,
+            'orderNo' => $order->order_number,
+        ];
+    }
+
+    /**
+     *  Send order and invoice email for company registration.
+     *  @param object $company
+     *  @param object $employee
+     *  @param object $planType
+     *  @param array $invoiceOrderNo
+     *  @return boolean
+     */
+    private function _sendOrderAndInvoiceEmail($company, $employee, $planType, $invoiceOrderNo) {
+        if ($company->plan_type_id == $planType[PlanType::COLUMN_NAME_FREE]['id']) {
+            $themeEmail = EmailTemplate::getTheme(EmailTemplate::SUCCESS_COMPANY_REGISTRATION_FREE);
+        } else {
+            $themeEmail = EmailTemplate::getTheme(EmailTemplate::SUCCESS_COMPANY_REGISTRATION);
+        }
+
+        //Get total money.
+        switch ($this->plan_type) {
+            case 'free':
+                $totalMoney = 0;
+                break;
+            case 'standard':
+                $totalMoney = ($planType[$this->plan_type]['fee_user'] * $this->maxUser + $planType[$this->plan_type]['fee_storage'] * $this->maxStorage) * $this->numberMonth;
+                break;
+            case 'premium':
+                $totalMoney = ($planType[$this->plan_type]['fee_user'] + $planType[$this->plan_type]['fee_storage'] * $this->maxStorage) * $this->numberMonth;
+                break;
+        }
+        $dataSend = [
+            '{fullname}' => $employee->fullname,
+            '{name service}' => $company->name,
+            '{package name}' => $planType[$this->plan_type]['name'],
+            '{max user}' => !empty($this->maxUser) ? $this->maxUser : strtolower(Yii::t('common', 'Unlimited')),
+            '{max storage}' => $this->maxStorage,
+            '{total money}' => $totalMoney,
+            '{number credit card}' => Yii::$app->params['number_credit_card'],
+            '{support email}' => Yii::$app->params['support_email'],
+            '{hot line number}' => Yii::$app->params['hot_line_number'],
+            '{period time}' => $this->numberMonth
+        ];
+
+        $employee->sendMail($dataSend, $themeEmail);
+        
+        //Send invoice to employee if plan type is free.
+        $themeEmail = EmailTemplate::getTheme(EmailTemplate::COMPANY_PAYMENT_INVOICE);
+        $dataSend = [
+            ///////Time db and php change here.
+            '{date invoice}' => Yii::$app->formatter->asDate(time()),
+            
+            '{service from}' => Yii::$app->params['service_from'],
+            '{address from}' => Yii::$app->params['address_from'],
+            '{phone from}' => Yii::$app->params['phone_from'],
+            '{email from}' => Yii::$app->params['email_from'],
+            
+            '{fullname to}' => $employee->fullname,
+            '{address to}' => $employee->street_address_1,
+            '{phone to}' => $employee->mobile_phone,
+            '{email to}' => $employee->email,
+            
+            '{invoice no}' => $invoiceOrderNo['invoiceNo'],
+            '{order no}' => $invoiceOrderNo['orderNo'],
+            '{account}' => $employee->email,
+            
+            '{product name}' => $planType[$this->plan_type]['name'],
+            '{description}' => sprintf(Yii::t('common', 'description invoice'), $planType[$this->plan_type]['name'], !empty($this->maxUser) ? $this->maxUser : Yii::t('common', 'Unlimited'), $this->maxStorage) ,
+            '{subtotal}' => $totalMoney,
+            
+            '{payment method}' => Yii::t('common', 'Bank transfer'),
+            '{tax percent}' => Yii::$app->params['tax_percent'],
+            '{total tax}' => $totalMoney * Yii::$app->params['tax_percent'],
+            '{total}' => $totalMoney + $totalMoney * Yii::$app->params['tax_percent'],
+        ];
+
+        $employee->sendMail($dataSend, $themeEmail);
+        
         return true;
     }
 

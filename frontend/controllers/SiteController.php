@@ -75,17 +75,11 @@ class SiteController extends Controller {
         $model = new SignupForm();
         $subscribeModel = new SubscribeForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-//            if (Yii::$app->request->post('complete-register')) {
-//                var_dump(Yii::$app->request->post('complete-register'));die;
-//                if ($model->signup()) {
-//                   Yii::$app->session->setFlash('success', Yii::t('common', 'Congratulation. You have signed up successfully') . '. <a href="'. Yii::$app->params['companyDomain'] .'">' . Yii::t('common', 'Go to login page') . '</a>');
-//               }    
-//            }
             $planType = PlanType::getsIndexByColumnName();
             $packageInfo = ['package_name' => $planType[$model->plan_type]['name']];
             switch ($model->plan_type) {
                 case 'free':
-                    $model->periodTime = 0;
+                    $model->numberMonth = 0;
                     $packageInfo += [
                         'total_money' => 0,
                         'number_month' => 'Unlimited',
@@ -95,15 +89,15 @@ class SiteController extends Controller {
                     break;
                 case 'standard':
                     $packageInfo += [
-                        'total_money' => ($planType[$model->plan_type]['fee_user'] * $model->maxUser + $planType[$model->plan_type]['fee_storage'] * $model->maxStorage) * $model->periodTime,
-                        'number_month' => $model->periodTime,
+                        'total_money' => ($planType[$model->plan_type]['fee_user'] * $model->maxUser + $planType[$model->plan_type]['fee_storage'] * $model->maxStorage) * $model->numberMonth,
+                        'number_month' => $model->numberMonth,
                     ];
                     break;
                 case 'premium':
                     $model->maxUser = 0;
                     $packageInfo += [
-                        'total_money' => ($planType[$model->plan_type]['fee_user'] + $planType[$model->plan_type]['fee_storage'] * $model->maxStorage) * $model->periodTime,
-                        'number_month' => $model->periodTime,
+                        'total_money' => ($planType[$model->plan_type]['fee_user'] + $planType[$model->plan_type]['fee_storage'] * $model->maxStorage) * $model->numberMonth,
+                        'number_month' => $model->numberMonth,
                     ];
                     break;
             }
@@ -139,30 +133,31 @@ class SiteController extends Controller {
                 $packageInfo = ['package_name' => $planType[$model->plan_type]['name']];
                 switch ($model->plan_type) {
                     case 'free':
-                        $model->periodTime = 0;
+                        $model->numberMonth = 0;
                         $packageInfo += [
                             'total_money' => 0,
                             'number_month' => 'Unlimited',
+                            'is_free_plan_type' => true,
                         ];
                         $model->maxUser = $planType[$model->plan_type]['max_user'];
                         $model->maxStorage = $planType[$model->plan_type]['max_storage'];
                         break;
                     case 'standard':
                         $packageInfo += [
-                            'total_money' => ($planType[$model->plan_type]['fee_user'] * $model->maxUser + $planType[$model->plan_type]['fee_storage'] * $model->maxStorage) * $model->periodTime,
-                            'number_month' => $model->periodTime,
+                            'total_money' => ($planType[$model->plan_type]['fee_user'] * $model->maxUser + $planType[$model->plan_type]['fee_storage'] * $model->maxStorage) * $model->numberMonth,
+                            'number_month' => $model->numberMonth,
+                            'is_free_plan_type' => false,
                         ];
                         break;
                     case 'premium':
                         $model->maxUser = 0;
                         $packageInfo += [
-                            'total_money' => ($planType[$model->plan_type]['fee_user'] + $planType[$model->plan_type]['fee_storage'] * $model->maxStorage) * $model->periodTime,
-                            'number_month' => $model->periodTime,
+                            'total_money' => ($planType[$model->plan_type]['fee_user'] + $planType[$model->plan_type]['fee_storage'] * $model->maxStorage) * $model->numberMonth,
+                            'number_month' => $model->numberMonth,
+                            'is_free_plan_type' => false,
                         ];
                         break;
                 }
-
-//                Yii::$app->session->setFlash('success', Yii::t('common', 'Congratulation. You have signed up successfully') . '. <a href="'. Yii::$app->params['companyDomain'] .'">' . Yii::t('common', 'Go to login page') . '</a>');
             } else {
                 Yii::$app->session->setFlash('error', 'There was an error registering account.');
             }

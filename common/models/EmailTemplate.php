@@ -35,6 +35,7 @@ class EmailTemplate extends \common\components\db\ActiveRecord
     const SUCCESS_COMPANY_REGISTRATION_FREE = 'success_company_registration_free';
     const SUCCESS_EMPLOYEE_REGISTRATION = 'success_employee_registration';
     const REQUEST_PASSWORD_AGAIN = 'request_password_again';
+    const COMPANY_PAYMENT_INVOICE = 'company_payment_invoice';
     
     /**
      * @inheritdoc
@@ -288,6 +289,11 @@ class EmailTemplate extends \common\components\db\ActiveRecord
             case self::SUCCESS_COMPANY_REGISTRATION_FREE:
                 $where += ['column_name' => self::SUCCESS_COMPANY_REGISTRATION_FREE];
                 break;
+            
+            case self::COMPANY_PAYMENT_INVOICE:
+                $where += ['column_name' => self::COMPANY_PAYMENT_INVOICE];
+                break;
+            
             default:
                 break;
         }

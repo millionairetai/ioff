@@ -56,7 +56,7 @@ $this->params['breadcrumbs'][] = $this->title;
                             <div class="col-sm-3 col-xs-6">
                                 <div class="description-block">
                                     <span class="description-text"><?= Yii::t('frontend', 'PRICE') ?></span>
-                                    <h5 class="description-header"><?= $packageInfo['total_money']; ?> VND/<?= empty($model->periodTime) ? Yii::t('common', 'Unlimited') : $model->periodTime; ?> <?= strtolower(Yii::t('common', 'month')); ?>
+                                    <h5 class="description-header"><?= $packageInfo['total_money']; ?> VND/<?= empty($model->numberMonth) ? Yii::t('common', 'Unlimited') : $model->numberMonth; ?> <?= strtolower(Yii::t('common', 'month')); ?>
                                     </h5>
                                 </div>
                                 <!-- /.description-block -->
@@ -68,15 +68,18 @@ $this->params['breadcrumbs'][] = $this->title;
                         <div>
                             Đăng ký tài khoản thành công...
                         </div>
-                        <div>
-                            Xin vui lòng chuyển khoản đến số tài khoản <?= Yii::$app->params['number_credit_card'] ?>
-                            <br />
-                            CÔNG TY CỔ PHẦN IPL<br />
-                            Ngân hàng ACB chi nhánh Hồ Chí Minh - Số TK: <?= Yii::$app->params['number_credit_card'] ?>. <br />
-                            Nội dung chuyển khoản: [tên người thanh toán][tên công ty] [sđt] thanh toán iOfficez.<br />
-                            *Lưu ý: sau khi chuyển khoản vui lòng liên hệ mail: <?= Yii::$app->params['support_email'] ?> hoặc hotline: <?= Yii::$app->params['hot_line_number'] ?> để được hỗ trợ tốt nhất.<br />
-
-                        </div>
+                        <?php if (!$packageInfo['is_free_plan_type']): ?>
+                            <div>
+                                Xin vui lòng chuyển khoản đến số tài khoản <?= Yii::$app->params['number_credit_card'] ?>
+                                <br />
+                                CÔNG TY CỔ PHẦN IPL<br />
+                                Ngân hàng ACB chi nhánh Hồ Chí Minh - Số TK: <?= Yii::$app->params['number_credit_card'] ?>. <br />
+                                Nội dung chuyển khoản: [tên người thanh toán][tên công ty] [sđt] thanh toán iOfficez.<br />
+                                *Lưu ý: sau khi chuyển khoản vui lòng liên hệ mail: <?= Yii::$app->params['support_email'] ?> hoặc hotline: <?= Yii::$app->params['hot_line_number'] ?> để được hỗ trợ tốt nhất.<br />
+                            </div>
+                        <?php endif ?>
+                        <br />
+                        <a href="<?= Yii::$app->params['companyDomain'] ?>"><?= Yii::t('common', 'Go to login page') ?></a>
                     </div>
                 </div><!-- /.box -->
 

@@ -65,8 +65,8 @@ $this->params['breadcrumbs'][] = $this->title;
                             <div class="col-sm-3 col-xs-6">
                                 <div class="description-block">
                                     <span class="description-text"><?= Yii::t('frontend', 'PRICE') ?></span>
-                                    <h5 class="description-header"><?= $packageInfo['total_money']; ?> VND/<?= empty($model->periodTime) ? Yii::t('common', 'Unlimited') : $model->periodTime; ?> <?= strtolower(Yii::t('common', 'month')) ?>
-                                    <?= $form->field($model, 'periodTime')->hiddenInput()->label(false); ?></h5>
+                                    <h5 class="description-header"><?= $packageInfo['total_money']; ?> VND/<?= empty($model->numberMonth) ? Yii::t('common', 'Unlimited') : $model->numberMonth; ?> <?= strtolower(Yii::t('common', 'month')) ?>
+                                    <?= $form->field($model, 'numberMonth')->hiddenInput()->label(false); ?></h5>
                                     </h5>
                                 </div>
                                 <!-- /.description-block -->
@@ -106,13 +106,13 @@ $this->params['breadcrumbs'][] = $this->title;
                                         <?= $form->field($model, 'rePassword')->hiddenInput()->label(false); ?>
                                         <?= $form->field($model, 'maxUser')->hiddenInput()->label(false); ?>
                                         <?= $form->field($model, 'maxStorage')->hiddenInput()->label(false); ?>
-                                        <?= $form->field($model, 'periodTime')->hiddenInput()->label(false); ?>
+                                        <?= $form->field($model, 'numberMonth')->hiddenInput()->label(false); ?>
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                         <table class="table borderless">
-                            <caption><h4>2. <?= Yii::t('common', 'Payment') ?></h4></caption>
+                            <caption><h4>2. <?= Yii::t('common', 'Payment') ?> (* Nếu đăng ký gói Free bạn có thể bỏ qua thông tin này)</h4></caption>
                             <tbody>
                                 <tr>
                                     <th><?= Yii::t('common', 'Method payment') ?>:</th>

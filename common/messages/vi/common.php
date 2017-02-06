@@ -74,6 +74,7 @@ return [
     'Tax' => 'Thuế',    
     'month' => 'Tháng',
     'Unlimited' => 'Không giới hạn',
+    'description invoice' => 'Gói %s, người dùng tối đa %s, dung lượng lưu trữ tối đa %s GB',
     //Calendar
     'Datetime Created' => 'Ngày tạo',
     'Lastup Datetime' => 'Thời gian cập nhật gần đây nhất',

@@ -162,5 +162,6 @@ return [
     'sent requesment to you' => 'sent requesment to you',
     'Review employee' => 'Review employee',
     'Requestment category' => 'Requestment category',
-    'Requestment' => 'Requestment'
+    'Requestment' => 'Requestment',
+    'description invoice' => '%s plan type, max user %s, max storage %s',    
 ];

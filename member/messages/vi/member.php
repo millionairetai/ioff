@@ -156,5 +156,6 @@ return [
     'sent requesment to you' => 'đã gửi yêu cầu đến bạn',
     'Review employee' => 'Nhân viên phê duyệt',
     'Requestment category' => 'Loại yêu cầu',
-    'Requestment' => 'Yêu cầu'
+    'Requestment' => 'Yêu cầu',
+    'description invoice' => 'Gói %s, người dùng tối đa %s, dung lượng lưu trữ tối đa %s',
 ];

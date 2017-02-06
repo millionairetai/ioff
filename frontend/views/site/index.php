@@ -41,7 +41,7 @@ $this->title = 'iofficez - Kết nối nhân viên';
                 <?= $form->field($model, 'maxStorage')->label(false)->textInput(['class' => 'form-control noround', 'value' => '5;500']) ?>
                 
                 <?=
-                    $form->field($model, 'periodTime')->label(false)->dropDownList(
+                    $form->field($model, 'numberMonth')->label(false)->dropDownList(
                             ArrayHelper::map(PeriodTime::find()->select(['month_value', 'name'])->all(), 'month_value', 'name'), ['prompt' => Yii::t('common', 'Select'), 'class' => 'form-control noround']
                     )
                 ?>
