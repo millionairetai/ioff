@@ -13,21 +13,29 @@ function showItem(element, p) {
 
 //Choose max user and max storage.
 $("#signupform-maxuser[type='text']").ionRangeSlider({
+    from: parseInt($('#signupform-maxuserhide').val()),
     type: "single",
     step: 5,
     postfix: " user",
     min: 5,
     max: 1500,
-    grid: true
+    grid: true,
+    onFinish: function(data) {
+        $('#signupform-maxuserhide').val(data.fromNumber)
+    }
 });
-
+    
 $("#signupform-maxstorage[type='text']").ionRangeSlider({
+    from : parseInt($('#signupform-maxstoragehide').val()),
     type: "single",
     step: 5,
     postfix: " GB",
     min: 5,
     max: 5005,
-    grid: true
+    grid: true,
+    onFinish: function(data) {
+        $('#signupform-maxstoragehide').val(data.fromNumber)
+    }
 });
 
 //Process when loading at first time.

@@ -95,8 +95,10 @@ $this->params['breadcrumbs'][] = $this->title;
                                     </td>
                                 </tr>
                                 <tr>
-                                    <th>Phone:</th>
-                                    <td>093884039292</td>
+                                    <th><?= Yii::t('common', 'Phone no') ?>:</th>
+                                    <td><?= $model->phoneNo; ?>
+                                        <?= $form->field($model, 'phoneNo')->hiddenInput()->label(false); ?>
+                                    </td>
                                 </tr>
                                 <tr>
                                     <th>Email:</th>

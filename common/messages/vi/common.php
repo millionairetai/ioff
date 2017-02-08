@@ -75,6 +75,9 @@ return [
     'month' => 'Tháng',
     'Unlimited' => 'Không giới hạn',
     'description invoice' => 'Gói %s, người dùng tối đa %s, dung lượng lưu trữ tối đa %s GB',
+    'Time' => 'Thời gian',
+    'Mobile phone' => 'Số điện thoại di động',
+    'Phone no' => 'Số điện thoại',
     //Calendar
     'Datetime Created' => 'Ngày tạo',
     'Lastup Datetime' => 'Thời gian cập nhật gần đây nhất',

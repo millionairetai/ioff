@@ -30,7 +30,7 @@ use Yii;
 class Invoice extends \common\components\db\ActiveRecord
 {
     const COLUNM_NAME_WAIT_PAY = 'invoice.wait_pay';
-    const COLUNM_NAME_PAYED = 'invoice.wait_pay';
+    const COLUNM_NAME_PAYED = 'invoice.payed';
     const COLUNM_NAME_PENDING = 'invoice.pending';
     
     /**

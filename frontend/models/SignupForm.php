@@ -19,17 +19,24 @@ use common\models\EmailTemplate;
  */
 class SignupForm extends Model {
 
+    const SCENARIO_SIGNUP_NOT_FREE = 'signup_not_free';
+        
     public $companyName;
     public $firstname;
     public $lastname;
     public $email;
+    public $phoneNo;
     public $password;
     public $rePassword;
     public $plan_type;
     public $maxUser = 0;
     public $maxStorage = 0;
     public $numberMonth = 0;
-
+   
+    //Two property to keep value of two slider.
+    public $maxUserHide = 0;
+    public $maxStorageHide = 0;
+    
     /**
      * @inheritdoc
      */
@@ -41,6 +48,11 @@ class SignupForm extends Model {
             ['firstname', 'filter', 'filter' => 'trim'],
             ['lastname', 'required'],
             ['lastname', 'filter', 'filter' => 'trim'],
+            ['lastname', 'required'],
+            ['lastname', 'filter', 'filter' => 'trim'],
+            ['phoneNo', 'required'],
+            ['phoneNo', 'filter', 'filter' => 'trim'],
+            ['phoneNo', 'number'],
             ['email', 'filter', 'filter' => 'trim'],
             ['email', 'required'],
             ['email', 'email'],
@@ -51,6 +63,10 @@ class SignupForm extends Model {
             ['rePassword', 'compare', 'compareAttribute' => 'password', 'message' => Yii::t('common', "Passwords don't match"),],
             ['plan_type', 'required'],
             [['maxUser', 'maxStorage', 'numberMonth'], 'integer',],
+            [['numberMonth', ], 'required', 'on' => self::SCENARIO_SIGNUP_NOT_FREE],
+            
+            ['maxUserHide', 'integer'],
+            ['maxStorageHide', 'integer']
         ];
     }
 
@@ -65,6 +81,8 @@ class SignupForm extends Model {
             'email' => Yii::t('common', 'Email'),
             'password' => Yii::t('common', 'Password'),
             'plan_type' => Yii::t('common', 'Plan type'),
+            'numberMonth' => Yii::t('common', 'Time'),
+            'phoneNo' => Yii::t('common', 'Phone no'),
         ];
     }
 
@@ -102,6 +120,7 @@ class SignupForm extends Model {
             }
 
             $company->expired_date = 0;
+            $company->phone_no = $this->phoneNo;
             if ($company->save(false) === false) {
                 throw new \Exception('Save data to company table fail');
             }

@@ -20,6 +20,8 @@ $this->title = 'iofficez - Kết nối nhân viên';
             <?= $form->field($model, 'firstname')->label(false)->textInput(['placeholder' => Yii::t('common', 'First name'), 'class' => 'form-control noround']) ?>
 
             <?= $form->field($model, 'lastname')->label(false)->textInput(['placeholder' => Yii::t('common', 'Last name'), 'class' => 'form-control noround']) ?>
+            
+            <?= $form->field($model, 'phoneNo')->label(false)->textInput(['placeholder' => Yii::t('common', 'Phone no'), 'class' => 'form-control noround']) ?>
 
             <?= $form->field($model, 'email')->label(false)->textInput(['placeholder' => Yii::t('common', 'Email'), 'class' => 'form-control noround']) ?>
 
@@ -36,9 +38,11 @@ $this->title = 'iofficez - Kết nối nhân viên';
             <div class="choose-info-plan-type">
                 <div class="max-user">
                     <?= $form->field($model, 'maxUser')->label(false)->textInput(['class' => 'form-control noround', 'value' => '5;150']) ?>
+                    <?= $form->field($model, 'maxUserHide')->hiddenInput()->label(false); ?>
                 </div>
 
                 <?= $form->field($model, 'maxStorage')->label(false)->textInput(['class' => 'form-control noround', 'value' => '5;500']) ?>
+                <?= $form->field($model, 'maxStorageHide')->hiddenInput()->label(false); ?>
                 
                 <?=
                     $form->field($model, 'numberMonth')->label(false)->dropDownList(

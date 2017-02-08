@@ -74,7 +74,12 @@ class SiteController extends Controller {
     public function actionIndex() {
         $model = new SignupForm();
         $subscribeModel = new SubscribeForm();
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+        $post = Yii::$app->request->post();
+        if ($post && $post['SignupForm']['plan_type'] != 'free') {
+            $model->scenario = SignupForm::SCENARIO_SIGNUP_NOT_FREE;
+        }
+
+        if ($model->load($post) && $model->validate()) {
             $planType = PlanType::getsIndexByColumnName();
             $packageInfo = ['package_name' => $planType[$model->plan_type]['name']];
             switch ($model->plan_type) {
@@ -127,7 +132,12 @@ class SiteController extends Controller {
      */
     public function actionOrder() {
         $model = new SignupForm();
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+        $post = Yii::$app->request->post();
+        if ($post && $post['SignupForm']['plan_type'] != 'free') {
+            $model->scenario = SignupForm::SCENARIO_SIGNUP_NOT_FREE;
+        }
+        
+        if ($model->load($post) && $model->validate()) {
             if ($model->signup()) {
                 $planType = PlanType::getsIndexByColumnName();
                 $packageInfo = ['package_name' => $planType[$model->plan_type]['name']];
