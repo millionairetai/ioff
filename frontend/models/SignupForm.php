@@ -232,6 +232,14 @@ class SignupForm extends Model {
         if ($invoiceDetail->save(false) === false) {
             throw new \Exception('Save data to invoice detail table fail');
         }
+        
+        //Update max user and max storage in company table.
+        $company->max_user_register = $this->maxUser;
+        $company->max_storage_register = $this->maxStorage;
+        $company->total_employee = 1;
+        if ($company->save(false) === false) {
+            throw new \Exception('Save data to company table fail');
+        }
 
         return [
             'invoiceNo' => $invoice->invoice_number,

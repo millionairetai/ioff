@@ -21,19 +21,23 @@ class CompanyController extends ApiController {
         $objects = [];
         try {
             $company = Company::getDetailByCompanyId(Yii::$app->user->identity->company_id);
-            $company['total_storage'] = floor($company['total_storage'] / (1024 * 1024));
-            $company['expired_date'] = empty($company['expired_date']) ? '--' : \Yii::$app->formatter->asDate($company['expired_date']);
-            $company['start_date'] = \Yii::$app->formatter->asDate($company['start_date']);
             if (empty($company)) {
                 throw new \Exception;
             }
-
+            
+            $company['total_storage'] = floor($company['total_storage'] / (1024 * 1024));
+            $company['max_storage_register'] = $company['max_storage_register'] * 1000;
+//            $company['using_storage_percent'] = ceil(($company['total_storage'] / ($company['max_storage_register']*1000)) * 100);
+            $company['expired_date'] = empty($company['expired_date']) ? '--' : \Yii::$app->formatter->asDate($company['expired_date']);
+            $company['start_date'] = \Yii::$app->formatter->asDate($company['start_date']);
             //Get person who create company's account.
             $employee = \common\models\Employee::getById($company['created_employee_id'], [
                 'firstname', 'lastname', 'email', 'mobile_phone', 'street_address_1']);
+            
             if (empty($employee)) {
                 throw new \Exception;
             }
+            
             $company['employee'] = [
                 'name' => $employee->fullname,
                 'mobile_phone' => $employee->mobile_phone,

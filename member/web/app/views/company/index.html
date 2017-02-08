@@ -9,7 +9,7 @@
     </section>
     <section class="content">
         <div class="row">
-            <div class="col-md-9">
+            <div class="col-md-12">
                 <!-- Default box -->
                 <div id="detail-company" class="box box-solid">
                     <div class="box-header with-border">
@@ -49,14 +49,14 @@
                                             <div class="row">
                                                 <div class="col-sm-6">
                                                     <span>{{$root.$lang.used_storage}}</span>
-                                                    <p><b>{{company.total_storage}} MB/ MB</b></p>
+                                                    <p><b>{{company.total_storage}} MB/ {{company.max_storage_register}} MB</b></p>
                                                     <div class="box-footer">
-                                                        <p class="text-center"><input class="knob" type="text" value="65" data-skin="tron" data-thickness=".2" width="150" height="150"></p>
+                                                        <p class="text-center"><input class="knob" type="text" value="0" data-skin="tron" data-thickness=".2" width="150" height="150"></p>
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-6">
                                                     <span>{{$root.$lang.user}}</span>
-                                                    <p><b>{{company.total_employee}}/{{company.company_name}}</b></p>
+                                                    <p><b>{{company.total_employee}} users/ {{company.max_user_register}} users</b></p>
                                                     <div class="box-footer">
                                                         <p class="text-center"><input class="knob" type="text" value="65" data-skin="tron" data-thickness=".2" width="150" height="150" fg-color="red"></p>
                                                     </div>
@@ -95,7 +95,7 @@
                     </div><!-- /.box -->
                 </div>
             </div>
-            <div class="col-md-3 padding-left-md-0">
+<!--            <div class="col-md-3 padding-left-md-0">
                 <div class="box box-solid">
                     <div class="box-header">
                         <h3 class="box-title">Company Info</h3>
@@ -109,7 +109,7 @@
                         </ul>
                     </div>
                 </div>
-            </div>
+            </div>-->
         </div>
     </section>
 </div>

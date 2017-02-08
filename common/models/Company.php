@@ -28,6 +28,8 @@ use common\models\Employee;
  * @property string $language_code
  * @property string $total_storage
  * @property integer $total_employee
+ * @property integer $max_user_register
+ * @property integer $max_storage_register
  * @property string $datetime_created
  * @property string $lastup_datetime
  * @property string $created_employee_id
@@ -52,7 +54,7 @@ class Company extends \backend\components\db\ActiveRecord {
      */
     public function rules() {
         return [
-            [['status_id', 'plan_type_id', 'language_id', 'start_date', 'expired_date', 'total_storage', 'total_employee', 'datetime_created', 'lastup_datetime', 'created_employee_id', 'lastup_employee_id'], 'integer'],
+            [['status_id', 'plan_type_id', 'language_id', 'start_date', 'expired_date', 'total_storage', 'total_employee', 'datetime_created', 'lastup_datetime', 'created_employee_id', 'lastup_employee_id', 'max_user_register', 'max_storage_register'], 'integer'],
             [['name', 'email', 'phone_no', 'language_code'], 'required'],
             [['description_title', 'description'], 'string'],
             [['disabled'], 'boolean'],
@@ -85,6 +87,8 @@ class Company extends \backend\components\db\ActiveRecord {
             'language_code' => Yii::t('common', 'Language Code'),
             'total_storage' => Yii::t('common', 'Total Storage'),
             'total_employee' => Yii::t('common', 'Total Employee'),
+            'max_user_register' => Yii::t('common', 'Max Storage Register'),
+            'max_storage_register' => Yii::t('common', 'Max Storage Register'),
             'datetime_created' => Yii::t('common', 'Datetime Created'),
             'lastup_datetime' => Yii::t('common', 'Lastup Datetime'),
             'created_employee_id' => Yii::t('common', 'Created Employee ID'),
@@ -156,9 +160,10 @@ class Company extends \backend\components\db\ActiveRecord {
     public static function getDetailByCompanyId($companyId) {
         return self::find()
                         ->select(['translation.translated_text AS plan_type_name', 'company.name AS company_name', 'status.column_name AS status_column_name',
-                            'company.total_storage', 'company.total_employee', 'company.start_date', 'company.expired_date', 'company.id', 'company.created_employee_id'])
+                            'company.total_storage', 'company.total_employee', 'company.start_date', 'company.expired_date', 'company.id', 'company.created_employee_id',
+                            'company.max_user_register', 'company.max_storage_register',])
                         ->leftJoin('plan_type', 'plan_type.id = company.plan_type_id')
-                        ->leftJoin('plan_type_detail', 'plan_type_detail.plan_type_id = plan_type.id')
+//                        ->leftJoin('plan_type_detail', 'plan_type_detail.plan_type_id = plan_type.id')
                         ->leftJoin('status', 'company.status_id = status.id')
                         ->leftJoin('translation', 'translation.owner_id=plan_type.id AND translation.owner_table="plan_type"')
                         ->leftJoin('language', 'language.id = translation.language_id')
