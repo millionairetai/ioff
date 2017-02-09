@@ -1,6 +1,6 @@
 appRoot = angular.module('iofficez',
         ['ui.tinymce', 'ngRoute', 'ui.bootstrap', "ngAlertify", 'ui.slider', 'ui.select', 'ngTagsInput',
-            'ui.calendar', 'ui.bootstrap.datetimepicker', 'btford.socket-io', 'infinite-scroll', 'autocomplete', 'chart.js']);
+            'ui.calendar', 'ui.bootstrap.datetimepicker', 'btford.socket-io', 'infinite-scroll', 'autocomplete', 'chart.js', 'ui.knob']);
 
 //constant for paging
 appRoot.constant('PER_PAGE_VIEW_MORE', 10);

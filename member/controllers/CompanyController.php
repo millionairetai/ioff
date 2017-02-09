@@ -27,7 +27,8 @@ class CompanyController extends ApiController {
             
             $company['total_storage'] = floor($company['total_storage'] / (1024 * 1024));
             $company['max_storage_register'] = $company['max_storage_register'] * 1000;
-//            $company['using_storage_percent'] = ceil(($company['total_storage'] / ($company['max_storage_register']*1000)) * 100);
+            $company['using_storage_percent'] = round(($company['total_storage'] / ($company['max_storage_register'])) * 100, 1);
+            $company['using_user_percent'] = round($company['total_employee'] / ($company['max_user_register']) * 100, 1);
             $company['expired_date'] = empty($company['expired_date']) ? '--' : \Yii::$app->formatter->asDate($company['expired_date']);
             $company['start_date'] = \Yii::$app->formatter->asDate($company['start_date']);
             //Get person who create company's account.

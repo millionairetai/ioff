@@ -51,14 +51,14 @@
                                                     <span>{{$root.$lang.used_storage}}</span>
                                                     <p><b>{{company.total_storage}} MB/ {{company.max_storage_register}} MB</b></p>
                                                     <div class="box-footer">
-                                                        <p class="text-center"><input class="knob" type="text" value="0" data-skin="tron" data-thickness=".2" width="150" height="150"></p>
+                                                        <p class="text-center"><ui-knob value="usingStoragePercentValue" options="maxStorageOptions"></ui-knob></p>
                                                     </div>
                                                 </div>
                                                 <div class="col-sm-6">
                                                     <span>{{$root.$lang.user}}</span>
-                                                    <p><b>{{company.total_employee}} users/ {{company.max_user_register}} users</b></p>
+                                                    <p><b>{{company.total_employee}} {{$root.$lang.user}}/ {{company.max_user_register}} {{$root.$lang.user}}</b></p>
                                                     <div class="box-footer">
-                                                        <p class="text-center"><input class="knob" type="text" value="65" data-skin="tron" data-thickness=".2" width="150" height="150" fg-color="red"></p>
+                                                        <ui-knob value="usingUserPercentValue" options="maxUserOptions"></ui-knob>
                                                     </div>
                                                 </div>
                                             </div>
