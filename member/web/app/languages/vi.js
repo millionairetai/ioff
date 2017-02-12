@@ -114,6 +114,7 @@
             in_progress: 'Đang xử lý',
             public: 'Công khai',
             open: 'Mở',
+            phone: 'Điện thoại',
             //-----------------------------------------End of common language.----------------------------------
             
             //project
@@ -429,7 +430,37 @@
             sent: 'Đã gửi',
             received: 'Đã nhận',
             more_option: 'Thêm tùy chọn',
-            upcoming_event: 'Sự  kiện sắp đến'
+            upcoming_event: 'Sự  kiện sắp đến',
+            //Company
+            package_detail: 'Chi tiết gói',
+            package: 'Gói',
+            duedate_package: 'Ngày hết hạn của gói',
+            current_plan_type:'Gói đang sử dụng',
+            change_edit_your_package: 'Thay đổi/ chỉnh sửa gói',
+            maximum_users: 'Người sử dụng tối đa',
+            maximum_storage: 'Dung lượng tối đa',
+            this_message_contains: 'Gói này bao gồm',
+            phrase_info_standard_plan_type:'The standard plan contains minimum 10 users and 2 GB. You can scale it up anytime in 5 users or 5 GB steps. If the maximum user count of 150 is reached orand you need more user, please select premium plan type. In some cases it could be more favorable then the Standard Plan, depends on your needs.',
+            //Invoice.
+            payment: 'Thanh toán',
+            method_payment: 'Phương thức thanh toán',
+            company_name: 'Tên công ty',
+            tax_code:'Thuế',
+            register_plan: 'GÓI ĐĂNG KÝ',
+            redundant_money_old_package: 'SỔ TIỀN DƯ GÓI CŨ',
+            total_money_new_package: 'TỔNG TIỀN GÓI MỚI',
+            total_payment: 'SỐ TIỀN THANH TOÁN',
+            ignore_free_plan_section: 'Nếu đăng ký gói Free bạn có thể bỏ qua thông tin này',
+            register_account_successfully: 'Đăng ký tài khoản thành công',            
+            info_bank_transfer : "Xin vui lòng chuyển khoản đến số tài khoản 1039390902.CÔNG TY CỔ PHẦN IPL Ngân hàng ACB chi nhánh Hồ Chí Minh - Số TK: 1039390902. Nội dung chuyển khoản:[tên người thanh toán][tên công ty] [sđt] thanh toán iOfficez. *Lưu ý: sau khi chuyển khoản vui lòng liên hệ mail: support@iofficez.com hoặc hotline: 1900283 để được hỗ trợ tốt nhất.",
+            month: 'tháng', 
+            info_standard_plan_type: 'Gói standard chứa ít nhất 10 người dùng và 2 GB lưu trữ. Bạn có thể mở rộng nó bất cứ lúc nào với 5 người dùng hay 5 GB tăng thêm. Nếu quá 150 người dùng, bạn có thể chuyển sang gói premium không giới hạn người dùng.',
+            info_premium_plan_type: 'Gói premium không giới hạn người dùng và chứa ít nhất 5GB lưu trữ. Bạn có thể mở rộng dung lượng lưu trữ bất cứ lúc nào bạn muốn.',
+            company_manage: 'Quản lý công ty',
+            your_package: 'Gói sử dụng',
+            unlimited: 'Không giới hạn',
+            choose_maximum_user: 'Chọn người dùng tối đa',
+            choose_maximum_storage: 'Chọn dung lượng lưu trữ tối đa'
         };
     });
 })(window.angular);

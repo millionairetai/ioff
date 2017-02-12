@@ -37,11 +37,11 @@ $this->title = 'iofficez - Kết nối nhân viên';
 
             <div class="choose-info-plan-type">
                 <div class="max-user">
-                    <?= $form->field($model, 'maxUser')->label(false)->textInput(['class' => 'form-control noround', 'value' => '5;150']) ?>
+                    <?= $form->field($model, 'maxUser')->label(false)->textInput(['class' => 'form-control noround', 'value' => '10;150']) ?>
                     <?= $form->field($model, 'maxUserHide')->hiddenInput()->label(false); ?>
                 </div>
 
-                <?= $form->field($model, 'maxStorage')->label(false)->textInput(['class' => 'form-control noround', 'value' => '5;500']) ?>
+                <?= $form->field($model, 'maxStorage')->label(false)->textInput(['class' => 'form-control noround', 'value' => '2;500']) ?>
                 <?= $form->field($model, 'maxStorageHide')->hiddenInput()->label(false); ?>
                 
                 <?=

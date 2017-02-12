@@ -82,4 +82,12 @@ class Invoice extends \common\components\db\ActiveRecord
             'disabled' => Yii::t('member', 'Disabled'),
         ];
     }
+    
+    public static function getMostRecentInvoiceByCompanyId() {
+               return self::find()
+                        ->select('*')
+                        ->orderBy('datetime_created DESC')
+                        ->asArray()
+                        ->one();
+    }
 }

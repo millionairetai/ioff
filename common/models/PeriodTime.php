@@ -57,4 +57,16 @@ class PeriodTime extends \common\components\db\ActiveRecord
             'disabled' => Yii::t('member', 'Disabled'),
         ];
     }
+    
+    /**
+     * Get period time list
+     * 
+     * @return objec|array
+     */
+    public static function gets() {
+        return self::find()->select(['month_value', 'name',])
+                ->indexBy('month_value')
+                ->asArray()
+                ->all();
+    }
 }

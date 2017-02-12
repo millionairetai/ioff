@@ -21,28 +21,26 @@ use Yii;
  * @property string $lastup_employee_id
  * @property boolean $disabled
  */
-class PlanType extends \common\components\db\ActiveRecord
-{
+class PlanType extends \common\components\db\ActiveRecord {
+
     ////////////////////////////////////
     //Maybe change afterward
     ////////////////////////////////////
     const COLUMN_NAME_FREE = 'free';
     const COLUMN_NAME_STANDARD = 'standard';
     const COLUMN_NAME_PREMIUM = 'premium';
-    
+
     /**
      * @inheritdoc
      */
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'plan_type';
     }
 
     /**
      * @inheritdoc
      */
-    public function rules()
-    {
+    public function rules() {
         return [
             [['name', 'column_name', 'max_storage'], 'required'],
             [['description'], 'string'],
@@ -56,8 +54,7 @@ class PlanType extends \common\components\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'id' => Yii::t('member', 'ID'),
             'name' => Yii::t('member', 'Name'),
@@ -74,7 +71,7 @@ class PlanType extends \common\components\db\ActiveRecord
             'disabled' => Yii::t('member', 'Disabled'),
         ];
     }
-       
+
     /**
      * Get plan type by name
      * 
@@ -83,12 +80,12 @@ class PlanType extends \common\components\db\ActiveRecord
      */
     public static function getByName($name) {
         return self::find()
-                    ->select(['id', 'name',])
-                    ->where(['name' => $name])
-                    ->asArray()
-                    ->one();
-    } 
-    
+                        ->select(['id', 'name',])
+                        ->where(['name' => $name])
+                        ->asArray()
+                        ->one();
+    }
+
     /**
      * Get plan type by column name
      * 
@@ -97,20 +94,33 @@ class PlanType extends \common\components\db\ActiveRecord
      */
     public static function getByColumnName($columnName) {
         return self::find()
-                    ->select(['id', 'name',])
-                    ->where(['column_name' => $columnName])
-                    ->asArray()
-                    ->one();
+                        ->select(['id', 'name',])
+                        ->where(['column_name' => $columnName])
+                        ->asArray()
+                        ->one();
     }
-    
+
     /**
      * Get plan type index by column name
      * @return array
      */
     public static function getsIndexByColumnName() {
         return self::find()->select(['id', 'name', 'column_name', 'max_user', 'max_storage', 'fee_user', 'fee_storage'])
-                ->indexBy('column_name')
+                        ->indexBy('column_name')
+                        ->asArray()
+                        ->all();
+    }
+
+    /**
+     * Get all row of plan type
+     * 
+     * @return objec|array
+     */
+    public static function getsIndexById() {
+        return self::find()->select(['id', 'name', 'max_user', 'max_storage', 'fee_user', 'fee_storage', 'column_name'])
+                ->indexBy('id')
                 ->asArray()
                 ->all();
     }
+
 }

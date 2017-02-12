@@ -161,7 +161,7 @@ class Company extends \backend\components\db\ActiveRecord {
         return self::find()
                         ->select(['translation.translated_text AS plan_type_name', 'company.name AS company_name', 'status.column_name AS status_column_name',
                             'company.total_storage', 'company.total_employee', 'company.start_date', 'company.expired_date', 'company.id', 'company.created_employee_id',
-                            'company.max_user_register', 'company.max_storage_register',])
+                            'company.phone_no', 'company.plan_type_id', 'company.max_user_register', 'company.max_storage_register', 'plan_type.name AS plan_type_name'])
                         ->leftJoin('plan_type', 'plan_type.id = company.plan_type_id')
 //                        ->leftJoin('plan_type_detail', 'plan_type_detail.plan_type_id = plan_type.id')
                         ->leftJoin('status', 'company.status_id = status.id')

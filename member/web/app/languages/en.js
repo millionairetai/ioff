@@ -115,6 +115,7 @@
             in_progress: 'In progress',
             public: 'Public',
             open: 'Open',
+            phone: 'Điện thoại',            
             //-----------------------------------------End of common language.----------------------------------
             
             //project
@@ -417,7 +418,37 @@
             sent: 'Sent',
             received: 'Received',
             more_option: 'More option',
-            upcoming_event: 'Upcoming Event'
+            upcoming_event: 'Upcoming Event',
+            //Company
+            package_detail: 'Plan type detail',
+            package: 'Package',
+            duedate_package: 'Duedate package',
+            current_plan_type:'Current plan type',
+            change_edit_your_package: 'Change/ edit your package',
+            maximum_users: 'Maximum users',
+            maximum_storage: 'Maximum storage',
+            this_message_contains: 'This package contains',
+            phrase_info_standard_plan_type:'The standard plan contains minimum 10 users and 2 GB. You can scale it up anytime in 5 users or 5 GB steps. If the maximum user count of 150 is reached orand you need more user, please select premium plan type. In some cases it could be more favorable then the Standard Plan, depends on your needs.',
+            //Invoice.
+            payment: 'Payment',            
+            method_payment: 'Method payment',
+            company_name: 'Company name',
+            tax_code:'Tax',
+            register_plan: 'REGISTERED PLAN',
+            redundant_money_old_package: 'REDUNDANT OLD PACKAGE MONEY',
+            total_money_new_package: 'NEW PLAN MONEY',
+            total_payment: 'FINAL MONEY TOTAL',
+            ignore_free_plan_section: 'If register Free plan type, you can skip this information',
+            register_account_successfully: 'Register account successfully',
+            info_bank_transfer : "Please transfer money to account number 1039390902 IPL Company Limited ACB Bank Hồ Chí Minh branch - Account number: 1039390902. Content of transfer: [person's name tranfer][Company name] [phone no] pay for iOfficez.*Notice: After transfer, please contact us via email: support@iofficez.com hoặc hotline: 1900283 to us support the best for you.",
+            month: 'Month',
+            info_standard_plan_type: 'The standard plan contains minimum 10 users and 2 GB. You can scale it up anytime in 5 users or 5 GB steps. If the maximum user count of 150 is reached orand you need more user, please select premium plan type. In some cases it could be more favorable then the Standard Plan, depends on your needs.',
+            info_premium_plan_type: 'The premium plan contains unlimited users and 2 GB. You can scale it up anytime 5 GB steps.',
+            company_manage: 'Company manage',
+            your_package: 'Your package',
+            unlimited: 'Unlimited',
+            choose_maximum_user: 'Choose maximum user',
+            choose_maximum_storage: 'Choose maximum storage'            
         };
     });
 })(window.angular);

@@ -1,19 +1,16 @@
 <div class="authority-list-page">
     <section class="content-header">
         <h1>
-            Company manage
+            {{$root.$lang.company_manage}}
         </h1>
-        <div class="tool-right">
-            <a class="btn btn-info" ng-click="add()"><i class="fa fa-plus-square"></i> Add</a>
-        </div>
     </section>
     <section class="content">
         <div class="row">
-            <div class="col-md-9">
+            <div class="col-md-12">
                 <!-- Default box -->
                 <div id="detail-company" class="box box-solid">
                     <div class="box-header with-border">
-                        <h3 class="box-title">Your package</h3>            
+                        <h3 class="box-title">{{$root.$lang.your_package}}</h3>            
                         <div class="box-tools pull-right">
                             <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
                         </div>
@@ -21,188 +18,259 @@
                     <div class="box-body">
                         <div class="nav-tabs-custom">
                             <ul class="nav nav-tabs">
-                                <li class="active"><a href="/changePackage/#tab_1" data-toggle="tab" aria-expanded="true">Package</a></li>
+                                <li class="active"><a href="/changePackage/#tab_1" data-toggle="tab" aria-expanded="true">{{$root.$lang.package}}</a></li>
                                 <li class=""><a href="/changePackage/#tab_2" data-toggle="tab" aria-expanded="false">Payment detail</a></li>
                                 <li class=""><a href="/changePackage/#tab_3" data-toggle="tab" aria-expanded="false">Invoice</a></li>
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane active" id="tab_1">
-                                    <div class="row">
-                                        <div class="col-lg-5">
-                                            <p class="lead">Package detail</p>
-                                            <div class="box-footer">
-                                                <h2>FREE</h2>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-7">
-                                            <div class="row">
-                                                <div class="col-sm-6">
-                                                    <span>USED STORAGE</span>
-                                                    <p><b>86 MB/500 MB</b></p>
-                                                    <div class="box-footer">
-                                                        <p class="text-center"><input class="knob" type="text" value="65" data-skin="tron" data-thickness=".2" width="150" height="150"></p>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-6">
-                                                    <span>USER</span>
-                                                    <p><b>3/3</b></p>
-                                                    <div class="box-footer">
-                                                        <p class="text-center"><input class="knob" type="text" value="65" data-skin="tron" data-thickness=".2" width="150" height="150" fg-color="red"></p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <p><b>Change/ edit your package</b></p>
-                                    Current package:
-                                    <select>
-                                        <option>Free</option>
-                                        <option>Prime</option>
-                                    </select>
-                                    <p>
-                                        The standard plan contains minimum 10 users and 5 GB. You can scale it up anytime in 5 user or 5 GB steps. <br/>
-                                        If the maximum user count of 250 is reached or/and you need more performance, please check out the <br/>
-                                        Professional Plan. In some cases it could be more favorable then the Standard Plan, depends on your needs.
-                                    </p>     
-                                    <p><b>Change/ edit your package</b></p>
-                                    Current package:
-                                    <select>
-                                        <option>Free</option>
-                                        <option>Prime</option>
-                                    </select>
-                                    <p>Duedate package: 5/2/2017</p>
-                                    <p>
-                                        This package contains:<br/>
-                                        * Maximum users: 5.<br/>
-                                        * Maximum storeage(MB): 500<br/>
-                                        Your instance will be disabled if not used in 60 days!
-                                    </p>
-                                    <div class="clearfix">
-                                        <a href="#" class="btn btn-primary pull-right">Change</a>
-                                    </div>
-                                      <div class="box-header with-border">
-
+                                    <div class="package-info" ng-show="!infoInvoice">
                                         <div class="row">
-                                            <div class="col-sm-3 col-xs-6">
-                                                <div class="description-block border-right">
-                                                    <span class="description-percentage text-green"><i class="fa fa-caret-up"></i> 17%</span>
-                                                    <h5 class="description-header">$35,210.43</h5>
-                                                    <span class="description-text">TOTAL REVENUE</span>
+                                            <div class="col-lg-5">
+                                                <p class="lead">{{$root.$lang.package_detail}}</p>
+                                                <div class="box-footer">
+                                                    <h2>{{company.plan_type_name}}</h2>
+                                                    * {{$root.$lang.maximum_users}}: {{company.max_user_register}}.<br />
+                                                    * {{$root.$lang.maximum_storage}}: {{company.max_storage_register}} MB<br />
+                                                    * {{$root.$lang.duedate_package}}: &nbsp;{{company.expired_date}}
                                                 </div>
-                                                <!-- /.description-block -->
                                             </div>
-                                            <!-- /.col -->
-                                            <div class="col-sm-3 col-xs-6">
-                                                <div class="description-block border-right">
-                                                    <span class="description-percentage text-yellow"><i class="fa fa-caret-left"></i> 0%</span>
-                                                    <h5 class="description-header">$10,390.90</h5>
-                                                    <span class="description-text">TOTAL COST</span>
+                                            <div class="col-lg-7">
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <span>{{$root.$lang.used_storage}}</span>
+                                                        <p><b>{{company.total_storage}} MB/ {{company.max_storage_register}} MB</b></p>
+                                                        <div class="box-footer">
+                                                            <p class="text-center"><ui-knob value="usingStoragePercentValue" options="maxStorageOptions"></ui-knob></p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <span>{{$root.$lang.user}}</span>
+                                                        <p><b>{{company.total_employee}} {{$root.$lang.user}}/ {{company.max_user_register}} {{$root.$lang.user}}</b></p>
+                                                        <div class="box-footer">
+                                                            <p class="text-center"><ui-knob value="usingUserPercentValue" options="maxUserOptions"></ui-knob></p>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <!-- /.description-block -->
-                                            </div>
-                                            <!-- /.col -->
-                                            <div class="col-sm-3 col-xs-6">
-                                                <div class="description-block border-right">
-                                                    <span class="description-percentage text-green"><i class="fa fa-caret-up"></i> 20%</span>
-                                                    <h5 class="description-header">$24,813.53</h5>
-                                                    <span class="description-text">TOTAL PROFIT</span>
-                                                </div>
-                                                <!-- /.description-block -->
-                                            </div>
-                                            <!-- /.col -->
-                                            <div class="col-sm-3 col-xs-6">
-                                                <div class="description-block">
-                                                    <span class="description-percentage text-red"><i class="fa fa-caret-down"></i> 18%</span>
-                                                    <h5 class="description-header">1200</h5>
-                                                    <span class="description-text">GOAL COMPLETIONS</span>
-                                                </div>
-                                                <!-- /.description-block -->
                                             </div>
                                         </div>
+                                        <p><b>{{$root.$lang.change_edit_your_package}}</b></p>
+                                        <div class="col-lg-2">
+                                            <div class="row">{{$root.$lang.current_plan_type}}: </div>
+                                        </div>
+
+                                        <div class="col-lg-2">
+                                            <div class="row">
+                                                <select class="form-control" ng-model="company.plan_type_id"
+                                                        ng-change="getPlanTypes()"
+                                                        ng-options="option.name for option in planTypes">
+                                                    <option value=''>--</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div><br/>
+                                        <div ng-show="company.plan_type_id.name == 'Free'">  
+                                            <p>
+                                                {{$root.$lang.this_message_contains}}:<br/>
+                                                * {{$root.$lang.maximum_users}}: 5.<br/>
+                                                * {{$root.$lang.maximum_storage}}(MB): 1000 MB.<br/>
+                                                <!--Your instance will be disabled if not used in 60 days!-->
+                                            </p>
+                                        </div>
+                                        <div ng-show="company.plan_type_id.name == 'Standard' || company.plan_type_id.name == 'Premium'"> 
+                                            <p ng-show="company.plan_type_id.name == 'Standard'">
+                                                {{$root.$lang.info_standard_plan_type}}
+                                            </p>     
+                                            <p ng-show="company.plan_type_id.name == 'Premium'">
+                                                {{$root.$lang.info_premium_plan_type}}
+                                            </p>
+                                            <p>
+                                            <div class="col-sm-5">
+                                                {{$root.$lang.choose_maximum_user}}: <strong>{{package.maxUser.value}}</strong>
+                                                <div ng-show="company.plan_type_id.name == 'Standard'">
+                                                    10<div min="10" max="150" ui-slider="{range: 'min'}" step="5" ng-model="package.maxUser.value"></div>150
+                                                </div>
+                                                <div ng-show="company.plan_type_id.name == 'Premium'">
+                                                    {{$root.$lang.unlimited}}
+                                                </div>
+                                                <br />
+
+                                                <!--<ion-range-slider ng-model="package.maxUser.value" min="package.maxUser.min" max="package.maxUser.max" from="package.maxUser.from"></ion-range-slider>-->
+                                                {{$root.$lang.choose_maximum_storage}}:<strong>{{package.maxStorage.value}} GB</strong><br />
+                                                2<div min="2" max="500" ui-slider="{range: 'min'}" step="5" ng-model="package.maxStorage.value"></div>500
+                                                <!--<ion-range-slider ng-model="package.maxStorage.value" min="package.maxStorage.min" max="package.maxStorage.max" from="package.maxStorage.from"></ion-range-slider>-->
+                                                <br />{{$root.$lang.time}}: <br />
+                                                <div class="col-sm-4">
+                                                    <div class="row">
+                                                        <select class="form-control" ng-model="package.numberMonth"
+                                                                ng-options="option.name for option in periodTimes">
+                                                            <option value=''>--</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            </p>
+                                        </div>
                                     </div>
-                                    <div class="box-body">
-                                        <table class="table borderless">
-                                            <caption><h4>1. Invoice Address</h4></caption>
-                                            <tbody>
-                                                <tr>
-                                                    <th>Name company:</th>
-                                                    <td>Mắt bão corp</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Firstname:</th>
-                                                    <td>Trịnh</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Lastname:</th>
-                                                    <td>Giác Bậc</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Phone:</th>
-                                                    <td>093884039292</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Street/No:</th>
-                                                    <td>Nguyễn Tất Thành, phường 3, quận 1</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Zipcode:</th>
-                                                    <td>83</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>City:</th>
-                                                    <td>Ho Chi Minh</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Country:</th>
-                                                    <td>Vietnam</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Email:</th>
-                                                    <td>giacbat@matbao.vn</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Business area:</th>
-                                                    <td>marketing</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                        <table class="table borderless">
-                                            <caption><h4>2. Payment</h4></caption>
-                                            <tbody>
-                                                <tr>
-                                                    <th>Method payment:</th>
-                                                    <td>Credit card</td>
-                                                </tr>
-                                                <tr>
-                                                    <th colspan="2">Red Invoice</th>
-                                                </tr>
-                                                <tr>
-                                                    <th>Name company:</th>
-                                                    <td>Mắt bão corp</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Type of company:</th>
-                                                    <td>Ho Chi Minh</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Tax code:</th>
-                                                    <td>Giác Bậc</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>City:</th>
-                                                    <td>Ho Chi Minh</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Province:</th>
-                                                    <td>Ho Chi Minh</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>Address:</th>
-                                                    <td>Input address of ward...</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div><!-- /.box-body -->
+                                    <div class="clearfix"></div><br />
+                                    <div class="info-invoice" ng-show="infoInvoice && !infoInvoice.successOrderInvoice">
+                                        <div class="box-header with-border">
+                                            <div class="row">
+                                                <div class="col-sm-2 col-xs-6">
+                                                    <div class="description-block border-right">
+                                                        <span class="description-text">{{$root.$lang.register_plan}}</span>
+                                                        <h5 class="description-header">{{infoInvoice.planTypeRegister}}</h5>                                                    
+                                                    </div>
+                                                    <!-- /.description-block -->
+                                                </div>
+                                                <!-- /.col -->
+                                                <div class="col-sm-2 col-xs-6">
+                                                    <div class="description-block border-right">
+                                                        <span class="description-text">{{$root.$lang.maximum_users}}</span>
+                                                        <h5 class="description-header">{{infoInvoice.maxUser}}</h5>
+                                                    </div>
+                                                    <!-- /.description-block -->
+                                                </div>
+                                                <!-- /.col -->
+                                                <div class="col-sm-2 col-xs-6">
+                                                    <div class="description-block border-right">
+                                                        <span class="description-text">{{$root.$lang.maximum_storage}}</span>
+                                                        <h5 class="description-header">{{infoInvoice.maxStorage}} GB</h5>
+                                                    </div>
+                                                    <!-- /.description-block -->
+                                                </div>
+                                                <!-- /.col -->
+                                                <div class="col-sm-2 col-xs-6">
+                                                    <div class="description-block border-right">
+                                                        <span class="description-text">{{$root.$lang.redundant_money_old_package}}</span>
+                                                        <h5 class="description-header">{{infoInvoice.redundantMoney}} VND</h5>
+                                                    </div>
+                                                    <!-- /.description-block -->
+                                                </div>
+                                                <div class="col-sm-2 col-xs-6">
+                                                    <div class="description-block border-right">
+                                                        <span class="description-text">{{$root.$lang.total_money_new_package}}</span>
+                                                        <h5 class="description-header">{{infoInvoice.nextPlanTotalMoney}} VND / {{infoInvoice.numberMonth}} {{$root.$lang.month}}</h5>
+                                                    </div>
+                                                    <!-- /.description-block -->
+                                                </div>
+                                                <div class="col-sm-2 col-xs-6">
+                                                    <div class="description-block border-right">
+                                                        <span class="description-text">{{$root.$lang.total_payment}}</span>
+                                                        <h5 class="description-header">{{infoInvoice.finalTotalMoney}} VND / {{infoInvoice.numberMonth}} {{$root.$lang.month}}</h5>
+                                                    </div>
+                                                    <!-- /.description-block -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="box-body">
+                                            <table class="table borderless">
+                                                <caption><h4>1. {{$root.$lang.company_information}}</h4></caption>
+                                                <tbody>
+                                                    <tr>
+                                                        <th>{{$root.$lang.company_name}}:</th>
+                                                        <td>{{infoInvoice.companyName}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>{{$root.$lang.firstname}}:</th>
+                                                        <td>{{infoInvoice.firstname}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>{{$root.$lang.lastname}}:</th>
+                                                        <td>{{infoInvoice.lastname}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>{{$root.$lang.phone}}</th>
+                                                        <td>{{infoInvoice.phoneNo}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>{{$root.$lang.email}}</th>
+                                                        <td>{{infoInvoice.email}}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <table class="table borderless">
+                                                <caption><h4>2. {{$root.$lang.payment}}(* {{$root.$lang.ignore_free_plan_section}})</h4></caption>
+                                                <tbody>
+                                                    <tr>
+                                                        <th>{{$root.$lang.method_payment}}:</th>
+                                                        <td>
+                                                            {{$root.$lang.info_bank_transfer}}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>{{$root.$lang.company_name}}:</th>
+                                                        <td>{{infoInvoice.companyName}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>{{$root.$lang.tax_code}}:</th>
+                                                        <td>0</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div><!-- /.box-body -->
+                                    </div>
+
+                                    <div class="info-order-success" ng-show="infoInvoice.successOrderInvoice">
+                                        <div class="box-header with-border">
+                                            <div class="row">
+                                                <div class="col-sm-2 col-xs-6">
+                                                    <div class="description-block border-right">
+                                                        <span class="description-text">{{$root.$lang.register_plan}}</span>
+                                                        <h5 class="description-header">{{infoInvoice.planTypeRegister}}</h5>                                                    
+                                                    </div>
+                                                    <!-- /.description-block -->
+                                                </div>
+                                                <!-- /.col -->
+                                                <div class="col-sm-2 col-xs-6">
+                                                    <div class="description-block border-right">
+                                                        <span class="description-text">{{$root.$lang.maximum_users}}</span>
+                                                        <h5 class="description-header">{{infoInvoice.maxUser}}</h5>
+                                                    </div>
+                                                    <!-- /.description-block -->
+                                                </div>
+                                                <!-- /.col -->
+                                                <div class="col-sm-2 col-xs-6">
+                                                    <div class="description-block border-right">
+                                                        <span class="description-text">{{$root.$lang.maximum_storage}}</span>
+                                                        <h5 class="description-header">{{infoInvoice.maxStorage}} GB</h5>
+                                                    </div>
+                                                    <!-- /.description-block -->
+                                                </div>
+                                                <!-- /.col -->
+                                                <div class="col-sm-2 col-xs-6">
+                                                    <div class="description-block border-right">
+                                                        <span class="description-text">{{$root.$lang.redundant_money_old_package}}</span>
+                                                        <h5 class="description-header">{{infoInvoice.redundantMoney}} VND</h5>
+                                                    </div>
+                                                    <!-- /.description-block -->
+                                                </div>
+                                                <div class="col-sm-2 col-xs-6">
+                                                    <div class="description-block border-right">
+                                                        <span class="description-text">{{$root.$lang.total_money_new_package}}</span>
+                                                        <h5 class="description-header">{{infoInvoice.nextPlanTotalMoney}} VND / {{infoInvoice.numberMonth}} tháng</h5>
+                                                    </div>
+                                                    <!-- /.description-block -->
+                                                </div>
+                                                <div class="col-sm-2 col-xs-6">
+                                                    <div class="description-block border-right">
+                                                        <span class="description-text">{{$root.$lang.total_payment}}</span>
+                                                        <h5 class="description-header">{{infoInvoice.finalTotalMoney}} VND / {{infoInvoice.numberMonth}} tháng</h5>
+                                                    </div>
+                                                    <!-- /.description-block -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="box-body">
+                                            {{$root.$lang.register_account_successfully}}<br />
+                                            {{$root.$lang.info_bank_transfer}}
+                                            <br>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <button ng-hide="infoInvoice.successOrderInvoice" class="btn btn-primary" ng-click="changePackage()">Change</button>
+                                    </div>
                                 </div>
                                 <!-- /.tab-pane -->
                                 <div class="tab-pane" id="tab_2">
@@ -374,30 +442,10 @@
                                 </div>
                                 <!-- /.tab-pane -->
                                 <div class="tab-pane" id="tab_3">
-                                  
+
                                 </div>
                                 <!-- /.tab-pane -->
                             </div>
                             <!-- /.tab-content -->
                         </div>
                     </div><!-- /.box -->
-                </div>
-            </div>
-            <div class="col-md-3 padding-left-md-0">
-                <div class="box box-solid">
-                    <div class="box-header">
-                        <h3 class="box-title">Company Info</h3>
-                    </div>
-                    <div class="box-footer no-padding">
-                        <ul class="nav nav-stacked">
-                            <li><a href="#">Projects</a></li>
-                            <li><a href="#">Tasks</a></li>
-                            <li><a href="#">Completed Projects</a></li>
-                            <li><a href="#">Followers</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-</div>
