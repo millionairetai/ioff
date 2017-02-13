@@ -441,6 +441,7 @@
             maximum_storage: 'Dung lượng tối đa',
             this_message_contains: 'Gói này bao gồm',
             phrase_info_standard_plan_type:'The standard plan contains minimum 10 users and 2 GB. You can scale it up anytime in 5 users or 5 GB steps. If the maximum user count of 150 is reached orand you need more user, please select premium plan type. In some cases it could be more favorable then the Standard Plan, depends on your needs.',
+            change_plan_type: 'Thay đổi gói',
             //Invoice.
             payment: 'Thanh toán',
             method_payment: 'Phương thức thanh toán',

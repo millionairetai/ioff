@@ -1667,27 +1667,36 @@ appRoot.controller('changePackageCtrl', ['$scope', '$uibModal', '$rootScope', 'a
             size: 150
         };
 
+        //Slider
+        $scope.package = {
+            planType: '',
+            numberMonth: 0,
+            maxUser: {
+                value: 0,
+            },
+            maxStorage: {
+                value: 0,
+            }
+        };
+        
         $scope.getCompany = function () {
             return companyService.getOne({}, function (response) {
                 $scope.company = response.objects.company;
                 $scope.usingUserPercentValue = $scope.company.using_user_percent;
                 $scope.usingStoragePercentValue = $scope.company.using_storage_percent;
                 $scope.plan_type_id = $scope.company.plan_type_id;
+                $scope.package.maxUser.value = $scope.company.max_user_register;
+                $scope.package.maxStorage.value = $scope.company.max_storage_register / 1000;
+                if ($scope.package.maxUser.value < 10) {
+                    $scope.package.maxUser.value = 10;
+                }
+                
+                if ($scope.package.maxStorage.value < 2) {
+                    $scope.package.maxStorage.value = 2;
+                }
             });
         };
 
-
-        //Slider
-        $scope.package = {
-            planType: '',
-            numberMonth: 0,
-            maxUser: {
-                value: 40,
-            },
-            maxStorage: {
-                value: 20,
-            }
-        };
         $scope.getCompany().then(function (data) {
             commonService.gets('plan-type', function (response) {
                 $scope.planTypes = response.objects;
@@ -1696,7 +1705,6 @@ appRoot.controller('changePackageCtrl', ['$scope', '$uibModal', '$rootScope', 'a
                         if (val.id == $scope.company.plan_type_id) {
                             $scope.company.plan_type_id = val;
                             $scope.package.planType = $scope.company.plan_type_id.name
-                            console.log($scope.company.plan_type_id);
                         }
                     });
                 }
@@ -1730,6 +1738,9 @@ appRoot.controller('changePackageCtrl', ['$scope', '$uibModal', '$rootScope', 'a
             
             companyService.changePackage(packageInfo, function (response) {
                 $scope.infoInvoice = response.objects.infoInvoice;
+                if (response.objects.error.isTrue) {
+                    alertify.error(response.objects.error.message);
+                }
             });
         }
 

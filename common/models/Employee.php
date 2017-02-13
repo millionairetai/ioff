@@ -85,7 +85,7 @@ class Employee extends ActiveRecord implements IdentityInterface {
      * @inheritdoc
      */
     public static function tableName() {
-        return '{{%employee}}';
+        return 'employee';
     }
 
     public static function primaryKey() {

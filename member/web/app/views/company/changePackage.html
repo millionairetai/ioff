@@ -86,7 +86,10 @@
                                             </p>
                                             <p>
                                             <div class="col-sm-5">
-                                                {{$root.$lang.choose_maximum_user}}: <strong>{{package.maxUser.value}}</strong>
+                                                {{$root.$lang.choose_maximum_user}}: 
+                                                <span ng-hide="company.plan_type_id.name == 'Premium'">
+                                                    <strong>{{package.maxUser.value}}</strong>
+                                                </span>
                                                 <div ng-show="company.plan_type_id.name == 'Standard'">
                                                     10<div min="10" max="150" ui-slider="{range: 'min'}" step="5" ng-model="package.maxUser.value"></div>150
                                                 </div>

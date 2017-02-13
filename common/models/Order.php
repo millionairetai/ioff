@@ -66,4 +66,19 @@ class Order extends \common\components\db\ActiveRecord
             'disabled' => Yii::t('member', 'Disabled'),
         ];
     }
+    
+    public static function isExistedWaitingPaymentOrder($companyId) {
+        $invoices = self::find()
+                        ->select(['order.id'])
+                        ->leftJoin('status', 'order.status_id = status.id')
+                        ->where(['order.company_id' => $companyId, 'status.column_name' => self::COLUNM_NAME_WAIT_PAY])
+                        ->asArray()
+                        ->one();
+        
+        if (!empty($invoices)) {
+            return true;
+        }
+        
+        return false;
+    }
 }

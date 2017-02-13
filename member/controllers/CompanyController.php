@@ -11,6 +11,7 @@ use common\models\Invoice;
 use common\models\InvoiceDetail;
 use common\models\EmailTemplate;
 use common\models\Status;
+use common\components\web\IoffDatetime;
 
 class CompanyController extends ApiController {
 
@@ -76,8 +77,19 @@ class CompanyController extends ApiController {
         if (empty($company) || empty($planType)) {
             throw new \Exception;
         }
-
-        if ($this->_isValidChange($company, $post)) {
+        
+        //Reset maxUser, maxStorage corresponding to plan type of free and premium.
+        $post['planType'] = strtolower($post['planType']);
+        if ($post['planType'] == PlanType::COLUMN_NAME_FREE) {
+            $post['maxUser'] = $planType[PlanType::COLUMN_NAME_FREE]['max_user'];
+            $post['maxStorage'] = $planType[PlanType::COLUMN_NAME_FREE]['max_storage'];
+        } else if ($post['planType'] == PlanType::COLUMN_NAME_PREMIUM) {
+            $post['maxUser'] = 0;
+        }
+        
+        //Get error message. If error message is empty, we allow change package.
+        $errorMessage = $this->_getErrorMessage($company, $post);
+        if (empty($errorMessage)) {
             $infoInvoice = [
                 'planTypeRegister' => strtoupper($post['planType']),
                 'maxUser' => ($post['maxUser'] != 0) ? $post['maxUser'] : Yii::t('common', 'Unlimited'),
@@ -94,21 +106,23 @@ class CompanyController extends ApiController {
 
             //Calculate total money for next plan
             switch ($post['planType']) {
-                case 'Free':
+                case PlanType::COLUMN_NAME_FREE:
                     $infoInvoice['nextPlanTotalMoney'] = 0;
                     break;
-                case 'Standard':
+                case PlanType::COLUMN_NAME_STANDARD:
                     $infoInvoice['nextPlanTotalMoney'] = ($planType[strtolower($post['planType'])]['fee_user'] * $post['maxUser'] + $planType[strtolower($post['planType'])]['fee_storage'] * $post['maxStorage']) * $post['numberMonth'];
                     break;
-                case 'Premium':
+                case PlanType::COLUMN_NAME_PREMIUM:
                     $infoInvoice['nextPlanTotalMoney'] = ($planType[strtolower($post['planType'])]['fee_user'] + $planType[strtolower($post['planType'])]['fee_storage'] * $post['maxStorage']) * $post['numberMonth'];
                     break;
             }
             
             $infoInvoice['finalTotalMoney'] = $infoInvoice['nextPlanTotalMoney'] - $infoInvoice['redundantMoney'];
+            $objects = ['infoInvoice' => $infoInvoice, 'error' => ['isTrue' => false, 'message' => '']];
+        } else {
+            $objects = ['infoInvoice' => $infoInvoice, 'error' => ['isTrue' => true, 'message' => $errorMessage]];
         }
 
-        $objects = ['infoInvoice' => $infoInvoice,];
         if (!empty($post['saveOrder'])) {
             try {
                 $transaction = \Yii::$app->db->beginTransaction();
@@ -127,32 +141,37 @@ class CompanyController extends ApiController {
 //        }
     }
 
-    private function _isValidChange($company, $post) {
+    private function _getErrorMessage($company, $post) {
+        //Check whether company make invoice before or not. If have any order wait for payment, we are not allow to change.
+//        if (Order::isExistedWaitingPaymentOrder(\Yii::$app->user->identity->company_id)) {
+//            return 'Bạn có đã thay đổi gói đăng ký trước đó nhưng chưa thanh toán. Vui lòng thanh toán trước khi đổi sang gói mới';
+//        }
+        
         //Must check user > old user and storage > old storage.
         $planType = PlanType::getsIndexById();
         if ($company['expired_date'] > time()) {
-            if ($planType[$company['plan_type_id']]['column_name'] == 'free' || $planType[$company['plan_type_id']]['column_name'] == 'standard') {
-                if (strtolower($post['next_plan']) == 'free') {
-                    return false;
+            if ($planType[$company['plan_type_id']]['column_name'] == PlanType::COLUMN_NAME_FREE || $planType[$company['plan_type_id']]['column_name'] == PlanType::COLUMN_NAME_STANDARD) {
+                if (strtolower($post['next_plan']) == PlanType::COLUMN_NAME_FREE) {
+                    return 'Không thể thay đổi gói Standard sang Free khi chưa hết hạn gói Standard';
                 }
 
-                if (strtolower($post['next_plan']) == 'standard' && $post['maxUser'] > $company['total_employee'] && $post['maxUser'] > $company['total_employee']) {
-                    return true;
+                if (strtolower($post['next_plan']) == PlanType::COLUMN_NAME_STANDARD && $post['maxUser'] > $company['total_employee'] && $post['maxUser'] > $company['total_employee']) {
+                    return '';
                 }
 
-                return false;
-            } else if ($planType[$company['plan_type_id']]['column_name'] == 'premium') {
-                if (strtolower($post['next_plan']) == 'premium' && ($post['maxUser'] > $company['total_employee']) && ($post['maxUser'] > $company['total_employee'])) {
-                    return true;
+                return 'Không thể giảm số người dùng tối đa và dung lượng lưu trữ tối đa xuống khi chưa hết hạn gói standard';
+            } else if ($planType[$company['plan_type_id']]['column_name'] == PlanType::COLUMN_NAME_PREMIUM) {
+                if (strtolower($post['next_plan']) == PlanType::COLUMN_NAME_PREMIUM && ($post['maxUser'] > $company['total_employee']) && ($post['maxUser'] > $company['total_employee'])) {
+                    return '';
                 }
 
-                return false;
+                return 'Không thể thay đổi sang gói thấp hơn gói premium hoặc giảm số người dùng tối đa và dung lượng lưu trữ tối đa xuống khi chưa hết hạn gói Premium';
             }
         } else {
             if ($planType[$company['plan_type_id']]['column_name'] == strtolower($post['planType'])) {
-                return false;
+                return 'Không thể thay đổi gói từ Free sang Free';
             }
-            return true;
+            return '';
         }
     }
 
@@ -214,12 +233,12 @@ class CompanyController extends ApiController {
         $order = new Order();
         $order->order_number = time();
         $order->employee_id = $employee->id;
-        //Get status for order.
-        if ($company['plan_type_id'] == $planType[PlanType::COLUMN_NAME_FREE]['id']) {
+        //Get status for order.;
+        if ($post['planType'] == PlanType::COLUMN_NAME_FREE) {
             $status = Status::getByOwnerTableAndColumnName('order', Order::COLUNM_NAME_PAYED);
         } else {
             $status = Status::getByOwnerTableAndColumnName('order', Order::COLUNM_NAME_WAIT_PAY);
-            $order->expired_datetime = strtotime(date('Y-m-d') . '+' . $post['numberMonth'] . ' month');
+            $order->expired_datetime = strtotime(IoffDatetime::getDate() . ' +' . $post['numberMonth'] . ' month');
             $order->duedate = 0;
         }
 

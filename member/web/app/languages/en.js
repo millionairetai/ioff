@@ -429,6 +429,7 @@
             maximum_storage: 'Maximum storage',
             this_message_contains: 'This package contains',
             phrase_info_standard_plan_type:'The standard plan contains minimum 10 users and 2 GB. You can scale it up anytime in 5 users or 5 GB steps. If the maximum user count of 150 is reached orand you need more user, please select premium plan type. In some cases it could be more favorable then the Standard Plan, depends on your needs.',
+            change_plan_type: 'Change plan type',
             //Invoice.
             payment: 'Payment',            
             method_payment: 'Method payment',
