@@ -141,6 +141,25 @@ class ActiveRecord extends \yii\db\ActiveRecord {
         
         return $return->asArray()->one();
     }  
+     
+    /**
+     * Update array consist of 
+     *          (key - column_name of table, val - value of column_name which is updated)
+     * 
+     * @param array $updateArr
+     * @return boolean
+     */ 
+    public function updateByArr($updateArr, $id) {
+        if (empty($updateArr) || empty($id)) {
+            return false;
+        }
+
+        foreach ($updateArr as $key => $val) {
+            $this->$key = $val;
+        }
+
+        return self::updateAll($updateArr, "id = {$id}");
+    }
     
     /**
      * BatchInsert

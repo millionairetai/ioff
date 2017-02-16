@@ -56,8 +56,8 @@
                                                 </div>
                                                 <div class="col-sm-6">
                                                     <span>{{$root.$lang.user}}</span>
-                                                    <p><b>{{company.total_employee}} {{$root.$lang.user}}/ {{company.max_user_register}} {{$root.$lang.user}}</b></p>
-                                                    <div class="box-footer">
+                                                    <p><b>{{company.total_employee}} {{$root.$lang.user}}<span ng-if="company.max_user_register != 0">/ {{company.max_user_register}} {{$root.$lang.user}}</span> <span ng-if="company.max_user_register==0">/{{$root.$lang.unlimited}}</span> </b></p>
+                                                    <div ng-show="company.max_user_register != 0" class="box-footer">
                                                         <ui-knob value="usingUserPercentValue" options="maxUserOptions"></ui-knob>
                                                     </div>
                                                 </div>

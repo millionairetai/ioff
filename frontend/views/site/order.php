@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
     <section>
         <div class="row">
             <?php
-            $form = ActiveForm::begin(['id' => 'form-signup', 'action' => 'site/order', 'fieldConfig' => [
+            $form = ActiveForm::begin(['id' => 'form-signup', 'action' => '/site/order', 'fieldConfig' => [
                             'template' => "{input}",
                             'options' => [
                                 'tag' => 'span'

@@ -52,16 +52,16 @@ class TranslationController extends \yii\web\Controller {
                         $ownerIds = \common\models\Controller::gets();
                         break;
                     case 'plan_type':
-                        $ownerIds = \common\models\PlanType::gets(['column_name', 'id'], true, true);
+                        $ownerIds = \common\models\PlanType::gets(['column_name', 'id'], true, true, false);
                         break;
                     case 'status':
-                        $ownerIds = \common\models\Status::gets(['column_name', 'id'], true, true);
+                        $ownerIds = \common\models\Status::gets(['column_name', 'id'], true, true, false);
                         break;
                     case 'priority':
-                        $ownerIds = \common\models\Priority::gets(['column_name', 'id'], true, true);
+                        $ownerIds = \common\models\Priority::gets(['column_name', 'id'], true, true, false);
                         break;
                     case 'event_confirmation_type':
-                        $ownerIds = \common\models\EventConfirmationType::gets(['column_name', 'id'], true, true);
+                        $ownerIds = \common\models\EventConfirmationType::gets(['column_name', 'id'], true, true, false);
                         break;
                 }
                 

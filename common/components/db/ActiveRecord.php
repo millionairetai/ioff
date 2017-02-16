@@ -72,7 +72,8 @@ class ActiveRecord extends \yii\db\ActiveRecord {
             ],
         ];
 
-        if (\Yii::$app->user->identity) {
+        //Only employee model have company_id, so we check it before append.
+        if (\Yii::$app->user->identity && get_class(\Yii::$app->user->identity) == 'common\models\Employee') {
             $events[] = [
                 'class' => AttributeBehavior::className(),
                 'attributes' => [
@@ -210,13 +211,16 @@ class ActiveRecord extends \yii\db\ActiveRecord {
      * @param array $columns
      * @return ActiveQuery
      */
-    public static function getById($id, $columns = [], $isReturnObj = true) {
+    public static function getById($id, $columns = [], $isReturnObj = true, $isHasCompanyId = true) {
         $return = self::find();
         if (!empty($columns)) {
             $return = $return->select($columns);
         }
-
-        $return->andWhere(['id' => $id])->andCompanyId();
+///////////////////
+        $return->andWhere(['id' => $id]);
+        if ($isHasCompanyId) {
+            $return->andWhere(['id' => $id])->andCompanyId();
+        }
 
         if ($isReturnObj) {
             return $return->one();
@@ -231,8 +235,17 @@ class ActiveRecord extends \yii\db\ActiveRecord {
      * @param string $name
      * @return Active Record|false
      */
-    public static function getByName($name) {
-        return self::find()->andWhere(['name' => $name])->andCompanyId()->one();
+    public static function getByName($name, $isHasCompanyId = true, $isReturnObj = true) {
+        $return  = self::find()->andWhere(['name' => $name]);
+        if (!$isReturnObj) {
+            $return->asArray();
+        }
+        
+        if ($isHasCompanyId) {
+            return $return->andCompanyId()->one();
+        }
+        
+        return $return->one();
     }
 
     /**
@@ -242,21 +255,26 @@ class ActiveRecord extends \yii\db\ActiveRecord {
      * @param array $columns
      * @return objec|array
      */
-    public static function gets($columns = [], $isReturnArr = true, $dropdown = false) {
+    //Review change for adding new company_id.
+    public static function gets($columns = [], $isReturnArr = true, $dropdown = false, $isHasCompanyId = true) {
         $return = self::find();
         if (!empty($columns)) {
-            $return = $return->select($columns);
+            $return->select($columns);
         }
 
+        if ($isHasCompanyId) {
+            $return->andCompanyId();
+        }
+        
         if ($dropdown) {
-            return $return->andCompanyId()->indexBy('id')->column();
+            return $return->indexBy('id')->column();
         }
 
         if ($isReturnArr) {
-            return $return->andCompanyId()->asArray()->all();
+            return $return->asArray()->all();
         }
 
-        return $return->andCompanyId()->all();
+        return $return->all();
     }
 
     /**
@@ -334,7 +352,7 @@ class ActiveRecord extends \yii\db\ActiveRecord {
      * @param array $updateArr
      * @return boolean
      */ public function updateByArr($updateArr, $id) {
-        if (empty($updateArr) || $id) {
+        if (empty($updateArr) || empty($id)) {
             return false;
         }
 

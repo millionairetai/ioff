@@ -30,7 +30,7 @@
                                                 <p class="lead">{{$root.$lang.package_detail}}</p>
                                                 <div class="box-footer">
                                                     <h2>{{company.plan_type_name}}</h2>
-                                                    * {{$root.$lang.maximum_users}}: {{company.max_user_register}}.<br />
+                                                    * {{$root.$lang.maximum_users}}: <span ng-if="company.max_user_register!=0">{{company.max_user_register}}</span><span ng-if="company.max_user_register==0">{{$root.$lang.unlimited}}</span> .<br />
                                                     * {{$root.$lang.maximum_storage}}: {{company.max_storage_register}} MB<br />
                                                     * {{$root.$lang.duedate_package}}: &nbsp;{{company.expired_date}}
                                                 </div>
@@ -46,8 +46,8 @@
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <span>{{$root.$lang.user}}</span>
-                                                        <p><b>{{company.total_employee}} {{$root.$lang.user}}/ {{company.max_user_register}} {{$root.$lang.user}}</b></p>
-                                                        <div class="box-footer">
+                                                        <p><b>{{company.total_employee}} {{$root.$lang.user}}<span ng-if="company.max_user_register != 0">/ {{company.max_user_register}} {{$root.$lang.user}}</b></span></p>
+                                                        <div ng-show="company.max_user_register != 0" class="box-footer">
                                                             <p class="text-center"><ui-knob value="usingUserPercentValue" options="maxUserOptions"></ui-knob></p>
                                                         </div>
                                                     </div>
@@ -397,8 +397,8 @@
                                                 <img src="../../dist/img/credit/paypal2.png" alt="Paypal">
 
                                                 <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
-                                                    Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles, weebly ning heekya handango imeem plugg
-                                                    dopplr jibjab, movity jajah plickers sifteo edmodo ifttt zimbra.
+                                                    Chuyển khoản ngân hàng đến số tài khoản 1039390902                                        <br>
+                                                    CÔNG TY CỔ PHẦN IPL<br>
                                                 </p>
                                             </div>
                                             <!-- /.col -->

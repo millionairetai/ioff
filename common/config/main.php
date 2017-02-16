@@ -23,6 +23,11 @@ return [
                     'basePath' => '@common/messages',
                     'on missingTranslation' => ['common\components\events\TranslationEventHandler', 'handleMissingTranslation'],
                 ],
+                'member*' => [
+                    'class' => 'yii\i18n\PhpMessageSource',
+                    'basePath' => '@member/messages',
+                    'on missingTranslation' => ['common\components\events\TranslationEventHandler', 'handleMissingTranslation'],
+                ],
             ],
         ],
     ],

@@ -12,4 +12,5 @@ return [
     'Update company' => 'Update company',
     'Owner Table' => 'Owner Table',
     'Translated text' => 'Translated text',
+    'Complete order sucessfully' => 'Complete order sucessfully'    
 ];

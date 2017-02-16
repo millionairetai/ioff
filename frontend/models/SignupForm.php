@@ -176,7 +176,7 @@ class SignupForm extends Model {
     private function _insertOrderInvoice($company, $employee, $planType) {
         $order = new Order();
         $order->company_id = $company->id;
-        $order->order_number = 15000 + (int) $company->id;
+        $order->order_number = time();
         $order->employee_id = $employee->id;
         //Get status for order.
         if ($company->plan_type_id == $planType[PlanType::COLUMN_NAME_FREE]['id']) {
@@ -204,14 +204,22 @@ class SignupForm extends Model {
         if ($orderItem->save(false) === false) {
             throw new \Exception('Save data to order item table fail');
         }
-
+       
+        //Update max user and max storage in company table.
+        $company->max_user_register = $this->maxUser;
+        $company->max_storage_register = $this->maxStorage;
+        $company->total_employee = 1;
+        if ($company->save(false) === false) {
+            throw new \Exception('Save data to company table fail');
+        }
+        
         if ($company->plan_type_id != $planType[PlanType::COLUMN_NAME_FREE]['id']) {
             return true;
         }
 
         $invoice = new Invoice();
         $invoice->company_id = $company->id;
-        $invoice->invoice_number = 15000 + (int) $company->id;
+        $invoice->invoice_number = time();
         //Get status of employee which is active.
         $status = Status::getByOwnerTableAndColumnName('invoice', Invoice::COLUNM_NAME_PAYED);
         $invoice->status_id = $status['id'];
@@ -231,14 +239,6 @@ class SignupForm extends Model {
         $invoiceDetail->max_storage_register = $this->maxStorage;
         if ($invoiceDetail->save(false) === false) {
             throw new \Exception('Save data to invoice detail table fail');
-        }
-        
-        //Update max user and max storage in company table.
-        $company->max_user_register = $this->maxUser;
-        $company->max_storage_register = $this->maxStorage;
-        $company->total_employee = 1;
-        if ($company->save(false) === false) {
-            throw new \Exception('Save data to company table fail');
         }
 
         return [
@@ -310,7 +310,7 @@ class SignupForm extends Model {
             '{account}' => $employee->email,
             
             '{product name}' => $planType[$this->plan_type]['name'],
-            '{description}' => sprintf(Yii::t('common', 'description invoice'), $planType[$this->plan_type]['name'], !empty($this->maxUser) ? $this->maxUser : Yii::t('common', 'Unlimited'), $this->maxStorage) ,
+            '{description}' => sprintf(Yii::t('common', 'description invoice'), $planType[$this->plan_type]['name'], !empty($this->maxUser) ? $this->maxUser : Yii::t('common', 'Unlimited'), $this->maxStorage, $this->numberMonth) ,
             '{subtotal}' => $totalMoney,
             
             '{payment method}' => Yii::t('common', 'Bank transfer'),

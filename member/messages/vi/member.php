@@ -157,5 +157,7 @@ return [
     'Review employee' => 'Nhân viên phê duyệt',
     'Requestment category' => 'Loại yêu cầu',
     'Requestment' => 'Yêu cầu',
-    'description invoice' => 'Gói %s, người dùng tối đa %s, dung lượng lưu trữ tối đa %s',
+//    'description invoice' => 'Gói %s, người dùng tối đa %s, dung lượng lưu trữ tối đa %s',
+    'ID' => 'ID',
+    'Company' => 'Công ty',
 ];

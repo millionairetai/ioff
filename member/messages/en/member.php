@@ -163,5 +163,5 @@ return [
     'Review employee' => 'Review employee',
     'Requestment category' => 'Requestment category',
     'Requestment' => 'Requestment',
-    'description invoice' => '%s plan type, max user %s, max storage %s',    
+//    'description invoice' => '%s plan type, max user %s, max storage %s',    
 ];

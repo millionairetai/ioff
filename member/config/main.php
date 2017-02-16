@@ -46,15 +46,15 @@ return [
                 'application/json' => 'yii\web\JsonParser',
             ]
         ],
-        'i18n' => [
-            'translations' => [
-                'member*' => [
-                    'class' => 'yii\i18n\PhpMessageSource',
-                    'basePath' => '@member/messages',
-                    'on missingTranslation' => ['common\components\events\TranslationEventHandler', 'handleMissingTranslation'],
-                ],
-            ],
-        ],
+//        'i18n' => [
+//            'translations' => [
+//                'member*' => [
+//                    'class' => 'yii\i18n\PhpMessageSource',
+//                    'basePath' => '@member/messages',
+//                    'on missingTranslation' => ['common\components\events\TranslationEventHandler', 'handleMissingTranslation'],
+//                ],
+//            ],
+//        ],
         'formatter' => [
 //            'dateFormat' => 'yyyy-MM-dd',
             'dateFormat' => 'dd-MM-YYYY',

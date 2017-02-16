@@ -24,6 +24,11 @@ use yii\helpers\Url;
               </a>
             </li>
             <li>
+              <a href="/order/index">
+                <i class="fa fa-credit-card"></i> <span>Hoá đơn</span> 
+              </a>
+            </li>
+            <li>
               <a href="/staff/index">
                 <i class="fa fa-users"></i> <span>Nhân viên</span> 
               </a>

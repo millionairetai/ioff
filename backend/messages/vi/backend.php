@@ -12,4 +12,5 @@ return [
     'Update company' => 'Cập nhật công ty',    
     'Owner Table' => 'Bảng sở hữu',
     'Translated text' => 'Văn bản dịch',
+    'Complete order sucessfully' => 'Hoàn tất hóa đơn thành công'
 ];

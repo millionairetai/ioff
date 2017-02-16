@@ -35,7 +35,7 @@ class Staff extends ActiveRecord implements IdentityInterface
      */
     public static function tableName()
     {
-        return '{{%staff}}';
+        return 'staff';
     }
 
     /**

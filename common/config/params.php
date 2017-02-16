@@ -13,8 +13,8 @@ return [
     
     //Invoice params
     'service_from' => 'iOfficez',
-    'address_from' => '936 Hoàng Văn Thụ, thành phố Hồ Chí Minh',
+    'address_from' => '936 Hoàng Văn Thụ, quận Tân Bình, thành phố Hồ Chí Minh',
     'phone_from' => '083303239009',
     'email_from' => 'support@iofficez.com',
-    'tax_percent' => 9.3,
+    'tax_percent' => 0,
 ];
