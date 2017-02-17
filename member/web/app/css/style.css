@@ -1098,7 +1098,6 @@ div.task-creator{
 }
 #activity .imgleft dl dd:last-child{
     margin-bottom: 0;
-    border-bottom: none;
 }
 #activity .item-event .calendar-event,#activity .calendar-event,#activity .task-event,#activity .photo-event{
     margin-right: 10px;
