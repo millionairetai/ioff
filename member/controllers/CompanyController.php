@@ -130,7 +130,7 @@ class CompanyController extends ApiController {
                     $this->_sendOrderAndInvoiceEmail($company, Yii::$app->user->identity, $planType, $invoiceOrderNo, $post, $infoInvoice['finalTotalMoney']);
                     $transaction->commit();
                     $objects['infoInvoice']['successOrderInvoice'] = true;
-                } catch (\Exception $ex) {
+                } catch (\Exception $ex) { 
                     $transaction->rollBack();
                 }
             }
@@ -276,7 +276,8 @@ class CompanyController extends ApiController {
         $invoiceDetail->invoice_id = $invoice->id;
         //Free package -> number month = 0.
         $invoiceDetail->number_month = 0;
-        $invoiceDetail->plan_type_id = $planType[$this->plan_type]['id'];
+        ///////////////
+        $invoiceDetail->plan_type_id = $planType[strtolower($post['planType'])]['id'];
         $invoiceDetail->max_user_register = $post['maxUser'];
         $invoiceDetail->max_storage_register = $post['maxStorage'];
         if ($invoiceDetail->save(false) === false) {
@@ -284,10 +285,16 @@ class CompanyController extends ApiController {
         }
 
         //Update max user and max storage in company table.
-        $company->max_user_register = $post['maxUser'];
-        $company->max_storage_register = $post['maxStorage'];
-        if ($company->save(false) === false) {
-            throw new \Exception('Save data to company table fail');
+        if (!(new Company())->updateByArr([
+                'max_user_register' => $post['maxUser'],
+                'max_storage_register' => $post['maxStorage'],
+                'plan_type_id' => $planType[strtolower($post['planType'])]['id'],
+                'start_date' => IoffDatetime::getTimestamp(),
+                'expired_date' => !empty($post['numberMonth']) ? strtotime(IoffDatetime::getDate() . ' +' . $post['numberMonth'] . ' month') : 0
+            ], 
+            $company['id']
+        )) {
+            throw new \Exception('No update anything in table company');
         }
 
         return [
@@ -322,7 +329,7 @@ class CompanyController extends ApiController {
             '{number credit card}' => Yii::$app->params['number_credit_card'],
             '{support email}' => Yii::$app->params['support_email'],
             '{hot line number}' => Yii::$app->params['hot_line_number'],
-            '{period time}' => $post['numberMonth'],
+            '{period time}' => !empty($post['numberMonth']) ? $post['numberMonth'] : strtolower(Yii::t('common', 'Unlimited')),
         ];
 
         $employee->sendMail($dataSend, $themeEmail);
@@ -347,7 +354,11 @@ class CompanyController extends ApiController {
             '{order no}' => $invoiceOrderNo['orderNo'],
             '{account}' => $employee->email,
             '{product name}' => $planType[$post['planType']]['name'],
-            '{description}' => sprintf(Yii::t('common', 'description invoice'), $planType[$post['planType']]['name'], !empty($post['maxUser']) ? $post['maxUser'] : Yii::t('common', 'Unlimited'), $post['maxStorage']),
+            '{description}' => sprintf(Yii::t('common', 'description invoice'), 
+                    $planType[$post['planType']]['name'], !empty($post['maxUser']) ? $post['maxUser'] : Yii::t('common', 'Unlimited'), 
+                    $post['maxStorage'],
+                    !empty($post['numberMonth']) ? $post['numberMonth'] : strtolower(Yii::t('common', 'Unlimited'))
+                ),
             '{subtotal}' => $totalMoney,
             '{payment method}' => Yii::t('common', 'Bank transfer'),
             '{tax percent}' => Yii::$app->params['tax_percent'],
