@@ -19,8 +19,8 @@
                         <div class="nav-tabs-custom">
                             <ul class="nav nav-tabs">
                                 <li class="active"><a href="/changePackage/#tab_1" data-toggle="tab" aria-expanded="true">{{$root.$lang.package}}</a></li>
-                                <li class=""><a href="/changePackage/#tab_2" data-toggle="tab" aria-expanded="false">Payment detail</a></li>
-                                <li class=""><a href="/changePackage/#tab_3" data-toggle="tab" aria-expanded="false">Invoice</a></li>
+                                <li class=""><a href="/changePackage/#tab_2" ng-click="loadOrderHistory()" data-toggle="tab" aria-expanded="false">{{$root.$lang.order}}</a></li>
+                                <!--<li class=""><a href="/changePackage/#tab_3" data-toggle="tab" aria-expanded="false">Invoice</a></li>-->
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane active" id="tab_1">
@@ -30,7 +30,7 @@
                                                 <p class="lead">{{$root.$lang.package_detail}}</p>
                                                 <div class="box-footer">
                                                     <h2>{{company.plan_type_name}}</h2>
-                                                    * {{$root.$lang.maximum_users}}: <span ng-if="company.max_user_register!=0">{{company.max_user_register}}</span><span ng-if="company.max_user_register==0">{{$root.$lang.unlimited}}</span> .<br />
+                                                    * {{$root.$lang.maximum_users}}: <span ng-if="company.max_user_register != 0">{{company.max_user_register}}</span><span ng-if="company.max_user_register == 0">{{$root.$lang.unlimited}}</span> .<br />
                                                     * {{$root.$lang.maximum_storage}}: {{company.max_storage_register}} MB<br />
                                                     * {{$root.$lang.duedate_package}}: &nbsp;{{company.expired_date}}
                                                 </div>
@@ -277,46 +277,30 @@
                                 </div>
                                 <!-- /.tab-pane -->
                                 <div class="tab-pane" id="tab_2">
-                                    <ul class="timeline-create">
-                                        <li class='work'>
+                                    <ul class="timeline-create" ng-hide="orderDetail">
+                                        <li class='work' ng-repeat="order in orders">
                                             <div class="relative">
-                                                <span class='date'>20/8/2015</span>
+                                                <span class='date'>{{order.datetime_created}}</span>
                                                 <span class='circle'></span>
                                             </div>
                                             <div class='content-timeline'>
-                                                <h3 class="timeline-header">Standard package  - 12 months</h3>
+                                                <h3 class="timeline-header"><strong><a ng-click="getOrderDetail(order.id)" href="javascript::void()">{{order.plan_type_name}} <span ng-show="order.plan_type_column_name != 'free'">- {{order.number_month}} {{$root.$lang.month}}</span></a></strong>
+                                                    <small><span ng-if="order.status_column_name == 'order.payed'"> - {{$root.$lang.completed}}</span></small> 
+                                                    <small><span ng-if="order.status_column_name == 'order.wait_pay'"> - {{$root.$lang.not_completed}}</span></small>
+                                                </h3>
                                                 <div class="timeline-body">
-                                                    Standard package  - 12 months
+                                                    {{order.description}}
                                                 </div>
                                             </div>
                                         </li>
-                                        <li class='work'>
-                                            <div class="relative">
-                                                <span class='date'>30/8/2016</span>
-                                                <span class='circle'></span>
-                                            </div>
-                                            <div class='content-timeline'>
-                                                <h3 class="timeline-header">Standard package  - 24 months</h3>
-                                            </div>
-                                        </li>
-                                        <li class='work'>
-                                            <div class="relative">
-                                                <span class='date'>30/9/2018</span>
-                                                <span class='circle'></span>
-                                            </div>
-                                            <div class='content-timeline'>
-                                                <h3 class="timeline-header">Standard package  - 36 months</h3>
-                                            </div>
-                                        </li>
-
                                     </ul>
-                                    <section class="invoice">
+                                    <section class="invoice" ng-show="orderDetail">
                                         <!-- title row -->
                                         <div class="row">
                                             <div class="col-xs-12">
                                                 <h2 class="page-header">
-                                                    <i class="fa fa-globe"></i> AdminLTE, Inc.
-                                                    <small class="pull-right">Date: 2/10/2014</small>
+                                                    <i class="fa fa-globe"></i> iOfficez, ltd.
+                                                    <small class="pull-right">{{$root.$lang.date_created_order}}: {{orderDetail.datetime_created}}</small>
                                                 </h2>
                                             </div>
                                             <!-- /.col -->
@@ -324,33 +308,33 @@
                                         <!-- info row -->
                                         <div class="row invoice-info">
                                             <div class="col-sm-4 invoice-col">
-                                                From
+                                                <span class="text-capitalize">{{$root.$lang.from}}</span>
                                                 <address>
-                                                    <strong>Admin, Inc.</strong><br>
-                                                    795 Folsom Ave, Suite 600<br>
-                                                    San Francisco, CA 94107<br>
-                                                    Phone: (804) 123-5432<br>
-                                                    Email: info@almasaeedstudio.com
+                                                    <strong>{{orderDetail.service_from}}</strong><br>
+                                                    {{orderDetail.address_from}}<br>
+                                                    <!--San Francisco, CA 94107<br>-->
+                                                    Phone: {{orderDetail.phone_from}}<br>
+                                                    Email: {{orderDetail.email_from}}
                                                 </address>
                                             </div>
                                             <!-- /.col -->
                                             <div class="col-sm-4 invoice-col">
-                                                To
+                                                <span class="text-capitalize">{{$root.$lang.to}}</span>
                                                 <address>
-                                                    <strong>John Doe</strong><br>
-                                                    795 Folsom Ave, Suite 600<br>
-                                                    San Francisco, CA 94107<br>
-                                                    Phone: (555) 539-1037<br>
-                                                    Email: john.doe@example.com
+                                                    <strong>{{orderDetail.company_name_to}}</strong><br>
+                                                    {{orderDetail.address_to}}<br>
+                                                    <!--San Francisco, CA 94107<br>-->
+                                                     {{$root.$lang.phone}}: {{orderDetail.company_phone_to}}<br>
+                                                    Email: {{orderDetail.email_to}}
                                                 </address>
                                             </div>
                                             <!-- /.col -->
                                             <div class="col-sm-4 invoice-col">
-                                                <b>Invoice #007612</b><br>
+                                                <!--<b>Invoice #007612</b><br>-->
                                                 <br>
-                                                <b>Order ID:</b> 4F3S8J<br>
-                                                <b>Payment Due:</b> 2/22/2014<br>
-                                                <b>Account:</b> 968-34567
+                                                <b>{{$root.$lang.order_no}}:</b>{{orderDetail.order_no}}<br>
+                                                <!--<b>Payment Due:</b> {{orderDetail.}}<br>-->
+                                                <b>{{$root.$lang.account}}:</b> {{orderDetail.account}}
                                             </div>
                                             <!-- /.col -->
                                         </div>
@@ -362,23 +346,20 @@
                                                 <table class="table table-striped">
                                                     <thead>
                                                         <tr>
-                                                            <th>Qty</th>
-                                                            <th>Product</th>
-                                                            <th>Serial #</th>
-                                                            <th>Description</th>
-                                                            <th>Subtotal</th>
+                                                            <th>{{$root.$lang.no}}</th>
+                                                            <th>{{$root.$lang.product}}</th>
+                                                            <!--<th>Serial #</th>-->
+                                                            <th>{{$root.$lang.description}}</th>
+                                                            <th>{{$root.$lang.subtotal}}</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-
-
-
                                                         <tr>
                                                             <td>1</td>
-                                                            <td>Grown Ups Blue Ray</td>
-                                                            <td>422-568-642</td>
-                                                            <td>Tousled lomo letterpress</td>
-                                                            <td>$25.99</td>
+                                                            <td>{{orderDetail.product_name}}</td>
+                                                            <!--<td>422-568-642</td>-->
+                                                            <td>{{orderDetail.description}}</td>
+                                                            <td>{{orderDetail.subtotal}} VND</td>
                                                         </tr>
                                                     </tbody>
                                                 </table>
@@ -390,12 +371,7 @@
                                         <div class="row">
                                             <!-- accepted payments column -->
                                             <div class="col-xs-6">
-                                                <p class="lead">Payment Methods:</p>
-                                                <img src="../../dist/img/credit/visa.png" alt="Visa">
-                                                <img src="../../dist/img/credit/mastercard.png" alt="Mastercard">
-                                                <img src="../../dist/img/credit/american-express.png" alt="American Express">
-                                                <img src="../../dist/img/credit/paypal2.png" alt="Paypal">
-
+                                                <p class="lead">{{$root.$lang.payment_method}}</p>
                                                 <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
                                                     Chuyển khoản ngân hàng đến số tài khoản 1039390902                                        <br>
                                                     CÔNG TY CỔ PHẦN IPL<br>
@@ -403,25 +379,25 @@
                                             </div>
                                             <!-- /.col -->
                                             <div class="col-xs-6">
-                                                <p class="lead">Amount Due 2/22/2014</p>
+                                                <!--<p class="lead">Amount Due 2/22/2014</p>-->
 
                                                 <div class="table-responsive">
                                                     <table class="table">
                                                         <tbody><tr>
-                                                                <th style="width:50%">Subtotal:</th>
-                                                                <td>$250.30</td>
+                                                                <th style="width:50%">{{$root.$lang.subtotal}}:</th>
+                                                                <td>{{orderDetail.subtotal}} VND</td>
                                                             </tr>
                                                             <tr>
-                                                                <th>Tax (9.3%)</th>
-                                                                <td>$10.34</td>
+                                                                <th>{{$root.$lang.tax_code}} ({{orderDetail.tax_percent}}%)</th>
+                                                                <td>{{orderDetail.total_tax}}</td>
                                                             </tr>
-                                                            <tr>
+<!--                                                            <tr>
                                                                 <th>Shipping:</th>
                                                                 <td>$5.80</td>
-                                                            </tr>
+                                                            </tr>-->
                                                             <tr>
-                                                                <th>Total:</th>
-                                                                <td>$265.24</td>
+                                                                <th>{{$root.$lang.total}}:</th>
+                                                                <td>{{orderDetail.final_total_money}}</td>
                                                             </tr>
                                                         </tbody></table>
                                                 </div>
@@ -433,20 +409,16 @@
                                         <!-- this row will not appear when printing -->
                                         <div class="row no-print">
                                             <div class="col-xs-12">
-                                                <a href="invoice-print.html" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> Print</a>
-                                                <button type="button" class="btn btn-success pull-right"><i class="fa fa-credit-card"></i> Submit Payment
-                                                </button>
-                                                <button type="button" class="btn btn-primary pull-right" style="margin-right: 5px;">
-                                                    <i class="fa fa-download"></i> Generate PDF
+                                                <button ng-click="orderDetail=null;" type="button" class="btn btn-flat pull-right"><i class="fa fa-backward"></i> {{$root.$lang.button_back}}
                                                 </button>
                                             </div>
                                         </div>
                                     </section>
                                 </div>
                                 <!-- /.tab-pane -->
-                                <div class="tab-pane" id="tab_3">
+<!--                                <div class="tab-pane" id="tab_3">
 
-                                </div>
+                                </div>-->
                                 <!-- /.tab-pane -->
                             </div>
                             <!-- /.tab-content -->

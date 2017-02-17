@@ -144,12 +144,12 @@ class Order extends \common\components\db\ActiveRecord
      */
     public static function getOrderInfoById($id) {
           return self::find()
-                ->select(['order.id', 'order.order_number', 'order.employee_id', 'order.company_id', 'order.expired_datetime',
+                ->select(['order.id', 'order.order_number', 'order.employee_id', 'order.company_id', 'order.expired_datetime', 'order.datetime_created AS order_datetime_created',
                             'order_item.number_month', 'order_item.max_user_register', 'order_item.max_storage_register', 'order_item.plan_type_id', 
                             'status.name AS status_name','status.column_name AS status_column_name', 'plan_type.name AS plan_type_name', 'plan_type.column_name AS plan_type_column_name',
                             'employee.firstname AS employee_firstname', 'employee.lastname AS employee_lastname', 'employee.mobile_phone AS employee_mobile_phone',
                             'employee.street_address_1 AS employee_street_address_1', 'employee.street_address_2 AS employee_street_address_2', 'employee.email AS employee_email',
-                            'company.name as company_name'])
+                            'company.name as company_name', 'company.phone_no as company_phone_no'])
                         ->leftJoin('order_item', 'order.id=order_item.order_id')
                         ->leftJoin('plan_type', 'order_item.plan_type_id=plan_type.id')
                         ->leftJoin('status', 'status.id=order.status_id')
@@ -159,4 +159,27 @@ class Order extends \common\components\db\ActiveRecord
                         ->asArray()
                         ->one();
     }    
+    
+    /**
+     * Gets order history
+     * 
+     * @param integer $companyId
+     * @return array
+     */
+    public static function getsByCompanyId($companyId) {
+          return self::find()
+                ->select(['order.id', 'order.order_number', 'order.employee_id', 'order.company_id', 'order.expired_datetime', 'order.datetime_created',
+                            'order_item.number_month', 'order_item.max_user_register', 'order_item.max_storage_register', 'order_item.plan_type_id', 
+                            'status.name AS status_name','status.column_name AS status_column_name', 'plan_type.name AS plan_type_name', 'plan_type.column_name AS plan_type_column_name',
+                            'employee.firstname AS employee_firstname', 'employee.lastname AS employee_lastname', 'employee.mobile_phone AS employee_mobile_phone',
+                            'employee.street_address_1 AS employee_street_address_1', 'employee.street_address_2 AS employee_street_address_2', 'employee.email AS employee_email',])
+                        ->leftJoin('order_item', 'order.id=order_item.order_id')
+                        ->leftJoin('plan_type', 'order_item.plan_type_id=plan_type.id')
+                        ->leftJoin('status', 'status.id=order.status_id')
+                        ->leftJoin('employee', 'employee.id=order.employee_id')
+                        ->where(['order.company_id' => $companyId])
+                        ->orderBy('datetime_created DESC')
+                        ->asArray()
+                        ->all();
+    } 
 }

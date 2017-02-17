@@ -461,7 +461,18 @@
             your_package: 'Gói sử dụng',
             unlimited: 'Không giới hạn',
             choose_maximum_user: 'Chọn người dùng tối đa',
-            choose_maximum_storage: 'Chọn dung lượng lưu trữ tối đa'
+            choose_maximum_storage: 'Chọn dung lượng lưu trữ tối đa',
+            not_completed: 'Chưa hoàn thành',
+            //ordeer
+            account: 'Tài khoản',
+            no: 'STT',
+            product: 'Sản phẩm',
+            subtotal: 'Tổng tiền',
+            total: 'Thành tiền',
+            date_created_order: 'Ngày tạo đơn hàng',
+            payment_method: 'Phương thức thanh toán',
+            order_no: 'Số hóa đơn',
+            order: 'Hóa đơn'            
         };
     });
 })(window.angular);
