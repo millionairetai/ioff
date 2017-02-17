@@ -1216,13 +1216,15 @@ div.task-creator{
     border: 3px solid #365899;
     color: #fff;
     border-radius: 50%;
-    max-width: 100%;
+    width: 40px;
+    height: 40px;
 }
 #activity .box-contain-card .box-complete .circle-success img{
     border: 3px solid #00a65a;
     color: #fff;
     border-radius: 50%;
-    max-width: 100%;
+    width: 40px;
+    height: 40px;
 }
 #activity .box-contain-card .box-complete .pass-status{
     overflow: hidden;
