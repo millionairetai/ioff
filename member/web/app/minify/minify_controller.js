@@ -1627,8 +1627,8 @@ appRoot.controller('editEventCtrl', ['$rootScope', 'data', 'listCalendar', '$sco
             showMeridian: false
         }
     }]);
-appRoot.controller('changePackageCtrl', ['$scope', '$uibModal', '$rootScope', 'alertify', 'PER_PAGE', 'MAX_PAGE_SIZE', 'companyService', 'planTypeService', 'commonService',
-    function ($scope, $uibModal, $rootScope, alertify, PER_PAGE, MAX_PAGE_SIZE, companyService, planTypeService, commonService) {
+appRoot.controller('changePackageCtrl', ['$scope', '$uibModal', '$rootScope', 'alertify', 'PER_PAGE', 'MAX_PAGE_SIZE', 'companyService', 'planTypeService', 'commonService', 'orderService',
+    function ($scope, $uibModal, $rootScope, alertify, PER_PAGE, MAX_PAGE_SIZE, companyService, planTypeService, commonService, orderService) {
         $scope.company = null;
         $scope.planTypes = [];
         $scope.plan_type_id = null;
@@ -1744,6 +1744,20 @@ appRoot.controller('changePackageCtrl', ['$scope', '$uibModal', '$rootScope', 'a
             });
         }
 
+        //Payment history.
+        $scope.orders = null;
+        $scope.orderDetail = null;
+        $scope.loadOrderHistory = function() {
+            orderService.getOrderHistory({}, function(response) {
+                $scope.orders = response.objects.orders;
+            });
+        }
+        
+        $scope.getOrderDetail = function(orderId) {
+             orderService.getOrderDetail({orderId: orderId}, function(response) {
+                $scope.orderDetail = response.objects.order;
+            });
+        }
     }]);appRoot.controller('CompanyCtrl', ['$scope', 'companyService', '$rootScope', 'alertify',
     function ($scope, companyService, $rootScope, alertify) {
         $scope.company = null;

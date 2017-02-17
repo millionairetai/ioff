@@ -292,6 +292,8 @@
             task_group_type:'task group type:',
             parent_task:'Parent task',
             task_project_empty:'Please choose project first',
+            from:'from',
+            to:'to',            
             task_my_task: 'My task',
             task_my_followed_task: 'My followed task',
             task_all_task: 'All task',
@@ -449,7 +451,18 @@
             your_package: 'Your package',
             unlimited: 'Unlimited',
             choose_maximum_user: 'Choose maximum user',
-            choose_maximum_storage: 'Choose maximum storage'            
+            choose_maximum_storage: 'Choose maximum storage',
+            not_completed: 'not completed',
+            //ordeer
+            account: 'Account',
+            no: 'No',
+            product: 'Product',
+            subtotal: 'Subtotal',
+            total: 'Total',
+            date_created_order: 'Date created order',
+            payment_method: 'Payment method',
+            order_no: 'Order no',
+            order: 'Order'
         };
     });
 })(window.angular);
