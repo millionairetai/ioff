@@ -1088,7 +1088,7 @@ div.task-creator{
     display: inline-block;
     padding: 0 6px 0 8px;
 }/* End File, Task option */
-#activity .image img{width: 40px;}
+#activity .image img{width: 40px;height: 40px;}
 #activity .imgleft dl{
     margin-left: 50px;
     margin-bottom: 0;
@@ -1216,13 +1216,15 @@ div.task-creator{
     border: 3px solid #365899;
     color: #fff;
     border-radius: 50%;
-    max-width: 100%;
+    width: 40px;
+    height: 40px;
 }
 #activity .box-contain-card .box-complete .circle-success img{
     border: 3px solid #00a65a;
     color: #fff;
     border-radius: 50%;
-    max-width: 100%;
+    width: 40px;
+    height: 40px;
 }
 #activity .box-contain-card .box-complete .pass-status{
     overflow: hidden;
@@ -1560,6 +1562,7 @@ div.task-creator{
 }
 #annoucement ul li img{
     width: 40px;
+    height: 40px;
 }
 #annoucement ul li h4{
     padding: 0;
