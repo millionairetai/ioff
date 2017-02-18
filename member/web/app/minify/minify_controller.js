@@ -1712,14 +1712,14 @@ appRoot.controller('changePackageCtrl', ['$scope', '$uibModal', '$rootScope', 'a
         });
 
         //Invoice info.
-        $scope.infoInvoice = null;
+        $scope.orderInfo = null;
         $scope.periodTimes = [];
-
         commonService.gets('period-time', function (response) {
             $scope.periodTimes = response.objects;
         });
 
         $scope.changePackage = function () {
+            /////////
             $scope.package.planType = $scope.company.plan_type_id.name
             var packageInfo = {
                 maxUser: $scope.package.maxUser.value, 
@@ -1728,7 +1728,8 @@ appRoot.controller('changePackageCtrl', ['$scope', '$uibModal', '$rootScope', 'a
                 planType: $scope.company.plan_type_id.name
             };
             
-            if ($scope.infoInvoice) {
+            //If we've already have info invoice, we go to next step for saving order.
+            if ($scope.orderInfo) {
                 angular.extend(packageInfo, {saveOrder: true});
             }
             
@@ -1737,7 +1738,7 @@ appRoot.controller('changePackageCtrl', ['$scope', '$uibModal', '$rootScope', 'a
             }
             
             companyService.changePackage(packageInfo, function (response) {
-                $scope.infoInvoice = response.objects.infoInvoice;
+                $scope.orderInfo = response.objects.orderInfo;
                 if (response.objects.error.isTrue) {
                     alertify.error(response.objects.error.message);
                 }

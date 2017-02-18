@@ -24,7 +24,7 @@
                             </ul>
                             <div class="tab-content">
                                 <div class="tab-pane active" id="tab_1">
-                                    <div class="package-info" ng-show="!infoInvoice">
+                                    <div class="package-info" ng-show="!orderInfo">
                                         <div class="row">
                                             <div class="col-lg-5">
                                                 <p class="lead">{{$root.$lang.package_detail}}</p>
@@ -117,13 +117,13 @@
                                         </div>
                                     </div>
                                     <div class="clearfix"></div><br />
-                                    <div class="info-invoice" ng-show="infoInvoice && !infoInvoice.successOrderInvoice">
+                                    <div class="info-invoice" ng-show="orderInfo && !orderInfo.successOrderInvoice">
                                         <div class="box-header with-border">
                                             <div class="row">
                                                 <div class="col-sm-2 col-xs-6">
                                                     <div class="description-block border-right">
                                                         <span class="description-text">{{$root.$lang.register_plan}}</span>
-                                                        <h5 class="description-header">{{infoInvoice.planTypeRegister}}</h5>                                                    
+                                                        <h5 class="description-header">{{orderInfo.planTypeRegister}}</h5>                                                    
                                                     </div>
                                                     <!-- /.description-block -->
                                                 </div>
@@ -131,7 +131,7 @@
                                                 <div class="col-sm-2 col-xs-6">
                                                     <div class="description-block border-right">
                                                         <span class="description-text">{{$root.$lang.maximum_users}}</span>
-                                                        <h5 class="description-header">{{infoInvoice.maxUser}}</h5>
+                                                        <h5 class="description-header">{{orderInfo.maxUser}}</h5>
                                                     </div>
                                                     <!-- /.description-block -->
                                                 </div>
@@ -139,7 +139,7 @@
                                                 <div class="col-sm-2 col-xs-6">
                                                     <div class="description-block border-right">
                                                         <span class="description-text">{{$root.$lang.maximum_storage}}</span>
-                                                        <h5 class="description-header">{{infoInvoice.maxStorage}} GB</h5>
+                                                        <h5 class="description-header">{{orderInfo.maxStorage}} GB</h5>
                                                     </div>
                                                     <!-- /.description-block -->
                                                 </div>
@@ -147,21 +147,21 @@
                                                 <div class="col-sm-2 col-xs-6">
                                                     <div class="description-block border-right">
                                                         <span class="description-text">{{$root.$lang.redundant_money_old_package}}</span>
-                                                        <h5 class="description-header">{{infoInvoice.redundantMoney}} VND</h5>
+                                                        <h5 class="description-header">{{orderInfo.redundantMoney}} VND</h5>
                                                     </div>
                                                     <!-- /.description-block -->
                                                 </div>
                                                 <div class="col-sm-2 col-xs-6">
                                                     <div class="description-block border-right">
                                                         <span class="description-text">{{$root.$lang.total_money_new_package}}</span>
-                                                        <h5 class="description-header">{{infoInvoice.nextPlanTotalMoney}} VND / {{infoInvoice.numberMonth}} {{$root.$lang.month}}</h5>
+                                                        <h5 class="description-header">{{orderInfo.nextPlanTotalMoney}} VND / {{orderInfo.numberMonth}} {{$root.$lang.month}}</h5>
                                                     </div>
                                                     <!-- /.description-block -->
                                                 </div>
                                                 <div class="col-sm-2 col-xs-6">
                                                     <div class="description-block border-right">
                                                         <span class="description-text">{{$root.$lang.total_payment}}</span>
-                                                        <h5 class="description-header">{{infoInvoice.finalTotalMoney}} VND / {{infoInvoice.numberMonth}} {{$root.$lang.month}}</h5>
+                                                        <h5 class="description-header">{{orderInfo.finalTotalMoney}} VND / {{orderInfo.numberMonth}} {{$root.$lang.month}}</h5>
                                                     </div>
                                                     <!-- /.description-block -->
                                                 </div>
@@ -173,23 +173,23 @@
                                                 <tbody>
                                                     <tr>
                                                         <th>{{$root.$lang.company_name}}:</th>
-                                                        <td>{{infoInvoice.companyName}}</td>
+                                                        <td>{{orderInfo.companyName}}</td>
                                                     </tr>
                                                     <tr>
                                                         <th>{{$root.$lang.firstname}}:</th>
-                                                        <td>{{infoInvoice.firstname}}</td>
+                                                        <td>{{orderInfo.firstname}}</td>
                                                     </tr>
                                                     <tr>
                                                         <th>{{$root.$lang.lastname}}:</th>
-                                                        <td>{{infoInvoice.lastname}}</td>
+                                                        <td>{{orderInfo.lastname}}</td>
                                                     </tr>
                                                     <tr>
                                                         <th>{{$root.$lang.phone}}</th>
-                                                        <td>{{infoInvoice.phoneNo}}</td>
+                                                        <td>{{orderInfo.phoneNo}}</td>
                                                     </tr>
                                                     <tr>
                                                         <th>{{$root.$lang.email}}</th>
-                                                        <td>{{infoInvoice.email}}</td>
+                                                        <td>{{orderInfo.email}}</td>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -204,7 +204,7 @@
                                                     </tr>
                                                     <tr>
                                                         <th>{{$root.$lang.company_name}}:</th>
-                                                        <td>{{infoInvoice.companyName}}</td>
+                                                        <td>{{orderInfo.companyName}}</td>
                                                     </tr>
                                                     <tr>
                                                         <th>{{$root.$lang.tax_code}}:</th>
@@ -215,13 +215,13 @@
                                         </div><!-- /.box-body -->
                                     </div>
 
-                                    <div class="info-order-success" ng-show="infoInvoice.successOrderInvoice">
+                                    <div class="info-order-success" ng-show="orderInfo.successOrderInvoice">
                                         <div class="box-header with-border">
                                             <div class="row">
                                                 <div class="col-sm-2 col-xs-6">
                                                     <div class="description-block border-right">
                                                         <span class="description-text">{{$root.$lang.register_plan}}</span>
-                                                        <h5 class="description-header">{{infoInvoice.planTypeRegister}}</h5>                                                    
+                                                        <h5 class="description-header">{{orderInfo.planTypeRegister}}</h5>                                                    
                                                     </div>
                                                     <!-- /.description-block -->
                                                 </div>
@@ -229,7 +229,7 @@
                                                 <div class="col-sm-2 col-xs-6">
                                                     <div class="description-block border-right">
                                                         <span class="description-text">{{$root.$lang.maximum_users}}</span>
-                                                        <h5 class="description-header">{{infoInvoice.maxUser}}</h5>
+                                                        <h5 class="description-header">{{orderInfo.maxUser}}</h5>
                                                     </div>
                                                     <!-- /.description-block -->
                                                 </div>
@@ -237,7 +237,7 @@
                                                 <div class="col-sm-2 col-xs-6">
                                                     <div class="description-block border-right">
                                                         <span class="description-text">{{$root.$lang.maximum_storage}}</span>
-                                                        <h5 class="description-header">{{infoInvoice.maxStorage}} GB</h5>
+                                                        <h5 class="description-header">{{orderInfo.maxStorage}} GB</h5>
                                                     </div>
                                                     <!-- /.description-block -->
                                                 </div>
@@ -245,21 +245,21 @@
                                                 <div class="col-sm-2 col-xs-6">
                                                     <div class="description-block border-right">
                                                         <span class="description-text">{{$root.$lang.redundant_money_old_package}}</span>
-                                                        <h5 class="description-header">{{infoInvoice.redundantMoney}} VND</h5>
+                                                        <h5 class="description-header">{{orderInfo.redundantMoney}} VND</h5>
                                                     </div>
                                                     <!-- /.description-block -->
                                                 </div>
                                                 <div class="col-sm-2 col-xs-6">
                                                     <div class="description-block border-right">
                                                         <span class="description-text">{{$root.$lang.total_money_new_package}}</span>
-                                                        <h5 class="description-header">{{infoInvoice.nextPlanTotalMoney}} VND / {{infoInvoice.numberMonth}} tháng</h5>
+                                                        <h5 class="description-header">{{orderInfo.nextPlanTotalMoney}} VND / {{orderInfo.numberMonth}} tháng</h5>
                                                     </div>
                                                     <!-- /.description-block -->
                                                 </div>
                                                 <div class="col-sm-2 col-xs-6">
                                                     <div class="description-block border-right">
                                                         <span class="description-text">{{$root.$lang.total_payment}}</span>
-                                                        <h5 class="description-header">{{infoInvoice.finalTotalMoney}} VND / {{infoInvoice.numberMonth}} tháng</h5>
+                                                        <h5 class="description-header">{{orderInfo.finalTotalMoney}} VND / {{orderInfo.numberMonth}} tháng</h5>
                                                     </div>
                                                     <!-- /.description-block -->
                                                 </div>
@@ -272,7 +272,7 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <button ng-hide="infoInvoice.successOrderInvoice" class="btn btn-primary" ng-click="changePackage()">Change</button>
+                                        <button ng-hide="orderInfo.successOrderInvoice" class="btn btn-primary" ng-click="changePackage()">Change</button>
                                     </div>
                                 </div>
                                 <!-- /.tab-pane -->
