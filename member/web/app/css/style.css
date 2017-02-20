@@ -1628,6 +1628,18 @@ ul.list-notify .item-notify:last-child{
     margin: 0 0 30px 120px;
     padding-left: 30px;
     border-left: 4px solid #fff;
+    position: relative;
+}
+.timeline-create:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: #ddd;
+    left: -4px;
+    margin: 0;
+    border-radius: 2px;
 }
 .timeline-create li {
     margin: 0 0 40px;
