@@ -17,4 +17,5 @@ return [
     'phone_from' => '083303239009',
     'email_from' => 'support@iofficez.com',
     'tax_percent' => 0,
+    'total_disk' => 1000000000
 ];

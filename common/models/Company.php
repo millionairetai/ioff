@@ -172,4 +172,106 @@ class Company extends \backend\components\db\ActiveRecord {
                         ->one();
     }
 
+    /**
+     * Get company each plan type
+     * @return array
+     */  
+    public static function getCompanyEachPlanType() {
+        return self::find()
+                ->select('COUNT(*) AS `total`, plan_type.column_name AS plan_type_column_name')
+                ->leftJoin('plan_type', 'company.plan_type_id=plan_type.id')
+                ->groupBy('plan_type_id')
+                ->indexBy('plan_type_column_name')
+                ->asArray()
+                ->all();  
+    }
+    
+     /**
+     * Get sum total storage
+     * @return integer
+     */               
+    public static function getSumTotalStorage() {
+        $company = self::find()
+                ->select('SUM(total_storage) AS total_storage')
+                ->asArray()
+                ->one();  
+        
+        return !empty($company['total_storage']) ? $company['total_storage'] : 0;
+    }    
+
+    /**
+     * Get total database size
+     * @param string $dbName
+     * @return string
+     */        
+    public static function getTotalDatabaseSize($dbName = 'iofficez') {
+        $sql = "SELECT table_schema AS `db_name`,
+                    SUM( data_length + index_length ) / 1024 / 1024 AS `db_size`,
+                    SUM( data_free )/ 1024 / 1024  AS `db_free_size`
+                FROM information_schema.TABLES
+                WHERE `table_schema`='" . $dbName . "'
+                GROUP BY table_schema ";
+
+        $command = \Yii::$app->db->createCommand($sql);
+        $data = $command->queryAll();
+
+        return $data;
+    }
+
+    /**
+     * Get expired company
+     * @return array
+     */        
+    public static function getExpiredCompany() {
+        return self::find()
+                ->select('company.name as company_name, plan_type.name AS plan_type_name, company.expired_date')
+                ->leftJoin('plan_type', 'company.plan_type_id=plan_type.id')
+                ->where("plan_type.name <> '" . PlanType::COLUMN_NAME_FREE . "' AND company.expired_date <= UNIX_TIMESTAMP()")
+                ->orderBy('company.expired_date DESC')
+                ->limit(10)
+                ->asArray()
+                ->all();  
+    }
+
+    /**
+     * Get recent company register.
+     * @return array
+     */    
+    public static function getRecentCompany() {
+        return self::find()
+                ->select('company.name as company_name, plan_type.name AS plan_type_name, company.datetime_created AS company_datetime_created')
+                ->leftJoin('plan_type', 'company.plan_type_id=plan_type.id')
+                ->where("plan_type.name <> '" . PlanType::COLUMN_NAME_FREE . "'")
+                ->orderBy('company.datetime_created DESC')
+                ->limit(10)
+                ->asArray()
+                ->all();  
+    }
+    
+    /**
+     * Get company quantity register over month.
+     * @return array
+     */        
+    public static function getRegisterOverMonth() {
+        return self::find()
+                ->select('COUNT(*) AS `quantity`, CONCAT_WS("/" , MONTH(FROM_UNIXTIME(company.datetime_created)), YEAR(FROM_UNIXTIME(company.datetime_created))) AS `month`')
+                ->where("YEAR(FROM_UNIXTIME(company.datetime_created))= YEAR(CURRENT_DATE())")
+                ->groupBy('CONCAT_WS("/" , MONTH(FROM_UNIXTIME(company.datetime_created)), YEAR(FROM_UNIXTIME(company.datetime_created)))')
+                ->orderBy('company.datetime_created ASC')
+                ->limit(12)
+                ->asArray()
+                ->all();  
+    }
+    
+     /**
+     * Get db name.
+     * @return string
+     */        
+    private function getDsnAttribute($name, $dsn) {
+        if (preg_match('/' . $name . '=([^;]*)/', $dsn, $match)) {
+            return $match[1];
+        } else {
+            return null;
+        }
+    }
 }

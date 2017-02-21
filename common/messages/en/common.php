@@ -83,7 +83,8 @@ return [
     'Expired Datetime' => 'Expired Datetime',
     'Number month' => 'Number month',
     'Max user register' => 'Max user register',
-    'Max storage register' => 'Max storage register',    
+    'Max storage register' => 'Max storage register',   
+    'Revenue' => 'Revenue',
     //calendar
     'Datetime Created' => 'Datetime Created',
     'Lastup Datetime' => 'Lastup Datetime',

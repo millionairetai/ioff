@@ -84,6 +84,7 @@ return [
     'Number month' => 'Số tháng',
     'Max user register' => 'Số nhân viên tối đa',
     'Max storage register' => 'Dung lượng lưu trữ tối đa',    
+    'Revenue' => 'Doanh thu',
     //Calendar
     'Datetime Created' => 'Ngày tạo',
     'Lastup Datetime' => 'Thời gian cập nhật gần đây nhất',

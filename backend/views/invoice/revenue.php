@@ -2,39 +2,39 @@
 <section class="content">
 
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <!-- Default box -->
             <div class="row">
                 <div class="col-sm-6 col-xs-12">
-            <div class="info-box">
-                <span class="info-box-icon bg-green"><i class="fa fa-usd"></i></span>
+                    <div class="info-box">
+                        <span class="info-box-icon bg-green"><i class="fa fa-usd"></i></span>
 
-                <div class="info-box-content">
-                    <span class="info-box-text">Revenue</span>
-                    <span class="info-box-number">198,000,00<small>VND</small></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Revenue</span>
+                            <span class="info-box-number"><?= $data['total_revenue_in_month'] ?><small></small></span>
                             <span class="progress-description">
-                                90 Companies
+                                <?= $data['total_company'] ?> Companies
                             </span>
+                        </div>
+                        <!-- /.info-box-content -->
+                    </div>
+                    <!-- /.info-box -->
                 </div>
-                <!-- /.info-box-content -->
-            </div>
-            <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
+                <!-- /.col -->
                 <div class="col-sm-6 col-xs-12">
-            <div class="info-box">
-                <span class="info-box-icon bg-yellow"><i class="fa fa-line-chart"></i></span>
+                    <div class="info-box">
+                        <span class="info-box-icon bg-yellow"><i class="fa fa-line-chart"></i></span>
 
-                <div class="info-box-content">
-                    <span class="info-box-text">Percent</span>
-                    <span class="info-box-number">43<small>%</small></span>
+                        <div class="info-box-content">
+                            <span class="info-box-text">Percent</span>
+                            <span class="info-box-number"><?= $data['increase_percent'] ?><small></small></span>
+                        </div>
+                        <!-- /.info-box-content -->
+                    </div>
+                    <!-- /.info-box -->
                 </div>
-                <!-- /.info-box-content -->
+                <!-- /.col -->
             </div>
-            <!-- /.info-box -->
-        </div>
-        <!-- /.col -->
-    </div>
 
             <div class="box">
                 <div class="box-header with-border">
@@ -47,7 +47,7 @@
                 <div class="box-body">
                     <form role="form" class="form-horizontal">
                         <div class="form-group">
-                            <p class="col-sm-8 help-block text-right">(Contains of today, week, month, year)</p>
+                            <p class="col-sm-8 help-block text-right"></p>
                             <div class=" col-sm-4">
                                 <select class="form-control">
                                     <option>Today</option>
@@ -60,30 +60,17 @@
                     </form>
                     <div class="clearfix">
                         <p class="text-center"><strong>Bảng thống kê</strong></p>
-                    <table class="table table-striped">
+                        <table class="table table-striped">
                             <tbody>
-                        <tr>
-                                    <td>5-10 users</td>
-                                    <td>38,000,000 VND</td>
-                                    <td>20 companies</td>
-                        </tr>
-                        <tr>
-                                    <td>5-10 users</td>
-                                    <td>38,000,000 VND</td>
-                                    <td>20 companies</td>
-                        </tr>
-                                <tr>
-                                    <td>5-10 users</td>
-                                    <td>38,000,000 VND</td>
-                                    <td>20 companies</td>
-                                </tr>
-                                <tr>
-                                    <td>5-10 users</td>
-                                    <td>38,000,000 VND</td>
-                                    <td>20 companies</td>
-                                </tr>
+                                <?php foreach ($data['invoice_each_plan_type'] as $value): ?>
+                                    <tr>
+                                        <td><?= $value['plan_type_name'] ?></td>
+                                        <td><?= $value['total_money'] ?></td>
+                                        <td><?= $value['total_company'] ?> companies</td>
+                                    </tr>
+                                <?php endforeach; ?>
                             </tbody>
-                    </table>
+                        </table>
                     </div>
                     <p class="text-center"><strong>Biểu đồ</strong></p>
                     <canvas id="horizontal-chart"></canvas>
@@ -91,111 +78,111 @@
             </div><!-- /.box -->
         </div>
 
-        <div class="col-md-4 padding-left-md-0">
-            <div class="box box-widget">
-                <div class="box-header with-border">
-                    <h3 class="box-title">New company</h3>
-
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                        </button>
+        <!--        <div class="col-md-4 padding-left-md-0">
+                    <div class="box box-widget">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">New company</h3>
+        
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                </button>
+                            </div>
+                             /.box-tools 
+                        </div>
+                         /.box-header 
+                        <div class="box-body">
+                            <ul class="products-list product-list-in-box">
+                                <li class="item">
+                                    <div class="item-info">
+                                        <h4 class="item-title">iCare company</h4>
+                                        <span class="item-description">
+                                            register D package
+                                        </span>
+                                        <span class="item-price"> 3,000,000 VND</span>
+                                        <small>5 hours 30 minutes before</small>
+                                    </div>
+                                </li>
+                                 /.item 
+                                <li class="item">
+                                    <div class="item-info">
+                                        <h4 class="item-title">iCare company</h4>
+                                        <span class="item-description">
+                                            register D package
+                                        </span>
+                                        <span class="item-price"> 3,000,000 VND</span>
+                                        <small>5 hours 30 minutes before</small>
+                                    </div>
+                                </li>
+                                 /.item 
+                                <li class="item">
+                                    <div class="item-info">
+                                        <h4 class="item-title">iCare company</h4>
+                                        <span class="item-description">
+                                            register D package
+                                        </span>
+                                        <span class="item-price"> 3,000,000 VND</span>
+                                        <small>5 hours 30 minutes before</small>
+                                    </div>
+                                </li>
+                                 /.item 
+                            </ul>
+                        </div>
+                        <div class="box-footer text-center">
+                            <a href="javascript:void(0)" class="uppercase">View All</a>
+                        </div>
                     </div>
-                    <!-- /.box-tools -->
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                    <ul class="products-list product-list-in-box">
-                        <li class="item">
-                            <div class="item-info">
-                                <h4 class="item-title">iCare company</h4>
-                                <span class="item-description">
-                                    register D package
-                                </span>
-                                <span class="item-price"> 3,000,000 VND</span>
-                                <small>5 hours 30 minutes before</small>
+                    <div class="box box-widget">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Duedate company</h3>
+        
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                </button>
                             </div>
-                        </li>
-                        <!-- /.item -->
-                        <li class="item">
-                            <div class="item-info">
-                                <h4 class="item-title">iCare company</h4>
-                                <span class="item-description">
-                                    register D package
-                                </span>
-                                <span class="item-price"> 3,000,000 VND</span>
-                                <small>5 hours 30 minutes before</small>
-                            </div>
-                        </li>
-                        <!-- /.item -->
-                        <li class="item">
-                            <div class="item-info">
-                                <h4 class="item-title">iCare company</h4>
-                                <span class="item-description">
-                                    register D package
-                                </span>
-                                <span class="item-price"> 3,000,000 VND</span>
-                                <small>5 hours 30 minutes before</small>
-                            </div>
-                        </li>
-                        <!-- /.item -->
-                    </ul>
-                </div>
-                <div class="box-footer text-center">
-                    <a href="javascript:void(0)" class="uppercase">View All</a>
-                </div>
-            </div>
-            <div class="box box-widget">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Duedate company</h3>
-
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                        </button>
+                             /.box-tools 
+                        </div>
+                         /.box-header 
+                        <div class="box-body">
+                            <ul class="products-list product-list-in-box">
+                                <li class="item">
+                                    <div class="item-info">
+                                        <h4 class="item-title">iCare company</h4>
+                                        <span class="item-description">
+                                            register D package
+                                        </span>
+                                        <span class="item-price"> 3,000,000 VND</span>
+                                        <small>5 hours 30 minutes before</small>
+                                    </div>
+                                </li>
+                                 /.item 
+                                <li class="item">
+                                    <div class="item-info">
+                                        <h4 class="item-title">iCare company</h4>
+                                        <span class="item-description">
+                                            register D package
+                                        </span>
+                                        <span class="item-price"> 3,000,000 VND</span>
+                                        <small>5 hours 30 minutes before</small>
+                                    </div>
+                                </li>
+                                 /.item 
+                                <li class="item">
+                                    <div class="item-info">
+                                        <h4 class="item-title">iCare company</h4>
+                                        <span class="item-description">
+                                            register D package
+                                        </span>
+                                        <span class="item-price"> 3,000,000 VND</span>
+                                        <small>5 hours 30 minutes before</small>
+                                    </div>
+                                </li>
+                                 /.item 
+                            </ul>
+                        </div>
+                        <div class="box-footer text-center">
+                            <a href="javascript:void(0)" class="uppercase">View All</a>
+                        </div>
                     </div>
-                    <!-- /.box-tools -->
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                    <ul class="products-list product-list-in-box">
-                        <li class="item">
-                            <div class="item-info">
-                                <h4 class="item-title">iCare company</h4>
-                                <span class="item-description">
-                                    register D package
-                                </span>
-                                <span class="item-price"> 3,000,000 VND</span>
-                                <small>5 hours 30 minutes before</small>
-                            </div>
-                        </li>
-                        <!-- /.item -->
-                        <li class="item">
-                            <div class="item-info">
-                                <h4 class="item-title">iCare company</h4>
-                                <span class="item-description">
-                                    register D package
-                                </span>
-                                <span class="item-price"> 3,000,000 VND</span>
-                                <small>5 hours 30 minutes before</small>
-                            </div>
-                        </li>
-                        <!-- /.item -->
-                        <li class="item">
-                            <div class="item-info">
-                                <h4 class="item-title">iCare company</h4>
-                                <span class="item-description">
-                                    register D package
-                                </span>
-                                <span class="item-price"> 3,000,000 VND</span>
-                                <small>5 hours 30 minutes before</small>
-                            </div>
-                        </li>
-                        <!-- /.item -->
-                    </ul>
-                </div>
-                <div class="box-footer text-center">
-                    <a href="javascript:void(0)" class="uppercase">View All</a>
-                </div>
-            </div>
-        </div>
+                </div>-->
     </div>
 </section>

@@ -674,4 +674,12 @@ class Employee extends ActiveRecord implements IdentityInterface {
                 ->asArray()
                 ->all();
     }
+    
+    /**
+     * Get toal employee
+     * @return integer
+     */
+    public static function getTotalEmployee() {
+        return self::find()->select('*')->count();
+    }    
 }

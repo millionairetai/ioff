@@ -83,11 +83,89 @@ class Invoice extends \common\components\db\ActiveRecord
         ];
     }
     
+    /**
+     * Get most recent invoice by company idk
+     * @param array $ids
+     * @return array
+     */
+    /////////////////////////////////////////////////////////////
     public static function getMostRecentInvoiceByCompanyId() {
                return self::find()
                         ->select('*')
                         ->orderBy('datetime_created DESC')
                         ->asArray()
                         ->one();
+    }
+
+    /**
+     * Get revenue in month
+     * @return array
+     */
+    public static function getRevenueInMonth() {
+        $totalMoney = self::find()
+                ->select('SUM(total_money) AS total_revenue_in_month')
+                ->where('MONTH(from_unixtime(invoice.datetime_created)) = MONTH(CURRENT_DATE())')
+                ->asArray()
+                ->one();  
+
+        return !empty($totalMoney['total_revenue_in_month']) ? $totalMoney['total_revenue_in_month'] : 0;
+    }
+    
+    /**
+     * Get previous month revenue.
+     * @return array
+     */    
+    public static function getPreviousMonthRevenue() {
+        $totalMoney = self::find()
+                ->select('SUM(total_money) AS total_revenue_previous_month')
+                ->where('MONTH(from_unixtime(invoice.datetime_created)) = (MONTH(CURRENT_DATE()) - 1)')
+                ->asArray()
+                ->one();  
+        
+        return !empty($totalMoney['total_revenue_previous_month']) ? $totalMoney['total_revenue_previous_month'] : 0;
+    }
+    
+    /**
+     * Get revenue per month
+     * @return array
+     */
+    public static function getRevenuePerMonth() {
+        return self::find()
+                ->select('SUM(total_money) AS `total_money`, MONTH(FROM_UNIXTIME(invoice.datetime_created)) AS `month`')
+                ->groupBy('MONTH(FROM_UNIXTIME(invoice.datetime_created))')
+                ->orderBy('invoice.datetime_created DESC')
+                ->asArray()
+                ->all();  
+    }
+
+    /**
+     * Get revenue per employee
+     * @return array
+     */    
+    public static function getRevenuePerEmployee() {
+        return self::find()
+                ->select('SUM(total_money) AS `total_money`, staff.name AS `staff_name`')
+                ->leftJoin('staff', 'invoice.staff_id=staff.id')
+                ->groupBy('staff.id')
+                ->where('invoice.staff_id <> 0')
+                ->orderBy('invoice.datetime_created DESC')
+                ->asArray()
+                ->all();  
+    }
+    
+    /**
+     * Get total revenue each plan type
+     * @return array
+     */    
+    public static function getTotalRevenueEachPlanType() {
+        return self::find()
+                ->select('SUM(total_money) AS `total_money`, plan_type.name AS `plan_type_name`, plan_type.column_name AS `plan_type_column_name`')
+                ->leftJoin('company', 'company.id=invoice.company_id')
+                ->leftJoin('plan_type', 'plan_type.id=company.plan_type_id')
+                ->where('plan_type.name <> "' . PlanType::COLUMN_NAME_FREE .  '"')
+                ->groupBy('company.plan_type_id')
+                ->indexBy('plan_type_column_name')
+                ->asArray()
+                ->all();  
     }
 }

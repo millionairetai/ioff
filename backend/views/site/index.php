@@ -1,4 +1,70 @@
+<?php
 
+$this->title = Yii::t('backend', 'Dashboard');
+$message = \yii\helpers\Json::htmlEncode(
+                \Yii::t('app', 'Button clicked!')
+);
+
+$this->registerJs('
+    if (document.getElementById("barChart")) {
+    var confixbarChart = {
+        type: \'bar\',
+        data: {
+            labels: ' . $dashboard['revenue_per_month']['labels'] . ',
+            datasets: [
+               ' . $dashboard['revenue_per_month']['datasets'] . '
+            ]
+        },
+        options: {
+            scales: {
+                xAxes: [{
+                        barThickness: 20
+                    }],
+                yAxes: [{
+                        ticks: {
+                            max: 10000000000,
+                            min: 0,
+                            stepSize: 1000000000
+                        }
+                    }]
+            },
+            legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].fillColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
+        }
+    };
+
+    var ctxbarChart = document.getElementById("barChart").getContext("2d");
+    var myBarChart = new Chart(ctxbarChart, confixbarChart);
+}'
+);
+
+// HORIZONTAL CHART
+$this->registerJs('if (document.getElementById("horizontal-chart")) {
+    var config = {
+        type: \'horizontalBar\',
+        data: {
+            labels: ' . $dashboard['staff_saling_revenue']['labels'] . ',
+            datasets: [' . $dashboard['staff_saling_revenue']['datasets'] . ']
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                        barThickness: 20
+                    }],
+                xAxes: [{
+                        ticks: {
+                            max: 10000000000,
+                            min: 0,
+                            stepSize: 10000000
+                        }
+                    }]
+            },
+            legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<datasets.length; i++){%><li><span style=\"background-color:<%=datasets[i].fillColor%>\"></span><%if(datasets[i].label){%><%=datasets[i].label%><%}%></li><%}%></ul>"
+        }
+    };
+    var ctxhorizontalChart = document.getElementById("horizontal-chart").getContext("2d");
+    var horizontalChart = new Chart(ctxhorizontalChart, config);
+}');
+?>
 <section class="content">
     <div class="row">
         <div class="col-md-4 col-sm-6 col-xs-12">
@@ -7,10 +73,10 @@
 
                 <div class="info-box-content">
                     <span class="info-box-text">Company</span>
-                    <span class="info-box-number">23 new company</span>
-                    <span class="progress-description">
+                    <span class="info-box-number"><?= $dashboard['header']['total_new_company']; ?> company</span>
+<!--                    <span class="progress-description">
                         13 free, 10 fee
-                    </span>
+                    </span>-->
                 </div>
                 <!-- /.info-box-content -->
             </div>
@@ -23,7 +89,7 @@
 
                 <div class="info-box-content">
                     <span class="info-box-text">Revenue</span>
-                    <span class="info-box-number">198,000,00<small>VND</small></span>
+                    <span class="info-box-number"><?= $dashboard['header']['total_revenue_in_month']; ?><small></small></span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
@@ -36,7 +102,7 @@
 
                 <div class="info-box-content">
                     <span class="info-box-text">Percent</span>
-                    <span class="info-box-number">43<small>%</small></span>
+                    <span class="info-box-number"><?= $dashboard['header']['increase_percent']; ?><small></small></span>
                 </div>
                 <!-- /.info-box-content -->
             </div>
@@ -58,7 +124,7 @@
                 <div class="box-body">
                     <form role="form" class="form-horizontal">
                         <div class="form-group">
-                            <p class="col-sm-8 help-block text-right">(Contains of today, week, month, year)</p>
+                            <p class="col-sm-8 help-block text-right"></p>
                             <div class=" col-sm-4">
                                 <select class="form-control">
                                     <option>Today</option>
@@ -71,35 +137,33 @@
                     </form>
                     <a class="pull-right" href="/company/report">View detail</a>
                     <h4>Used Storage</h4>
-                    <p>120GB/ 700GB</p>
+                    <p><?= $dashboard['company_overview']['total_disk']; ?>GB/ <?= $dashboard['company_overview']['used_total_storage']; ?> MB</p>
                     <div class="row">
                         <div class="col-md-7">
                             <table>
                                 <tr>
                                     <td>
-                                        <input type="text" class="knob" value="120" data-width="150" data-height="150" data-skin="tron" data-thickness=.2 data-fgColor="#3c8dbc">
+                                        <input type="text" class="knob" value="<?= $dashboard['company_overview']['percent_used_storage']; ?>" data-width="150" data-height="150" data-skin="tron" data-thickness=.2 data-fgColor="#3c8dbc">
                                     </td>
                                     <td>
-                                        <p><b>Database: 40GB</b></p>
-                                        <p><b>File: 80GB</b></p>
+                                        <p><b>Database: <?= $dashboard['company_overview']['used_storage_database']; ?> MB</b></p>
+                                        <p><b>File: <?= $dashboard['company_overview']['used_storage_file']; ?> MB</b></p>
                                     </td>
                                 </tr>
                             </table>
                         </div>
                         <div class="col-md-5">
                             <h4>Companies & Users</h4>
-                            <h5>509 companies</h5>
+                            <h5><?= $dashboard['company_overview']['total_company']; ?> companies</h5>
                             <ul>
-                                <li>300 free</li>
-                                <li>209 fee</li>
+                                <li><?= $dashboard['company_overview']['total_free_company']; ?> free</li>
+                                <li><?= $dashboard['company_overview']['total_standard_company']; ?> standard</li>
+                                <li><?= $dashboard['company_overview']['total_premium_company']; ?> premium</li>
                             </ul>
-                            <b>Total: 1390 users</b>
+                            <b>Total: <?= $dashboard['company_overview']['total_user']; ?> users</b>
                         </div>
                     </div>
                 </div><!-- /.box-body -->
-                <div class="box-footer">
-                    Footer
-                </div><!-- /.box-footer-->
             </div><!-- /.box -->
             <div class="box">
                 <div class="box-header with-border">
@@ -112,7 +176,7 @@
                 <div class="box-body">
                     <form role="form" class="form-horizontal">
                         <div class="form-group">
-                            <p class="col-sm-8 help-block text-right">(Contains of today, week, month, year)</p>
+                            <p class="col-sm-8 help-block text-right"></p>
                             <div class=" col-sm-4">
                                 <select class="form-control">
                                     <option>Today</option>
@@ -138,7 +202,7 @@
                 <div class="box-body">
                     <form role="form" class="form-horizontal">
                         <div class="form-group">
-                            <p class="col-sm-8 help-block text-right">(Contains of today, week, month, year)</p>
+                            <p class="col-sm-8 help-block text-right"></p>
                             <div class=" col-sm-4">
                                 <select class="form-control">
                                     <option>Today</option>
@@ -177,110 +241,71 @@
         </div>
 
         <div class="col-md-4 padding-left-md-0">
-            <div class="box box-widget">
-                <div class="box-header with-border">
-                    <h3 class="box-title">New company</h3>
-
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                        </button>
+            <?php if (!empty($dashboard['right_bar_company']['recently_company'])): ?>
+                <div class="box box-widget">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">New company</h3>
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                            </button>
+                        </div>
+                        <!-- /.box-tools -->
                     </div>
-                    <!-- /.box-tools -->
-                </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                    <ul class="products-list product-list-in-box">
-                        <li class="item">
-                            <div class="item-info">
-                                <h4 class="item-title">iCare company</h4>
-                                <span class="item-description">
-                                    register D package
-                                </span>
-                                <span class="item-price"> 3,000,000 VND</span>
-                                <small>5 hours 30 minutes before</small>
-                            </div>
-                        </li>
-                        <!-- /.item -->
-                        <li class="item">
-                            <div class="item-info">
-                                <h4 class="item-title">iCare company</h4>
-                                <span class="item-description">
-                                    register D package
-                                </span>
-                                <span class="item-price"> 3,000,000 VND</span>
-                                <small>5 hours 30 minutes before</small>
-                            </div>
-                        </li>
-                        <!-- /.item -->
-                        <li class="item">
-                            <div class="item-info">
-                                <h4 class="item-title">iCare company</h4>
-                                <span class="item-description">
-                                    register D package
-                                </span>
-                                <span class="item-price"> 3,000,000 VND</span>
-                                <small>5 hours 30 minutes before</small>
-                            </div>
-                        </li>
-                        <!-- /.item -->
-                    </ul>
-                </div>
-                <div class="box-footer text-center">
-                    <a href="javascript:void(0)" class="uppercase">View All</a>
-                </div>
-            </div>
-            <div class="box box-widget">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Duedate company</h3>
-
-                    <div class="box-tools pull-right">
-                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                        </button>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <ul class="products-list product-list-in-box">
+                            <?php foreach ($dashboard['right_bar_company']['recently_company'] as $company): ?>
+                                <li class="item">
+                                    <div class="item-info">
+                                        <h4 class="item-title"><?= $company['company_name'] ?></h4>
+                                        <span class="item-description">
+                                            <?= $company['plan_type_name'] ?> - <?= $company['company_datetime_created'] ?>
+                                        </span>
+                                        <!--<span class="item-price"> 3,000,000 VND</span>-->
+                                        <!--<small>5 hours 30 minutes before</small>-->
+                                    </div>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
                     </div>
-                    <!-- /.box-tools -->
+                    <div class="box-footer text-center">
+                        <a href="javascript:void(0)" class="uppercase">View All</a>
+                    </div>
                 </div>
-                <!-- /.box-header -->
-                <div class="box-body">
-                    <ul class="products-list product-list-in-box">
-                        <li class="item">
-                            <div class="item-info">
-                                <h4 class="item-title">iCare company</h4>
-                                <span class="item-description">
-                                    register D package
-                                </span>
-                                <span class="item-price"> 3,000,000 VND</span>
-                                <small>5 hours 30 minutes before</small>
-                            </div>
-                        </li>
-                        <!-- /.item -->
-                        <li class="item">
-                            <div class="item-info">
-                                <h4 class="item-title">iCare company</h4>
-                                <span class="item-description">
-                                    register D package
-                                </span>
-                                <span class="item-price"> 3,000,000 VND</span>
-                                <small>5 hours 30 minutes before</small>
-                            </div>
-                        </li>
-                        <!-- /.item -->
-                        <li class="item">
-                            <div class="item-info">
-                                <h4 class="item-title">iCare company</h4>
-                                <span class="item-description">
-                                    register D package
-                                </span>
-                                <span class="item-price"> 3,000,000 VND</span>
-                                <small>5 hours 30 minutes before</small>
-                            </div>
-                        </li>
-                        <!-- /.item -->
-                    </ul>
+            <?php endif; ?>
+            <?php if (!empty($dashboard['right_bar_company']['duedate_company'])): ?>
+                <div class="box box-widget">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">Duedate company</h3>
+
+                        <div class="box-tools pull-right">
+                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                            </button>
+                        </div>
+                        <!-- /.box-tools -->
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <ul class="products-list product-list-in-box">
+                            <?php foreach ($dashboard['right_bar_company']['duedate_company'] as $company): ?>
+                                <li class="item">
+                                    <div class="item-info">
+                                        <h4 class="item-title"><?= $company['company_name'] ?></h4>
+                                        <span class="item-description">
+                                            <?= $company['plan_type_name'] ?> - <?= $company['expired_date'] ?>
+                                        </span>
+                                        <!--<span class="item-price"> 3,000,000 VND</span>-->
+                                        <!--<small>5 hours 30 minutes before</small>-->
+                                    </div>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                    <div class="box-footer text-center">
+                        <a href="/company/index" class="uppercase">View All</a>
+                    </div>
                 </div>
-                <div class="box-footer text-center">
-                    <a href="javascript:void(0)" class="uppercase">View All</a>
-                </div>
-            </div>
+            <?php endif; ?>
         </div>
     </div>
 </section>

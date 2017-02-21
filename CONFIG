@@ -123,5 +123,8 @@ Run command:
  2. Run command 
     npm install -g bower
 
+//Link syn between mysql and php
+https://www.sitepoint.com/synchronize-php-mysql-timezone-configuration/
+
 //-----------------------------CONFIG WHEN UPLOAD SERVER----------------------//
 1. CREATE FOLDER UPLOAD
