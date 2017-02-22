@@ -14,7 +14,7 @@ class OrderController extends ApiController {
      */
     public function actionGetHistory() {
         $orders = [];
-//        try {
+        try {
             $result = Order::getsByCompanyId(Yii::$app->user->identity->company_id);
             if (empty($result)) {
                 throw new \Exception;
@@ -38,9 +38,9 @@ class OrderController extends ApiController {
             }
             
             return $this->sendResponse(false, "", ['orders' => $orders,]);
-//        } catch (\Exception $ex) {
-//            return $this->sendResponse(true, \Yii::t('member', 'error_system'), '');
-//        }
+        } catch (\Exception $ex) {
+            return $this->sendResponse(true, \Yii::t('member', 'error_system'), '');
+        }
     }
     
         /**
@@ -49,7 +49,7 @@ class OrderController extends ApiController {
     public function actionGetOrderDetail($orderId) {
         $order = [];
         $totalMoney = 0;
-//        try {
+        try {
             $result = Order::getOrderInfoById($orderId);
             if (empty($result)) {
                 throw new \Exception;
@@ -103,9 +103,9 @@ class OrderController extends ApiController {
                 ];
             
             return $this->sendResponse(false, "", ['order' => $order,]);
-//        } catch (\Exception $ex) {
-//            return $this->sendResponse(true, \Yii::t('member', 'error_system'), '');
-//        }
+        } catch (\Exception $ex) {
+            return $this->sendResponse(true, \Yii::t('member', 'error_system'), '');
+        }
     }
 
 

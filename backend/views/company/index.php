@@ -48,6 +48,22 @@ use yii\grid\SerialColumn;
                     'options' => ['style' => 'width:50px'],
                     'class' => 'yii\grid\ActionColumn',
                     'template' => '{update} {delete}',
+                ],
+                [
+                    'options' => ['style' => 'width:50px'],
+                    'class' => 'yii\grid\ActionColumn',
+                    'template' => '{view}',
+                    'buttons' => [
+                        'view' => function ($url, $model) {
+                            return \yii\helpers\Html::a('<div class="text-center"><em data-toggle="tooltip"
+                                                            data-placement="top" title="Payment history"
+                                                            class="fa fa-external-link-square text-warning"></em></div>', (new yii\grid\ActionColumn())->createUrl('invoice/payment-history', $model, $model['id'], 1), [
+                                        'title' => Yii::t('yii', 'view'),
+                                        'data-method' => 'post',
+                                        'data-pjax' => '0',
+                            ]);
+                        },
+                            ]
                 ]
             ],
             

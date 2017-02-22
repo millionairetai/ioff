@@ -168,4 +168,51 @@ class Invoice extends \common\components\db\ActiveRecord
                 ->asArray()
                 ->all();  
     }
+    
+    /**
+     * Gets invoice history
+     * 
+     * @param integer $companyId
+     * @return array
+     */
+    public static function getsByCompanyId($companyId) {
+          return self::find()
+                ->select(['invoice.id', 'invoice.invoice_number', 'invoice.employee_id', 'invoice.company_id', 'invoice.expired_datetime', 'invoice.datetime_created',
+                            'invoice_detail.number_month', 'invoice_detail.max_user_register', 'invoice_detail.max_storage_register', 'invoice_detail.plan_type_id', 
+                            'status.name AS status_name','status.column_name AS status_column_name', 'plan_type.name AS plan_type_name', 'plan_type.column_name AS plan_type_column_name',
+                            'employee.firstname AS employee_firstname', 'employee.lastname AS employee_lastname', 'employee.mobile_phone AS employee_mobile_phone',
+                            'employee.street_address_1 AS employee_street_address_1', 'employee.street_address_2 AS employee_street_address_2', 'employee.email AS employee_email',])
+                        ->leftJoin('invoice_detail', 'invoice.id=invoice_detail.invoice_id')
+                        ->leftJoin('plan_type', 'invoice_detail.plan_type_id=plan_type.id')
+                        ->leftJoin('status', 'status.id=invoice.status_id')
+                        ->leftJoin('employee', 'employee.id=invoice.employee_id')
+                        ->where(['invoice.company_id' => $companyId])
+                        ->orderBy('datetime_created DESC')
+                        ->asArray()
+                        ->all();
+    } 
+    
+    /**
+     * Get invoice info
+     * 
+     * @param integer $id
+     * @return array
+     */
+    public static function getById($id) {
+          return self::find()
+                ->select(['invoice.id', 'invoice.invoice_number', 'invoice.employee_id', 'invoice.company_id', 'invoice.expired_datetime', 'invoice.datetime_created AS invoice_datetime_created',
+                            'invoice_detail.number_month', 'invoice_detail.max_user_register', 'invoice_detail.max_storage_register', 'invoice_detail.plan_type_id', 
+                            'status.name AS status_name','status.column_name AS status_column_name', 'plan_type.name AS plan_type_name', 'plan_type.column_name AS plan_type_column_name',
+                            'employee.firstname AS employee_firstname', 'employee.lastname AS employee_lastname', 'employee.mobile_phone AS employee_mobile_phone',
+                            'employee.street_address_1 AS employee_street_address_1', 'employee.street_address_2 AS employee_street_address_2', 'employee.email AS employee_email',
+                            'company.name as company_name', 'company.phone_no as company_phone_no'])
+                        ->leftJoin('invoice_detail', 'invoice.id=invoice_detail.invoice_id')
+                        ->leftJoin('plan_type', 'invoice_detail.plan_type_id=plan_type.id')
+                        ->leftJoin('status', 'status.id=invoice.status_id')
+                        ->leftJoin('employee', 'employee.id=invoice.employee_id')
+                        ->leftJoin('company', 'company.id=invoice.company_id')
+                        ->where(['invoice.id' => $id])
+                        ->asArray()
+                        ->one();
+    }   
 }
