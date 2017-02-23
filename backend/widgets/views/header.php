@@ -262,7 +262,7 @@ use yii\helpers\Html;
                         <li class="user-footer">
                             <div class="pull-left">
                                 <a href="/staff/update?id=<?= Yii::$app->user->identity->id; ?>" class="btn btn-default btn-flat">Profile</a>
-                                <a href="/staff/change-password">Change password</a>
+                                <a href="/staff/change-password">Đổi mật khẩu</a>
                             </div>
                             <div class="pull-right">
                                 <!--                                <form action="/index.php?r=site/logout" method="post">
@@ -272,7 +272,7 @@ use yii\helpers\Html;
                                 <?php
                                 echo Html::beginForm(['/site/logout'], 'post')
                                 . Html::submitButton(
-                                        'Sign out', ['class' => 'btn btn-default btn-flat']
+                                        Yii::t('common', 'Log out'), ['class' => 'btn btn-default btn-flat']
                                 )
                                 . Html::endForm()
                                 ?>

@@ -11,6 +11,7 @@ return [
     'Password' => 'Mật khẩu',
     'Remember me' => 'Ghi nhớ?',
     'Login' => 'Đăng nhập',
+    'Log out' => 'Đăng xuất',
     'Incorrect username or password' => 'Tài khoản hoặc mật khẩu không hợp lệ',
     'Oops! Page not found.'=>'Không thể truy cập trang này',
     'We could not find the page you were looking for.'=>'Chúng tôi không thể tìm thấy trang bạn yêu cầu.',

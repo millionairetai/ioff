@@ -5,7 +5,7 @@ use yii\widgets\ActiveForm;
 <div class="login-box">
     <div class="login-box-body">
         <div class="login-logo">
-            <b>CENTER</b>OFFICE
+            <b>I</b>OFFICEZ
         </div><!-- /.login-logo -->
         <?php $form = ActiveForm::begin(); ?>
          <small>
