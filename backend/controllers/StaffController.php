@@ -6,6 +6,7 @@ use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use backend\models\ChangePasswordForm;
+use common\models\Staff;
 
 class StaffController extends \yii\web\Controller {
 
@@ -29,14 +30,17 @@ class StaffController extends \yii\web\Controller {
      */
     public function actionAdd() {
         $staff = \Yii::$app->request->post('Staff');
-
         if (isset($staff)) {
+//            $this->model = new \common\models\Staff(['scenario' => Staff::SCENARIO_ADD_STAFF]);
+            $this->_model->scenario = Staff::SCENARIO_ADD_STAFF;
             $this->_model->attributes = $staff;
 //            $this->_model->generateAuthKey();
             if ($this->_model->validate()) {
                 $this->_model->setPassword($this->_model->password);
                 if ($this->_model->save(false)) {
+                    Yii::$app->session->setFlash('success', sprintf(Yii::t('backend' , 'message_action'), Yii::t('common', 'Add')));
                     //Send email to staff.
+                    /////////////////////////////////////////////////////////////////////////////
                     return $this->redirect(['staff/index']);
                 }
             }
@@ -50,18 +54,15 @@ class StaffController extends \yii\web\Controller {
      */
     public function actionUpdate($id) {
         $this->_model = \common\models\Staff::findOne($id);
-
         if (!$this->_model) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
         $staff = \Yii::$app->request->post('Staff');
-
         if (isset($staff)) {
             $this->_model->attributes = $staff;
-//            $this->_model->package_name = \common\models\Package::findOne($staff['package_id'])->name;
-
             if ($this->_model->save()) {
+                Yii::$app->session->setFlash('success', sprintf(Yii::t('backend' , 'message_action'), Yii::t('common', 'Update')));
                 return $this->redirect(['staff/index']);
             }
         }
@@ -74,12 +75,12 @@ class StaffController extends \yii\web\Controller {
      */
     public function actionDelete($id) {
         $this->_model = \common\models\Staff::findOne($id);
-
         if (!$this->_model) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
         if ($this->_model->delete()) {
+            Yii::$app->session->setFlash('success', sprintf(Yii::t('backend' , 'message_action'), Yii::t('common', 'Delete')));
             return $this->redirect(['staff/index']);
         }
 

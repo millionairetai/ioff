@@ -9,10 +9,12 @@ use common\models\Authority;
 <div class="box box-primary">
     <div class="box-header">
         <h3 class="box-title">
-            <?php if ($model->isNewRecord) {  echo Yii::t('backend', 'Add staff');?>
-            <?php } else { echo Yii::t('backend', 'Update staff'); ?>
-                
-            <?php } ?>
+            <?php if ($model->isNewRecord) {
+                echo Yii::t('backend', 'Add staff'); ?>
+            <?php } else {
+                echo Yii::t('backend', 'Update staff'); ?>
+
+    <?php } ?>
         </h3>
     </div><!-- /.box-header -->
     <?php
@@ -29,8 +31,8 @@ use common\models\Authority;
         <?= $form->field($model, 'name')->textInput() ?>
         <?= $form->field($model, 'username')->textInput() ?>
         <?= $form->field($model, 'email')->textInput() ?>
-         <?= $form->field($model, 'phone_no')->textInput() ?>
-         <?= $form->field($model, 'address')->textInput() ?>
+        <?= $form->field($model, 'phone_no')->textInput() ?>
+        <?= $form->field($model, 'address')->textInput() ?>
         <?php if ($model->isNewRecord) { ?>
             <?= $form->field($model, 'password')->passwordInput() ?>
             <?= $form->field($model, 're_password')->passwordInput() ?>
@@ -49,7 +51,7 @@ use common\models\Authority;
 
     <div class="box-footer">
         <div class="form-group">
-        <?= Html::submitButton(Yii::t('common', 'Save'), ['class' => 'btn btn-primary']) ?>
+    <?= Html::submitButton(Yii::t('common', 'Save'), ['class' => 'btn btn-primary']) ?>
         </div>
     </div>
 <?php ActiveForm::end() ?>

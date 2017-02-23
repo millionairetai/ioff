@@ -29,6 +29,7 @@ use common\models\Job;
 class Staff extends \backend\components\db\ActiveRecord  implements IdentityInterface {
 
     public $re_password;
+    const SCENARIO_ADD_STAFF = 'add_staff';
 
     /**
      * @inheritdoc
@@ -44,16 +45,19 @@ class Staff extends \backend\components\db\ActiveRecord  implements IdentityInte
         return [
             [['authority_id', 'job_id', 'leaving_date', 'datetime_created', 'lastup_datetime', 'created_employee_id', 'lastup_employee_id'], 'integer'],
             [['name', 'username', 'password'], 'required'],
+            ['re_password', 'required', 'on' => self::SCENARIO_ADD_STAFF],
+            [['username'], 'string', 'max' => 128],
             ['username', 'unique',],
+            ['username', 'match', 'pattern' => '/^[a-z0-9_-]{6,30}$/i', 'message'=> Yii::t('backend', 'staff_error_validation_username')],
             [['disabled'], 'boolean'],
             [['name', 'address'], 'string', 'max' => 255],
             ['email', 'required'],
             ['email', 'email'],
             ['email', 'unique', 'targetClass' => '\common\models\Staff', 'message' => Yii::t('common','This email address has already been taken')],
             [['phone_no'], 'string', 'max' => 20],
-            [['username'], 'string', 'max' => 128],
-            ['password', 'string', 'min' => 6],
-            ['re_password', 'compare', 'compareAttribute'=>'password', 'message'=> Yii::t('common', "Passwords don't match"),]
+            ['password', 'match', 'pattern' => '/^(?=.*[A-Za-z_])(?=.*\d)[A-Za-z_\d]{8,}$/', 'message' => Yii::t('backend', 'Password must be minimum 8 characters at least 1 alphabet and 1 number')],
+            ['re_password', 'compare', 'compareAttribute'=>'password', 'message'=> Yii::t('common', "Passwords don't match"),],
+            [['name', 'username', 'password', 'email', 'phone_no', 'address', ], 'trim'],
         ];
     }
 
@@ -86,11 +90,7 @@ class Staff extends \backend\components\db\ActiveRecord  implements IdentityInte
      * @return ActiveDataProvider
      */
     public function search($params) {
-        $query = static::find()
-//                ->select(['staff.*', 'job.name as job_name'])
-                ->joinWith(['job'])
-                ->orderBy('staff.datetime_created DESC');
-//                ->joinWith(['authority']);
+        $query = static::find();
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => array('pageSize' => self::PAGE_SIZE)

@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'Add' => 'Thêm',
+    'Delete' => 'Xóa',
+    'Update' => 'Cập nhật',
     'project_title' => 'Tiêu đề',
     'project_description' => 'Mô tả',
     'Forgot password' => 'Quên mật khẩu',

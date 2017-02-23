@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'Add' => 'Add',
+    'Delete' => 'Delete',
+    'Update' => 'Update',
     'project_title' => 'Title',
     'project_description' => 'Description',
     'Forgot password' => 'Forgot password',

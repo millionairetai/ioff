@@ -30,7 +30,7 @@ class ChangePasswordForm extends Model {
             ['newPassword', 'required'],
             ['newPassword', 'string', 'min' => 6, 'max' => 64],
             ['newPassword', 'compare', 'compareAttribute' => 'rePassword', 'message' => Yii::t('common', 'Passwords do not match together')],
-            
+            ['newPassword', 'match', 'pattern' => '/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/', 'message' => Yii::t('backend', 'Password must be minimum 8 characters at least 1 alphabet and 1 number')],
             ['rePassword', 'filter', 'filter' => 'trim'],
         ];
     }
