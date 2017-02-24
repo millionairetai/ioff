@@ -1,5 +1,7 @@
 <?php
 
+$this->title = 'Thống kê công ty';
+
 $this->registerJs('if (document.getElementById("companyReportChart")) {
     var confixbarChart = {
         type: \'bar\',

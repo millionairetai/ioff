@@ -75,6 +75,7 @@ class OrderController extends \yii\web\Controller {
         $employee->firstname = $orderInfo['employee_firstname'];
         $employee->lastname = $orderInfo['employee_lastname'];
         $invoiceInfo = [
+            'id' => $id,
             'date_invoice' => Yii::$app->formatter->asDate(IoffDatetime::getDate()),
             'service_from' => Yii::$app->params['service_from'],
             'address_from' => Yii::$app->params['address_from'],
@@ -105,9 +106,78 @@ class OrderController extends \yii\web\Controller {
         return $this->render('view', ['invoiceInfo' => $invoiceInfo]);
     }
 
-    public function actionPrint() {
+    //Print order.
+    public function actionPrint($id) {
+        $planType = PlanType::getsIndexById();
+        if (empty($planType)) {
+            return $this->redirect('/order/index');
+        }
+        
+        if (!$orderInfo = Order::getOrderInfoById($id)) {
+            return $this->redirect('/order/index');
+        }
 
-        return $this->render('print', ['model' => $this->_model]);
+        //Get total money.
+        switch ($orderInfo['plan_type_column_name']) {
+            case 'free':
+                $totalMoney = 0;
+                break;
+            case 'standard':
+                $totalMoney = ($planType[$orderInfo['plan_type_id']]['fee_user'] * $orderInfo['max_user_register'] + $planType[$orderInfo['plan_type_id']]['fee_storage'] * $orderInfo['max_storage_register']) * $orderInfo['number_month'];
+                break;
+            case 'premium':
+                $totalMoney = ($planType[$orderInfo['plan_type_id']]['fee_user'] + $planType[$orderInfo['plan_type_id']]['fee_storage'] * $orderInfo['max_storage_register']) * $orderInfo['number_month'];
+                break;
+        }
+        
+        //Complete order if staff request.
+        if (Yii::$app->request->post()) {
+            try {
+                $transaction = \Yii::$app->db->beginTransaction();
+                if ($invoice = $this->_completeOrder($orderInfo, $planType, $totalMoney)) {
+                    $this->_sendInvoiceEmail($orderInfo, $planType, $invoice);
+                    Yii::$app->session->setFlash('success', Yii::t('backend', 'Complete order sucessfully'));
+                }
+
+                $transaction->commit();
+            } catch (\Exception $ex) {
+                $transaction->rollBack();
+                return false;
+            }
+        }
+
+        $employee = new \common\models\Employee();
+        $employee->firstname = $orderInfo['employee_firstname'];
+        $employee->lastname = $orderInfo['employee_lastname'];
+        $invoiceInfo = [
+            'date_invoice' => Yii::$app->formatter->asDate(IoffDatetime::getDate()),
+            'service_from' => Yii::$app->params['service_from'],
+            'address_from' => Yii::$app->params['address_from'],
+            'phone_from' => Yii::$app->params['phone_from'],
+            'email_from' => Yii::$app->params['email_from'],
+            'fullname_to' => $employee->fullname,
+            'address_to' => $orderInfo['employee_street_address_1'],
+            'phone_to' => $orderInfo['employee_mobile_phone'],
+            'email_to' => $orderInfo['employee_email'],
+//            'invoice_no' => $invoiceOrderNo['invoiceNo'],
+            'order_no' => $orderInfo['order_number'],
+            'account' => $orderInfo['employee_email'],
+            'product_name' => $orderInfo['plan_type_name'],
+            'description' => sprintf(Yii::t('common', 'description invoice'), $orderInfo['plan_type_name'], 
+                    !empty($orderInfo['max_user_register']) ? $orderInfo['max_user_register'] : strtolower(Yii::t('common', 'Unlimited')), 
+                    $orderInfo['max_storage_register'], 
+                    !empty($orderInfo['number_month']) ? $orderInfo['number_month'] : strtolower(Yii::t('common', 'Unlimited'))
+                ),
+            'subtotal' => $totalMoney,
+            'payment_method' => Yii::t('common', 'Bank transfer'),
+            'tax_percent' => Yii::$app->params['tax_percent'],
+            'total_tax' => $totalMoney * Yii::$app->params['tax_percent'],
+            'total' => $totalMoney + $totalMoney * Yii::$app->params['tax_percent'],
+            'is_wait_pay' => empty($invoice) ? $orderInfo['status_column_name'] == Order::COLUNM_NAME_WAIT_PAY : false,
+            'is_payed' => empty($invoice) ? $orderInfo['status_column_name'] == Order::COLUNM_NAME_PAYED : false,
+        ];
+
+        return $this->render('print', ['invoiceInfo' => $invoiceInfo]);
     }
 
     /**

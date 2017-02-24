@@ -4,6 +4,8 @@ use yii\grid\GridView;
 use yii\grid\SerialColumn;
 use \yii\helpers\ArrayHelper;
 use yii\widgets\Pjax;
+
+$this->title = 'Danh sách công ty';
 ?>
 <style type="text/css">
     .tool-right {

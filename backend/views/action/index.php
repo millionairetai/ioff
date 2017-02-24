@@ -2,6 +2,8 @@
 
 use yii\grid\GridView;
 use yii\grid\SerialColumn;
+
+$this->title = 'Chức năng';
 ?>
 <style type="text/css">
     .tool-right {
@@ -12,7 +14,7 @@ use yii\grid\SerialColumn;
 </style>
 <div class="box box-primary">
     <div class="box-header">
-        <h3 class="box-title">Functionoality group</h3>
+        <h3 class="box-title">Chức năng</h3>
         <div class="tool-right">
             <a class="btn btn-info ng-binding" href="add"><i class="fa fa-plus-square"></i> Thêm</a>
         </div>

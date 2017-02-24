@@ -1,6 +1,8 @@
 <?php
 
 use yii\grid\GridView;
+
+$this->title = 'Danh sách nhóm chức năng';
 ?>
 <style type="text/css">
     .tool-right {
@@ -11,7 +13,7 @@ use yii\grid\GridView;
 </style>
 <div class="box box-primary">
     <div class="box-header">
-        <h3 class="box-title">Functionoality group</h3>
+        <h3 class="box-title">Nhóm chức năng</h3>
         <div class="tool-right">
             <a class="btn btn-info ng-binding" href="add"><i class="fa fa-plus-square"></i> Thêm</a>
         </div>

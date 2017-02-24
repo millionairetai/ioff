@@ -3,6 +3,8 @@
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 use common\models\Controller;
+
+$this->title = 'Thông tin đơn đặt hàng';
 ?>
 <div class="box box-primary">
     <div class="box-header">
@@ -137,7 +139,7 @@ use common\models\Controller;
         ?>
         <div class="row no-print">
             <div class="col-xs-12">
-                <a href="print" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> In</a> 
+                <a href="print?id=<?= $invoiceInfo['id']; ?>" target="_blank" class="btn btn-default"><i class="fa fa-print"></i> In</a> 
                 <a href="index" class="btn btn-default pull-left"><i class="fa fa-backward"></i> Quay lại</a>
                 <?php if ($invoiceInfo['is_wait_pay']): ?>
                     <input type="submit" value="Hoàn tất hóa đơn" class="btn btn-primary pull-right" style="margin-right: 5px;" /> 

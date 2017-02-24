@@ -9,9 +9,9 @@ use common\models\Package;
     <div class="box-header">
         <h3 class="box-title">
             <?php if ($model->isNewRecord) { ?>
-                Create new functionality group
+                Thêm nhóm chức năng
             <?php } else { ?>
-                Update functionality group
+                Cập nhật nhóm chức năng
             <?php } ?>
         </h3>
     </div><!-- /.box-header -->

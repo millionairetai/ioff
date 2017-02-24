@@ -9,9 +9,9 @@ use common\models\Language;
     <div class="box-header">
         <h3 class="box-title">
             <?php if ($model->isNewRecord) { ?>
-                Add translation 
+                Thêm dịch 
             <?php } else { ?>
-                Update translation 
+                Cập nhật dịch
             <?php } ?>
         </h3>
     </div><!-- /.box-header -->

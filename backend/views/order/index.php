@@ -2,6 +2,8 @@
 
 use yii\grid\GridView;
 use yii\grid\SerialColumn;
+
+$this->title = 'Danh sách đơn hàng';
 ?>
 <style type="text/css">
     .tool-right {

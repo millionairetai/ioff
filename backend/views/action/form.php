@@ -8,9 +8,9 @@ use common\models\Controller;
     <div class="box-header">
         <h3 class="box-title">
             <?php if ($model->isNewRecord) { ?>
-                Create new functionality
+                Thêm chức năng mới
             <?php } else { ?>
-                Update functionality
+                Cập nhật chức năng
             <?php } ?>
         </h3>
     </div><!-- /.box-header -->

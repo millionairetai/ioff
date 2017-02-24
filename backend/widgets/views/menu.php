@@ -29,7 +29,7 @@ use yii\helpers\Url;
             </li>
             <li>
                 <a href="/order/index">
-                    <i class="fa fa-credit-card"></i> <span>Hoá đơn</span> 
+                    <i class="fa fa-credit-card"></i> <span>Đơn hàng</span> 
                 </a>
             </li>
             <li>

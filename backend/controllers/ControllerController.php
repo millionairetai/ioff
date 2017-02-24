@@ -21,32 +21,28 @@ class ControllerController extends \yii\web\Controller {
     }
 
     public function actionAdd() {
-            $controller = \Yii::$app->request->post('Controller');
-            if (isset($controller)) {
+        $controller = \Yii::$app->request->post('Controller');
+        if (isset($controller)) {
             $this->_model->attributes = $controller;
-                $this->_model->package_name = \common\models\Package::findOne($controller['package_id'])->name;
-                
+            $this->_model->package_name = \common\models\Package::findOne($controller['package_id'])->name;
             if ($this->_model->save()) {
                 return $this->redirect(['controller/index']);
             }
         }
-        
+
         return $this->render('form', ['model' => $this->_model]);
     }
 
     public function actionUpdate($id) {
         $this->_model = \common\models\Controller::findOne($id);
-        
         if (!$this->_model) {
             throw new NotFoundHttpException('The requested page does not exist.');
         }
 
         $controller = \Yii::$app->request->post('Controller');
-        
         if (isset($controller)) {
             $this->_model->attributes = $controller;
             $this->_model->package_name = \common\models\Package::findOne($controller['package_id'])->name;
-            
             if ($this->_model->save()) {
                 return $this->redirect(['controller/index']);
             }
@@ -68,4 +64,5 @@ class ControllerController extends \yii\web\Controller {
 
         throw new NotFoundHttpException('Can not delete controller');
     }
+
 }

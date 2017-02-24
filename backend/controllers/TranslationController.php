@@ -14,11 +14,11 @@ use common\models\Translation;
 class TranslationController extends \yii\web\Controller {
 
     private $_model;
-    private $_ownerTable =  [
-        'controller' => 'controller', 
+    private $_ownerTable = [
+        'controller' => 'controller',
         'action' => 'action',
         'plan_type' => 'plan_type',
-        'status'    => 'status',
+        'status' => 'status',
         'priority' => 'priority',
         'event_confirmation_type' => 'event_confirmation_type'
     ];
@@ -31,8 +31,8 @@ class TranslationController extends \yii\web\Controller {
     public function actionIndex() {
         $dataProvider = $this->_model->search(\Yii::$app->request->getQueryParams());
         return $this->render('index', [
-            'model' => $this->_model,
-            'dataProvider' => $dataProvider
+                    'model' => $this->_model,
+                    'dataProvider' => $dataProvider
         ]);
     }
 
@@ -43,7 +43,7 @@ class TranslationController extends \yii\web\Controller {
         $controller = \Yii::$app->request->post('Translation');
         if (isset($controller)) {
             if ($ownerTable = $controller['owner_table']) {
-                $this->_model->attributes = $controller;   
+                $this->_model->attributes = $controller;
                 switch ($ownerTable) {
                     case 'action':
                         $ownerIds = Action::getControllerPlusAction();
@@ -64,7 +64,7 @@ class TranslationController extends \yii\web\Controller {
                         $ownerIds = \common\models\EventConfirmationType::gets(['column_name', 'id'], true, true, false);
                         break;
                 }
-                
+
                 if (!empty($controller['owner_id'])) {
                     $translatedTexts = $controller['translated_text'];
                     $this->_model->translated_text = null;
@@ -74,7 +74,6 @@ class TranslationController extends \yii\web\Controller {
                         if (trim($this->_model->translated_text) == '') {
                             $isEmptyTransl = true;
                             Yii::$app->session->setFlash('error', 'Please input text translation all.');
-                            
                         }
                         $translaions[] = [
                             'language_id' => $this->_model->language_id,
@@ -83,26 +82,26 @@ class TranslationController extends \yii\web\Controller {
                             'translated_text' => $this->_model->translated_text,
                         ];
                     }
-                    
+
                     if (empty($isEmptyTransl)) {
                         $transaction = \Yii::$app->db->beginTransaction();
                         if (Translation::batchInsert($translaions) === false) {
                             $transaction->rollBack();
                         }
-                    
+
                         Yii::$app->session->setFlash('success', 'Add translation successfully.');
                         $transaction->commit();
                         return $this->redirect(['translation/index']);
                     }
                 }
-            }            
+            }
         }
 
         return $this->render('form', [
-            'model' => $this->_model, 
-            'ownerIds' => $ownerIds,
-            'ownerTable' => $this->_ownerTable, 
-            'language' => Language::find()->select(['name', 'id'])->indexBy('id')->column()
+                    'model' => $this->_model,
+                    'ownerIds' => $ownerIds,
+                    'ownerTable' => $this->_ownerTable,
+                    'language' => Language::find()->select(['name', 'id'])->indexBy('id')->column()
         ]);
     }
 
@@ -124,7 +123,11 @@ class TranslationController extends \yii\web\Controller {
             }
         }
 
-        return $this->render('form', ['model' => $this->_model]);
+        return $this->render('form', [
+                    'model' => $this->_model,
+                    'ownerTable' => $this->_ownerTable,
+                    'language' => Language::find()->select(['name', 'id'])->indexBy('id')->column()
+        ]);
     }
 
     public function actionDelete($id) {
