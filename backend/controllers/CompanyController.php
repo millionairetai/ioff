@@ -6,6 +6,8 @@ use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use common\models\Company;
+use backend\models\CompanySearch;
+use yii\data\ActiveDataProvider;
 
 class CompanyController extends \yii\web\Controller {
 
@@ -20,6 +22,7 @@ class CompanyController extends \yii\web\Controller {
      * Get list of company
      */
     public function actionIndex() {
+        $this->_model = new CompanySearch();
         $dataProvider = $this->_model->search(\Yii::$app->request->getQueryParams());
         return $this->render('index', ['model' => $this->_model, 'dataProvider' => $dataProvider]);
     }
@@ -120,7 +123,6 @@ class CompanyController extends \yii\web\Controller {
 
         return $this->render('company_report', ['report' => $report]);
     }
-    
     
     private function _getDsnAttribute($name, $dsn) {
         if (preg_match('/' . $name . '=([^;]*)/', $dsn, $match)) {

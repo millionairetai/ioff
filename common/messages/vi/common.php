@@ -89,6 +89,8 @@ return [
     'Max user register' => 'Số nhân viên tối đa',
     'Max storage register' => 'Dung lượng lưu trữ tối đa',    
     'Revenue' => 'Doanh thu',
+    'Expired date' => 'Ngày hết hạn',    
+    'Start date' => 'Ngày bắt đầu',    
     //Calendar
     'Datetime Created' => 'Ngày tạo',
     'Lastup Datetime' => 'Thời gian cập nhật gần đây nhất',

@@ -1,11 +1,15 @@
-<?php 
-    $this->title = 'Lịch sử thanh toán';
+<?php
+$this->title = 'Lịch sử thanh toán';
 ?>
 <section class="content-header">
-    <h1>PAYMENT HISTORY</h1>
+    <h1>Lịch sử thanh toán</h1>
 </section>
 <section class="content">
     <ul class="timeline-create">
+        <?php if (!$invoices): ?>
+            Không có dữ liệu
+        <?php endif; ?>
+
         <?php foreach ($invoices as $invoice): ?>
             <li class='work'>
                 <div class="relative">
@@ -27,4 +31,7 @@
             </li>
         <?php endforeach; ?>
     </ul>
+    <div class="col-xs-12">
+        <a href="/company/index" class="btn btn-default pull-left"><i class="fa fa-backward"></i> Quay lại</a>
+    </div>
 </section>

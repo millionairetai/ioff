@@ -7,7 +7,7 @@ $this->registerJs('if (document.getElementById("companyReportChart")) {
             labels: ' . $report['chart']['labels'] . ',
             datasets: [
                 {
-                    label: "Company",
+                    label: "Số công ty",
                     backgroundColor: "#00a65a",
                     data: ' . $report['chart']['data'] . '
                 }
@@ -40,14 +40,14 @@ $this->registerJs('if (document.getElementById("companyReportChart")) {
             <!-- Default box -->
             <div class="box">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Monthly Recap Report</h3>
+                    <h3 class="box-title">Báo cáo công ty</h3>
                     <div class="box-tools pull-right">
                         <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
                         <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
                     </div>
                 </div>
                 <div class="box-body">
-                    <form role="form" class="form-horizontal">
+<!--                    <form role="form" class="form-horizontal">
                         <div class="form-group">
                             <div class="col-sm-offset-3 col-sm-6 text-right">
                                 <select>
@@ -65,20 +65,20 @@ $this->registerJs('if (document.getElementById("companyReportChart")) {
                                 </select>
                             </div>
                         </div>
-                    </form>
+                    </form>-->
                     <div class="row">
                         <div class="col-md-5">
-                            <h4>Statistic system:</h4>
-                            <h5><?= $report['company']['total_company'] ?> companies</h5>
+                            <h4>Thống kê theo từng loại:</h4>
+                            <h5><?= $report['company']['total_company'] ?> công ty</h5>
                             <ul>
-                                <li>Free: <?= $report['company']['total_free_company'] ?> companies</li>
-                                <li>Standard: <?= $report['company']['total_standard_company'] ?> companies</li>
-                                <li>Premium: <?= $report['company']['total_premium_company'] ?> companies</li>
+                                <li>Gói free: <?= $report['company']['total_free_company'] ?> công ty</li>
+                                <li>Gói standard: <?= $report['company']['total_standard_company'] ?> công ty</li>
+                                <li>Gói premium: <?= $report['company']['total_premium_company'] ?> công ty</li>
                             </ul>
                         </div>
 
                         <div class="col-md-7">
-                            <h4>Used Storage</h4>
+                            <h4>Dung lượng lưu trữ</h4>
                             <p><?= $report['company']['total_used_storage'] ?> MB / <?= $report['company']['total_disk'] ?> MB</p>
                             <table>
                                 <tr>
@@ -94,7 +94,7 @@ $this->registerJs('if (document.getElementById("companyReportChart")) {
                         </div>
                     </div>
                     <p class="text-center">
-                        <strong>Number of company this month</strong>
+                        <strong>Thống kê số lượng công ty theo tháng</strong>
                     </p>
                     <canvas id="companyReportChart"></canvas>
                 </div><!-- /.box-body -->

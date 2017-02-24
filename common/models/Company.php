@@ -42,6 +42,8 @@ class Company extends \backend\components\db\ActiveRecord {
     const COLUNM_NAME_ACTIVE = 'company.active';
     const COLUNM_NAME_INACTIVE = 'company.inactive';
 
+    //Add attribute for searching plan type company.
+    public $plan_type_name;
     /**
      * @inheritdoc
      */
@@ -61,7 +63,8 @@ class Company extends \backend\components\db\ActiveRecord {
             [['name', 'address', 'profile_image_path'], 'string', 'max' => 255],
             [['email', 'domain'], 'string', 'max' => 99],
             [['phone_no'], 'string', 'max' => 50],
-            [['language_code'], 'string', 'max' => 10]
+            [['language_code'], 'string', 'max' => 10],
+            [['plan_type_name'], 'integer',],
         ];
     }
 
@@ -82,13 +85,13 @@ class Company extends \backend\components\db\ActiveRecord {
             'profile_image_path' => Yii::t('common', 'Profile Image Path'),
             'description_title' => Yii::t('common', 'Title'),
             'description' => Yii::t('common', 'Description'),
-            'start_date' => Yii::t('common', 'Start Date'),
-            'expired_date' => Yii::t('common', 'Expired Date'),
+            'start_date' => Yii::t('common', 'Start date'),
+            'expired_date' => Yii::t('common', 'Expired date'),
             'language_code' => Yii::t('common', 'Language Code'),
             'total_storage' => Yii::t('common', 'Total Storage'),
             'total_employee' => Yii::t('common', 'Total Employee'),
-            'max_user_register' => Yii::t('common', 'Max Storage Register'),
-            'max_storage_register' => Yii::t('common', 'Max Storage Register'),
+            'max_user_register' => Yii::t('common', 'Max user register'),
+            'max_storage_register' => Yii::t('common', 'Max storage register'),
             'datetime_created' => Yii::t('common', 'Datetime Created'),
             'lastup_datetime' => Yii::t('common', 'Lastup Datetime'),
             'created_employee_id' => Yii::t('common', 'Created Employee ID'),
@@ -107,12 +110,10 @@ class Company extends \backend\components\db\ActiveRecord {
      */
     public function search($params) {
         $query = static::find()
-//                ->select(['staff.*', 'job.name as job_name'])
+                ->select(['company.*', 'plan_type.name as plan_type_name'])
                 ->joinWith(['status'])
-                ->joinWith(['plan_type'])
-                ->orderBy('datetime_created DESC');
-
-//                ->joinWith(['authority']);
+                ->joinWith(['plan_type']);
+//                ->orderBy('datetime_created DESC');
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
             'pagination' => array('pageSize' => 10)
@@ -125,7 +126,10 @@ class Company extends \backend\components\db\ActiveRecord {
         $query->andFilterWhere(['like', 'email', $this->email]);
         $query->andFilterWhere(['like', 'address', $this->address]);
         $query->andFilterWhere(['like', 'phone_no', $this->phone_no]);
-        $query->orFilterWhere(['like', 'domain', $this->domain]);
+        $query->andFilterWhere(['like', 'max_user_register', $this->max_user_register]);
+        $query->andFilterWhere(['like', 'max_storage_register', $this->max_storage_register]);
+        $query->andFilterWhere(['like', 'plan_type.name', $this->plan_type_name]);
+//        $query->orFilterWhere(['like', 'domain', $this->domain]);
 
         return $dataProvider;
     }

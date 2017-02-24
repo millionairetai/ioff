@@ -2,6 +2,7 @@
 
 use yii\grid\GridView;
 use yii\grid\SerialColumn;
+use yii\widgets\Pjax;
 
 $this->title = 'Danh sách nhân viên';
 ?>
@@ -20,6 +21,7 @@ $this->title = 'Danh sách nhân viên';
         </div>
     </div><!-- /.box-header -->      
     <div class="box-body list-item">
+        <?php Pjax::begin(); ?>
         <?=
         GridView::widget([
             'dataProvider' => $dataProvider,
@@ -48,9 +50,9 @@ $this->title = 'Danh sách nhân viên';
                     'template' => '{update} {delete}',
                 ]
             ],
-            
         ])
-        ?>             
+        ?>           
+        <?php Pjax::end(); ?>
     </div>                
 
 </div>

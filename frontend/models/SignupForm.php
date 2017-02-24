@@ -113,11 +113,14 @@ class SignupForm extends Model {
 
             $company->status_id = $status['id'];
             //Get free plan type
-            if ($company->plan_type_id == $planType[PlanType::COLUMN_NAME_FREE]['id']) {
-                $company->start_date = time();
-            } else {
-                $company->start_date = 0;
-            }
+//            if ($company->plan_type_id == $planType[PlanType::COLUMN_NAME_FREE]['id']) {
+//                $company->start_date = time();
+//            } else {
+//                $company->start_date = 0;
+//            }
+            //All plan type when register we update start date at the time register.
+            //When change package we also update start datet again.
+            $company->start_date = time();
 
             $company->expired_date = 0;
             $company->phone_no = $this->phoneNo;
