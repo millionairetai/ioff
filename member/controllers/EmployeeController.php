@@ -124,6 +124,13 @@ class EmployeeController extends ApiController {
         $emails = \Yii::$app->request->post('emails');
         $this->_message = 'Email %s is invalid';
         try {
+            //Check max employee with current employee total. If over max employee, we aren't allowed to add new.
+            $company = Company::getById(Yii::$app->user->identity->company_id, [], false);
+            if ($company['max_user_register'] != 0 && ($company['max_user_register'] - $company['total_employee']) < count($emails)) {
+                $this->_message = Yii::t('member', 'Total employee can not be more than max of employee package. Please upgrade your package to add new employee.');
+                throw new \Exception($this->_message);
+            }
+            
             //Check valid if that's email
             $error = null;
             $validator = new EmailValidator();
@@ -181,6 +188,12 @@ class EmployeeController extends ApiController {
                 $this->_message = 'Invite new employees fail ';
                 throw new \Exception($this->_message);
             }
+            
+            //Increase total employee up.
+            if (!Company::updateAllCounters(['total_employee' => count($emails)], ['id' => Yii::$app->user->identity->company_id])) {
+                $this->_message = Yii::t('member', 'error_system');
+                throw new \Exception($this->_message);
+            }            
         } catch (\Exception $e) {
             return $this->sendResponse(true, $e->getMessage(), []);
         }
