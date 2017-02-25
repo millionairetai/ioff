@@ -27,11 +27,11 @@
                                     </div>
                                     <div class="form-group">
                                         <input type="checkbox" ng-model="message.option" icheck ng-click="message.option = true;
-                                            message.all = false;" /> {{$root.$lang.display_option}}
+                                                    message.all = false;" /> {{$root.$lang.display_option}}
                                     </div>
                                     <div class="option-message" ng-show="message.option">
-                                        <div class="form-group">
-                                            <div class="col-sm-12" >
+                                        <div class="form-group row clearfix">
+                                            <div class="col-sm-4" >
                                                 <label for="inputEmail3" class="control-label">{{$root.$lang.project_department}}</label>
                                                 <div id="container-department">
                                                     <label ng-repeat="department in departments">
@@ -41,28 +41,29 @@
                                             </div>
                                         </div>
 
-                                        <br />
-                                        <div class="form-group">
-                                            <label for="inputEmail3" class="col-sm-3 control-label">{{$root.$lang.project_members}}</label>
-                                            <div class="col-sm-9">
-                                                <ui-select multiple  ng-model="message.employees" theme="bootstrap" ng-disabled="disabled"  on-select="selectMember($item, $model)">
-                                                    <ui-select-match placeholder="">
-                                                        <img class="img-circle" src="{{$item.image}}" height="30" width="30" />
-                                                        {{$item.firstname}}
-                                                    </ui-select-match>
-                                                    <ui-select-choices refresh="getEmployees($select.search)" refresh-delay="1000" repeat="person in employees">
-                                                        <div class="item-result ">
-                                                            <div class="item-result-name">
-                                                                <img class="img-circle" src="{{person.image}}" height="50" width="50">
-                                                                <div class="container-employee-search-info">
-                                                                    <strong >{{person.firstname}}</strong><br>
-                                                                    <i >{{person.email}}</i>
+                                        <div class="form-group row clearfix">
+                                            <div class="col-sm-6">
+                                                <label for="inputEmail3" class="control-label">{{$root.$lang.project_members}}</label>
+                                                <div class="">
+                                                    <ui-select multiple  ng-model="message.employees" theme="bootstrap" ng-disabled="disabled"  on-select="selectMember($item, $model)">
+                                                        <ui-select-match placeholder="">
+                                                            <img class="img-circle" src="{{$item.image}}" height="30" width="30" />
+                                                            {{$item.firstname}}
+                                                        </ui-select-match>
+                                                        <ui-select-choices refresh="getEmployees($select.search)" refresh-delay="1000" repeat="person in employees">
+                                                            <div class="item-result ">
+                                                                <div class="item-result-name">
+                                                                    <img class="img-circle" src="{{person.image}}" height="50" width="50">
+                                                                    <div class="container-employee-search-info">
+                                                                        <strong >{{person.firstname}}</strong><br>
+                                                                        <i >{{person.email}}</i>
+                                                                    </div>
+                                                                    <div class="clearBoth"></div>
                                                                 </div>
-                                                                <div class="clearBoth"></div>
                                                             </div>
-                                                        </div>
-                                                    </ui-select-choices>
-                                                </ui-select>
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -480,7 +481,7 @@
                     <!-- /.box-body -->
                 </div>
 
-                <div class="box box-info box-solid" ng-show="(myNumberRequest.sent!=0 || myNumberRequest.received!=0)">
+                <div class="box box-info box-solid" ng-show="(myNumberRequest.sent != 0 || myNumberRequest.received != 0)">
                     <div class="box-header with-border">
                         <h4 class="box-title">{{$root.$lang.my_request}}</h4>
                     </div>
