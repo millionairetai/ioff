@@ -14,6 +14,7 @@ use member\models\ChangePasswordForm;
 use common\models\File;
 use yii\validators\ImageValidator;
 use common\models\Activity;
+use common\models\Company;
 
 class EmployeeController extends ApiController {
 
@@ -238,6 +239,14 @@ class EmployeeController extends ApiController {
     //Add an employee
     public function actionAdd() {
         try {
+            $transaction = \Yii::$app->db->beginTransaction();
+            //Check max employee with current employee total. If over max employee, we aren't allowed to add new.
+            $company = Company::getById(Yii::$app->user->identity->company_id, [], false);
+            if ($company['max_user_register'] != 0 && $company['total_employee'] >= $company['max_user_register']) {
+                $this->_message = Yii::t('member', 'Total employee can not be more than max of employe package. Please upgrade your package to add new employee.');
+                throw new \Exception('Total employee can not be more than max of employe package.');
+            }
+            
             if ($employee = new Employee()) {
                 $employee->attributes = Yii::$app->request->post();
                 $employee->birthdate = $employee->birthdate != 0 ?  strtotime($employee->birthdate) : $employee->birthdate;;
@@ -254,7 +263,6 @@ class EmployeeController extends ApiController {
                     
                     $employee->setPassword($employee->password);
                     $employee->generateAuthKey();
-                    $transaction = \Yii::$app->db->beginTransaction();
                     if ($employee->save() !== false) {
                         //Save activity
                        //update table activity
@@ -268,11 +276,18 @@ class EmployeeController extends ApiController {
                         if ($activity->save() === false) {
                             throw new \Exception('Save record to table Activity fail');
                         }
-                        //Send email to that employee to annouce.
-                        $employee->sendMail($dataSend, EmailTemplate::getTheme(EmailTemplate::SUCCESS_EMPLOYEE_REGISTRATION));
-                        $transaction->commit();
-                        return $this->sendResponse($this->_error, $this->_message, []);
                     }
+                    
+                    //Increase total employee one step up.
+                    if (!Company::updateAllCounters(['total_employee' => 1], ['id' => Yii::$app->user->identity->company_id])) {
+                        $this->_message = Yii::t('member', 'error_system');
+                        throw new \Exception('Can not increase total employee up');
+                    }
+                    
+                    //Send email to that employee to annouce.
+                    $employee->sendMail($dataSend, EmailTemplate::getTheme(EmailTemplate::SUCCESS_EMPLOYEE_REGISTRATION));
+                    $transaction->commit();
+                    return $this->sendResponse($this->_error, $this->_message, []);
                 }
                 
                 $this->_message = $this->parserMessage($employee->getErrors());

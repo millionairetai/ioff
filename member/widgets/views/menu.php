@@ -67,7 +67,7 @@ use yii\helpers\Url;
                     <i class="fa fa-spinner"></i> <span>{{$root.$lang.requestment_category}}</span> 
                 </a>
             </li>
-            <li>
+<!--            <li>
                 <a href="#company">
                     <i class="fa fa-file"></i> <span>{{$root.$lang.file}}</span> 
                 </a>
@@ -76,7 +76,7 @@ use yii\helpers\Url;
                 <a href="#company">
                     <i class="fa fa-cc-mastercard"></i> <span>{{$root.$lang.invoice}}</span> 
                 </a>
-            </li>
+            </li>-->
             <li>
                 <a href="<?php echo Url::to('index/logout') ?>">
                     <i class="fa fa-sign-out"></i> <span> Logout</span> 

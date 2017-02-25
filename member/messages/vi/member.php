@@ -160,4 +160,5 @@ return [
 //    'description invoice' => 'Gói %s, người dùng tối đa %s, dung lượng lưu trữ tối đa %s',
     'ID' => 'ID',
     'Company' => 'Công ty',
+    'Total employee can not be more than max of employe package. Please upgrade your package to add new employee.' => 'Tổng số nhân viên không được lớn hơn số người dùng tối đa của gói. <br /> Xin hãy nâng cấp gói lên để tiếp tục thêm thành viên mới',
 ];
