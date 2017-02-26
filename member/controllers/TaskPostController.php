@@ -188,7 +188,12 @@ class TaskPostController extends ApiController {
             }
 
             //move file
-            File::addFiles($_FILES, \Yii::$app->params['PathUpload'], $taskPost->id, TaskPost::tableName());
+            $returnFile = File::addFiles($_FILES, \Yii::$app->params['PathUpload'], $taskPost->id, TaskPost::tableName());
+            if ($returnFile == 'max_storage_register') {
+                $this->_error = true;
+                throw new \Exception(Yii::t('member', 'Total storage can not be more than max of storage package. Please upgrade your package to upload file'));
+            }
+            
             $files = File::getFiles($taskPost->id, TaskPost::tableName());
             $fileData = [];
             foreach ($files as $val) {
@@ -257,8 +262,13 @@ class TaskPostController extends ApiController {
             $transaction->commit();
             return $this->sendResponse(false, [], ['collection' => $collection, 'files' => [$taskPost->id => $fileData]]);
         } catch (\Exception $e) {
+            $this->_message = $e->getMessage();
+            if (!$this->_error) {
+                $this->_error = true;
+                $this->_message = \Yii::t('member', 'error_system');
+            }
             $transaction->rollBack();
-            return $this->sendResponse(true, \Yii::t('member', 'error_system'), []);
+            return $this->sendResponse($this->_error, $this->_message, []);
         }
     }
 

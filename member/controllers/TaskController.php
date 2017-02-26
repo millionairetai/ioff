@@ -62,7 +62,12 @@ class TaskController extends ApiController {
                 }
             }
 
-            File::addFiles($_FILES, \Yii::$app->params['PathUpload'], $task->id, File::TABLE_TASK);
+            $returnFile = File::addFiles($_FILES, \Yii::$app->params['PathUpload'], $task->id, File::TABLE_TASK);
+            if ($returnFile == 'max_storage_register') {
+                $this->_error = true;
+                throw new \Exception(Yii::t('member', 'Total storage can not be more than max of storage package. Please upgrade your package to upload file'));
+            }
+            
             $activity = new Activity();
             $activity->owner_id = $task->id;
             $activity->owner_table = Activity::TABLE_TASK;
@@ -478,7 +483,11 @@ class TaskController extends ApiController {
 
             //move file
             $dataPost['fileList'] = File::addFiles($_FILES, \Yii::$app->params['PathUpload'], $task->id, Task::tableName());
-
+            if ($dataPost['fileList'] == 'max_storage_register') {
+                $this->_error = true;
+                throw new \Exception(Yii::t('member', 'Total storage can not be more than max of storage package. Please upgrade your package to upload file'));
+            }
+            
             //update table activity
             $activity = new Activity();
             $activity->owner_id = $task->id;

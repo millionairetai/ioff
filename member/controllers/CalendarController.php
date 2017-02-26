@@ -112,8 +112,12 @@ class CalendarController extends ApiController {
             }
 
             //move file
-            File::addFiles($_FILES, \Yii::$app->params['PathUpload'], $ob->id, File::TABLE_EVENT);
-
+            $returnFile = File::addFiles($_FILES, \Yii::$app->params['PathUpload'], $ob->id, File::TABLE_EVENT);
+            if ($returnFile == 'max_storage_register') {
+                $this->_error = true;
+                throw new \Exception(Yii::t('member', 'Total storage can not be more than max of storage package. Please upgrade your package to upload file'));
+            }
+            
             //activity
             $activity = new Activity();
             $activity->owner_id = $ob->id;
@@ -248,7 +252,6 @@ class CalendarController extends ApiController {
             $transaction->commit();
         } catch (\Exception $e) {
             $this->_message = $e->getMessage();
-
             if (!$this->_error) {
                 $this->_error = true;
                 $this->_message = \Yii::t('member', 'error_system');
@@ -301,7 +304,11 @@ class CalendarController extends ApiController {
             $this->_updataRemind($dataPost, $mergeEmployee, $ob);
             //move file
             $dataPost['fileList'] = File::addFiles($_FILES, \Yii::$app->params['PathUpload'], $ob->id, File::TABLE_EVENT);
-
+            if ($dataPost['fileList'] == 'max_storage_register') {
+                $this->_error = true;
+                throw new \Exception(Yii::t('member', 'Total storage can not be more than max of storage package. Please upgrade your package to upload file'));
+            }
+            
             //update table activity
             $activity = new Activity();
             $activity->owner_id = $ob->id;

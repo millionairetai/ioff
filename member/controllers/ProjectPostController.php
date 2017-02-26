@@ -72,7 +72,6 @@ class ProjectPostController extends ApiController {
             $transaction = \Yii::$app->db->beginTransaction();
             $dataPost = [];
             $projectJson = \Yii::$app->request->post('project', '');
-    
             if (strlen($projectJson)) {
                 $dataPost = json_decode($projectJson, true);
             }
@@ -92,7 +91,6 @@ class ProjectPostController extends ApiController {
             $projectPost->content       = $dataPost['description'];
             $projectPost->content_parse = $dataPost['description'];
             $projectPost->parent_employee_id = 0;
-            
             if (!$projectPost->save()) {
                 throw new \Exception('Save record to table project post fail');
             }
@@ -114,6 +112,10 @@ class ProjectPostController extends ApiController {
 
             //move file
             $fileList = File::addFiles($_FILES, \Yii::$app->params['PathUpload'], $projectPost->id, ProjectPost::TABLE_PROJECTPOST);
+            if ($fileList == 'max_storage_register') {
+                $this->_error = true;
+                throw new \Exception(Yii::t('member', 'Total storage can not be more than max of storage package. Please upgrade your package to upload file'));
+            }
     
             //notifycation
             $themeEmail = \common\models\EmailTemplate::getThemeProjectPost();
@@ -202,9 +204,14 @@ class ProjectPostController extends ApiController {
             
             $transaction->commit();
             return $this->sendResponse(false, "", ['files' => $fileList]);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
+            $this->_message = $e->getMessage();
+            if (!$this->_error) {
+                $this->_error = true;
+                $this->_message = \Yii::t('member', 'error_system');
+            }
             $transaction->rollBack();
-            return $this->sendResponse(true, \Yii::t('member', 'error_system'), []);
+            return $this->sendResponse($this->_error, $this->_message, []);
         }
     }
     

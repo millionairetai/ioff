@@ -97,14 +97,18 @@ class File extends \common\components\db\ActiveRecord {
         $group = self::getPath($pathFolder);
         $path = $pathFolder . DIRECTORY_SEPARATOR . $group . DIRECTORY_SEPARATOR;
         $employeeSpace = EmployeeSpace::find()->andCompanyId()->andWhere(['employee_id' => $employeeId])->one();
-
         if (!$employeeSpace) {
             $employeeSpace = new EmployeeSpace();
             $employeeSpace->employee_id = $employeeId;
             $employeeSpace->space_project = $employeeSpace->space_calendar = $employeeSpace->space_total = 0;
         }
 
-        $company = Company::find(['total_storage'])->where(Yii::$app->user->identity->company_id)->one();
+        $company = Company::getById(Yii::$app->user->identity->company_id);
+        //Check max storage with current storage total. If over max storage, we aren't allowed to upload file.
+        //Change max storage register from GB to B.
+        if ((self::changeStorageType($company->max_storage_register, 'B', 'GB') - $company->total_storage) < self::getTotalSizeOfFileArray($files)) {
+            return 'max_storage_register';
+        }
         //loop file and upload
         $fileInsert = [];
         foreach ($files as $key => $file) {
@@ -161,7 +165,7 @@ class File extends \common\components\db\ActiveRecord {
             throw new \Exception('Save record to table Employee Space fail');
         }
 
-        if (!$company->save(false)) {
+        if ($company->save(false) == false) {
             throw new \Exception('Save record to table company fail');
         }
 
@@ -468,6 +472,30 @@ class File extends \common\components\db\ActiveRecord {
         }
 
         return $employee;
+    }
+    
+    /**
+     * Get total size of file array
+     * 
+     * @param array $files
+     * @return integer
+     */    
+    public static function getTotalSizeOfFileArray($files) {
+        $size = 0;
+        foreach ($files as $key => $file) {
+            $size += $file["size"];
+        }
+        
+//        $size = Yii::$app->formatter->asShortSize($size);
+        return $size;
+    }
+    
+    public static function changeStorageType($size, $type, $end){
+        $arr = ['B', 'KB', 'MB', 'GB', 'TB'];
+        $tSayi = array_search($type, $arr);
+        $eSayi = array_search($end, $arr);
+        $pow = $eSayi - $tSayi;
+        return $size * pow(1024, $pow);
     }
 
 }

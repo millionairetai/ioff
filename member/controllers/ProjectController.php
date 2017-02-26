@@ -83,7 +83,6 @@ class ProjectController extends ApiController {
         }
 
         $transaction = \Yii::$app->db->beginTransaction();
-
         //create object and validate data
         try {
             $ob = new Project();
@@ -125,7 +124,11 @@ class ProjectController extends ApiController {
                 }
 
                 //move file
-                File::addFiles($_FILES, \Yii::$app->params['PathUpload'], $ob->id, File::TABLE_PROJECT);
+                $returnFile = File::addFiles($_FILES, \Yii::$app->params['PathUpload'], $ob->id, File::TABLE_PROJECT);
+                if ($returnFile == 'max_storage_register') {
+                    $this->_error = true;
+                    throw new \Exception(Yii::t('member', 'Total storage can not be more than max of storage package. Please upgrade your package to upload file'));
+                }
 
                 //activity
                 $activity = new Activity();
@@ -239,10 +242,14 @@ class ProjectController extends ApiController {
 
             $transaction->commit();
         } catch (\Exception $e) {
+            $this->_message = $e->getMessage();
+            if (!$this->_error) {
+                $this->_error = true;
+                $this->_message = \Yii::t('member', 'error_system');
+            }
+
             $transaction->rollBack();
-            $error = true;
-            $message = \Yii::t('member', 'error_system');
-            return $this->sendResponse($error, $message, $objects);
+            return $this->sendResponse($this->_error, $this->_message, []);
         }
 
         return $this->sendResponse($error, $message, $objects);
@@ -325,12 +332,14 @@ class ProjectController extends ApiController {
 
             //move file
             $listFile = File::addFiles($_FILES, \Yii::$app->params['PathUpload'], $ob->id, File::TABLE_PROJECT);
-
-            //notifycation
+            if ($listFile == 'max_storage_register') {
+                $this->_error = true;
+                throw new \Exception(Yii::t('member', 'Total storage can not be more than max of storage package. Please upgrade your package to upload file'));
+            }
+            //notification
             $arrayEmployees = [];
             $isQuery = false;
             $query = Employee::find();
-
             if (isset($dataPost['default_department']) && count($dataPost['default_department'])) {
                 $isQuery = true;
                 $query->orWhere(['department_id' => $dataPost['default_department']]);
@@ -444,7 +453,6 @@ class ProjectController extends ApiController {
             $transaction->commit();
         } catch (\Exception $e) {
             $this->_message = $e->getMessage();
-
             if (!$this->_error) {
                 $this->_error = true;
                 $this->_message = \Yii::t('member', 'error_system');

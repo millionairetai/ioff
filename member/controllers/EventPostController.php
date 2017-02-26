@@ -139,7 +139,12 @@ class EventPostController extends ApiController {
             }
 
             //move file
-            File::addFiles($_FILES, \Yii::$app->params['PathUpload'], $eventPost->id, EventPost::tableName());
+            $returnFile = File::addFiles($_FILES, \Yii::$app->params['PathUpload'], $eventPost->id, EventPost::tableName());
+            if ($returnFile == 'max_storage_register') {
+                $this->_error = true;
+                throw new \Exception(Yii::t('member', 'Total storage can not be more than max of storage package. Please upgrade your package to upload file'));
+            }
+            
             $files = File::getFiles($eventPost->id, EventPost::tableName());
             $fileData = [];
             foreach ($files as $val) {

@@ -164,5 +164,6 @@ return [
     'Requestment category' => 'Requestment category',
     'Requestment' => 'Requestment',
 //    'description invoice' => '%s plan type, max user %s, max storage %s', 
-    'Total employee can not be more than max of employe package. Please upgrade your package to add new employee.' => 'Total employee can not be more than max of employe package. <br />Please upgrade your package to add new employee.'
+    'Total employee can not be more than max of employe package. Please upgrade your package to add new employee.' => 'Total employee can not be more than max of employe package. <br />Please upgrade your package to add new employee',
+    'Total storage can not be more than max of storage package. Please upgrade your package to upload file' => 'Total storage can not be more than max of storage package.<br /> Please upgrade your package to upload file'    
 ];
