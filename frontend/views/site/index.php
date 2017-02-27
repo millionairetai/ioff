@@ -20,13 +20,13 @@ $this->title = 'iofficez - Kết nối nhân viên';
             <?= $form->field($model, 'firstname')->label(false)->textInput(['placeholder' => Yii::t('common', 'First name'), 'class' => 'form-control noround']) ?>
 
             <?= $form->field($model, 'lastname')->label(false)->textInput(['placeholder' => Yii::t('common', 'Last name'), 'class' => 'form-control noround']) ?>
-            
+
             <?= $form->field($model, 'phoneNo')->label(false)->textInput(['placeholder' => Yii::t('common', 'Phone no'), 'class' => 'form-control noround']) ?>
 
             <?= $form->field($model, 'email')->label(false)->textInput(['placeholder' => Yii::t('common', 'Email'), 'class' => 'form-control noround']) ?>
 
             <?= $form->field($model, 'password')->label(false)->passwordInput(['placeholder' => Yii::t('common', 'Password'), 'class' => 'form-control noround']) ?>
-            
+
             <?= $form->field($model, 'rePassword')->label(false)->passwordInput(['placeholder' => Yii::t('common', 'Re-Password'), 'class' => 'form-control noround']) ?>
 
             <?=
@@ -34,23 +34,29 @@ $this->title = 'iofficez - Kết nối nhân viên';
                     ArrayHelper::map(PlanType::find()->select(['column_name', 'name'])->all(), 'column_name', 'name'), ['prompt' => Yii::t('common', 'Select'), 'class' => 'form-control noround']
             )
             ?>
-
             <div class="choose-info-plan-type">
-                <div class="max-user">
-                    <?= $form->field($model, 'maxUser')->label(false)->textInput(['class' => 'form-control noround', 'value' => '10;150']) ?>
-                    <?= $form->field($model, 'maxUserHide')->hiddenInput()->label(false); ?>
-                </div>
+                <div class="clearfix">
+                    <div class="block-price-plan-type">
+                        <p class="uppercase">price per month</p>
+                        <h3 class="price-plan-type">9,00E</h3>
+                    </div>
+                    <div class="slider-plan-type">
+                        <div class="max-user">
+                            <?= $form->field($model, 'maxUser')->label(false)->textInput(['class' => 'form-control noround', 'value' => '10;150']) ?>
+                            <?= $form->field($model, 'maxUserHide')->hiddenInput()->label(false); ?>
+                        </div>
+                        <?= $form->field($model, 'maxStorage')->label(false)->textInput(['class' => 'form-control noround', 'value' => '2;500']) ?>
+                        <?= $form->field($model, 'maxStorageHide')->hiddenInput()->label(false); ?>
 
-                <?= $form->field($model, 'maxStorage')->label(false)->textInput(['class' => 'form-control noround', 'value' => '2;500']) ?>
-                <?= $form->field($model, 'maxStorageHide')->hiddenInput()->label(false); ?>
-                
+                    </div>
+                </div>
                 <?=
-                    $form->field($model, 'numberMonth')->label(false)->dropDownList(
-                            ArrayHelper::map(PeriodTime::find()->select(['month_value', 'name'])->all(), 'month_value', 'name'), ['prompt' => Yii::t('common', 'Select'), 'class' => 'form-control noround']
-                    )
+                $form->field($model, 'numberMonth')->label(false)->dropDownList(
+                        ArrayHelper::map(PeriodTime::find()->select(['month_value', 'name'])->all(), 'month_value', 'name'), ['prompt' => Yii::t('common', 'Select'), 'class' => 'form-control noround']
+                )
                 ?>
+
             </div>
-            
             <p><a href="#">Xem thông tin chi tiết các gói</a></p>
 
             <p>Bằng cách nhấp vào đăng ký, bạn đồng ý với các <a href="/site/term">điều khoản của chúng tôi</a> và rằng bạn đã đọc <a href="/site/term">chính sách dữ liệu</a> của chúng tôi, bao gồm sử dụng cookie.</p>
@@ -173,7 +179,7 @@ $this->title = 'iofficez - Kết nối nhân viên';
 
             <div class="row">
                 <div class="col-xs-12 col-xs-8 col-sm-6">
-                    <?= $subscribeForm->field($subscribeModel, 'email')->label(false)->textInput(['placeholder' => 'your@email.com', 'class' => 'form-control noround', 'tabindex' =>"1"]) ?>
+                    <?= $subscribeForm->field($subscribeModel, 'email')->label(false)->textInput(['placeholder' => 'your@email.com', 'class' => 'form-control noround', 'tabindex' => "1"]) ?>
                 </div>
                 <div class="col-xs-12 col-xs-4 col-sm-6"><?= Html::submitButton('SUBSCRIBE', ['class' => 'btn btn-subcribe noround', 'name' => 'subscribe-button']) ?></div>
             </div>
