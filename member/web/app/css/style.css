@@ -1716,3 +1716,36 @@ ul.list-notify .item-notify:last-child{
     top: 20px;
     transition: transform 0.2s linear;
 }
+/* Requestment page */
+#my_request .circle-success,
+#my_request .circle-primary{
+    width: 40px;
+    height: 40px;
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    position: relative;
+}
+#my_request .circle-primary img{
+    border: 3px solid #365899;
+    color: #fff;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+}
+#my_request .circle-success img{
+    border: 3px solid #00a65a;
+    color: #fff;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+}
+#my_request .pass-status{
+    overflow: hidden;
+    width: 40px;
+    height: 40px;
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    color: #00a65a;
+}
