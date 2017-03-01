@@ -75,7 +75,7 @@ class CompanyController extends ApiController {
             $planTypeByColName = PlanType::getsIndexByColumnName();
             $planTypeIndexByIds = PlanType::getsIndexById();
             $post = Yii::$app->request->post();
-            if (empty($company) || empty($planTypeByColName)) {
+            if (empty($company) || empty($planTypeByColName)|| empty($planTypeIndexByIds)) {
                 throw new \Exception;
             }
 
@@ -104,7 +104,7 @@ class CompanyController extends ApiController {
                     'phoneNo' => $company['phone_no'],
                     'email' => Yii::$app->user->identity->email,
                 ];
-
+                
                 //Calculate total money for next plan
                 switch ($post['planType']) {
                     case PlanType::COLUMN_NAME_FREE:
@@ -142,6 +142,13 @@ class CompanyController extends ApiController {
         }
     }
 
+    /**
+     * Get error message
+     *
+     * @param array $company
+     * @param array $post
+     * @return string
+     */
     private function _getErrorMessage($company, $post) {
         $company['max_storage_register'] = File::changeStorageType($company['max_storage_register'], 'B', 'GB');
         $post['maxStorage'] = File::changeStorageType($post['maxStorage'], 'B', 'GB');
@@ -194,7 +201,7 @@ class CompanyController extends ApiController {
                 return Yii::t('member', 'Total of employee or storage of company which is not allowed to be greater than max employee registered and max storage registered of plan type we change to');
             }
             
-            if ($planType[$company['plan_type_id']]['column_name'] == PlanType::COLUMN_NAME_PREMIUM && ($company['total_storage'] > $post['maxStorage'] || $company['total_employee'] > $post['maxUser'])) {
+            if ($planType[$company['plan_type_id']]['column_name'] == PlanType::COLUMN_NAME_PREMIUM && ($company['total_storage'] > $post['maxStorage'] || ($company['total_employee'] > $post['maxUser'] && $post['maxUser'] > 0))) {
                 return Yii::t('member', 'Total of employee or storage of company which is not allowed to be greater than max employee registered and max storage registered of plan type we change to');
             }
 
@@ -206,11 +213,17 @@ class CompanyController extends ApiController {
         }
     }
 
+    /**
+     * Get redundant money
+     *
+     * @param array $company
+     * @param array $planType
+     * @return int
+     */
     private function _getRedundantMoney($company, $planType) {
         $redundantMoney = 0;
         //invoice money - number of month using* (fee_user + fee_storage)
-        $usedMonth = $this->diffInMonths(new \DateTime(date('Y-m-d')), new \DateTime(date('Y-m-d', $company['start_date'])));
-
+        $usedMonth = $this->diffInMonths(new \DateTime(IoffDatetime::getDate()), new \DateTime(date('Y-m-d', $company['start_date'])));
         //Calculate total money.
         switch ($planType[$company['plan_type_id']]['column_name']) {
             case 'free':
@@ -229,7 +242,7 @@ class CompanyController extends ApiController {
         if (!$mostRecentInvoice) {
             return false;
         }
-
+        
         $redundantMoney = $mostRecentInvoice['total_money'] - $redundantMoney;
         if ($redundantMoney < 0) {
             $redundantMoney = 0;
@@ -256,7 +269,7 @@ class CompanyController extends ApiController {
      *  @param object $company
      *  @param object $employee
      *  @param object $planType
-     *  @param object $planType
+     *  @param array $post
      * 
      *  @return boolean
      */

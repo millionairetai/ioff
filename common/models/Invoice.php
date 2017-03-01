@@ -88,11 +88,11 @@ class Invoice extends \common\components\db\ActiveRecord
      * @param array $ids
      * @return array
      */
-    /////////////////////////////////////////////////////////////
-    public static function getMostRecentInvoiceByCompanyId() {
+    public static function getMostRecentInvoiceByCompanyId($companyId) {
                return self::find()
                         ->select('*')
                         ->orderBy('datetime_created DESC')
+                        ->where(['company_id' => $companyId])
                         ->asArray()
                         ->one();
     }

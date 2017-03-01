@@ -72,8 +72,14 @@ class SiteController extends Controller {
         $dataDashboard['total_revenue_in_month'] = Yii::$app->formatter->asCurrency(Invoice::getRevenueInMonth());
         //Get increase percent
         $previousMonthRevenue = Invoice::getPreviousMonthRevenue();
-        $dataDashboard['increase_percent'] = Yii::$app->formatter->asPercent(
+        if ($dataDashboard['total_revenue_in_month']) {
+            $dataDashboard['increase_percent'] = 0;
+        }
+        else {
+            $dataDashboard['increase_percent'] = Yii::$app->formatter->asPercent(
                 ($dataDashboard['total_revenue_in_month'] - Invoice::getPreviousMonthRevenue()) / ($dataDashboard['total_revenue_in_month']));
+        }
+        
         $previousMonthRevenue = Invoice::getPreviousMonthRevenue();
         $previousMonthRevenue = !empty($previousMonthRevenue) ? $previousMonthRevenue : 0;
 

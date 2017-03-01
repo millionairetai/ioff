@@ -472,7 +472,7 @@
             date_created_order: 'Ngày tạo đơn hàng',
             payment_method: 'Phương thức thanh toán',
             order_no: 'Số hóa đơn',
-            order: 'Hóa đơn'            
+            order: 'Hóa đơn'
         };
     });
 })(window.angular);
