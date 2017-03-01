@@ -161,5 +161,15 @@ return [
     'ID' => 'ID',
     'Company' => 'Công ty',
     'Total employee can not be more than max of employe package. Please upgrade your package to add new employee' => 'Tổng số nhân viên không được lớn hơn số người dùng tối đa của gói. <br /> Xin hãy nâng cấp gói lên để tiếp tục thêm thành viên mới',
-    'Total storage can not be more than max of storage package. Please upgrade your package to upload file' => 'Tổng dung lương lưu trữ không được phép lớn hơn dung lượng lưu trữ lớn nhất của gói. <br /> Xin hãy nâng cấp gói lên để tiếp tục upload file'
+    'Total storage can not be more than max of storage package. Please upgrade your package to upload file' => 'Tổng dung lương lưu trữ không được phép lớn hơn dung lượng lưu trữ lớn nhất của gói. <br /> Xin hãy nâng cấp gói lên để tiếp tục upload file',
+    //Message order.
+    'You changed plan type before, but not pay for it yet. Please pay for it first to change to new plan type' => 'Bạn có đã thay đổi gói đăng ký trước đó nhưng chưa thanh toán. Vui lòng thanh toán trước khi đổi sang gói mới',
+    'Can not change standard to free plan type when it has not been expired yet' =>  'Không thể thay đổi gói Standard sang Free khi chưa hết hạn gói Standard',
+    'Can not reduce quantity of max user registed and max storage register down when it has not expired yet' =>  'Không thể giảm số người dùng tối đa và dung lượng lưu trữ tối đa xuống khi chưa hết hạn gói standard',
+    'Can not change to premium plan type which has max storage registered down when not expired yet' =>   'Không thể thay đổi sang gói premium có dung lương lưu trữ tối đa nhỏ hơn khi chưa hết hạn của gói',
+    'Can not degrade premiumn plan type or max user registered or max storage registered down when not expired yet' => 'Không thể thay đổi sang gói thấp hơn gói premium hoặc giảm số người dùng tối đa hoặc dung lượng lưu trữ tối đa xuống khi chưa hết hạn gói Premium',
+    'Can not change plan type from Free to Free' => 'Không thể thay đổi gói từ Free sang Free', 
+    'Total of employee or storage of company which is not allowed to be greater than max employee registered and max storage registered of plan type we change to' => 
+    'Tổng số nhân viên hoặc dung lượng lưu trữ hiện tại của công ty không được phép lớn hơn số người dùng tối đa và dung lượng lưu trữ tối đa của gói chuyển sang',
+    'Can not change current plan type which has same max user registered and max storage registered when not expired yet' => 'Không thể thay đổi gói hiện tại với cùng người dùng tối đa và dung lượng lưu trữ tối đa khi chưa hết hạn gói',
 ];

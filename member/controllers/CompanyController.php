@@ -11,6 +11,7 @@ use common\models\Invoice;
 use common\models\InvoiceDetail;
 use common\models\EmailTemplate;
 use common\models\Status;
+use common\models\File;
 use common\components\web\IoffDatetime;
 
 class CompanyController extends ApiController {
@@ -142,24 +143,30 @@ class CompanyController extends ApiController {
     }
 
     private function _getErrorMessage($company, $post) {
+        $company['max_storage_register'] = File::changeStorageType($company['max_storage_register'], 'B', 'GB');
+        $post['maxStorage'] = File::changeStorageType($post['maxStorage'], 'B', 'GB');
         //Check whether company make invoice before or not. If have any order wait for payment, we are not allow to change.
         if (Order::isExistedWaitingPaymentOrder(\Yii::$app->user->identity->company_id)) {
             return 'Bạn có đã thay đổi gói đăng ký trước đó nhưng chưa thanh toán. Vui lòng thanh toán trước khi đổi sang gói mới';
         }
         //Must check user > old user and storage > old storage.
         $planType = PlanType::getsIndexById();
-        if ($company['expired_date'] > time()) {
+        if ($company['expired_date'] > IoffDatetime::getTimestamp()) {
             if ($planType[$company['plan_type_id']]['column_name'] == PlanType::COLUMN_NAME_FREE || $planType[$company['plan_type_id']]['column_name'] == PlanType::COLUMN_NAME_STANDARD) {
                 if (strtolower($post['planType']) == PlanType::COLUMN_NAME_FREE) {
-                    return 'Không thể thay đổi gói Standard sang Free khi chưa hết hạn gói Standard';
+                    return Yii::t('member', 'Can not change standard to free plan type when it has not been expired yet');
                 }
 
                 if (strtolower($post['planType']) == PlanType::COLUMN_NAME_STANDARD && $post['maxUser'] > $company['max_user_register'] && $post['maxStorage'] > $company['max_storage_register']) {
                     return '';
                 }
                 
-                if (strtolower($post['planType']) == PlanType::COLUMN_NAME_STANDARD && ($post['maxUser'] <= $company['max_user_register'] || $post['maxStorage'] <= $company['max_storage_register'])) {
-                    return 'Không thể giảm số người dùng tối đa và dung lượng lưu trữ tối đa xuống khi chưa hết hạn gói standard';
+                if (strtolower($post['planType']) == PlanType::COLUMN_NAME_STANDARD && ($post['maxUser'] < $company['max_user_register'] || $post['maxStorage'] < $company['max_storage_register'])) {
+                    return Yii::t('member', 'Can not reduce quantity of max user registed and max storage register down when it has not expired yet');
+                }
+                
+                if (strtolower($post['planType']) == PlanType::COLUMN_NAME_STANDARD && $post['maxUser'] == $company['max_user_register'] && $post['maxStorage'] == $company['max_storage_register']) {
+                    return Yii::t('member', 'Can not change current plan type which has same max user registered and max storage registered when not expired yet');
                 }
                 
                 if (strtolower($post['planType']) == PlanType::COLUMN_NAME_PREMIUM && $post['maxUser'] > $company['max_user_register'] && $post['maxStorage'] > $company['max_storage_register']) {
@@ -167,7 +174,7 @@ class CompanyController extends ApiController {
                 }
                 
                 if (strtolower($post['planType']) == PlanType::COLUMN_NAME_PREMIUM && $post['maxStorage'] <= $company['max_storage_register']) {
-                    return 'Không thể thay đổi sang gói premium có dung lương lưu trữ tối đa nhỏ hơn khi chưa hết hạn của gói';
+                    return Yii::t('member', 'Can not change to premium plan type which has max storage registered down when not expired yet');
                 }
 
                 return '';
@@ -176,19 +183,23 @@ class CompanyController extends ApiController {
                     return '';
                 }
 
-                return 'Không thể thay đổi sang gói thấp hơn gói premium hoặc giảm số người dùng tối đa và dung lượng lưu trữ tối đa xuống khi chưa hết hạn gói Premium';
+                return Yii::t('member', 'Can not degrade premiumn plan type or max user registered or max storage registered down when not expired yet');
             }
         } else {
             if ($planType[$company['plan_type_id']]['column_name'] == PlanType::COLUMN_NAME_FREE && strtolower($post['planType']) == PlanType::COLUMN_NAME_FREE) {
-                return 'Không thể thay đổi gói từ Free sang Free';
+                return Yii::t('member', 'Can not change plan type from Free to Free');
             }
             
-            if ($planType[$company['plan_type_id']]['column_name'] == PlanType::COLUMN_NAME_PREMIUM && $company['total_storage'] > $post['maxStorage']) {
-                return 'Tổng số nhân viên hoặc dung lượng lưu trữ hiện tại của công ty không được phép lớn hơn số người dùng tối đa và dung lượng lưu trữ tối đa của gói chuyển sang';
+            if (strtolower($post['planType']) == PlanType::COLUMN_NAME_FREE && ($company['total_employee'] > $post['maxUser'] || $company['total_storage'] > $post['maxStorage'])) {
+                return Yii::t('member', 'Total of employee or storage of company which is not allowed to be greater than max employee registered and max storage registered of plan type we change to');
             }
             
-            if ($planType[$company['plan_type_id']]['column_name'] != PlanType::COLUMN_NAME_PREMIUM && ($company['total_employee'] > $post['maxUser'] || $company['total_storage'] > $post['maxStorage'])) {
-                return 'Tổng số nhân viên hoặc dung lượng lưu trữ hiện tại của công ty không được phép lớn hơn số người dùng tối đa và dung lượng lưu trữ tối đa của gói chuyển sang';
+            if ($planType[$company['plan_type_id']]['column_name'] == PlanType::COLUMN_NAME_PREMIUM && ($company['total_storage'] > $post['maxStorage'] || $company['total_employee'] > $post['maxUser'])) {
+                return Yii::t('member', 'Total of employee or storage of company which is not allowed to be greater than max employee registered and max storage registered of plan type we change to');
+            }
+
+            if (!in_array($planType[$company['plan_type_id']]['column_name'], [PlanType::COLUMN_NAME_PREMIUM, PlanType::COLUMN_NAME_FREE]) && (($company['total_employee'] > $post['maxUser'] && $post['maxUser'] > 0 ) || $company['total_storage'] > $post['maxStorage'])) {
+                return Yii::t('member', 'Total of employee or storage of company which is not allowed to be greater than max employee registered and max storage registered of plan type we change to');
             }
 
             return '';

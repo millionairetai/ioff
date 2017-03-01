@@ -209,8 +209,11 @@ class SignupForm extends Model {
         }
        
         //Update max user and max storage in company table.
-        $company->max_user_register = $this->maxUser;
-        $company->max_storage_register = $this->maxStorage;
+        //Update max_user_register and max_storage_register equal free package.
+        $company->max_user_register = $planType[PlanType::COLUMN_NAME_FREE]['max_user'];
+        $company->max_storage_register = $planType[PlanType::COLUMN_NAME_FREE]['max_storage'];
+//        $company->max_user_register = $this->maxUser;
+//        $company->max_storage_register = $this->maxStorage;
         $company->total_employee = 1;
         if ($company->save(false) === false) {
             throw new \Exception('Save data to company table fail');

@@ -485,11 +485,18 @@ class File extends \common\components\db\ActiveRecord {
         foreach ($files as $key => $file) {
             $size += $file["size"];
         }
-        
-//        $size = Yii::$app->formatter->asShortSize($size);
+
         return $size;
     }
-    
+
+    /**
+     * Change storage type
+     * 
+     * @param array $size
+     * @param array $type
+     * @param array $end     
+     * @return integer
+     */    
     public static function changeStorageType($size, $type, $end){
         $arr = ['B', 'KB', 'MB', 'GB', 'TB'];
         $tSayi = array_search($type, $arr);

@@ -165,5 +165,16 @@ return [
     'Requestment' => 'Requestment',
 //    'description invoice' => '%s plan type, max user %s, max storage %s', 
     'Total employee can not be more than max of employe package. Please upgrade your package to add new employee.' => 'Total employee can not be more than max of employe package. <br />Please upgrade your package to add new employee',
-    'Total storage can not be more than max of storage package. Please upgrade your package to upload file' => 'Total storage can not be more than max of storage package.<br /> Please upgrade your package to upload file'    
+    'Total storage can not be more than max of storage package. Please upgrade your package to upload file' => 'Total storage can not be more than max of storage package.<br /> Please upgrade your package to upload file',
+        'Total storage can not be more than max of storage package. Please upgrade your package to upload file' => 'Tổng dung lương lưu trữ không được phép lớn hơn dung lượng lưu trữ lớn nhất của gói. <br /> Xin hãy nâng cấp gói lên để tiếp tục upload file',
+    //Message order.
+    'You changed plan type before, but not pay for it yet. Please pay for it first to change to new plan type' => 'You changed plan type before, but not pay for it yet. Please pay for it first to change to new plan type',
+    'Can not change standard to free plan type when it has not been expired yet' =>  'Can not change standard to free plan type when it has not been expired yet',
+    'Can not reduce quantity of max user registed and max storage register down when it has not expired yet' =>  'Can not reduce quantity of max user registed and max storage register down when it has not expired yet',
+    'Can not change to premium plan type which has max storage registered down when not expired yet' =>   'Can not change to premium plan type which has max storage registered down when not expired yet',
+    'Can not degrade premiumn plan type or max user registered or max storage registered down when not expired yet' => 'Can not degrade premiumn plan type or max user registered or max storage registered down when not expired yet',
+    'Can not change plan type from Free to Free' => 'Can not change plan type from Free to Free', 
+    'Total of employee or storage of company which is not allowed to be greater than max employee registered and max storage registered of plan type we change to' => 
+    'Total of employee or storage of company which is not allowed to be greater than max employee registered and max storage registered of plan type we change to',
+    'Can not change current plan type which has same max user registered and max storage registered when not expired yet' => 'Can not change current plan type which has same max user registered and max storage registered when not expired yet',
 ];
