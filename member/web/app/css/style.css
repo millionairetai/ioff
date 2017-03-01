@@ -1464,7 +1464,7 @@ div.task-creator{
 #detail-company .ui-slider-horizontal .ui-widget-header:after{
     width: 22px;
     height: 22px;
-    background: url(http://member.centeroffice.dev//img/sprite-skin-nice.png) repeat-x;
+    background: url(/img/sprite-skin-nice.png) repeat-x;
     background-position: 0 -90px;
     position: absolute;
     display: block;
