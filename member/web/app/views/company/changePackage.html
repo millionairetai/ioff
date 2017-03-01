@@ -90,8 +90,8 @@
                                                 <span ng-hide="company.plan_type_id.name == 'Premium'">
                                                     <strong>{{package.maxUser.value}}</strong>
                                                 </span>
-                                                <div ng-show="company.plan_type_id.name == 'Standard'">
-                                                    10<div min="10" max="150" ui-slider="{range: 'min'}" step="5" ng-model="package.maxUser.value"></div>150
+                                                <div class="posirelive" ng-show="company.plan_type_id.name == 'Standard'">
+                                                    <span class="ui-slider-range-number-min">10</span><div min="10" max="150" ui-slider="{range: 'min'}" step="5" ng-model="package.maxUser.value"></div><span class="ui-slider-range-number-max">150</span>
                                                 </div>
                                                 <div ng-show="company.plan_type_id.name == 'Premium'">
                                                     {{$root.$lang.unlimited}}
@@ -100,7 +100,9 @@
 
                                                 <!--<ion-range-slider ng-model="package.maxUser.value" min="package.maxUser.min" max="package.maxUser.max" from="package.maxUser.from"></ion-range-slider>-->
                                                 {{$root.$lang.choose_maximum_storage}}:<strong>{{package.maxStorage.value}} GB</strong><br />
-                                                2<div min="2" max="500" ui-slider="{range: 'min'}" step="5" ng-model="package.maxStorage.value"></div>500
+                                                <div class="posirelive">
+                                                    <span class="ui-slider-range-number-min">2</span><div min="2" max="500" ui-slider="{range: 'min'}" step="5" ng-model="package.maxStorage.value"></div><span class="ui-slider-range-number-max">500</span>
+                                                </div>
                                                 <!--<ion-range-slider ng-model="package.maxStorage.value" min="package.maxStorage.min" max="package.maxStorage.max" from="package.maxStorage.from"></ion-range-slider>-->
                                                 <br />{{$root.$lang.time}}: <br />
                                                 <div class="col-sm-4">
@@ -324,7 +326,7 @@
                                                     <strong>{{orderDetail.company_name_to}}</strong><br>
                                                     {{orderDetail.address_to}}<br>
                                                     <!--San Francisco, CA 94107<br>-->
-                                                     {{$root.$lang.phone}}: {{orderDetail.company_phone_to}}<br>
+                                                    {{$root.$lang.phone}}: {{orderDetail.company_phone_to}}<br>
                                                     Email: {{orderDetail.email_to}}
                                                 </address>
                                             </div>
@@ -391,10 +393,10 @@
                                                                 <th>{{$root.$lang.tax_code}} ({{orderDetail.tax_percent}}%)</th>
                                                                 <td>{{orderDetail.total_tax}}</td>
                                                             </tr>
-<!--                                                            <tr>
-                                                                <th>Shipping:</th>
-                                                                <td>$5.80</td>
-                                                            </tr>-->
+                                                            <!--                                                            <tr>
+                                                                                                                            <th>Shipping:</th>
+                                                                                                                            <td>$5.80</td>
+                                                                                                                        </tr>-->
                                                             <tr>
                                                                 <th>{{$root.$lang.total}}:</th>
                                                                 <td>{{orderDetail.final_total_money}}</td>
@@ -409,16 +411,16 @@
                                         <!-- this row will not appear when printing -->
                                         <div class="row no-print">
                                             <div class="col-xs-12">
-                                                <button ng-click="orderDetail=null;" type="button" class="btn btn-flat pull-right"><i class="fa fa-backward"></i> {{$root.$lang.button_back}}
+                                                <button ng-click="orderDetail = null;" type="button" class="btn btn-flat pull-right"><i class="fa fa-backward"></i> {{$root.$lang.button_back}}
                                                 </button>
                                             </div>
                                         </div>
                                     </section>
                                 </div>
                                 <!-- /.tab-pane -->
-<!--                                <div class="tab-pane" id="tab_3">
-
-                                </div>-->
+                                <!--                                <div class="tab-pane" id="tab_3">
+                                
+                                                                </div>-->
                                 <!-- /.tab-pane -->
                             </div>
                             <!-- /.tab-content -->
