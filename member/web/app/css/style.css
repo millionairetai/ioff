@@ -42,6 +42,12 @@ a:focus{
     width: calc(100% - 15px);
     left: 0;
 }
+/**/
+.navbar-nav > .notifications-menu > .dropdown-menu > li .menu > li > a, 
+.navbar-nav > .messages-menu > .dropdown-menu > li .menu > li > a, 
+.navbar-nav > .tasks-menu > .dropdown-menu > li .menu > li > a{
+    white-space: normal;
+}
 /* Custom dialog/modal headers */
 .dialog-header-warning { background-color: #EA9F0D; }
 .dialog-header-primary { background-color: #1AB394; }
