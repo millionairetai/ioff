@@ -20,26 +20,26 @@ $("#signupform-maxuser[type='text']").ionRangeSlider({
     min: 5,
     max: 1500,
     grid: true,
-    onFinish: function(data) {
+    onFinish: function (data) {
         $('#signupform-maxuserhide').val(data.fromNumber)
     }
 });
-    
+
 $("#signupform-maxstorage[type='text']").ionRangeSlider({
-    from : parseInt($('#signupform-maxstoragehide').val()),
+    from: parseInt($('#signupform-maxstoragehide').val()),
     type: "single",
     step: 5,
     postfix: " GB",
     min: 5,
     max: 5005,
     grid: true,
-    onFinish: function(data) {
+    onFinish: function (data) {
         $('#signupform-maxstoragehide').val(data.fromNumber)
     }
 });
 
 //Process when loading at first time.
-var initializeSelectPackage = function (value) {    
+var initializeSelectPackage = function (value) {
     if (value == 'free' || value == '') {
         $('.choose-info-plan-type').hide();
     } else {
@@ -51,6 +51,12 @@ var initializeSelectPackage = function (value) {
 }
 
 initializeSelectPackage($('#signupform-plan_type').val());
-$('#signupform-plan_type').change(function() {
+$('#signupform-plan_type').change(function () {
     initializeSelectPackage($(this).val());
 });
+
+function go_to_register() {
+    $('html, body').animate({
+        scrollTop: $("#register").offset().top - 96
+    }, 1000);
+}

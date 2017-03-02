@@ -172,7 +172,7 @@ $this->title = 'iofficez - Kết nối nhân viên';
             </dl>
         </div><!--item feature-->
     </div><!--Container-->
-    <p class="text-center"><a href="javascript:void(0)" class="btn btn-primary noround">Đăng ký</a></p>
+    <p class="text-center"><a href="javascript:void(0)" onclick="go_to_register()" class="btn btn-primary noround">Đăng ký</a></p>
 </section><!--Feature-->
 <section id="subcribe" class="contain-box">
     <div class="container">
@@ -205,7 +205,7 @@ $this->title = 'iofficez - Kết nối nhân viên';
                     500MB lưu trữ<br/>
                     Sử dụng tất cả các chức năng
                 </p>
-                <p class="text-center"><a href="javascript:void(0)" class="btn btn-primary noround">Đăng ký</a></p>
+                <p class="text-center"><a href="javascript:void(0)" onclick="go_to_register()" class="btn btn-primary noround">Đăng ký</a></p>
             </div>
         </div>
         <div class="price-standard">
@@ -217,7 +217,7 @@ $this->title = 'iofficez - Kết nối nhân viên';
                     Được chọn dung lượng lưu trữ tối đa<br/>
                     Sử dụng tất cả các chức năng
                 </p>
-                <p class="text-center"><a href="javascript:void(0)" class="btn btn-primary noround">Đăng ký</a></p>
+                <p class="text-center"><a href="javascript:void(0)" onclick="go_to_register()" class="btn btn-primary noround">Đăng ký</a></p>
             </div>
         </div>
         <div class="price-professional">
@@ -230,7 +230,7 @@ $this->title = 'iofficez - Kết nối nhân viên';
                     Thêm 5GB/5$/tháng<br/>
                     Sử dụng tất cả các chức năng
                 </p>
-                <p class="text-center"><a href="javascript:void(0)" class="btn btn-primary noround">Đăng ký</a></p>
+                <p class="text-center"><a href="javascript:void(0)" onclick="go_to_register()" class="btn btn-primary noround">Đăng ký</a></p>
             </div>
         </div>
     </div><!--Container-->
@@ -271,6 +271,6 @@ $this->title = 'iofficez - Kết nối nhân viên';
             <div class="item-customer"><img src="/image/customer04.jpg" alt=""/></div>
             <div class="item-customer"><img src="/image/customer05.jpg" alt=""/></div>
         </div>
-        <p class="text-center"><a href="javascript:void(0)" class="btn btn-primary noround">Đăng ký</a></p>
+        <p class="text-center"><a href="javascript:void(0)" onclick="go_to_register()" class="btn btn-primary noround">Đăng ký</a></p>
     </div>
 </section>
