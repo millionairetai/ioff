@@ -75,7 +75,7 @@ class SiteController extends Controller {
         $model = new SignupForm();
         $subscribeModel = new SubscribeForm();
         $post = Yii::$app->request->post();
-        if ($post && $post['SignupForm']['plan_type'] != 'free') {
+        if (!empty($post['SignupForm']['plan_type']) &&$post && $post['SignupForm']['plan_type'] != PlanType::COLUMN_NAME_FREE) {
             $model->scenario = SignupForm::SCENARIO_SIGNUP_NOT_FREE;
         }
 

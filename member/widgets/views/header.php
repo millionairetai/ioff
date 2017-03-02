@@ -72,7 +72,7 @@
                 </li>
                 
                 <!-- Messages: style can be found in dropdown.less-->
-                <li class="dropdown messages-menu">
+<!--                <li class="dropdown messages-menu">
                     <a  class="dropdown-toggle cursor-pointer" data-toggle="dropdown">
                         <i class="fa fa-envelope-o"></i>
                         <span class="label label-success">32</span>
@@ -80,9 +80,9 @@
                     <ul class="dropdown-menu">
                         <li class="header">You have 4 messages</li>
                         <li>
-                            <!-- inner menu: contains the actual data -->
+                             inner menu: contains the actual data 
                             <ul class="menu">
-                                <li><!-- start message -->
+                                <li> start message 
                                     <a href="#">
                                         <div class="pull-left">
                                             <img src="img/avatar5.png" class="img-circle" alt="User Image">
@@ -93,12 +93,12 @@
                                         </h4>
                                         <p>Why not buy a new awesome theme?</p>
                                     </a>
-                                </li><!-- end message -->
+                                </li> end message 
                             </ul>
                         </li>
                         <li class="footer"><a href="#">See All Messages</a></li>
                     </ul>
-                </li>
+                </li>-->
                 <!-- Tasks: style can be found in dropdown.less -->
                 <li class="dropdown tasks-menu">
                     <a class="dropdown-toggle cursor-pointer" data-toggle="dropdown" ng-click="getMyTaskDropdownClick()">
@@ -145,7 +145,7 @@
                             </p>
                         </li>
                         <!-- Menu Body -->
-                        <li class="user-body">
+<!--                        <li class="user-body">
                             <div class="col-xs-4 text-center">
                                 <a href="#">My authority</a>
                             </div>
@@ -155,7 +155,7 @@
                             <div class="col-xs-4 text-center">
                                 <a href="#">Settings</a>
                             </div>
-                        </li>
+                        </li>-->
                         <!-- Menu Footer-->
                         <li class="user-footer">
                             <div class="pull-left">
