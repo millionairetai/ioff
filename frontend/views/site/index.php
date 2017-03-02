@@ -17,9 +17,14 @@ $this->title = 'iofficez - Kết nối nhân viên';
 
             <?= $form->field($model, 'companyName')->label(false)->textInput(['placeholder' => Yii::t('common', 'Company name'), 'autofocus' => true, 'class' => 'form-control noround']) ?>
 
-            <?= $form->field($model, 'firstname')->label(false)->textInput(['placeholder' => Yii::t('common', 'First name'), 'class' => 'form-control noround']) ?>
-
-            <?= $form->field($model, 'lastname')->label(false)->textInput(['placeholder' => Yii::t('common', 'Last name'), 'class' => 'form-control noround']) ?>
+            <div class="clearfix row">
+                <div class="col-md-6">
+                    <?= $form->field($model, 'firstname')->label(false)->textInput(['placeholder' => Yii::t('common', 'First name'), 'class' => 'form-control noround']) ?>
+                </div>
+                <div class="col-md-6">
+                    <?= $form->field($model, 'lastname')->label(false)->textInput(['placeholder' => Yii::t('common', 'Last name'), 'class' => 'form-control noround']) ?>
+                </div>
+            </div>
 
             <?= $form->field($model, 'phoneNo')->label(false)->textInput(['placeholder' => Yii::t('common', 'Phone no'), 'class' => 'form-control noround']) ?>
 
