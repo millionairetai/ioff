@@ -240,11 +240,12 @@
                 </div>
                 <div id="activity" infinite-scroll-disabled="activity.busy" infinite-scroll="getActivity()">
                     <div class="box box-widget" ng-repeat="(indexActivity, activity) in activity.data">
-                        <div class="box-tools pull-right">
-                            <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
-                            </button>
-                        </div>
+
                         <div class="box-header with-border">
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                                </button>
+                            </div>
                             <div class="imgleft">
                                 <div class="image"><img class="img-circle" src="{{activity.avatar}}" alt="User Image"></div>
                                 <dl class="infomation">
