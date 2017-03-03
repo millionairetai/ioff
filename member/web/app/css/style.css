@@ -855,7 +855,7 @@ header.main-header{
 }
 
 .detail-event .content-event{
-    max-height: 180px;
+    /*max-height: 180px;*/
     overflow: hidden;
     position: relative;
     -webkit-transition: max-height 1s; /* Safari */
