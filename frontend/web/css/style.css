@@ -77,6 +77,13 @@ table th{
 #regform{width: 50%;max-width: 400px;float: right;}
 #regform .btn-group{width: 100%;display: flex;margin-bottom: 20px;}
 #regform .btn-group .btn{flex:1;}
+#regform .signname.row{
+    margin-left: -5px;
+    margin-right: -5px;
+}
+#regform .signname.row .col-md-6{
+    padding: 0 5px;
+}
 .choose-info-plan-type{
     position: relative;
 }
