@@ -327,8 +327,7 @@ class CalendarController extends ApiController {
                 $dataInsertSms = $dataInsertNotification = [];
                 foreach ($mergeEmployee['employees'] AS $key => $val) {
                     $dataInsertNotification[] = [
-                        'owner_id' => $ob->id,
-                        
+                        'owner_id' => $ob->id,  
                         'owner_table' => Event::tableName(),
                         'employee_id' => $val,
                         'type' => Activity::TYPE_EDIT_EVENT,
@@ -407,6 +406,10 @@ class CalendarController extends ApiController {
             return $this->sendResponse($this->_error, $this->_message, []);
         }
 
+        $objects['no_load_event_post'] = false;
+        if (empty($eventHistory)) {
+            $objects['no_load_event_post'] = true;
+        }
         return $this->sendResponse($this->_error, $this->_message, $objects);
     }
 

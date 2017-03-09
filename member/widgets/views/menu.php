@@ -12,7 +12,7 @@ use yii\helpers\Url;
                     <i class="fa fa-thumbs-up"></i> <span>{{$root.$lang.activity}}</span> 
                 </a>
             </li>
-            <li>
+<!--            <li>
                 <a href="#project">
                     <i class="fa fa-bullhorn"></i> <span>{{$root.$lang.annoucement}}</span> 
                 </a>
@@ -21,7 +21,7 @@ use yii\helpers\Url;
                 <a href="#requestment">
                     <i class="fa fa-asterisk"></i> <span>{{$root.$lang.requestment}}</span> 
                 </a>
-            </li>
+            </li>-->
             <li>
                 <a href="#project">
                     <i class="fa fa-th"></i> <span>{{$root.$lang.project}}</span> 

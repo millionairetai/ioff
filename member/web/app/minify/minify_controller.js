@@ -1173,8 +1173,11 @@ appRoot.controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService',
                 }
             });
             modalInstance.result.then(function (data) {
+                console.log(data);
                 $scope.getInfoEvent();
-                $scope.getLastEventPost();
+                if (data.objects.no_load_event_post) {
+                    $scope.getLastEventPost();
+                }
             }, function () {
             });
         };
@@ -1732,7 +1735,7 @@ appRoot.controller('changePackageCtrl', ['$scope', '$uibModal', '$rootScope', 'a
             if ($scope.orderInfo) {
                 angular.extend(packageInfo, {saveOrder: true});
             }
-            
+            //If plan type is free, we don't need to validate
             if (packageInfo.planType != 'Free' && !companyService.validate(packageInfo)) {
                 return ;
             }
@@ -1745,7 +1748,7 @@ appRoot.controller('changePackageCtrl', ['$scope', '$uibModal', '$rootScope', 'a
             });
         }
 
-        //Payment history.
+        //Order history.
         $scope.orders = null;
         $scope.orderDetail = null;
         $scope.loadOrderHistory = function() {

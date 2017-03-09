@@ -41,11 +41,11 @@ $this->title = 'iofficez - Kết nối nhân viên';
             ?>
             <div class="choose-info-plan-type">
                 <div class="clearfix">
-                    <div class="block-price-plan-type">
+<!--                    <div class="block-price-plan-type">
                         <p class="uppercase">price per month</p>
                         <h3 class="price-plan-type">9,00E</h3>
-                    </div>
-                    <div class="slider-plan-type">
+                    </div>-->
+                    <div>
                         <div class="max-user">
                             <?= $form->field($model, 'maxUser')->label(false)->textInput(['class' => 'form-control noround', 'value' => '10;150']) ?>
                             <?= $form->field($model, 'maxUserHide')->hiddenInput()->label(false); ?>
