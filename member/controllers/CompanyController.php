@@ -12,7 +12,7 @@ use common\models\InvoiceDetail;
 use common\models\EmailTemplate;
 use common\models\Status;
 use common\models\File;
-use common\components\web\IoffDatetime;
+use common\components\web\IoffDateTime;
 
 class CompanyController extends ApiController {
 

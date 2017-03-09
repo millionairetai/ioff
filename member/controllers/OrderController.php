@@ -5,7 +5,7 @@ namespace member\controllers;
 use Yii;
 use common\models\Order;
 use common\models\PlanType;
-use common\components\web\IoffDatetime;
+use common\components\web\IoffDateTime;
 
 class OrderController extends ApiController {
 
