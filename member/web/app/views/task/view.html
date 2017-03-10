@@ -81,7 +81,7 @@
                                 <b>{{$root.$lang.task_infomation}}</b>
                             </td>
                             <td colspan="2">
-                                <p ng-text-truncate="collection.task.description" ng-tt-chars-threshold="250"></p>
+                                <p ng-bind-html="getHtml(collection.task.description)"></p>
                             </td>
                         </tr>
                         <tr>
