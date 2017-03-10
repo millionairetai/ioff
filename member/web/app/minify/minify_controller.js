@@ -1148,7 +1148,7 @@ appRoot.controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService',
             $scope.limit = 5;
         };
 
-        //edit project
+        //edit event
         $scope.editEvent = function () {
             var modalInstance = $uibModal.open({
                 templateUrl: 'app/views/calendar/edit.html',
@@ -1558,7 +1558,7 @@ appRoot.controller('editEventCtrl', ['$rootScope', 'data', 'listCalendar', '$sco
                             $scope.event.description_parse = tinyMCE.activeEditor.getContent({format : 'text'});
                             fd.append("event", angular.toJson($scope.event));
                             calendarService.editEvent(fd, function (response) {
-                                alertify.success($rootScope.$lang.calendar_notify_event_created_success);
+                                alertify.success($rootScope.$lang.update_success);
                                 $uibModalInstance.close($scope.event);
                                 socketService.emit('notify', 'ok');
                                 $scope.step++;
