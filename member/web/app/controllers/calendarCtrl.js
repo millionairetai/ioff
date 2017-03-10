@@ -676,7 +676,7 @@ appRoot.controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService',
             dialogMessage.open('confirm', $rootScope.$lang.confirm_delete_file, function () {
                 EventPostService.removeEventPost({eventId: id}, function (data) {
                     $scope.eventPost.splice(index, 1);
-                    alertify.success($rootScope.$lang.remove_event_post_success);
+                    alertify.success($rootScope.$lang.delete_success);
                 });
             });
         };

@@ -1173,7 +1173,6 @@ appRoot.controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService',
                 }
             });
             modalInstance.result.then(function (data) {
-                console.log(data);
                 $scope.getInfoEvent();
                 if (data.objects.no_load_event_post) {
                     $scope.getLastEventPost();
@@ -1244,7 +1243,7 @@ appRoot.controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService',
             dialogMessage.open('confirm', $rootScope.$lang.confirm_delete_file, function () {
                 EventPostService.removeEventPost({eventId: id}, function (data) {
                     $scope.eventPost.splice(index, 1);
-                    alertify.success($rootScope.$lang.remove_event_post_success);
+                    alertify.success($rootScope.$lang.delete_success);
                 });
             });
         };
