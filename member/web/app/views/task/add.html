@@ -107,9 +107,12 @@
 
                     <div class="form-group">
                         <label class="col-sm-3 control-label">{{$root.$lang.task_estimate_time}} </label>
-
-                        <div class="col-sm-9" >
-                            <input type="text" class="form-control" auto-numeric="{vMin: 0, vMax: 100000000}" ng-model="task.estimate_hour" style="width: 90%;display: inline;" > {{$root.$lang.task_hour}}
+                        <div class="col-sm-9">
+                            <div class="input-group"> 
+                                <span class="input-group-addon"><i class="glyphicon glyphicon-time"></i></span> 
+                                <input type="text" class="form-control" auto-numeric="{vMin: 0, vMax: 100000000}" ng-model="task.estimate_hour" style="width: 90%;display: inline;" > 
+                                <span class="input-group-addon ng-binding">{{$root.$lang.task_hour}}</span> 
+                            </div>
                         </div>
                     </div>
 
