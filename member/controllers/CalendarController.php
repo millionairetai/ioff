@@ -301,7 +301,7 @@ class CalendarController extends ApiController {
             $this->_updataEventConfirmation($dataPost['id'], $mergeEmployee);
 
             //update table Remind
-            $this->_updataRemind($dataPost, $mergeEmployee, $ob);
+//            $this->_updataRemind($dataPost, $mergeEmployee, $ob);
             //move file
             $dataPost['fileList'] = File::addFiles($_FILES, \Yii::$app->params['PathUpload'], $ob->id, File::TABLE_EVENT);
             if ($dataPost['fileList'] == 'max_storage_register') {
@@ -606,7 +606,7 @@ class CalendarController extends ApiController {
                         'remind_datetime' => $object->start_datetime - ($dataPost['redmind'] * 60),
                         'minute_before' => isset($dataPost['redmind']) ? $dataPost['redmind'] : 0], ['owner_id' => $event_id, 'company_id' => $this->_companyId, 'owner_table' => Event::tableName()])->execute()
             ) {
-                throw new \Exception('Save record to table Project Participant fail');
+                throw new \Exception('Save record to table remind fail');
             }
         }
 
@@ -830,14 +830,14 @@ class CalendarController extends ApiController {
                 if (!empty($dataPost['employeeMegre']['employeeOld'])) {
                     $content .= '<div class="padding-left-20">' . \Yii::t('member', 'delete') . '</div>';
                     foreach ($dataPost['employeeMegre']['employeeOld'] as $key => $val) {
-                        $content .='<div class="padding-left-20"><a href="#/member/' . $key . '"><i>' . $val . '</i></a></div>';
+                        $content .='<div class="padding-left-20"><a href="#/viewEmployee/' . $key . '"><i>' . $val . '</i></a></div>';
                     }
                 }
 
                 if (!empty($dataPost['employeeMegre']['employeeNew'])) {
                     $content .= '<div class="padding-left-20">' . \Yii::t('member', 'add new') . '</div>';
                     foreach ($dataPost['employeeMegre']['employeeNew'] as $key => $val) {
-                        $content .='<div class="padding-left-20"><a href="#/member/' . $val['id'] . '"><i>' . $val['firstname'] . '</i></a></div>';
+                        $content .='<div class="padding-left-20"><a href="#/viewEmployee/' . $val['id'] . '"><i>' . $val['firstname'] . '</i></a></div>';
                     }
                 }
             }

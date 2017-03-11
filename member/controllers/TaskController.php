@@ -916,7 +916,7 @@ class TaskController extends ApiController {
     }
 
     /**
-     * Make project history
+     * Make task history
      *
      * @param array $dataPost
      * @return string
@@ -1021,14 +1021,14 @@ class TaskController extends ApiController {
                     if (!empty($assignmenMerge['employeeOldLog'])) {
                         $content .= '<div class="padding-left-20">' . \Yii::t('member', 'delete') . '</div>';
                         foreach ($assignmenMerge['employeeOldLog'] as $key => $val) {
-                            $content .='<div class="padding-left-20"><a href="#/member/' . $key . '"><i>' . $val . '</i></a></div>';
+                            $content .='<div class="padding-left-20"><a href="#/viewEmployee/' . $key . '"><i>' . $val . '</i></a></div>';
                         }
                     }
 
                     if (!empty($assignmenMerge['employeeNewLog'])) {
                         $content .= '<div class="padding-left-20">' . \Yii::t('member', 'add new') . '</div>';
                         foreach ($assignmenMerge['employeeNewLog'] as $key => $val) {
-                            $content .='<div class="padding-left-20"><a href="#/member/' . $key . '"><i>' . $val . '</i></a></div>';
+                            $content .='<div class="padding-left-20"><a href="#/viewEmployee/' . $key . '"><i>' . $val . '</i></a></div>';
                         }
                     }
                 }
@@ -1041,14 +1041,14 @@ class TaskController extends ApiController {
                     if (!empty($followerMerge['employeeOldLog'])) {
                         $content .= '<div class="padding-left-20">' . \Yii::t('member', 'delete') . '</div>';
                         foreach ($followerMerge['employeeOldLog'] as $key => $val) {
-                            $content .='<div class="padding-left-20"><a href="#/member/' . $key . '"><i>' . $val . '</i></a></div>';
+                            $content .='<div class="padding-left-20"><a href="#/viewEmployee/' . $key . '"><i>' . $val . '</i></a></div>';
                         }
                     }
 
                     if (!empty($followerMerge['employeeNewLog'])) {
                         $content .= '<div class="padding-left-20">' . \Yii::t('member', 'add new') . '</div>';
                         foreach ($followerMerge['employeeNewLog'] as $key => $val) {
-                            $content .='<div class="padding-left-20"><a href="#/member/' . $key . '"><i>' . $val . '</i></a></div>';
+                            $content .='<div class="padding-left-20"><a href="#/viewEmployee/' . $key . '"><i>' . $val . '</i></a></div>';
                         }
                     }
                 }

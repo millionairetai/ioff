@@ -490,7 +490,7 @@ class ProjectController extends ApiController {
             \Yii::t('member', 'project completed percent') => array($dataPost['projectInfo_old']['completed_percent'] . "%" => $dataPost['completed_percent'] . "%"),
             \Yii::t('member', 'project estimate op') => array($dataPost['projectInfo_old']['estimate_hour'] => $dataPost['estimate_hour']),
 //            \Yii::t('member', 'project manager op')     => array('<a href="#/member/' . $dataPost['projectInfo_old']['manager_project_id'] . '">' . $dataPost['projectInfo_old']['project_manager'] . '</a>' => !empty($dataPost['manager']['id']) ?  '<a href="#/member/' . $dataPost['manager']['id'] . '">' . $dataPost['manager']['firstname'] . '</a>' : $noSetting),
-            \Yii::t('member', 'project manager op') => array(empty($dataPost['projectInfo_old']['manager_project_id']) ? $noSetting : '<a href="#/member/' . $dataPost['projectInfo_old']['manager_project_id'] . '">' . $dataPost['projectInfo_old']['project_manager'] . '</a>' => !empty($dataPost['manager']['id']) ? '<a href="#/member/' . $dataPost['manager']['id'] . '">' . $dataPost['manager']['firstname'] . '</a>' : $noSetting),
+            \Yii::t('member', 'project manager op') => array(empty($dataPost['projectInfo_old']['manager_project_id']) ? $noSetting : '<a href="#/viewEmployee/' . $dataPost['projectInfo_old']['manager_project_id'] . '">' . $dataPost['projectInfo_old']['project_manager'] . '</a>' => !empty($dataPost['manager']['id']) ? '<a href="#/viewEmployee/' . $dataPost['manager']['id'] . '">' . $dataPost['manager']['firstname'] . '</a>' : $noSetting),
         );
 
         //Create log project history text.
@@ -530,7 +530,7 @@ class ProjectController extends ApiController {
                             $divOld = "";
                             if (!empty($employesOld)) {
                                 foreach ($employesOld as $old) {
-                                    $divOld .='<div class="padding-left-20"><a href="#/member/' . $old['id'] . '"><i>' . $old['firstname'] . '</i></a></div>';
+                                    $divOld .='<div class="padding-left-20"><a href="#/viewEmployee/' . $old['id'] . '"><i>' . $old['firstname'] . '</i></a></div>';
                                 }
 
                                 $tplEmployess .= '<div class="padding-left-20">' . \Yii::t('member', 'delete') . $divOld . '</div>';
@@ -540,7 +540,7 @@ class ProjectController extends ApiController {
                             $divNew = "";
                             if (!empty($employesNew)) {
                                 foreach ($employesNew as $new) {
-                                    $divNew .='<div class="padding-left-20"><a href="#/member/' . $new['id'] . '"><i>' . $new['firstname'] . '</i></a></div>';
+                                    $divNew .='<div class="padding-left-20"><a href="#/viewEmployee/' . $new['id'] . '"><i>' . $new['firstname'] . '</i></a></div>';
                                 }
 
                                 $tplEmployess .= '<div class="padding-left-20"> ' . \Yii::t('member', 'add new') . $divNew . '</div>';
@@ -720,11 +720,12 @@ class ProjectController extends ApiController {
             }
 
             if (!empty($data)) {
-                if (!\Yii::$app->db->createCommand()->batchInsert(ProjectEmployee::tableName(), array_keys($data[0]), $data)->execute()) {
+                if (!\Yii::$app->db->createCommand()->batchInsert(ProjectEmployee::tableName(), ['project_id', 'employee_id'], $data)->execute()) {
                     $result = false;
                 }
             }
         }
+        
         return $result;
     }
 
