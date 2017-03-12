@@ -875,7 +875,7 @@ appRoot.controller('editEventCtrl', ['$rootScope', 'data', 'listCalendar', '$sco
             color: data.calendars.event.color,
             redmind: parseInt(data.calendars.remind),
             sms: 0,
-            departments: departmentsData,
+            departments: departmentsData.map(Number),
             members: membersData,
             data_old: data.calendars,
         }

@@ -1442,7 +1442,7 @@ appRoot.controller('editEventCtrl', ['$rootScope', 'data', 'listCalendar', '$sco
             color: data.calendars.event.color,
             redmind: parseInt(data.calendars.remind),
             sms: 0,
-            departments: departmentsData,
+            departments: departmentsData.map(Number),
             members: membersData,
             data_old: data.calendars,
         }
@@ -3270,7 +3270,7 @@ appRoot.controller('editProjectCtrl', ['$scope', 'projectService', '$location', 
             employess_old: $dataEditProject.participant_employee,
             departments_old: $dataEditProject.department_info,
             projectInfo_old: $dataEditProject.project_info,
-            default_department: Object.keys($dataEditProject.department_info)
+            default_department: (Object.keys($dataEditProject.department_info)).map(Number)
         };
 
         $scope.removeChoice = function (index) {

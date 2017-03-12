@@ -17,7 +17,7 @@ class DepartmentController extends ApiController {
         $array = Department::find()->select(['id', 'name'])->andCompanyId()->all();
         foreach ($array as $item) {
             $objects[] = [
-                'id' => $item->id,
+                'id' => (int)$item->id,
                 'name' => $item->name,
             ];
         }
