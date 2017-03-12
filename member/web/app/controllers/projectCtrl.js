@@ -609,7 +609,7 @@ appRoot.controller('editProjectCtrl', ['$scope', 'projectService', '$location', 
                     return item.id;
                 });
             } else {
-                $scope.project.departments = [];
+                $scope.project.default_department = [];
             }
             $scope.findEmployeeForProject('');
         };
