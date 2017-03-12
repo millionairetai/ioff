@@ -37,6 +37,7 @@ class EventPostController extends ApiController {
                 'id' => $item->id,
                 'time' => date('H:i d-m-Y ', $item->datetime_created),
                 'content' => $item->content,
+                'employee_id' => empty($item->employee) ? '' : $item->employee->id,
                 'employee_name' => empty($item->employee) ? '' : $item->employee->getFullName(),
                 'profile_image_path' => empty($item->employee) ? '' : $item->employee->getImage(),
                 'actionDelete' => $actionDelete,
@@ -82,6 +83,7 @@ class EventPostController extends ApiController {
             'time' => date('H:i d-m-Y ', $eventPost->datetime_created),
             'content' => $eventPost->content,
             'employee_name' => empty($eventPost->employee) ? '' : $eventPost->employee->getFullName(),
+            'employee_id' => empty($eventPost->employee) ? '' : $eventPost->employee->id,
             'profile_image_path' => empty($eventPost->employee) ? '' : $eventPost->employee->getImage(),
             'actionDelete' => $actionDelete,
         ];
@@ -205,6 +207,7 @@ class EventPostController extends ApiController {
                 'id' => $eventPost->id,
                 'time' => date('H:i d-m-Y ', $eventPost->datetime_created),
                 'content' => $dataPost['description'],
+                'employee_id' => \Yii::$app->user->identity->id,
                 'employee_name' => \Yii::$app->user->identity->fullName,
                 'profile_image_path' => \Yii::$app->user->identity->image,
                 'actionDelete' => true,

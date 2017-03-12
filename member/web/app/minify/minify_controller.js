@@ -1174,9 +1174,10 @@ appRoot.controller('viewEventCtrl', ['$scope', 'calendarService', 'fileService',
             });
             modalInstance.result.then(function (data) {
                 $scope.getInfoEvent();
-                if (data.objects.no_load_event_post) {
-                    $scope.getLastEventPost();
-                }
+                $scope.getLastEventPost();
+//                if (data.objects.no_load_event_post) {
+//                    $scope.getLastEventPost();
+//                }
             }, function () {
             });
         };

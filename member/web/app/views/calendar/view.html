@@ -119,7 +119,7 @@
                         <div class="box-header with-border">
                             <div class="user-block">
                                 <img src="{{v.profile_image_path}}" class="img-circle" alt="User Image" width="58px" height="58px">
-                                <span class="username"><a href="#/member/{{v.id}}"><b>{{v.employee_name}}</b></a></span>
+                                <span class="username"><a href="#/viewEmployee/{{v.employee_id}}"><b>{{v.employee_name}}</b></a></span>
                                 <span class="description">{{v.time| date : "fullDate" }}</span>
                             </div>
 
@@ -199,7 +199,7 @@
                 <div class="box-body">
                     <div class="user-block-text-center-right" ng-repeat="employee in collection.invitations.departmentAndEmployee.employeeList| limitTo:limit">
                         <img src="{{employee.image}}" class="img-circle" width="58px" height="58px"> 
-                        <a href="#/member/{{employee.id}}" class="ng-binding">{{employee.firstname}}</a>
+                        <a href="#/viewEmployee/{{employee.id}}" class="ng-binding">{{employee.firstname}}</a>
                     </div>
                 </div><!--box body-->
                 <div class=" text-center" >

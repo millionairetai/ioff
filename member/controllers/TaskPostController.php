@@ -40,6 +40,7 @@ class TaskPostController extends ApiController {
                 'time' => date('H:i d-m-Y ', $item->datetime_created),
                 'content' => $item->content,
                 'employee_name' => empty($item->employee) ? '' : $item->employee->getFullName(),
+                'employee_id' => empty($item->employee) ? '' : $item->employee->id,
                 'profile_image_path' => empty($item->employee) ? '' : $item->employee->getImage(),
                 'actionDelete' => $actionDelete,
             ];
@@ -84,6 +85,7 @@ class TaskPostController extends ApiController {
             'time' => date('H:i d-m-Y ', $taskPost->datetime_created),
             'content' => $taskPost->content,
             'employee_name' => empty($taskPost->employee) ? '' : $taskPost->employee->getFullName(),
+            'employee_id' => empty($taskPost->employee) ? '' : $taskPost->employee->id,
             'profile_image_path' => empty($taskPost->employee) ? '' : $taskPost->employee->getImage(),
             'actionDelete' => $actionDelete,
         ];
@@ -255,6 +257,7 @@ class TaskPostController extends ApiController {
                 'time' => date('H:i d-m-Y ', $taskPost->datetime_created),
                 'content' => $logTask . $dataPost['description'],
                 'employee_name' => \Yii::$app->user->identity->fullName,
+                'employee_id' => \Yii::$app->user->identity->id,
                 'profile_image_path' => \Yii::$app->user->identity->image,
                 'actionDelete' => true,
             ];
