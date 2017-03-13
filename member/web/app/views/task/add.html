@@ -32,7 +32,7 @@
                     <label class="col-sm-3 control-label">{{$root.$lang.task_end_date}}</label>
                     <div class="col-sm-3">
                         <p class="input-group">
-                            <input type="text" class="form-control" uib-datepicker-popup="dd-MM-yyyy" ng-model="task.duedatetime" is-open="open_start_datetime" datepicker-options="dateOptions" ng-required="true" close-text="{{$root.$lang.datepicker_close}}"  clear-text="{{$root.$lang.datepicker_clear}}" current-text="{{$root.$lang.datepicker_today}}" ng-focus="open_start_datetime = true" />
+                            <input type="text" class="form-control" uib-datepicker-popup="dd-MM-yyyy" ng-readonly="true"  ng-model="task.duedatetime" is-open="open_start_datetime" datepicker-options="dateOptions" ng-required="true" close-text="{{$root.$lang.datepicker_close}}"  clear-text="{{$root.$lang.datepicker_clear}}" current-text="{{$root.$lang.datepicker_today}}" ng-focus="open_start_datetime = true" />
                             <span class="input-group-btn">
                                 <button type="button" class="btn btn-default" ng-click="open_start_datetime = true"><i class="glyphicon glyphicon-calendar"></i></button>
                             </span>
@@ -155,20 +155,19 @@
             <div class="box-body">                                
                 <div class="form-group">
                     <label class="col-sm-3 control-label">{{$root.$lang.task_employee_assigners}}</label>
-
                     <div class="col-sm-9" >
                         <ui-select multiple  ng-model="task.assigningEmployees" theme="bootstrap" ng-click="findEmployeeForTask('')" ng-keyup="findEmployeeForTask($select.search)">
                             <ui-select-match placeholder="...">
-                                <img src="{{$item.image}}" height="30" width="30" /><br/>
+                                <img class="img-circle" src="{{$item.image}}" height="30" width="30" />
                                 {{$item.fullname}}
                             </ui-select-match>
                             <ui-select-choices refresh-delay="1000" repeat="person in searchedEmployees|filter:filterFollowingEmployees">
                                 <div class="item-result ">
                                     <div class="item-result-name">
-                                        <img src="{{person.image}}" height="50" width="50">
+                                        <img class="img-circle" src="{{person.image}}" height="50" width="50">
                                         <div class="container-employee-search-info">
                                             <strong >{{person.fullname}}</strong><br>
-                                            <i >{{person.email}}</i>
+                                            <i>{{person.email}}</i>
                                         </div>
                                         <div class="clearBoth"></div>
                                     </div>
@@ -183,13 +182,13 @@
                     <div class="col-sm-9" >
                         <ui-select multiple  ng-model="task.followingEmployees" theme="bootstrap" ng-click="findEmployeeForTask('')" ng-keyup="findEmployeeForTask($select.search)">
                             <ui-select-match placeholder="...">
-                                <img src="{{$item.image}}" height="30" width="30" /><br/>
+                                <img class="img-circle" src="{{$item.image}}" height="30" width="30" />
                                 {{$item.fullname}}
                             </ui-select-match>
                             <ui-select-choices refresh-delay="1000" repeat="person in searchedEmployees|filter:filterAssigningEmployees">
                                 <div class="item-result ">
                                     <div class="item-result-name">
-                                        <img src="{{person.image}}" height="50" width="50">
+                                        <img class="img-circle" src="{{person.image}}" height="50" width="50">
                                         <div class="container-employee-search-info">
                                             <strong >{{person.fullname}}</strong><br>
                                             <i >{{person.email}}</i>

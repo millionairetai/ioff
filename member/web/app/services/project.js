@@ -1,4 +1,5 @@
-appRoot.factory('projectService', ['apiService','$rootScope','alertify', function (apiService,$rootScope,alertify) {
+appRoot.factory('projectService', ['apiService','$rootScope','alertify', 'validateService',
+    function (apiService,$rootScope,alertify, validateService) {
 
         return {
             listProject : function (data,success,error){
@@ -37,18 +38,6 @@ appRoot.factory('projectService', ['apiService','$rootScope','alertify', functio
                     message += $rootScope.$lang.project_estimate_error + "<br/>";
                 }
                 
-                //check start date
-                if((typeof object.start_datetime) === 'undefined' ){
-                    message += $rootScope.$lang.project_start_date_error_empty + "<br/>";
-                }
-                //check enddate
-                if((typeof object.duedatetime) === 'undefined'){
-                    message += $rootScope.$lang.project_end_date_error_empty + "<br/>";
-                }else{
-                    if(Object.prototype.toString.call(object.duedatetime) === '[object Date]' && object.duedatetime.getTime() < now.getTime()){
-                        message += $rootScope.$lang.project_end_date_error_past + "<br/>";
-                    }
-                }
                 if(Object.prototype.toString.call(object.start_datetime) === '[object Date]' && Object.prototype.toString.call(object.duedatetime) === '[object Date]'){
                     if(object.start_datetime.getTime() > object.duedatetime.getTime()){
                         message += $rootScope.$lang.project_time_error + "<br/>";

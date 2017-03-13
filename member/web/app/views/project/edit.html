@@ -27,7 +27,7 @@
                                 </td>
                                 <td class="padding-input">
                                     <p class="input-group">
-                                        <input type="text" class="form-control" uib-datepicker-popup="dd-MM-yyyy" ng-model="project.start_datetime" is-open="open_start_datetime" datepicker-options="dateOptions" ng-required="true" close-text="{{$root.$lang.datepicker_close}}"  clear-text="{{$root.$lang.datepicker_clear}}" current-text="{{$root.$lang.datepicker_today}}" ng-focus="open_start_datetime = true" />
+                                        <input type="text" class="form-control" uib-datepicker-popup="dd-MM-yyyy" ng-readonly="true"  ng-model="project.start_datetime" is-open="open_start_datetime" datepicker-options="dateOptions" ng-required="true" close-text="{{$root.$lang.datepicker_close}}"  clear-text="{{$root.$lang.datepicker_clear}}" current-text="{{$root.$lang.datepicker_today}}" ng-focus="open_start_datetime = true" />
                                         <span class="input-group-btn">
                                             <button type="button" class="btn btn-default" ng-click="open_start_datetime = true"><i class="glyphicon glyphicon-calendar"></i></button>
                                         </span>
@@ -37,7 +37,7 @@
                                 </td>
                                 <td class="padding-input">
                                     <p class="input-group">
-                                        <input type="text" class="form-control" uib-datepicker-popup="dd-MM-yyyy" ng-model="project.duedatetime" is-open="open_end_datetime" datepicker-options="dateOptions" ng-required="true" close-text="{{$root.$lang.datepicker_close}}"  clear-text="{{$root.$lang.datepicker_clear}}" current-text="{{$root.$lang.datepicker_today}}" ng-focus="open_end_datetime = true"/>
+                                        <input type="text" class="form-control" uib-datepicker-popup="dd-MM-yyyy" ng-readonly="true" ng-model="project.duedatetime" is-open="open_end_datetime" datepicker-options="dateOptions" ng-required="true" close-text="{{$root.$lang.datepicker_close}}"  clear-text="{{$root.$lang.datepicker_clear}}" current-text="{{$root.$lang.datepicker_today}}" ng-focus="open_end_datetime = true"/>
                                         <span class="input-group-btn">
                                             <button type="button" class="btn btn-default" ng-click="open_end_datetime = true"><i class="glyphicon glyphicon-calendar"></i></button>
                                         </span>
@@ -138,14 +138,14 @@
                                 <span  ng-if="$select.selected.image != null">
                                     <span ng-show="project.manager">
                                         <i class="fa fa-remove red cursor-pointer" ng-click="clearManager()" style="position: absolute; left: 37px; top: 0px;"></i></span> 
-                                    <img src="{{$select.selected.image}}" height="30" width="30" />
+                                    <img class="img-circle" src="{{$select.selected.image}}" height="30" width="30" />
                                     {{$select.selected.firstname}}
                                 </span>
                             </ui-select-match>
                             <ui-select-choices refresh="findEmployee($select.search)" refresh-delay="1000" repeat="person in people">
                                 <div class="item-result ">
                                     <div class="item-result-name">
-                                        <img src="{{person.image}}" height="50" width="50">
+                                        <img class="img-circle" src="{{person.image}}" height="50" width="50">
                                         <div class="container-employee-search-info">
                                             <strong>{{person.firstname}}</strong><br> <i>{{person.email}}</i>
                                         </div>

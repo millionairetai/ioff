@@ -163,7 +163,6 @@
             project_start_date_error_empty : 'Start date is must format dd-mm-yyyy',
             project_end_date_error_empty : 'End date is must format dd-mm-yyyy',
             project_start_date_error_past : 'Start date is not in past',
-            project_end_date_error_past : 'End date is not in past',
             project_time_error: 'End date is greater than Start date',
             project_manager_error_empty: 'Manager is not empty',
             project_members_error_empty: 'Department and Employee is not empty',

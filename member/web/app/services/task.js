@@ -46,12 +46,7 @@ appRoot.factory('taskService', ['apiService','$rootScope','alertify', function (
                     
                 }else{
                     message += $rootScope.$lang.task_estimate_error + "<br/>";
-                }
-                                
-                //check enddate
-                if((typeof object.duedatetime) === 'undefined'){
-                    message += $rootScope.$lang.task_end_date_error_empty + "<br/>";
-                }                               
+                }                      
                 
                 if(message.length > 0){
                     alertify.error(message);

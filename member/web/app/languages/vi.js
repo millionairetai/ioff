@@ -162,7 +162,6 @@
             project_start_date_error_empty : 'Ngày bắt đầu phải có định dạng dd-mm-yyyy',
             project_end_date_error_empty : 'Ngày kết thúc phải có định dạng dd-mm-yyyy',
             project_start_date_error_past : 'Ngày bắt đầu phải lớn hơn hiện tại',
-            project_end_date_error_past : 'Ngày kết thúc phải lớn hơn hiện tại',
             project_time_error: 'Ngày kết thúc phải lớn hơn ngày bắt đầu',
             project_manager_error_empty: 'Người quản lý không thể bỏ trống',
             project_members_error_empty: 'Dự án phải có người phụ trách',

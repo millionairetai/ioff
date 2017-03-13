@@ -2810,7 +2810,6 @@ appRoot.controller('addProjectCtrl', ['socketService','$scope', 'projectService'
             sms : 0,
             departments: [],
             members : [],
-            
         };
 
         //project manager
@@ -2826,7 +2825,6 @@ appRoot.controller('addProjectCtrl', ['socketService','$scope', 'projectService'
                 $scope.employees = response.objects;
             });
         };
-        
         
         //refresh member
         $scope.selectManager = function($item, $model){
@@ -3010,7 +3008,6 @@ appRoot.controller('viewProjectCtrl', ['$scope', 'projectService', 'fileService'
 
         $scope.projectPost = [];
         $scope.projectPostFile = [];
-
         $scope.getProjectPosts = function () {
             projectPostService.getProjectPosts($scope.filter, function (response) {
                 $scope.projectPost = response.objects.collection;
@@ -3256,8 +3253,8 @@ appRoot.controller('editProjectCtrl', ['$scope', 'projectService', '$location', 
             parent_id: 0,
             manager: {id: $dataEditProject.project_info.manager_project_id, firstname: $dataEditProject.project_info.project_manager, image: $dataEditProject.project_info.image},
             name: $dataEditProject.project_info.project_name,
-            start_datetime: new Date($dataEditProject.project_info.start_datetime),
-            duedatetime: new Date($dataEditProject.project_info.duedatetime),
+            start_datetime: $dataEditProject.project_info.start_datetime != null && $dataEditProject.project_info.start_datetime != 0 ? new Date($dataEditProject.project_info.start_datetime) : '',
+            duedatetime: $dataEditProject.project_info.duedatetime != null && $dataEditProject.project_info.duedatetime != 0 ? new Date($dataEditProject.project_info.duedatetime) : '',
             priority_id: parseInt($dataEditProject.project_info.priority_id),
             completed_percent: $dataEditProject.project_info.completed_percent,
             is_public: $dataEditProject.project_info.is_public,
@@ -4508,7 +4505,7 @@ appRoot.controller('editTaskCtrl', ['socketService', 'data', '$scope', 'taskServ
             id: data.task.id,
             name: data.task.name,
             project_id: parseInt(data.task.project_id),
-            duedatetime: new Date(data.task.duedatetime),
+            duedatetime: data.task.duedatetime != null ? new Date(data.task.duedatetime) : '',
             priority_id: parseInt(data.task.priority_id),
             completed_percent: data.task.completed_percent,
             description: data.task.description,

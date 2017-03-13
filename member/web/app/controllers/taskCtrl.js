@@ -701,7 +701,7 @@ appRoot.controller('editTaskCtrl', ['socketService', 'data', '$scope', 'taskServ
             id: data.task.id,
             name: data.task.name,
             project_id: parseInt(data.task.project_id),
-            duedatetime: new Date(data.task.duedatetime),
+            duedatetime: data.task.duedatetime != null ? new Date(data.task.duedatetime) : '',
             priority_id: parseInt(data.task.priority_id),
             completed_percent: data.task.completed_percent,
             description: data.task.description,
