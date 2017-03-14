@@ -2262,7 +2262,7 @@ appRoot.controller('profileCtrl', ['$scope', '$rootScope', 'alertify', '$timeout
                         id: $scope.employee.id,
                         firstname: $scope.employee.firstname,
                         lastname: $scope.employee.lastname,
-                        birthdate: $scope.employee.birthdate,
+                        birthdate: $scope.employee.birthdate_edit,
                         department_id: $scope.employee.department_id,
                         mobile_phone: $scope.employee.mobile_phone,
                         work_phone: $scope.employee.work_phone,

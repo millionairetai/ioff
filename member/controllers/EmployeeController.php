@@ -338,6 +338,7 @@ class EmployeeController extends ApiController {
                     'work_phone' => $employee->work_phone,
                     'image' => $employee->image,
                     'birthdate' => (!empty($employee->birthdate) ? \Yii::$app->formatter->asDate($employee->birthdate) : ''),
+                    'birthdate_edit' => (!empty($employee->birthdate) ? \Yii::$app->formatter->asDate($employee->birthdate, 'php:Y-m-d') : ''),
 //                    'gender' => $employee->gender,
                     'street_address_1' => $employee->street_address_1,
                     'loginEmployeeId' => Yii::$app->user->identity->id
@@ -374,6 +375,7 @@ class EmployeeController extends ApiController {
                         'work_phone' => $employee->work_phone,
                         'image' => $employee->image,
                         'birthdate' => (!empty($employee->birthdate) ? \Yii::$app->formatter->asDate($employee->birthdate) : ''),
+                        'birthdate_edit' => (!empty($employee->birthdate) ? \Yii::$app->formatter->asDate($employee->birthdate, 'php:Y-m-d') : ''),
     //                    'gender' => $employee->gender,
                         'street_address_1' => $employee->street_address_1,
                     ];
