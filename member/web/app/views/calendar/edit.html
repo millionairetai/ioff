@@ -22,7 +22,7 @@
                             <tr>
                                 <td>
                                     <p class="input-group">
-                                        <input type="text" class="form-control" uib-datepicker-popup="dd-MM-yyyy" ng-model="event.var_start_datetime" is-open="open_start_datetime" datepicker-options="dateOptions" ng-required="true" close-text="{{$root.$lang.datepicker_close}}"  clear-text="{{$root.$lang.datepicker_clear}}" current-text="{{$root.$lang.datepicker_today}}" ng-focus="open_start_datetime = true"/>
+                                        <input type="text" ng-readonly="true" class="form-control" uib-datepicker-popup="dd-MM-yyyy" ng-model="event.var_start_datetime" is-open="open_start_datetime" datepicker-options="dateOptions" ng-required="true" close-text="{{$root.$lang.datepicker_close}}"  clear-text="{{$root.$lang.datepicker_clear}}" current-text="{{$root.$lang.datepicker_today}}" ng-focus="open_start_datetime = true"/>
                                         <span class="input-group-btn">
                                             <button type="button" class="btn btn-default" ng-click="open_start_datetime = true"><i class="glyphicon glyphicon-calendar"></i></button>
                                         </span>
@@ -32,7 +32,7 @@
                                 <td>
                                     <p class="input-group">
                                         <span ng-show="event.is_all_day"><input type="text" class="form-control" ng-disabled="event.is_all_day" /></span>
-                                        <span ng-hide="event.is_all_day"><input type="text" class="form-control" datetime-picker="HH:mm" ng-model="event.var_start_datetime"  is-open="open_start_time" enable-date="false"  enable-time="true" button-bar="buttonBar" ng-focus="open_start_time = true" timepicker-options="timepickerOptions" ng-disabled="event.is_all_day" /></span>
+                                        <span ng-hide="event.is_all_day"><input type="text" ng-readonly="true" class="form-control" datetime-picker="HH:mm" ng-model="event.var_start_datetime"  is-open="open_start_time" enable-date="false"  enable-time="true" button-bar="buttonBar" ng-focus="open_start_time = true" timepicker-options="timepickerOptions" ng-disabled="event.is_all_day" /></span>
                                         <span class="input-group-btn">
                                             <button type="button" class="btn btn-default" ng-click="open_start_time = true"  ng-disabled="event.is_all_day" ><i class="fa fa-clock-o"></i></button>
                                         </span>
@@ -41,7 +41,7 @@
 
                                 <td class="padding-input">
                                     <p class="input-group">
-                                        <input type="text" class="form-control" uib-datepicker-popup="dd-MM-yyyy" ng-model="event.var_end_datetime" is-open="open_end_datetime" datepicker-options="dateOptions" ng-required="true" close-text="{{$root.$lang.datepicker_close}}"  clear-text="{{$root.$lang.datepicker_clear}}" current-text="{{$root.$lang.datepicker_today}}" ng-focus="open_end_datetime = true"/>
+                                        <input type="text" ng-readonly="true" class="form-control" uib-datepicker-popup="dd-MM-yyyy" ng-model="event.var_end_datetime" is-open="open_end_datetime" datepicker-options="dateOptions" ng-required="true" close-text="{{$root.$lang.datepicker_close}}"  clear-text="{{$root.$lang.datepicker_clear}}" current-text="{{$root.$lang.datepicker_today}}" ng-focus="open_end_datetime = true"/>
                                         <span class="input-group-btn">
                                             <button type="button" class="btn btn-default" ng-click="open_end_datetime = true"><i class="glyphicon glyphicon-calendar"></i></button>
                                         </span>
@@ -50,7 +50,7 @@
                                 <td>
                                     <p class="input-group">
                                         <span ng-show="event.is_all_day"><input type="text" class="form-control" ng-disabled="event.is_all_day" /></span>
-                                        <span ng-hide="event.is_all_day"><input type="text" class="form-control" datetime-picker="HH:mm" ng-model="event.var_end_datetime"  is-open="open_end_time" enable-date="false"  enable-time="true" button-bar="buttonBar" ng-focus="open_end_time = true" timepicker-options="timepickerOptions" ng-disabled="event.is_all_day"/></span>
+                                        <span ng-hide="event.is_all_day"><input type="text" ng-readonly="true" class="form-control" datetime-picker="HH:mm" ng-model="event.var_end_datetime"  is-open="open_end_time" enable-date="false"  enable-time="true" button-bar="buttonBar" ng-focus="open_end_time = true" timepicker-options="timepickerOptions" ng-disabled="event.is_all_day"/></span>
                                         <span class="input-group-btn">
                                             <button type="button" class="btn btn-default" ng-click="open_end_time = true" ng-disabled="event.is_all_day" ><i class="fa fa-clock-o"></i></button>
                                         </span>
@@ -159,13 +159,13 @@
                     <div class="col-sm-9">
                         <ui-select multiple  ng-model="event.members" theme="bootstrap" ng-disabled="disabled"  on-select="selectMember($item, $model)">
                             <ui-select-match placeholder="">
-                                <img ng-src="{{$item.image}}" height="30" width="30" /><br/>
+                                <img class="img-circle" ng-src="{{$item.image}}" height="30" width="30" />
                                 {{$item.firstname}}
                             </ui-select-match>
                             <ui-select-choices refresh="findEmployeeForCalendar($select.search)" refresh-delay="1000" repeat="person in employees">
                                 <div class="item-result ">
                                     <div class="item-result-name">
-                                        <img ng-src="{{person.image}}" height="50" width="50">
+                                        <img class="img-circle" ng-src="{{person.image}}" height="50" width="50">
                                         <div class="container-employee-search-info">
                                             <strong >{{person.firstname}}</strong><br>
                                             <i >{{person.email}}</i>

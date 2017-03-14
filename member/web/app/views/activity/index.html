@@ -92,7 +92,7 @@
                                         <label class="col-sm-3 control-label">{{$root.$lang.end_date}}:</label>
                                         <div class="col-sm-3">
                                             <p class="input-group">
-                                                <input type="text" class="form-control" uib-datepicker-popup="dd-MM-yyyy" ng-model="annoucemnt.date_new_to" is-open="open_start_datetime" datepicker-options="dateOptions" ng-required="true" close-text="{{$root.$lang.datepicker_close}}"  clear-text="{{$root.$lang.datepicker_clear}}" current-text="{{$root.$lang.datepicker_today}}" ng-focus="open_start_datetime = true" />
+                                                <input type="text" ng-readonly="true" class="form-control" uib-datepicker-popup="dd-MM-yyyy" ng-model="annoucemnt.date_new_to" is-open="open_start_datetime" datepicker-options="dateOptions" ng-required="true" close-text="{{$root.$lang.datepicker_close}}"  clear-text="{{$root.$lang.datepicker_clear}}" current-text="{{$root.$lang.datepicker_today}}" ng-focus="open_start_datetime = true" />
                                                 <span class="input-group-btn">
                                                     <button type="button" class="btn btn-default" ng-click="open_start_datetime = true"><i class="glyphicon glyphicon-calendar"></i></button>
                                                     <br />
@@ -176,7 +176,7 @@
                                             <label class="col-sm-3 control-label">{{$root.$lang.from_datetime}}:</label>
                                             <div class="col-sm-3">
                                                 <p class="input-group">
-                                                    <input type="text" class="form-control" uib-datepicker-popup="dd-MM-yyyy" ng-model="requestment.from_datetime" is-open="open_from_datetime" datepicker-options="dateOptions" ng-required="true" close-text="{{$root.$lang.datepicker_close}}"  clear-text="{{$root.$lang.datepicker_clear}}" current-text="{{$root.$lang.datepicker_today}}" ng-focus="open_from_datetime = true" />
+                                                    <input type="text" class="form-control" ng-readonly="true"  uib-datepicker-popup="dd-MM-yyyy" ng-model="requestment.from_datetime" is-open="open_from_datetime" datepicker-options="dateOptions" ng-required="true" close-text="{{$root.$lang.datepicker_close}}"  clear-text="{{$root.$lang.datepicker_clear}}" current-text="{{$root.$lang.datepicker_today}}" ng-focus="open_from_datetime = true" />
                                                     <span class="input-group-btn">
                                                         <button type="button" class="btn btn-default" ng-click="open_from_datetime = true"><i class="glyphicon glyphicon-calendar"></i></button>
                                                         <br />
@@ -184,7 +184,7 @@
                                                 </p>
                                             </div>
                                             <div class="input-group col-sm-2">
-                                                <input type="text" class="form-control" datetime-picker="HH:mm" ng-model="requestment.from_datetime" is-open="open_from_time" enable-date="false"  enable-time="true" button-bar="buttonBar" ng-focus="open_from_time = true" timepicker-options="timepickerOptions"/>
+                                                <input type="text" class="form-control" ng-readonly="true" datetime-picker="HH:mm" ng-model="requestment.from_datetime" is-open="open_from_time" enable-date="false"  enable-time="true" button-bar="buttonBar" ng-focus="open_from_time = true" timepicker-options="timepickerOptions"/>
                                                 <span class="input-group-btn">
                                                     <button type="button" class="btn btn-default" ng-click="open_from_time = true"><i class="fa fa-clock-o"></i></button>
                                                 </span>
@@ -193,7 +193,7 @@
                                             <label class="col-sm-3 control-label">{{$root.$lang.to_datetime}}:</label>
                                             <div class="col-sm-3">
                                                 <p class="input-group">
-                                                    <input type="text" class="form-control" uib-datepicker-popup="dd-MM-yyyy" ng-model="requestment.to_datetime" is-open="open_to_datetime" datepicker-options="dateOptions" ng-required="true" close-text="{{$root.$lang.datepicker_close}}"  clear-text="{{$root.$lang.datepicker_clear}}" current-text="{{$root.$lang.datepicker_today}}" ng-focus="open_to_datetime = true" />
+                                                    <input type="text" class="form-control" ng-readonly="true"  uib-datepicker-popup="dd-MM-yyyy" ng-model="requestment.to_datetime" is-open="open_to_datetime" datepicker-options="dateOptions" ng-required="true" close-text="{{$root.$lang.datepicker_close}}"  clear-text="{{$root.$lang.datepicker_clear}}" current-text="{{$root.$lang.datepicker_today}}" ng-focus="open_to_datetime = true" />
                                                     <span class="input-group-btn">
                                                         <button type="button" class="btn btn-default" ng-click="open_to_datetime = true"><i class="glyphicon glyphicon-calendar"></i></button>
                                                         <br />
@@ -201,7 +201,7 @@
                                                 </p>
                                             </div>
                                             <div class="input-group col-sm-2">
-                                                <input type="text" class="form-control" datetime-picker="HH:mm" ng-model="requestment.to_datetime" is-open="open_to_time" enable-date="false"  enable-time="true" button-bar="buttonBar" ng-focus="open_to_time = true" timepicker-options="timepickerOptions"/>
+                                                <input type="text" class="form-control" ng-readonly="true" datetime-picker="HH:mm" ng-model="requestment.to_datetime" is-open="open_to_time" enable-date="false"  enable-time="true" button-bar="buttonBar" ng-focus="open_to_time = true" timepicker-options="timepickerOptions"/>
                                                 <span class="input-group-btn">
                                                     <button type="button" class="btn btn-default" ng-click="open_to_time = true"><i class="fa fa-clock-o"></i></button>
                                                 </span>
