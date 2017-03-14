@@ -1530,6 +1530,13 @@ div.task-creator{
 #list-project li:nth-child(2n){
     background: #f9f9f9;
 }
+
+#list-project .progress-group .progress{
+    margin-right: 40px;
+}
+#list-project .progress-group .progress-number{
+    margin-top: -10px;
+}
 /* Report page */
 #report-tab .user-image{
     width: 25px;
