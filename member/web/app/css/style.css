@@ -369,7 +369,7 @@ search-product .dropdown-menu{
 }
 .containbox-search .dropdown-menu{
     border-radius: 0;
-    left: -11px;
+    left: 0;
 }
 .containbox-search .dropdown-menu li a{
     color: #333 !important;
