@@ -915,6 +915,8 @@ appRoot.controller('editTaskCtrl', ['socketService', 'data', '$scope', 'taskServ
                             for (var i in $scope.files) {
                                 fd.append("file_" + i, $scope.files[i]);
                             }
+                            
+                            $scope.task.description_parse = tinyMCE.activeEditor.getContent({format : 'text'});
                             fd.append("task", angular.toJson($scope.task));
                             taskService.editTask(fd, function (response) {
                                 if (response.objects.postnew) {

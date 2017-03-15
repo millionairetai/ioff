@@ -670,6 +670,8 @@ appRoot.controller('editProjectCtrl', ['$scope', 'projectService', '$location', 
                             for (var i in $scope.files) {
                                 fd.append("file_" + i, $scope.files[i]);
                             }
+                            
+                            $scope.project.description_parse = tinyMCE.activeEditor.getContent({format : 'text'});
                             fd.append("project", angular.toJson($scope.project));
                             projectService.editProject(fd, function (response) {
                                 alertify.success($rootScope.$lang.project_update_success);

@@ -313,7 +313,6 @@ class ProjectController extends ApiController {
             }
 
             $ob->attributes = $dataPost;
-            $ob->description_parse = $ob->description;
             $ob->start_datetime = $ob->start_datetime ? strtotime($ob->start_datetime) : null;
             $ob->duedatetime = $ob->duedatetime ? strtotime($ob->duedatetime) : null;
             $ob->manager_project_id = $dataPost['manager']['id'];

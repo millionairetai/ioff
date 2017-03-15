@@ -461,7 +461,6 @@ class TaskController extends ApiController {
             }
 
             $task->attributes = $dataPost;
-            $task->description_parse = $task->description;
             $task->duedatetime = !empty($dataPost['duedatetime']) ? strtotime($dataPost['duedatetime']) : 0;
             if (!$task->save()) {
                 $this->_message = $this->parserMessage($task->getErrors());
