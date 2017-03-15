@@ -30,7 +30,6 @@
                         <a href="#/viewProject/{{ob.id}}"><strong>{{ob.name}}</strong></a><br/>
                             <p><span class="label label-status label-{{ob.status_id}}">{{ob.status}}</span></p>
                         <i>{{ob.description_parse}}</i>
-                            
                         </div>
                         <div class="col-md-4">
                             <div class="progress-group">
@@ -49,8 +48,7 @@
             </ul>
         </div>
         <div class="box-footer text-center" >
-            <button class="btn form-control cursor-pointer viewmorecl" ng-click="viewMore()" ng-show="filter.totalItems > collection.length"><a>{{$root.$lang.view_more_upper_case}}</a></button>
-            
+            <button class="btn form-control cursor-pointer viewmorecl" ng-click="viewMore()" ng-show="filter.totalItems > collection.length"><a>{{$root.$lang.view_more_upper_case}}</a></button>            
         </div><!-- /.box-footer-->
     </div><!-- /.box -->
 

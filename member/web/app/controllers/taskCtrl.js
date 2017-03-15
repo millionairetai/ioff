@@ -706,7 +706,6 @@ appRoot.controller('editTaskCtrl', ['socketService', 'data', '$scope', 'taskServ
             completed_percent: data.task.completed_percent,
             description: data.task.description,
             estimate_hour: parseInt(data.task.estimate_hour),
-            worked_hour: 0,
             parent_id: parseInt(data.task.parent_id),
             status_id: parseInt(data.task.status_id),
             assigningEmployees: data.assignees,
