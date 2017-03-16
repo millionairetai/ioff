@@ -11,20 +11,20 @@
 
                         <p class="text-muted text-center">{{employee.email}}</p>
 
-<!--                        <ul class="list-group list-group-unbordered">
-                            <li class="list-group-item">
-                                <b>My project</b> <a class="pull-right">13,287</a>
-                            </li>
-                            <li class="list-group-item">
-                                <b>My Task</b> <a class="pull-right">1,322</a>
-                            </li>
-                            <li class="list-group-item">
-                                <b>My Following task</b> <a class="pull-right">543</a>
-                            </li>
-                            <li class="list-group-item">
-                                <b>My event</b> <a class="pull-right">13,287</a>
-                            </li>
-                        </ul>-->
+                        <!--                        <ul class="list-group list-group-unbordered">
+                                                    <li class="list-group-item">
+                                                        <b>My project</b> <a class="pull-right">13,287</a>
+                                                    </li>
+                                                    <li class="list-group-item">
+                                                        <b>My Task</b> <a class="pull-right">1,322</a>
+                                                    </li>
+                                                    <li class="list-group-item">
+                                                        <b>My Following task</b> <a class="pull-right">543</a>
+                                                    </li>
+                                                    <li class="list-group-item">
+                                                        <b>My event</b> <a class="pull-right">13,287</a>
+                                                    </li>
+                                                </ul>-->
 
                         <a ng-show="employee.id == employee.loginEmployeeId" class="btn btn-primary btn-block" ng-click="update()"><b>{{$root.$lang.edit}}</b></a>
                         <a ng-show="employee.id == employee.loginEmployeeId" class="btn btn-primary btn-block" ng-click="changePassword()"><b>{{$root.$lang.change_password}}</b></a>
@@ -99,11 +99,11 @@
                                     </div>
                                     <div class="form-group">
                                         <input type="checkbox" ng-model="message.option" icheck ng-click="message.option = true;
-                                            message.all = false;" /> {{$root.$lang.display_option}}
+                                                    message.all = false;" /> {{$root.$lang.display_option}}
                                     </div>
                                     <div class="option-message" ng-show="message.option">
-                                        <div class="form-group">
-                                            <div class="col-sm-12" >
+                                        <div class="form-group row clearfix">
+                                            <div class="col-sm-4" >
                                                 <label for="inputEmail3" class="control-label">{{$root.$lang.project_department}}</label>
                                                 <div id="container-department">
                                                     <label ng-repeat="department in departments">
@@ -112,29 +112,29 @@
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <br />
-                                        <div class="form-group">
-                                            <label for="inputEmail3" class="col-sm-3 control-label">{{$root.$lang.project_members}}</label>
-                                            <div class="col-sm-9">
-                                                <ui-select multiple  ng-model="message.employees" theme="bootstrap" ng-disabled="disabled"  on-select="selectMember($item, $model)">
-                                                    <ui-select-match placeholder="">
-                                                        <img class="img-circle" src="{{$item.image}}" height="30" width="30" />
-                                                        {{$item.firstname}}
-                                                    </ui-select-match>
-                                                    <ui-select-choices refresh="getEmployees($select.search)" refresh-delay="1000" repeat="person in employees">
-                                                        <div class="item-result ">
-                                                            <div class="item-result-name">
-                                                                <img class="img-circle" src="{{person.image}}" height="50" width="50">
-                                                                <div class="container-employee-search-info">
-                                                                    <strong >{{person.firstname}}</strong><br>
-                                                                    <i >{{person.email}}</i>
+                                        <div class="form-group  row clearfix">
+                                            <div class="col-sm-6">
+                                                <label for="inputEmail3" class="control-label">{{$root.$lang.project_members}}</label>
+                                                <div class="">
+                                                    <ui-select multiple  ng-model="message.employees" theme="bootstrap" ng-disabled="disabled"  on-select="selectMember($item, $model)">
+                                                        <ui-select-match placeholder="">
+                                                            <img class="img-circle" src="{{$item.image}}" height="30" width="30" />
+                                                            {{$item.firstname}}
+                                                        </ui-select-match>
+                                                        <ui-select-choices refresh="getEmployees($select.search)" refresh-delay="1000" repeat="person in employees">
+                                                            <div class="item-result ">
+                                                                <div class="item-result-name">
+                                                                    <img class="img-circle" src="{{person.image}}" height="50" width="50">
+                                                                    <div class="container-employee-search-info">
+                                                                        <strong >{{person.firstname}}</strong><br>
+                                                                        <i >{{person.email}}</i>
+                                                                    </div>
+                                                                    <div class="clearBoth"></div>
                                                                 </div>
-                                                                <div class="clearBoth"></div>
                                                             </div>
-                                                        </div>
-                                                    </ui-select-choices>
-                                                </ui-select>
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
