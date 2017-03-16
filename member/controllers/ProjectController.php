@@ -260,19 +260,19 @@ class ProjectController extends ApiController {
     public function actionView() {
         try {
             if ($projectId = \Yii::$app->request->post('projectId')) {
-                if ($data_project = Project::getInfoProject($projectId)) {
-                    $objects['collection'] = $data_project;
+                if ($dataProject = Project::getInfoProject($projectId)) {
+                    $objects['collection'] = $dataProject;
 
                     //check authentication
                     //**check case is public
-                    if (($data_project['project_info']['is_public'] == true) || (\Yii::$app->user->identity->is_admin == true) || ($data_project['project_info']['manager_project_id'] == Yii::$app->user->identity->id)
+                    if (($dataProject['project_info']['is_public'] == true) || (\Yii::$app->user->identity->is_admin == true) || ($dataProject['project_info']['manager_project_id'] == Yii::$app->user->identity->id)
                     ) {
                         return $this->sendResponse(false, $projectId, $objects);
                     } else {
                         $EmployeesInProject = ProjectEmployee::findOne([
-                                    'project_id' => $projectId,
-                                    'company_id' => $this->_companyId,
-                                    'employee_id' => Yii::$app->user->identity->id
+                            'project_id' => $projectId,
+                            'company_id' => $this->_companyId,
+                            'employee_id' => Yii::$app->user->identity->id
                         ]);
                         if (!empty($EmployeesInProject)) {
                             return $this->sendResponse(false, $projectId, $objects);
@@ -303,7 +303,6 @@ class ProjectController extends ApiController {
         }
 
         $transaction = \Yii::$app->db->beginTransaction();
-
         //create object and validate data
         try {
             //Check if get project is null value.
@@ -315,7 +314,6 @@ class ProjectController extends ApiController {
             $ob->start_datetime = $ob->start_datetime ? strtotime($ob->start_datetime) : null;
             $ob->duedatetime = $ob->duedatetime ? strtotime($ob->duedatetime) : null;
             $ob->manager_project_id = $dataPost['manager']['id'];
-
             if (!$ob->save()) {
                 $this->_message = $this->parserMessage($ob->getErrors());
                 $this->_error = true;
@@ -377,7 +375,6 @@ class ProjectController extends ApiController {
 
             $themeEmail = \common\models\EmailTemplate::getThemeEditProject();
             $themeSms = \common\models\SmsTemplate::getThemeEditProject();
-
             if (!empty($arrayEmployees)) {
                 foreach ($arrayEmployees as $item) {
                     $dataUpdate['notification'][] = [
@@ -434,7 +431,6 @@ class ProjectController extends ApiController {
                 $projectPost->content_parse = $projectPost->content;
                 $projectPost->parent_employee_id = 0;
                 $projectPost->is_log_history = true;
-
                 if (!$projectPost->save()) {
                     throw new \Exception('Save record to table project_post fail');
                 }
@@ -487,15 +483,16 @@ class ProjectController extends ApiController {
             return $content;
         }
 
+        $priority = Priority::getByPriorityIdAndOwnerTable($dataPost['priority_id'], 'project');
+        $status = Status::getByStatusIdAndOwnerTable($dataPost['status_id'], 'project');
         $noSetting = \Yii::t('member', 'no setting');
-
         $dataReplace = array(
             \Yii::t('member', 'project name op') => array($dataPost['projectInfo_old']['project_name'] => $dataPost['name']),
             \Yii::t('member', 'project start op') => array(!empty($dataPost['projectInfo_old']['start_datetime']) ? date('d-m-Y', strtotime($dataPost['projectInfo_old']['start_datetime'])) : $noSetting => !empty($dataPost['start_datetime']) ? date('d-m-Y', strtotime($dataPost['start_datetime'])) : $noSetting),
             \Yii::t('member', 'project end op') => array(!empty($dataPost['projectInfo_old']['duedatetime']) ? date('d-m-Y', strtotime($dataPost['projectInfo_old']['duedatetime'])) : $noSetting => !empty($dataPost['duedatetime']) ? date('d-m-Y', strtotime($dataPost['duedatetime'])) : $noSetting),
-            \Yii::t('member', 'project priority op') => array($dataPost['projectInfo_old']['priority_name'] => Priority::getPriorityName($dataPost['priority_id'])->name),
+            \Yii::t('member', 'project priority op') => array($dataPost['projectInfo_old']['priority_name'] => $priority['name']),
             \Yii::t('member', 'project share') => array(empty($dataPost['projectInfo_old']['is_public']) ? $noSetting : \Yii::t('member', 'project share') => empty($dataPost['is_public']) ? $noSetting : \Yii::t('member', 'project share')),
-            \Yii::t('member', 'project status op') => array($dataPost['projectInfo_old']['status_name'] => Status::getStatusName($dataPost['status_id'])->name),
+            \Yii::t('member', 'project status op') => array($dataPost['projectInfo_old']['status_name'] => $status['name']),
             \Yii::t('member', 'project description op') => array($dataPost['projectInfo_old']['description'] => $dataPost['description']),
             \Yii::t('member', 'project completed percent') => array($dataPost['projectInfo_old']['completed_percent'] . "%" => $dataPost['completed_percent'] . "%"),
             \Yii::t('member', 'project estimate op') => array($dataPost['projectInfo_old']['estimate_hour'] => $dataPost['estimate_hour']),
@@ -515,8 +512,10 @@ class ProjectController extends ApiController {
                                 $content .= '<li>' . $description . '</li>';
                                 break;
                             case \Yii::t('member', 'project status op'):
+                                $content .= '<li>' . str_replace(array('{{title}}', '{{after}}', '{{befor}}'), [$key, $dataPost['projectInfo_old']['status_name'], $status['name']], \Yii::t('member', 'message info content')) . '</li>';
+                                break;
                             case \Yii::t('member', 'project priority op'):
-                                $content .= '<li>' . str_replace(array('{{title}}', '{{after}}', '{{befor}}'), array($key, $after, $befor), \Yii::t('member', 'message info content')) . '</li>';
+                                $content .= '<li>' . str_replace(array('{{title}}', '{{after}}', '{{befor}}'), [$key, $dataPost['projectInfo_old']['priority_name'], $priority['name']], \Yii::t('member', 'message info content')) . '</li>';
                                 break;
                             default:
                                 $content .= '<li>' . str_replace(array('{{title}}', '{{after}}', '{{befor}}'), array($key, $after, $befor), \Yii::t('member', 'message info content')) . '</li>';
@@ -535,7 +534,6 @@ class ProjectController extends ApiController {
                     $employes = $dataPost['department_employess']['employee'];
                     if (!empty($employes)) {
                         if (!empty($employes['old']) || !empty($employes['new'])) {
-
                             $tplEmployess = '<li><div>' . \Yii::t('member', 'change employee') . '</div></li>';
                             $divOld = "";
                             if (!empty($employesOld)) {

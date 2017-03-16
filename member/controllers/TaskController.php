@@ -17,6 +17,8 @@ use common\models\Notification;
 use common\models\Remind;
 use common\models\Sms;
 use common\models\TaskPost;
+use common\models\Priority;
+use common\models\Status;
 
 class TaskController extends ApiController {
     /*
@@ -970,14 +972,16 @@ class TaskController extends ApiController {
             }
         }
 
+        $priority = Priority::getByPriorityIdAndOwnerTable($dataPost['priority_id'], 'task');
+        $status = Status::getByStatusIdAndOwnerTable($dataPost['status_id'], 'task');
         $dataReplace = array(
             \Yii::t('member', 'task name') => array($dataPost['data_old']['task']['name'] => $dataPost['name']),
             \Yii::t('member', 'project name') => array($project_name_old => $project_name_new),
             \Yii::t('member', 'task end date') => array($dataPost['data_old']['task']['duedatetime'] => date('Y-m-d', $object->duedatetime)),
-            \Yii::t('member', 'task priority') => array($dataPost['data_old']['task']['priority_name'] => $object->priority->name),
+            \Yii::t('member', 'task priority') => array($dataPost['data_old']['task']['priority_name'] => $priority['name']),
             \Yii::t('member', 'project completed percent') => array($dataPost['data_old']['task']['completed_percent'] => $object->completed_percent),
             \Yii::t('member', 'project description') => array($dataPost['data_old']['task']['description'] => $object->description),
-            \Yii::t('member', 'project share') => array($dataPost['data_old']['task']['status_name'] => $object->status->name),
+            \Yii::t('member', 'project status') => array($dataPost['data_old']['task']['status_name'] => $status['name']),
             \Yii::t('member', 'project estimate') => array($dataPost['data_old']['task']['estimate_hour'] => $object->estimate_hour),
             \Yii::t('member', 'project parent') => array($task_name_old => $task_name_new),
         );
@@ -990,6 +994,12 @@ class TaskController extends ApiController {
                         $after = empty($after) ? \Yii::t('member', 'no setting') : $after;
                         $befor = empty($befor) ? \Yii::t('member', 'no setting') : $befor;
                         switch ($key) {
+                            case \Yii::t('member', 'project status'):
+                                $content .= '<li>' . str_replace(array('{{title}}', '{{after}}', '{{befor}}'), [$key, $dataPost['data_old']['task']['status_name'], $status['name']], \Yii::t('member', 'message info content')) . '</li>';
+                                break;
+                            case \Yii::t('member', 'task priority'):
+                                $content .= '<li>' . str_replace(array('{{title}}', '{{after}}', '{{befor}}'), [$key, $dataPost['data_old']['task']['priority_name'], $priority['name']], \Yii::t('member', 'message info content')) . '</li>';
+                                break;
                             case \Yii::t('member', 'project description'):
                                 $description = !empty($befor) ? \Yii::t('member', 'project description') . ' ' . \Yii::t('member', 'comment update after') . ' ' . $befor : $noSetting;
                                 $content .= '<li>' . $description . '</li>';
