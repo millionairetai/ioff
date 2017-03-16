@@ -7,6 +7,9 @@ appRoot.factory('projectPostService', ['apiService', '$rootScope', 'alertify',
             getProjectPosts: function (data, success, error) {
                 apiService.post('project-post/get-project-post', data, success, error);
             },
+            getLastProjectPost: function (data, success, error) {
+                apiService.get('project-post/get-last-project-post', data, success, error);
+            },
             removeProjectPost : function (data,success,error){
                 apiService.get('project-post/remove-project-post', data, success, error);
             },

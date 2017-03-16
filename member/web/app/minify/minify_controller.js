@@ -3015,6 +3015,24 @@ appRoot.controller('viewProjectCtrl', ['$scope', 'projectService', 'fileService'
                 $scope.filter.totalItems = response.objects.totalItems;
             });
         };
+        
+        $scope.getLastProjectPost = function () {
+            projectPostService.getLastProjectPost({projectId: projectId}, function (response) {
+                if ($scope.projectPost.length > 0 && response.objects.collection) {
+                    $scope.projectPost = response.objects.collection.concat($scope.projectPost);
+                } else {
+                    $scope.projectPostFile = response.objects.collection;
+                }
+
+                if (_.size($scope.projectPostFile) > 0 && response.objects.files) {
+                    $scope.projectPostFile = angular.merge($scope.projectPostFile, response.objects.files);
+                } else {
+                    $scope.projectPostFile = response.objects.files;
+                }
+
+                $scope.filter.totalItems = response.objects.totalItems;
+            });
+        }
 
         $scope.getProjectPosts();
 
@@ -3134,8 +3152,18 @@ appRoot.controller('viewProjectCtrl', ['$scope', 'projectService', 'fileService'
         //removeFile
         $scope.removeFileProject = function (index, id) {
             dialogMessage.open('confirm', $rootScope.$lang.confirm_delete_file, function () {
-                fileService.removeFile({fileId: id}, function (data) {
+                fileService.removeFile({fileId: id}, function (reponse) {
                     $scope.collection.file_info.splice(index, 1);
+                    //Remove file in event post.
+                    angular.forEach($scope.projectPostFile[reponse.objects.onwer_id], function(val, key){
+                        //Traverse array of file in task post, and check the file we want to delete by name.
+                        if (val.name == reponse.objects.name) {
+                            $scope.projectPostFile[reponse.objects.onwer_id].splice(key, 1);
+                        }
+                    });
+
+                    //Get the last event post, to prepend to the first event post list.
+                    $scope.getLastProjectPost();
                     alertify.success($rootScope.$lang.remove_file_success);
                 })
             });

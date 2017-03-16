@@ -101,4 +101,22 @@ class ProjectPost extends \common\components\db\ActiveRecord
         
         return [];
     }
+    
+    /**
+     * Get last of project post by project id
+     * 
+     * @return array|boolean
+     */
+    public static function getLastProjectPost() {
+        $data =  self::find()
+                    ->select(['id', 'employee_id', 'datetime_created', 'content', 'created_employee_id', 'is_log_history'])
+                    ->where(['id' => self::find()->max('id')])
+                    ->andCompanyId()
+                    ->one();
+            
+        if ($data) {
+            return $data;
+        }
+        return [];
+    }    
 }
