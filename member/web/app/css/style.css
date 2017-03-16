@@ -714,6 +714,9 @@ search-product .dropdown-menu{
 /*a {
     word-break: break-all;
 }*/
+.user-block-text-center-right+.user-block-text-center-right{
+    margin-top: 20px;
+}
 .user-block-text-center-right img {
     width: 40px;
     height: 40px;
