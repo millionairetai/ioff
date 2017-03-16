@@ -109,7 +109,7 @@
                         <th>{{$root.$lang.project_members}}</th>
                         <td>
                             <div ng-repeat="employees in collection.employee_info| limitTo:limit">
-                                <div class="user-block-text-center-right"><img src="{{employees.image}}" class="img-circle" alt="User Image" width="58px" height="58px"> <a href="#/viewEmployee/{{employees.id}}">{{employees.firstname}}</a></div>
+                                <div class="user-block-text-center-right"><img src="{{employees.image}}" class="img-circle" alt="User Image" width="58px" height="58px"> <a href="#/viewEmployee/{{employees.id}}">{{employees.firstname}}</a></div><br/>
                             </div>
 
                             <div class=" text-center" >
