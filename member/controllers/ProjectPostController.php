@@ -64,6 +64,47 @@ class ProjectPostController extends ApiController {
 
         return $this->sendResponse(false, "", $objects);
     }
+    
+    /**
+     * Get last project post by project id
+     */
+    public function actionGetLastProjectPost() {
+        $collection = [];
+        $projectPost = ProjectPost::getLastProjectPost();
+        $actionDelete = false;
+        if (((\Yii::$app->user->getId() == $projectPost->created_employee_id) || (\Yii::$app->user->identity->is_admin)) && ($projectPost->is_log_history == false)) {
+            $actionDelete = true;
+        }
+        
+        $collection[] = [
+            'id'                 => $projectPost->id,
+            'time'               => date('H:i d-m-Y ', $projectPost->datetime_created),
+            'content'            => $projectPost->content,
+            'employee_id'        => !empty($projectPost->employee) ? $projectPost->employee->id : '',
+            'employee_name'      => !empty($projectPost->employee) ? $projectPost->employee->getFullName() : '',
+            'profile_image_path' => !empty($projectPost->employee) ? $projectPost->employee->getImage() : '',
+            'actionDelete'       => $actionDelete,
+        ];
+
+        $fileData = [];
+        $files = File::getFiles($projectPost->id, ProjectPost::TABLE_PROJECTPOST);
+        foreach ($files as $key => $val) {
+            $fileData[$val->owner_id][] = [
+                'id' => $val->id,
+                'name' => $val->name,
+                'path' => \Yii::$app->params['PathUpload'] . DIRECTORY_SEPARATOR . $val->path
+            ];
+        }
+
+        $objects['collection'] = $collection;
+        $objects['files'] = $fileData;
+        $objects['totalItems'] = 0;   
+        if (!empty($collection)) {
+            $objects['totalItems'] = ProjectPost::find()->where(['project_id' => \Yii::$app->request->get('projectId')])->count();
+        }
+
+        return $this->sendResponse(false, "", $objects);
+    }    
 
     /*
      * Function remove file screen view project

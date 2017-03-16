@@ -109,9 +109,11 @@ class TaskPost extends ActiveRecord
                     ->where(['id' => TaskPost::find()->max('id')])
                     ->andCompanyId()
                     ->one();
+        
         if ($data) {
             return $data;
         }
+        
         return [];
     }
     
