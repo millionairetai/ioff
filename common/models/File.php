@@ -278,6 +278,7 @@ class File extends \common\components\db\ActiveRecord {
                 $projectPost->content = '<ul><li>' . \Yii::t('member', 'delete file') . '<div class="padding-left-20">' . $file->name . '</div></li></ul>';
                 $projectPost->content_parse = '<ul><li>' . \Yii::t('member', 'delete file') . '<div class="padding-left-20">' . $file->name . '</div></li></ul>';
                 $projectPost->parent_employee_id = 0;
+                $projectPost->is_log_history = self::VAL_TRUE;
                 if (!$projectPost->save(false)) {
                     throw new \Exception('Save record to table project post fail');
                 }
@@ -299,6 +300,7 @@ class File extends \common\components\db\ActiveRecord {
                 $taskPost->content = '<ul><li>' . \Yii::t('member', 'delete file') . '<div class="padding-left-20">' . $file->name . '</div></li></ul>';
                 $taskPost->content_parse = '<ul><li>' . \Yii::t('member', 'delete file') . '<div class="padding-left-20">' . $file->name . '</div></li></ul>';
                 $taskPost->parent_employee_id = 0;
+                $taskPost->is_log_history = self::VAL_TRUE;
                 if (!$taskPost->save(false)) {
                     throw new \Exception('Save record to table task post fail');
                 }
