@@ -483,7 +483,7 @@ class Employee extends ActiveRecord implements IdentityInterface {
      * @param array $members
      * @return array|boolean
      */
-    public function getEmployeeByParams($keyword = '', $members = [],  $departments = [], $manager = []) {
+    public static function getEmployeeByParams($keyword = '', $members = [],  $departments = [], $manager = []) {
         $query = Employee::find()
                 ->select([self::tableName() . '.id', 'email', 'firstname', 'lastname', 'profile_image_path'])
                 ->joinWith('status')

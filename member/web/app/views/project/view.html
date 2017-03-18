@@ -108,10 +108,10 @@
                     <tr>
                         <th>{{$root.$lang.project_members}}</th>
                         <td>
-                            <div ng-repeat="employees in collection.employee_info| limitTo:limit">
-                                <div class="user-block-text-center-right"><img src="{{employees.image}}" class="img-circle" alt="User Image" width="58px" height="58px"> <a href="#/viewEmployee/{{employees.id}}">{{employees.firstname}}</a></div>
+                            <div ng-repeat="employees in collection.employee_info| limitTo:limit" class="user-block-text-center-right">
+                                <img src="{{employees.image}}" class="img-circle" alt="User Image"> 
+                                <a href="#/viewEmployee/{{employees.id}}">{{employees.firstname}}</a>
                             </div>
-
                             <div class=" text-center" >
                                 <a ng-click="loadMore()" class="pointer ng-binding" ng-if="limit < collection.employee_info.length && collection.employee_info.length > 5">{{$root.$lang.project_list_view_more}} </a>
                                 <a ng-click="closeMore()" class="pointer ng-binding" ng-if="limit > 5">{{$root.$lang.less}} </a>
