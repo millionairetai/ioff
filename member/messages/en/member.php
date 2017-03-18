@@ -177,4 +177,7 @@ return [
     'Total of employee or storage of company which is not allowed to be greater than max employee registered and max storage registered of plan type we change to' => 
     'Total of employee or storage of company which is not allowed to be greater than max employee registered and max storage registered of plan type we change to',
     'Can not change current plan type which has same max user registered and max storage registered when not expired yet' => 'Can not change current plan type which has same max user registered and max storage registered when not expired yet',
+    'Email %s is existed' => 'Email %s is existed',
+    'Can not send email to' => 'Can not send email to ',
+    'Total employee can not be more than max of employee package. Please upgrade your package to add new employee' => 'Total employee can not be more than max of employee package. <br />Please upgrade your package to add new employee'
 ];

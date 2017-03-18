@@ -357,14 +357,21 @@ class Employee extends ActiveRecord implements IdentityInterface {
         }
 //        header("content-type: text/html; charset=UTF-8");  
 //        echo $body;die;
-        /* \Yii::$app->mailer->compose()
-          ->setFrom('from@domain.com')
-          ->setTo($this->email)
-          ->setSubject($subject)
-          ->setTextBody($body)
-          ->setHtmlBody($body)
-          ->send(); */
-
+        
+//        $headers =& $email->getSwiftMessage()->getHeaders();
+//        $headers->addIdHeader('Message-ID', "b3eb7202-d2f1-11e4-b9d6-1681e6b88ec1@domain.com");
+//        $headers->addTextHeader('MIME-Version', '1.0');
+//        $headers->addTextHeader('X-Mailer', 'PHP v' . phpversion());
+//        $headers->addParameterizedHeader('Content-type', 'text/html', ['charset' => 'utf-8']);
+        
+         \Yii::$app->mailer->compose()
+            ->setFrom('service@iofficez.com')
+            ->setTo($this->email)
+            ->setSubject($subject)
+            ->setTextBody($body)
+            ->setHtmlBody($body)
+            ->send(); 
+         
         return true;
     }
 

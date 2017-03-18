@@ -127,7 +127,7 @@ class EmployeeController extends ApiController {
             //Check max employee with current employee total. If over max employee, we aren't allowed to add new.
             $company = Company::getById(Yii::$app->user->identity->company_id, [], false);
             if ($company['max_user_register'] != 0 && ($company['max_user_register'] - $company['total_employee']) < count($emails)) {
-                $this->_message = Yii::t('member', 'Total employee can not be more than max of employee package. Please upgrade your package to add new employee.');
+                $this->_message = Yii::t('member', 'Total employee can not be more than max of employee package. Please upgrade your package to add new employee');
                 throw new \Exception($this->_message);
             }
             
@@ -144,7 +144,7 @@ class EmployeeController extends ApiController {
 
             //Check whether emails is existed.
             if ($existedEmail = Employee::getExistedEmailByEmails($emails)) {
-                $this->_message = 'Email %s is existed';
+                $this->_message = Yii::t('member', 'Email %s is existed');
                 $this->_message = sprintf($this->_message, implode(', ', array_values($existedEmail)));
                 throw new \Exception($this->_message);
             }
@@ -152,7 +152,7 @@ class EmployeeController extends ApiController {
             //Send email
             $themeEmail = EmailTemplate::getTheme(EmailTemplate::INVITE_NEW_EMPLOYEE);
             $dataSend = [
-                '{inviter}' => \Yii::$app->user->identity->firstname,
+                '{inviter}' => \Yii::$app->user->identity->fullname,
                 '{urlConfirm}' => '',
                 '{message}' => $message
             ];
@@ -178,7 +178,7 @@ class EmployeeController extends ApiController {
                 ];
 
                 if (!$employee->sendMail($dataSend, $themeEmail)) {
-                    $this->_message = 'Can not send email to ' . $email;
+                    $this->_message = Yii::t('member', 'Can not send email to') . $email;
                     throw new \Exception($this->_message);
                 }
             }

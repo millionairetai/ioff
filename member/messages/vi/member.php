@@ -172,4 +172,7 @@ return [
     'Total of employee or storage of company which is not allowed to be greater than max employee registered and max storage registered of plan type we change to' => 
     'Tổng số nhân viên hoặc dung lượng lưu trữ hiện tại của công ty không được phép lớn hơn số người dùng tối đa và dung lượng lưu trữ tối đa của gói chuyển sang',
     'Can not change current plan type which has same max user registered and max storage registered when not expired yet' => 'Không thể thay đổi gói hiện tại với cùng người dùng tối đa và dung lượng lưu trữ tối đa khi chưa hết hạn gói',
+    'Email %s is existed' => 'Email %s đã tồn tại',
+    'Can not send email to' => 'Không thể gửi email đến ', 
+    'Total employee can not be more than max of employee package. Please upgrade your package to add new employee' => 'Tổng số nhân viên không thể nhiều hơn số nhân viên tối đa của gói. <br/> Xin hãy nâng cấp gói của bạn để thêm thành viên mới'
 ];
