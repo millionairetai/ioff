@@ -660,7 +660,7 @@ class TaskController extends ApiController {
 
         $taskId = $data['id'];
         if ($data['project_id'] != $data['data_old']['task']['project_id']) {
-            TaskAssignment::delete([
+            TaskAssignment::deleteAll([
                 'task_id' => $taskId,
                 'company_id' => $this->_companyId,
             ]);
@@ -689,7 +689,7 @@ class TaskController extends ApiController {
     }
 
     /**
-     * Function update Invitation
+     * Function update follower
      *
      * @param array $dataPost data get from employee.
      * @return array
@@ -700,7 +700,7 @@ class TaskController extends ApiController {
 
         $taskId = $data['id'];
         if ($data['project_id'] != $data['data_old']['task']['project_id']) {
-            Follower::delete([
+            Follower::deleteAll([
                 'task_id' => $taskId,
                 'company_id' => $this->_companyId,
             ]);

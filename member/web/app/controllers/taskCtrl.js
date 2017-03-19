@@ -864,7 +864,7 @@ appRoot.controller('editTaskCtrl', ['socketService', 'data', '$scope', 'taskServ
                 $scope.task.assigningEmployees = [];
                 $scope.task.followingEmployees = [];
                 //status
-                taskService.getParentTaskList({project_id: $scope.task.project_id}, function (data) {
+                taskService.getParentTaskList({project_id: $scope.task.project_id, task_id:data.task.id}, function (data) {
                     $scope.parentTasks = data.objects.collection;
                 });
 
@@ -872,9 +872,11 @@ appRoot.controller('editTaskCtrl', ['socketService', 'data', '$scope', 'taskServ
                     $scope.taskGroups = data.objects.collection;
                 });
 
-                employeeService.searchEmployeeByProjectIdAndKeyword({keyword: '', project_id: $scope.task.project_id}, function (response) {
-                    $scope.employees = response.objects.collection;
-                });
+                if ($scope.task.project_id) {
+                    employeeService.searchEmployeeByProjectIdAndKeyword({keyword: '', project_id: $scope.task.project_id}, function (response) {
+                        $scope.employees = response.objects.collection;
+                    });
+                }
             }
         };
 
@@ -922,7 +924,7 @@ appRoot.controller('editTaskCtrl', ['socketService', 'data', '$scope', 'taskServ
                                 if (response.objects.postnew) {
                                     static_postnew = true;
                                 }
-                                alertify.success($rootScope.$lang.task_notify_success);
+                                alertify.success($rootScope.$lang.task_edit_success);
                                 $uibModalInstance.close($scope.task);
                                 socketService.emit('notify', 'ok');
                                 $scope.step++;

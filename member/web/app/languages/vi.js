@@ -286,7 +286,7 @@
             task_assigners_error_empty: 'Công việc chưa được giao cho ai',
             task_group_error_empty: 'Phải biết công việc thuộc loại nào',
             task_created_success:'Công việc đã được tạo thành công.',
-            task_notify_success:'Công việc đã được tạo thành công.',
+            task_edit_success:'Công việc đã được cập nhật thành công.',
             task_group:'Loại công việc',
             task_group_type:'thuộc dạng:',
             task_remind:'Nhắc nhở',
