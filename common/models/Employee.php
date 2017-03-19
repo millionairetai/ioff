@@ -547,7 +547,7 @@ class Employee extends ActiveRecord implements IdentityInterface {
         }
 
         if ($searchName) {
-            $employee = $employee->andWhere('CONCAT(employee.firstname, employee.lastname) LIKE :name', [':name' => '%' . $searchName . '%']);
+            $employee = $employee->andWhere('CONCAT(employee.firstname, " ", employee.lastname) LIKE :name', [':name' => '%' . $searchName . '%']);
         }
 
         $employee = $employee->andCompanyId(false, 'employee')->limit($itemPerPage)->offset(($currentPage - 1) * $itemPerPage);
