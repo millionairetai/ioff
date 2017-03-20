@@ -166,7 +166,7 @@ class EmployeeController extends ApiController {
             $employees = [];
             foreach ($emails as $email) {
                 $token = md5(uniqid() . $email);
-                $dataSend['{urlConfirm}'] = SITE_URL . "/index/register?email={$email}&token={$token}";
+                $dataSend['{urlConfirm}'] = SITE_URL . "index/register?email={$email}&token={$token}";
                 $employee->email = $email;
                 $employees[] = [
                     'email' => $email,
