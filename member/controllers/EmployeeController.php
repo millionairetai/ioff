@@ -174,7 +174,7 @@ class EmployeeController extends ApiController {
                     'lastname' => '',
                     'password' => '',
                     'status_id' => $status['id'],
-                    'password_reset_token' => md5(uniqid() . $email),
+                    'password_reset_token' => $token,
                 ];
 
                 if (!$employee->sendMail($dataSend, $themeEmail)) {
