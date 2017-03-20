@@ -7,7 +7,7 @@ use yii\web\Controller;
 use common\models\Invoice;
 use common\models\Company;
 use common\models\PlanType;
-use common\components\web\IoffDatetime;
+use common\components\web\IoffDateTime;
 
 /**
  * Invoice controller
