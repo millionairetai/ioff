@@ -294,7 +294,10 @@ class SignupForm extends Model {
         ];
 
         $employee->sendMail($dataSend, $themeEmail);
-        
+
+        if ($company->plan_type_id != $planType[PlanType::COLUMN_NAME_FREE]['id']) {
+            return true;
+        }
         //Send invoice to employee if plan type is free.
         $themeEmail = EmailTemplate::getTheme(EmailTemplate::COMPANY_PAYMENT_INVOICE);
         $dataSend = [
