@@ -56,7 +56,7 @@ class PasswordResetRequestForm extends Model {
         //Make link to reset password
         $dataSend = [
             '{employee name}' => $employee->fullname,
-            '{link}' => \Yii::$app->params['domain'] . '/index/reset-password?token=' . $employee->password_reset_token,
+            '{link}' => \Yii::$app->params['companyDomain'] . '/index/reset-password?token=' . $employee->password_reset_token,
             '{support email}' => \Yii::$app->params['support_email'],
             '{service}' => \Yii::$app->params['service']
         ];
