@@ -269,6 +269,14 @@ class EmailTemplate extends \common\components\db\ActiveRecord
                 $where += ['column_name' => self::EDIT_PROJECT];
                 break;
             
+            case self::CREATE_EVENT:
+                $where += ['column_name' => self::CREATE_EVENT];
+                break;
+            
+            case self::EDIT_EVENT:
+                $where += ['column_name' => self::EDIT_EVENT];
+                break;
+            
             default:
                 break;
         }

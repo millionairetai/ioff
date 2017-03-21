@@ -177,13 +177,12 @@ class CalendarController extends ApiController {
                 $arrayEmployees = $query->all();
 
                 $dataSend = [
-                    '{creator name}' => \Yii::$app->user->identity->firstname,
+                    '{creator name}' => \Yii::$app->user->identity->fullname,
                     '{event name}' => $ob->name
                 ];
 
-                $themeEmail = \common\models\EmailTemplate::getThemeCreateEvent();
+                $themeEmail = \common\models\EmailTemplate::getTheme(\common\models\EmailTemplate::CREATE_EVENT);
                 $themeSms = \common\models\SmsTemplate::getThemeCreateEvent();
-
                 $notifications = [];
                 $eventConfirmations = [];
                 $sms = [];
@@ -376,7 +375,7 @@ class CalendarController extends ApiController {
                 }
             }
 
-            $themeEmail = \common\models\EmailTemplate::getThemeEditEvent();
+            $themeEmail = \common\models\EmailTemplate::getTheme(\common\models\EmailTemplate::EDIT_EVENT);
             $themeSms = \common\models\SmsTemplate::getThemeEditEvent();
             //send email and sms
 //            if (!empty($mergeEmployee['employees']) && ($ob->sms)) {
@@ -386,9 +385,9 @@ class CalendarController extends ApiController {
                     '{event name}' => $ob->name
                 ];
                 
-                $employees = new Employee();
-                foreach ($mergeEmployee['employees'] as $item) {
-                    $employees->sendMail($dataSend, $themeEmail);
+                $employees = Employee::getByIds($mergeEmployee['employees']);
+                foreach ($employees as $employee) {
+                    $employee->sendMail($dataSend, $themeEmail);
                     if ($ob->sms) {
                         $employees->sendSms($dataSend, $themeSms);
                     }
