@@ -163,7 +163,7 @@ class ProjectPostController extends ApiController {
             $themeEmail = \common\models\EmailTemplate::getThemeProjectPost();
             $themeSms   = \common\models\SmsTemplate::getThemeProjectPost();
             $dataSend = [
-                '{creator name}' => \Yii::$app->user->identity->firstname,
+                '{creator name}' => \Yii::$app->user->identity->fullname,
                 '{project name}' => $projectInfo->name
             ];
     
@@ -181,7 +181,7 @@ class ProjectPostController extends ApiController {
             $employeeIds = isset($participants['employee']) ? $participants['employee'] : null;
             $departmentIds = isset($participants['department']) ? $participants['department'] : null;
             $employees = Employee::find()
-                    ->select(['id', 'firstname', 'lastname', 'profile_image_path'])
+                    ->select(['id', 'firstname', 'lastname', 'profile_image_path', 'email'])
                     ->andCompanyId()
                     ->andWhere(['id' => $employeeIds])
                     ->orWhere(['department_id' => $departmentIds])
@@ -191,7 +191,8 @@ class ProjectPostController extends ApiController {
                 $employeeList[] = [
                         'id'        => $employee->id,
                         'firstname' => $employee->getFullName(),
-                        'image'     => $employee->getImage()
+                        'image'     => $employee->getImage(),
+                        'email'     => $employee->email
                 ];
             }
             
@@ -214,6 +215,7 @@ class ProjectPostController extends ApiController {
                 //send email
                 $employee = new Employee();
                 $employee->id = $item['id'];
+                $employee->email = $item['email'];
                 $employee->sendMail($dataSend, $themeEmail);
                 //send sms
                 $project = new Project();

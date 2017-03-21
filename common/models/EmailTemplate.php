@@ -263,7 +263,6 @@ class EmailTemplate extends \common\components\db\ActiveRecord
                 $where += ['column_name' => self::CREATE_PROJECT];
                 break;
             
-              
             case self::EDIT_PROJECT:
                 $where += ['column_name' => self::EDIT_PROJECT];
                 break;
