@@ -27,6 +27,7 @@ class EmailTemplate extends \common\components\db\ActiveRecord
     const CREATE_EVENT = 'create_event';
     const EDIT_EVENT = 'edit_event';
     const CREATE_PROJECT = 'create_project';
+    const EDIT_PROJECT = 'edit_project';
     const CREATE_PROJECT_POST = 'create_project_post';
     const CREATE_EVENT_POST = 'create_event_post';
     const CREATE_REQUESTMENT = 'create_requestment';
@@ -83,24 +84,6 @@ class EmailTemplate extends \common\components\db\ActiveRecord
         ];
     }
     
-    /**
-     * Get theme email of creating project 
-     */
-    public static function getThemeCreateProject(){
-        
-        $theme = self::find([
-            'column_name' => 'create_project',
-            'language_code' => \Yii::$app->language,
-            'disabled' => self::STATUS_ENABLE
-        ])->one();
-        
-        if($theme){
-            return $theme;
-        }
-        
-        return null;
-    }
-    
     public static function getThemeCreateTaskForAssigner(){
         $theme = self::find()->andWhere(['column_name' => 'create_project','language_code' => \Yii::$app->language])->one();
         if($theme){
@@ -128,24 +111,6 @@ class EmailTemplate extends \common\components\db\ActiveRecord
         
         $theme = self::find([
             'column_name' => 'create_event',
-            'language_code' => \Yii::$app->language,
-            'disabled' => self::STATUS_ENABLE
-        ])->one();
-        
-        if($theme){
-            return $theme;
-        }
-        
-        return null;
-    }
-    
-    /**
-     * Get theme email of Edit project 
-     */
-    public static function getThemeEditProject() {
-        
-        $theme = self::find([
-            'column_name' => 'edit_project',
             'language_code' => \Yii::$app->language,
             'disabled' => self::STATUS_ENABLE
         ])->one();
@@ -292,6 +257,15 @@ class EmailTemplate extends \common\components\db\ActiveRecord
             
             case self::COMPANY_PAYMENT_INVOICE:
                 $where += ['column_name' => self::COMPANY_PAYMENT_INVOICE];
+                break;
+            
+            case self::CREATE_PROJECT:
+                $where += ['column_name' => self::CREATE_PROJECT];
+                break;
+            
+              
+            case self::EDIT_PROJECT:
+                $where += ['column_name' => self::EDIT_PROJECT];
                 break;
             
             default:

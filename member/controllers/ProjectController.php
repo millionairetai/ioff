@@ -183,11 +183,11 @@ class ProjectController extends ApiController {
                     $content = \Yii::$app->user->getIdentity()->firstname . " " . \Yii::t('common', 'created') . " " . $ob->name;
                     $arrayEmployees = $query->andCompanyId()->all();
                     $dataSend = [
-                        '{creator name}' => \Yii::$app->user->getIdentity()->firstname,
+                        '{creator name}' => \Yii::$app->user->getIdentity()->fullname,
                         '{project name}' => $ob->name
                     ];
 
-                    $themeEmail = \common\models\EmailTemplate::getThemeCreateProject();
+                    $themeEmail = \common\models\EmailTemplate::getTheme(\common\models\EmailTemplate::CREATE_PROJECT);
                     $themeSms = \common\models\SmsTemplate::getThemeCreateProject();
                     if ($ob->manager_project_id) {
                         $projEmployee[] = ['project_id' => $ob->id, 'employee_id' => $ob->manager_project_id];
@@ -368,12 +368,12 @@ class ProjectController extends ApiController {
                 $content = \Yii::$app->user->identity->firstname . " " . \Yii::t('common', 'created') . " " . $ob->name;
                 $arrayEmployees = $query->andCompanyId()->all();
                 $dataSend = [
-                    '{creator name}' => \Yii::$app->user->identity->firstname,
+                    '{creator name}' => \Yii::$app->user->identity->fullname,
                     '{project name}' => $ob->name
                 ];
             }
 
-            $themeEmail = \common\models\EmailTemplate::getThemeEditProject();
+            $themeEmail = \common\models\EmailTemplate::getTheme(\common\models\EmailTemplate::EDIT_PROJECT);
             $themeSms = \common\models\SmsTemplate::getThemeEditProject();
             if (!empty($arrayEmployees)) {
                 foreach ($arrayEmployees as $item) {
@@ -389,7 +389,6 @@ class ProjectController extends ApiController {
 
                     //send email
                     $item->sendMail($dataSend, $themeEmail);
-
                     //send sms
                     if ($ob->sms) {
                         $item->sendSms($dataSend, $themeSms);
