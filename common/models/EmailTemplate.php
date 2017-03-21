@@ -25,6 +25,8 @@ class EmailTemplate extends \common\components\db\ActiveRecord
 {
     //const for column name.
     const CREATE_EVENT = 'create_event';
+    const CREATE_TASK_ASSIGNMENT = 'create_task_assignment';
+    const CREATE_TASK_FOLLOW = 'create_task_follow';
     const EDIT_EVENT = 'edit_event';
     const CREATE_PROJECT = 'create_project';
     const EDIT_PROJECT = 'edit_project';
@@ -85,7 +87,7 @@ class EmailTemplate extends \common\components\db\ActiveRecord
     }
     
     public static function getThemeCreateTaskForAssigner(){
-        $theme = self::find()->andWhere(['column_name' => 'create_project','language_code' => \Yii::$app->language])->one();
+        $theme = self::find()->andWhere(['column_name' => 'create_task_assignment','language_code' => \Yii::$app->language])->one();
         if($theme){
             return $theme;
         }
@@ -94,7 +96,7 @@ class EmailTemplate extends \common\components\db\ActiveRecord
     }
     
     public static function getThemeCreateTaskForFollower(){
-        $theme = self::find()->andWhere(['column_name' => 'create_project','language_code' => \Yii::$app->language])->one();
+        $theme = self::find()->andWhere(['column_name' => 'create_task_follow','language_code' => \Yii::$app->language])->one();
         if($theme){
             return $theme;
         }
