@@ -6,6 +6,7 @@ use Yii;
 use yii\web\IdentityInterface;
 use yii\base\NotSupportedException;
 use common\components\db\ActiveRecord;
+use common\models\Sms;
 
 /**
  * This is the model class for table "employee".
@@ -382,10 +383,13 @@ class Employee extends ActiveRecord implements IdentityInterface {
         if (!$themeSms) {
             return false;
         }
+        
         $body = $themeSms->body;
         foreach ($dataSend as $key => $value) {
             $body = str_replace($key, $value, $body);
         }
+        
+        return Sms::send($this->mobile_phone, $body);
     }
 
     /**

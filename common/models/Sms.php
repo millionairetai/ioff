@@ -96,4 +96,32 @@ class Sms extends \common\components\db\ActiveRecord
     public static function makeContent($type, $info) {
         return \Yii::$app->user->identity->firstname . " " .$type . " " . $info;
     }
+
+    /**
+     * Make content for sms
+     * 
+     * @param string $type
+     * @param string $info
+     * @return string
+     */
+    public static function send($phoneNumber, $content) {
+        $apiKey = Yii::$app->params['apiKey'];
+        $secretKey = Yii::$app->params['secretKey'];
+        
+        $content = urlencode($content);
+        $data = "http://rest.esms.vn/MainService.svc/json/SendMultipleMessage_V4_get?Phone={$phoneNumber}&ApiKey={$apiKey}&SecretKey={$secretKey}&Content={$content}&SmsType=4";
+        
+        $curl = curl_init($data);
+        curl_setopt($curl, CURLOPT_FAILONERROR, true);
+        curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        $result = curl_exec($curl);
+
+        $obj = json_decode($result, true);
+        if ($obj['CodeResult'] == 100) {
+            return true;
+        }
+        
+        return false;
+    }
 }
