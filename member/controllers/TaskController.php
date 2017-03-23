@@ -39,7 +39,6 @@ class TaskController extends ApiController {
             $task->attributes = $postData;
             $task->duedatetime = $task->duedatetime ? strtotime($task->duedatetime) : null;
             $task->employee_id = Yii::$app->user->getId();
-
             if (!$task->save()) {
                 $this->_message = $this->parserMessage($task->getErrors());
                 $this->_error = true;
@@ -110,16 +109,16 @@ class TaskController extends ApiController {
                 //prepare data and template email, sms
                 if (in_array($employee->id, $aAssignedEmployeeIds)) {
                     $themeEmail = \common\models\EmailTemplate::getThemeCreateTaskForAssigner();
-                    $themeSms = \common\models\SmsTemplate::getThemeCreateTaskForAssigner();
+                    $themeSms = \common\models\SmsTemplate::getTheme(\common\models\SmsTemplate::CREATE_TASK_ASSIGNMENT);
                 } else if (in_array($employee->id, $aFollowedEmployeeIds)) {
                     $themeEmail = \common\models\EmailTemplate::getThemeCreateTaskForFollower();
-                    $themeSms = \common\models\SmsTemplate::getThemeCreateTaskForFollower();
+                    $themeSms = \common\models\SmsTemplate::getTheme(\common\models\SmsTemplate::CREATE_TASK_FOLLOW);
                 }
 
                 //send mail
                 $employee->sendMail($dataSend, $themeEmail);
                 //sms
-                if ($task->sms) {
+                if ($postData['sms']) {
                     $sms[] = [$task->id, $employee->id, \common\models\Sms::TABLE_TASK, $noContent, 1, 0];
                     $employee->sendSms($dataSend, $themeSms);
                 }
@@ -515,7 +514,7 @@ class TaskController extends ApiController {
                         'content' => Notification::makeContent(\Yii::t('common', 'edited'), $task->name),
                     ];
 
-                    if ($task->sms) {
+                    if ($dataPost['sms']) {
                         $dataInsertSms[] = [
                             'owner_id' => $task->id,
                             'employee_id' => $val,
@@ -556,8 +555,10 @@ class TaskController extends ApiController {
                 }
             }
 
+            //prepare data and template email, sms
             $themeEmail = \common\models\EmailTemplate::getThemeEditTask();
-            $themeSms = \common\models\SmsTemplate::getThemeEditTask();
+            $themeSmsAssi = \common\models\SmsTemplate::getTheme(\common\models\SmsTemplate::EDIT_TASK_ASSIGNMENT);
+            $themeSmsFollow = \common\models\SmsTemplate::getTheme(\common\models\SmsTemplate::EDIT_TASK_FOLLOW);
             //send email and sms
             if (!empty($mergeEmployee['employees'])) {
                 $dataSend = [
@@ -565,11 +566,15 @@ class TaskController extends ApiController {
                     '{task name}' => $task->name
                 ];
 
-                $employees = new Employee();
-                foreach ($mergeEmployee['employees'] as $item) {
-                    $employees->sendMail($dataSend, $themeEmail);
-                    if ($task->sms) {
-                        $employees->sendSms($dataSend, $themeSms);
+                $employees = Employee::getByIds($mergeEmployee['employees']);
+                foreach ($employees as $employee) {
+                    $employee->sendMail($dataSend, $themeEmail);
+                    if ($dataPost['sms']) {
+                        if (in_array($employee->id, $assignmenMerge['employeeNew'])) {
+                            $employee->sendSms($dataSend, $themeSmsAssi);
+                        } else if (in_array($employee->id, $followerMerge['employeeNew'])) {
+                            $employee->sendSms($dataSend, $themeSmsFollow);
+                        }
                     }
                 }
             }

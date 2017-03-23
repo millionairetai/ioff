@@ -25,6 +25,6 @@ return [
     'total_disk' => 1000000000,
     
     //Sms config
-    'apiKey' => '02B1D60DA2C2B62DD90116303D46C1', 
-    'secretKey' => '68EEE103A7FDD49EE57777312026A4'
+    'apiKey' => '4FA36F7192489639BDF348011F4DBB', 
+    'secretKey' => 'B9BEB2FCEA38A02E579B0959F40D3F'
 ];

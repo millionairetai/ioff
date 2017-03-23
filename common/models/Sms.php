@@ -69,22 +69,6 @@ class Sms extends \common\components\db\ActiveRecord
             'disabled' => 'Disabled',
         ];
     }
-    
-    /**
-     * Add sms
-     * 
-     * @param array $dataInsert
-     * @return boolean
-     */
-    public static function batchInsert($dataInsert) {
-        if (!empty($dataInsert)) {
-            if (!\Yii::$app->db->createCommand()->batchInsert(self::tableName(), array_keys($dataInsert[0]), $dataInsert)->execute()) {
-                throw new \Exception('Save record to table sms fail');
-            }
-        }
-    
-        return true;
-    }
 
     /**
      * Make content for sms
@@ -98,11 +82,11 @@ class Sms extends \common\components\db\ActiveRecord
     }
 
     /**
-     * Make content for sms
+     * Send sms
      * 
-     * @param string $type
-     * @param string $info
-     * @return string
+     * @param string $phoneNumber
+     * @param string $content
+     * @return boolean
      */
     public static function send($phoneNumber, $content) {
         $apiKey = Yii::$app->params['apiKey'];

@@ -573,7 +573,7 @@ class Employee extends ActiveRecord implements IdentityInterface {
             $ids = [$ids];
         }
 
-        return self::find()->select([self::tableName() . '.id', self::tableName() . '.email', 'firstname', 'lastname'])
+        return self::find()->select([self::tableName() . '.id', self::tableName() . '.email', 'firstname', 'lastname', 'mobile_phone'])
                 ->where([self::tableName() . '.id' => $ids])
                 ->andCompanyId()
                 ->all();

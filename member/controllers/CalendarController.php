@@ -389,7 +389,7 @@ class CalendarController extends ApiController {
                 foreach ($employees as $employee) {
                     $employee->sendMail($dataSend, $themeEmail);
                     if ($ob->sms) {
-                        $employees->sendSms($dataSend, $themeSms);
+                        $employee->sendSms($dataSend, $themeSms);
                     }
                 }
             }

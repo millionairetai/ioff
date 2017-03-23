@@ -25,6 +25,11 @@ class SmsTemplate extends \common\components\db\ActiveRecord
     const CREATE_EVENT = 'create_event';
     const EDIT_EVENT = 'edit_event';
     const CREATE_PROJECT = 'create_project';
+    const EDIT_PROJECT = 'edit_project';
+    const CREATE_TASK_ASSIGNMENT = 'create_task_assignment';
+    const CREATE_TASK_FOLLOW = 'create_task_follow';    
+    const EDIT_TASK_ASSIGNMENT = 'edit_task_assignment';
+    const EDIT_TASK_FOLLOW = 'edit_task_follow';    
     const CREATE_PROJECT_POST = 'create_project_post';
     const CREATE_REQUESTMENT = 'create_requestment';    
     
@@ -205,6 +210,31 @@ class SmsTemplate extends \common\components\db\ActiveRecord
             case self::CREATE_REQUESTMENT:
                 $where += ['column_name' => self::CREATE_REQUESTMENT];
                 break;
+            
+            case self::CREATE_PROJECT:
+                $where += ['column_name' => self::CREATE_PROJECT];
+                break;
+            
+            case self::EDIT_PROJECT:
+                $where += ['column_name' => self::EDIT_PROJECT];
+                break;
+            
+            case self::CREATE_TASK_ASSIGNMENT:
+                $where += ['column_name' => self::CREATE_TASK_ASSIGNMENT];
+                break;
+            
+            case self::CREATE_TASK_FOLLOW:
+                $where += ['column_name' => self::CREATE_TASK_FOLLOW];
+                break;
+            
+            case self::EDIT_TASK_ASSIGNMENT:
+                $where += ['column_name' => self::EDIT_TASK_ASSIGNMENT];
+                break;
+            
+            case self::EDIT_TASK_FOLLOW:
+                $where += ['column_name' => self::EDIT_TASK_FOLLOW];
+                break;
+            
             default:
                 break;
         }

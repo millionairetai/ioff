@@ -188,7 +188,7 @@ class ProjectController extends ApiController {
                     ];
 
                     $themeEmail = \common\models\EmailTemplate::getTheme(\common\models\EmailTemplate::CREATE_PROJECT);
-                    $themeSms = \common\models\SmsTemplate::getThemeCreateProject();
+                    $themeSms = \common\models\SmsTemplate::getTheme(\common\models\SmsTemplate::CREATE_PROJECT);
                     if ($ob->manager_project_id) {
                         $projEmployee[] = ['project_id' => $ob->id, 'employee_id' => $ob->manager_project_id];
                     }
@@ -201,7 +201,6 @@ class ProjectController extends ApiController {
                         $no->owner_employee_id = \Yii::$app->user->getId();
                         $no->type = "create_project";
                         $no->content = $content;
-
                         if (!$no->save()) {
                             throw new \Exception('Save record to table Notification fail');
                         }
@@ -374,7 +373,7 @@ class ProjectController extends ApiController {
             }
 
             $themeEmail = \common\models\EmailTemplate::getTheme(\common\models\EmailTemplate::EDIT_PROJECT);
-            $themeSms = \common\models\SmsTemplate::getThemeEditProject();
+            $themeSms = \common\models\SmsTemplate::getTheme(\common\models\SmsTemplate::EDIT_PROJECT);
             if (!empty($arrayEmployees)) {
                 foreach ($arrayEmployees as $item) {
                     $dataUpdate['notification'][] = [

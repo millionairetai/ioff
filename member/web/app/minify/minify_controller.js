@@ -4168,7 +4168,7 @@ appRoot.controller('addTaskCtrl', ['socketService', '$scope', 'taskService', '$l
                             $scope.task.description_parse = tinyMCE.activeEditor.getContent({format : 'text'});
                             fd.append("task", angular.toJson($scope.task));
                             taskService.addTask(fd, function (response) {
-                                alertify.success($rootScope.$lang.task_notify_success);
+                                alertify.success($rootScope.$lang.add_success);
                                 $rootScope.$emit('create_task_success', {message: 'danh'});
                                 socketService.emit('notify', 'ok');
                                 $scope.step++;
