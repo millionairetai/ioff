@@ -100,7 +100,7 @@ appRoot.factory('taskService', ['apiService','$rootScope','alertify', function (
                 apiService.post('task/get-task-for-dropdown',data,success,error, false);
             },
             getSearchGlobalTasks:  function(data,success,error) {
-                apiService.post('task/get-search-global-tasks',data,success,error);
+                apiService.get('task/get-search-global-tasks',data,success,error);
             },
             getMyTaskForCalendar:  function(data,success,error) {
                 apiService.post('task/get-my-task-for-calendar',data,success,error);

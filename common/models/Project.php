@@ -107,7 +107,7 @@ class Project extends \common\components\db\ActiveRecord {
      * @param interger $offset
      * @return array|null
      */
-    public static function getProjects($itemPerPage = 10, $offset = 0) {
+    public static function getProjects($itemPerPage = 10, $offset = 0, $searchText = '') {
         $subProjEmp = ProjectEmployee::find()->select('project_id')->where(['employee_id' => \Yii::$app->user->identity->id]);
         $projects = self::find()
                         ->select(['project.id', 'project.name', 'project.description_parse', 'project.status_id',
@@ -123,7 +123,10 @@ class Project extends \common\components\db\ActiveRecord {
                     'project.id' => $subProjEmp,
                 ])->andCompanyId(false, self::tableName());
 
-
+        if (!empty($searchText)) {
+            $projects = $projects->andFilterWhere(['like', 'project.name', $searchText]);
+        }
+        
         $totalCount = $projects->count();
         $projects = $projects->orderBy('project.datetime_created DESC')->limit($itemPerPage)
                 ->offset($offset)

@@ -16,6 +16,9 @@ appRoot.factory('eventService', ['apiService', '$rootScope', 'alertify', functio
             deleteCalendar: function (data, success, error) {
                 apiService.get('calendar/delete-calendar', data, success, error);
             },
+            getSearchGlobalEvents: function (data, success, error) {
+                apiService.get('event/get-search-global-events', data, success, error);
+            },
             validateCalendarAdd: function (object) {
                 var message = "";
                 if (object.name.length == 0) {

@@ -125,6 +125,7 @@ appRoot.run(function ($rootScope, socketService, notifyService, taskService, com
             $rootScope.myTasks.page++;
         });
     }
+    
     //Seach global dropdown
     $rootScope.searchGlobalItems = [];
     $rootScope.searchGlobalType = '';
@@ -137,6 +138,7 @@ appRoot.run(function ($rootScope, socketService, notifyService, taskService, com
 
     $rootScope.getSuggestSearchGlobal = function (val) {
         if (!val.trim()) {
+            $rootScope.searchVal = '';
             $rootScope.searchGlobalItems = null;
             return true;
         }

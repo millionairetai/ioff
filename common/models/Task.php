@@ -290,8 +290,12 @@ class Task extends \common\components\db\ActiveRecord {
         $tasks = $tasks->orderBy('task.datetime_created DESC')->limit($itemPerPage)
                 ->offset(($currentPage - 1) * $itemPerPage)
                 ->all();
+        
         if (empty($tasks)) {
-            return [];
+            return [
+                'collection' => [],
+                'totalCount' => 0,
+            ];
         }
 
         return [

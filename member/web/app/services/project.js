@@ -20,6 +20,9 @@ appRoot.factory('projectService', ['apiService','$rootScope','alertify', 'valida
             editProject : function (data,success,error){
                 apiService.upload('project/edit', data, success,error);
             },
+            getSearchGlobalProjects : function (data, success, error){
+                apiService.get('project/get-search-global-projects', data, success, error);
+            },
             validate_step1 : function(object){
                 var message = "";
                 var now = new Date();

@@ -770,7 +770,7 @@ class ProjectController extends ApiController {
         return $this->sendResponse(false, "", $objects);
     }
 
-        /**
+    /**
      * Get all department for select dropdown.
      */
     public function actionGets() {
@@ -786,5 +786,47 @@ class ProjectController extends ApiController {
 
         return $this->sendResponse(false, "", $objects);
     }
+    
+    /**
+     * Get all department for select dropdown.
+     */
+    public function actionGetSearchGlobalProjects() {
+        $itemPerPage = \Yii::$app->request->get('limit');
+        $currentPage = \Yii::$app->request->get('page');
+        $searchText = \Yii::$app->request->get('searchText');
+        $collection = [];
+        try {
+            if ($result = Project::getProjects($itemPerPage, ($currentPage - 1) * $itemPerPage, $searchText)) {
+                foreach ($result['collection'] as $project) {
+                    $collection[] = [
+                        'id' => $project['id'],
+                        'name' => $project['name'],
+                        'description_parse' => $project['description_parse'],
+                    ];
+                }
+            }
+        } catch (\Exception $e) {
+            $result = [
+                'collection' => [],
+                'totalCount' => 0,
+            ];
+        }
 
+        $objects = [];
+        $objects['projects'] = $collection;
+        $objects['totalCount'] = (int) $result['totalCount'];
+        return $this->sendResponse(false, '', $objects);
+    }
+    
+    //Get search global suggestion.
+    public function actionGetSearchGlobalSuggestion() {
+        $collection = [];
+        $searchText = \Yii::$app->request->post('val');
+        $result = Project::getProjects(10, 1, $searchText);
+        foreach ($result['collection'] as $project) {
+            $collection[] = $project['name'];
+        }
+
+        return $this->sendResponse(false, '', ['collection' => $collection]);
+    }
 }

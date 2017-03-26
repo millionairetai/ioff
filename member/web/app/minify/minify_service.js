@@ -409,7 +409,19 @@ appRoot.factory('commonService', ['apiService', '$rootScope',
                 apiService.get(controller + '/delete', data, success, error);
             },
             getSearchGlobalSuggest: function (params, success, error) {
-                return apiService.post('task/get-search-global-suggestion', params, success, error, 0);
+                switch (params.typeSearch) {
+                    case 'task': 
+                        return apiService.post('task/get-search-global-suggestion', params, success, error, 0);
+                        break;
+                        
+                    case 'event': 
+                        return apiService.post('event/get-search-global-suggestion', params, success, error, 0);
+                        break;
+                       
+                    case 'project': 
+                        return apiService.post('project/get-search-global-suggestion', params, success, error, 0);
+                        break; 
+                }
             },
             redmind: function () {
                 return [
@@ -637,6 +649,9 @@ appRoot.factory('eventService', ['apiService', '$rootScope', 'alertify', functio
             deleteCalendar: function (data, success, error) {
                 apiService.get('calendar/delete-calendar', data, success, error);
             },
+            getSearchGlobalEvents: function (data, success, error) {
+                apiService.get('event/get-search-global-events', data, success, error);
+            },
             validateCalendarAdd: function (object) {
                 var message = "";
                 if (object.name.length == 0) {
@@ -782,6 +797,9 @@ appRoot.factory('projectService', ['apiService','$rootScope','alertify', 'valida
             },
             editProject : function (data,success,error){
                 apiService.upload('project/edit', data, success,error);
+            },
+            getSearchGlobalProjects : function (data, success, error){
+                apiService.get('project/get-search-global-projects', data, success, error);
             },
             validate_step1 : function(object){
                 var message = "";
@@ -1066,7 +1084,7 @@ appRoot.factory('taskService', ['apiService','$rootScope','alertify', function (
                 apiService.post('task/get-task-for-dropdown',data,success,error, false);
             },
             getSearchGlobalTasks:  function(data,success,error) {
-                apiService.post('task/get-search-global-tasks',data,success,error);
+                apiService.get('task/get-search-global-tasks',data,success,error);
             },
             getMyTaskForCalendar:  function(data,success,error) {
                 apiService.post('task/get-my-task-for-calendar',data,success,error);

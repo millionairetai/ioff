@@ -5,10 +5,10 @@ appRoot.config(function ($routeProvider, $httpProvider) {
     //Router
     $routeProvider
             //main page
-            .when('/home', {
-                templateUrl: 'app/views/home/index.html',
-                controller: 'homeCtrl'
-            })
+//            .when('/home', {
+//                templateUrl: 'app/views/home/index.html',
+//                controller: 'homeCtrl'
+//            })
             //project
             .when('/project', {
                 templateUrl: 'app/views/project/index.html',

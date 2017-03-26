@@ -68,7 +68,7 @@ class TaskController extends ApiController {
                 $this->_error = true;
                 throw new \Exception(Yii::t('member', 'Total storage can not be more than max of storage package. Please upgrade your package to upload file'));
             }
-            
+
             $activity = new Activity();
             $activity->owner_id = $task->id;
             $activity->owner_table = Activity::TABLE_TASK;
@@ -372,35 +372,34 @@ class TaskController extends ApiController {
         return $this->sendResponse(false, '', $result);
     }
 
+    //Get search global task suggestion
     public function actionGetSearchGlobalSuggestion() {
-        $currentPage = \Yii::$app->request->post('typeSearch');
         $searchText = \Yii::$app->request->post('val');
-
-        try {
-            if (trim($searchText) == '') {
-                throw new \Exception('Empty search value');
-            }
-
-            $result = Task::getTasks(10, 1, '');
-            foreach ($result['collection'] as $task) {
-                $collection[] = $task['name'];
-            }
-        } catch (\Exception $e) {
-            $collection[] = [];
+        $result = Task::getTasks(10, 1, $searchText);
+        $collection = [];
+        foreach ($result['collection'] as $task) {
+            $collection[] = $task['name'];
         }
 
-
-        $objects = [];
-        $objects['collection'] = $collection;
-        return $this->sendResponse(false, '', $objects);
+        return $this->sendResponse(false, '', ['collection' => $collection]);
     }
 
+    //Get search global task.
     public function actionGetSearchGlobalTasks() {
         $itemPerPage = \Yii::$app->request->get('limit');
         $currentPage = \Yii::$app->request->get('page');
         $searchText = \Yii::$app->request->get('searchText');
+        $collection = [];
         try {
-            $result = Task::getTasks(10, $currentPage, $searchText);
+            if ($result = Task::getTasks($itemPerPage, $currentPage, $searchText)) {
+                foreach ($result['collection'] as $task) {
+                    $collection[] = [
+                        'id' => $task->id,
+                        'name' => $task->name,
+                        'description' => $task->description_parse
+                    ];
+                }
+            }
         } catch (\Exception $e) {
             $result = [
                 'collection' => [],
@@ -409,7 +408,7 @@ class TaskController extends ApiController {
         }
 
         $objects = [];
-        $objects['collection'] = $result['collection'];
+        $objects['collection'] = $collection;
         $objects['totalItems'] = (int) $result['totalCount'];
         return $this->sendResponse(false, '', $objects);
     }
@@ -487,7 +486,7 @@ class TaskController extends ApiController {
                 $this->_error = true;
                 throw new \Exception(Yii::t('member', 'Total storage can not be more than max of storage package. Please upgrade your package to upload file'));
             }
-            
+
             //update table activity
             $activity = new Activity();
             $activity->owner_id = $task->id;
@@ -1143,7 +1142,7 @@ class TaskController extends ApiController {
     public function actionGetTaskReport($projectId = 0) {
         return $this->sendResponse(false, '', Task::getTaskReportByProjectId($projectId));
     }
-    
+
     /**
      * Get employee task report
      */
@@ -1166,7 +1165,7 @@ class TaskController extends ApiController {
 
         return $this->sendResponse(false, '', $result);
     }
-    
+
     /**
      * Get detail worked hour employee
      */
@@ -1187,11 +1186,11 @@ class TaskController extends ApiController {
                     'user_id' => $employee->id,
                 ];
             }
-            
+
             return $this->sendResponse(false, '', $result);
         }
     }
-    
+
     /**
      * Get overview my task.
      */
@@ -1201,7 +1200,7 @@ class TaskController extends ApiController {
             'inprogress' => 0,
             'completed' => 0
         ];
-        
+
         if ($tasks = Task::getOverviewMyTaskByEmployeeId(Yii::$app->user->identity->id)) {
             $objects['myOverviewTask'] = [
                 'open' => !empty($tasks['task.open']['num_task']) ? $tasks['task.open']['num_task'] : 0,
@@ -1209,7 +1208,7 @@ class TaskController extends ApiController {
                 'completed' => !empty($tasks['task.completed']['num_task']) ? $tasks['task.completed']['num_task'] : 0
             ];
         }
-        
+
         return $this->sendResponse(false, '', $objects);
     }
 }

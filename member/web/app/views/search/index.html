@@ -11,19 +11,18 @@
             <h3 class="box-title">{{$root.$lang.search_result}}</h3>
             <div class="box-tools pull-right">
                 <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse"><i class="fa fa-minus"></i></button>
-                <button class="btn btn-box-tool" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
             </div>
         </div>
         <div class="box-body">
             <h4>{{$root.$lang.search_result_for}}:&nbsp; '{{searchVal}}'</h4><br />
             <div class="nav-tabs-custom"> <!-- Only required for left/right tabs -->
-                <ul class="nav nav-tabs">
-                    <li class="active"><a ng-click="searchGlobal('task', $event)" href="#tab_1" data-toggle="tab">{{$root.$lang.task}}</a></li>
-                    <li><a ng-click="searchGlobal('event', $event)" href="#tab_2" data-toggle="tab">{{$root.$lang.event}}</a></li>
-                    <li><a ng-click="searchGlobal('project', $event)" href="#tab_3" data-toggle="tab">{{$root.$lang.project}}</a></li>
+                <ul class="nav nav-tabs search-tab">
+                    <li class="active task"><a ng-click="searchGlobal('task', $event)" href="#task" data-toggle="tab">{{$root.$lang.task}}</a></li>
+                    <li class="event"><a ng-click="searchGlobal('event', $event)" href="#event" data-toggle="tab">{{$root.$lang.event}}</a></li>
+                    <li class="project"><a ng-click="searchGlobal('project', $event)" href="#project" data-toggle="tab">{{$root.$lang.project}}</a></li>
                 </ul>
                 <div class="tab-content">
-                    <div class="tab-pane" id="tab_1"> 
+                    <div class="tab-pane active" id="task">
                         <div class="row task-row" ng-repeat="task in collection">
                             <div class="col-lg-12 container">
                                 <div class="row">
@@ -42,16 +41,40 @@
                     </div>
                     <!--end table-->
                     <!--pagination-->
-                    <div class="tab-pane" id="tab_2"> 
-                        2
-
+                    <div class="tab-pane" id="event">
+                        <div class="row task-row" ng-repeat="event in collection">
+                            <div class="col-lg-12 container">
+                                <div class="row">
+                                    <div class="pull-left" id="name-desc">
+                                        <div class="row"><a href="#/viewEvent/{{event.id}}"><div>{{event.name}}</div></a></div>
+                                    </div>
+                                </div>
+                                <div class="row"><i>{{event.description_parse}}</i></div>
+                            </div>
+                        </div>
+                        <div class="text-right" ng-show="totalItems > params.limit">
+                            <uib-pagination total-items="totalItems" ng-model="search.pageEvent" max-size="maxPageSize" class="pagination-sm"
+                                            boundary-links="true" first-text="&lsaquo;&lsaquo;" previous-text="&lsaquo;" next-text="&rsaquo;" last-text="&rsaquo;&rsaquo;" items-per-page="params.limit"
+                                            ng-change="searchGlobal('event', '')" num-pages="numPages" rotate="false"></uib-pagination>                                  
+                        </div>
                     </div>
-                    <div class="tab-pane" id="tab_3"> 
-                        3
+                    <div class="tab-pane" id="project">
+                        <div class="row task-row" ng-repeat="project in collection">
+                            <div class="col-lg-12 container">
+                                <div class="row">
+                                    <div class="pull-left" id="name-desc">
+                                        <div class="row"><a href="#/viewProject/{{project.id}}"><div>{{project.name}}</div></a></div>
+                                    </div>
+                                </div>
+                                <div class="row"><i>{{project.description_parse}}</i></div>
+                            </div>
+                        </div>
+                        <div class="text-right" ng-show="totalItems > params.limit">
+                            <uib-pagination total-items="totalItems" ng-model="search.pageProject" max-size="maxPageSize" class="pagination-sm"
+                                            boundary-links="true" first-text="&lsaquo;&lsaquo;" previous-text="&lsaquo;" next-text="&rsaquo;" last-text="&rsaquo;&rsaquo;" items-per-page="params.limit"
+                                            ng-change="searchGlobal('project', '')" num-pages="numPages" rotate="false"></uib-pagination>                                  
+                        </div>
                     </div>
-                </div>
-                <div ng-show="!collection.length">
-                    {{$root.$lang.no_data}}
                 </div>
             </div>
         </div>

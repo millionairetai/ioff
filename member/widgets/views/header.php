@@ -1,6 +1,6 @@
 <header class="main-header">
     <!-- Logo -->
-    <a href="/#/home" class="logo">
+    <a href="/#/activity/all" class="logo">
         <span><b>I</b>OFFICEZ</span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
@@ -16,7 +16,6 @@
         <div class="containbox-search">
             <a class="show-form-search" ng-click="displaysearch = !displaysearch" href="javascript:void(0)"><i class="fa fa-search"></i></a>
             <div class="search-form" ng-show="displaysearch">
-                <form action="#/search" method="get">
                     <!-- Single button -->
                     <div class="btn-group">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -33,9 +32,8 @@
                         <autocomplete ng-model="searchVal" attr-placeholder="<?php echo \Yii::t('common', 'Search');?>" 
                                       click-activation="false" data="searchGlobalItems" on-type="getSuggestSearchGlobal" on-select="showItemSearchGlobal"></autocomplete>
                         <!--<input type="text" name="q" class="input-search form-control" placeholder="<?php echo \Yii::t('common', 'Search'); ?>...">-->
-                        <a href="#/search" id="search-btn" class="btn search-button"><i class="fa fa-search"></i></a>
+                        <a href="#/search?{{searchVal}}&{{searchGlobalTypeCode}}" id="search-btn" class="btn search-button"><i class="fa fa-search"></i></a>
                     </div>
-                </form>
             </div>
         </div>
         <!-- /.search form -->

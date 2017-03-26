@@ -3776,18 +3776,20 @@ appRoot.controller('addRequestmentCategoryCtrl', ['$scope', '$uibModalInstance',
             $uibModalInstance.dismiss('cancel');
         };
     }]);
-appRoot.controller('searchCtrl', ['$scope', 'taskService', '$uibModal', '$rootScope', 'PER_PAGE', 'MAX_PAGE_SIZE',
-    function ($scope, taskService, $uibModal, $rootScope, PER_PAGE, MAX_PAGE_SIZE) {
+appRoot.controller('searchCtrl', ['$scope', 'taskService', 'eventService', 'projectService', '$uibModal', '$rootScope', 'PER_PAGE', 'MAX_PAGE_SIZE',
+    function ($scope, taskService, eventService, projectService,$uibModal, $rootScope, PER_PAGE, MAX_PAGE_SIZE) {
         $scope.params = {
             page: 1,
-            limit: 5,
+            limit: 10,
             searchText: '',
             orderBy: '',
             orderType: ''
         };
-        
+
         $scope.search = {
             pageTask: 1,
+            pageEvent: 1,
+            pageProject: 1
         };
 
         //array store task collection response from server
@@ -3802,14 +3804,20 @@ appRoot.controller('searchCtrl', ['$scope', 'taskService', '$uibModal', '$rootSc
             }
 
             //check if this tab is checked, we don't get ajax again.
-//            if ($($event.target).parent().hasClass('active') && $scope.collection != []) {
-//                return true;
-//            }
+            if ($($event.target).parent().hasClass('active') && $scope.collection != []) {
+                return true;
+            }
 
             $scope.params.searchText = $rootScope.searchVal;
+            $('li').removeClass('active');
+            $('#task').removeClass('active');
+            $('#event').removeClass('active');
+            $('#project').removeClass('active');
             switch (type) {
                 case 'task':
                     {
+                        $('.task').addClass('active');
+                        $('#task').addClass('active');
                         $scope.params.page = $scope.search.pageTask;
                         taskService.getSearchGlobalTasks($scope.params, function (response) {
                             $scope.collection = response.objects.collection;
@@ -3819,19 +3827,31 @@ appRoot.controller('searchCtrl', ['$scope', 'taskService', '$uibModal', '$rootSc
                     break;
                 case 'event':
                     {
-//                        $scope.params.page = $scope.task.pageFollow;
+                        $('.event').addClass('active');
+                        $('#event').addClass('active');
+                        $scope.params.page = $scope.search.pageEvent;
+                        eventService.getSearchGlobalEvents($scope.params, function (response) {
+                            $scope.collection = response.objects.events;
+                            $scope.totalItems = response.objects.totalCount;
+                        });
                     }
                     break;
                 case 'project':
                     {
-//                        $scope.params.page = $scope.task.pageTasks;
+                         $('.project').addClass('active');
+                         $('#project').addClass('active');
+                        $scope.params.page = $scope.search.pageProject;
+                        projectService.getSearchGlobalProjects($scope.params, function (response) {
+                            $scope.collection = response.objects.projects;
+                            $scope.totalItems = response.objects.totalCount;
+                        });
                     }
                     break;
             }
         };
 
         //initial task list
-        $scope.searchGlobal('task', '');
+        $scope.searchGlobal($rootScope.searchGlobalTypeCode, '');
     }]);appRoot.controller('taskCtrl', ['$scope', 'taskService', '$uibModal', '$rootScope', 'PER_PAGE', 'MAX_PAGE_SIZE', 'flash',
     function ($scope, taskService, $uibModal, $rootScope, PER_PAGE, MAX_PAGE_SIZE, flash) {
         $scope.params = {
@@ -4173,7 +4193,6 @@ appRoot.controller('addTaskCtrl', ['socketService', '$scope', 'taskService', '$l
                                 socketService.emit('notify', 'ok');
                                 $scope.step++;
                             });
-
                         }
                     } else {
                         $scope.step++;

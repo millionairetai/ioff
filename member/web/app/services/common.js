@@ -27,7 +27,19 @@ appRoot.factory('commonService', ['apiService', '$rootScope',
                 apiService.get(controller + '/delete', data, success, error);
             },
             getSearchGlobalSuggest: function (params, success, error) {
-                return apiService.post('task/get-search-global-suggestion', params, success, error, 0);
+                switch (params.typeSearch) {
+                    case 'task': 
+                        return apiService.post('task/get-search-global-suggestion', params, success, error, 0);
+                        break;
+                        
+                    case 'event': 
+                        return apiService.post('event/get-search-global-suggestion', params, success, error, 0);
+                        break;
+                       
+                    case 'project': 
+                        return apiService.post('project/get-search-global-suggestion', params, success, error, 0);
+                        break; 
+                }
             },
             redmind: function () {
                 return [
