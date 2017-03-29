@@ -406,7 +406,9 @@ search-product .dropdown-menu{
 .containbox-search .autocomplete input{
     padding-left: 95px;
 }
-
+.containbox-search .autocomplete>ul{
+    padding-left: 0;
+}
 .skin-blue-light .main-header .navbar .sidebar-toggle{
     position: absolute;
     top: 0;
@@ -923,8 +925,8 @@ label.assignee-to,label.follow-to{
     margin-left: 20px;
 }
 
-.task-row:not(:last-child){
-    border-bottom:solid 1px #CCCCCC;
+.task-row+.task-row{
+    border-top:solid 1px #CCCCCC;
 }
 
 div#name-desc{
