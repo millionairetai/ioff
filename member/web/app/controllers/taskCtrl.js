@@ -309,7 +309,6 @@ appRoot.controller('addTaskCtrl', ['socketService', '$scope', 'taskService', '$l
         //status
         statusService.getTaskStatus({}, function (data) {
             $scope.statuses = data.objects;
-
             if ($scope.statuses.length > 0) {
                 $scope.task.status_id = $scope.statuses[0].id;
             }
@@ -322,6 +321,12 @@ appRoot.controller('addTaskCtrl', ['socketService', '$scope', 'taskService', '$l
                 if ($scope.step == 1) {
                     if (taskService.validate_step1($scope.task)) {
                         $scope.step++;
+                        if (!$scope.task.project_id) {
+                            $scope.task.project_id = 0;
+                            employeeService.searchEmployeeByProjectIdAndKeyword({keyword: '', project_id: $scope.task.project_id}, function (response) {
+                                $scope.employees = response.objects.collection;
+                            });
+                        }
                     }
                 } else {
                     if ($scope.step == 2) {
@@ -906,6 +911,12 @@ appRoot.controller('editTaskCtrl', ['socketService', 'data', '$scope', 'taskServ
                 //check validate when go to step 2
                 if ($scope.step == 1) {
                     if (taskService.validate_step1($scope.task)) {
+                        if (!$scope.task.project_id) {
+                            $scope.task.project_id = 0;
+                            employeeService.searchEmployeeByProjectIdAndKeyword({keyword: '', project_id: $scope.task.project_id}, function (response) {
+                                $scope.employees = response.objects.collection;
+                            });
+                        }
                         $scope.step++;
                     }
                 } else {

@@ -462,7 +462,7 @@ class TaskController extends ApiController {
 
             $task->attributes = $dataPost;
             $task->duedatetime = !empty($dataPost['duedatetime']) ? strtotime($dataPost['duedatetime']) : 0;
-            if (!$task->save()) {
+            if ($task->save() ==  false) {
                 $this->_message = $this->parserMessage($task->getErrors());
                 $this->_error = true;
                 throw new \Exception($this->_message);
@@ -659,11 +659,11 @@ class TaskController extends ApiController {
      * @return array
      */
     private function _updataTaskAssignmen($data, $dataMegre) {
-        if (empty($data['id']) || empty($data['project_id']))
+        if (empty($data['id']))
             return false;
 
         $taskId = $data['id'];
-        if ($data['project_id'] != $data['data_old']['task']['project_id']) {
+        if (!empty($data['project_id']) && $data['project_id'] != $data['data_old']['task']['project_id']) {
             TaskAssignment::deleteAll([
                 'task_id' => $taskId,
                 'company_id' => $this->_companyId,
@@ -699,11 +699,11 @@ class TaskController extends ApiController {
      * @return array
      */
     private function _updataTaskFollower($data, $dataMegre) {
-        if (empty($data['id']) || empty($data['project_id']))
+        if (empty($data['id']))
             return false;
 
         $taskId = $data['id'];
-        if ($data['project_id'] != $data['data_old']['task']['project_id']) {
+        if (!empty($data['project_id']) && $data['project_id'] != $data['data_old']['task']['project_id']) {
             Follower::deleteAll([
                 'task_id' => $taskId,
                 'company_id' => $this->_companyId,

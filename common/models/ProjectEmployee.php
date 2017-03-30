@@ -63,13 +63,15 @@ class ProjectEmployee extends \common\components\db\ActiveRecord
      * @param int $projectId 
      * @return boolean|array
      */
-    public static function getEmployeesByProjectId($projectId) {        
-        return Employee::find()->select(['id', 'firstname', 'lastname', 'email', 'profile_image_path'])
-                ->andWhere(['id' => self::find()->select(['employee_id'])
+    public static function getEmployeesByProjectId($projectId = 0) {        
+        $employees = Employee::find()->select(['id', 'firstname', 'lastname', 'email', 'profile_image_path']);
+        if (!empty($projectId)) {
+            $employees->andWhere(['id' => self::find()->select(['employee_id'])
                     ->andWhere(['project_id' => $projectId])
                     ->andCompanyId()
-                ])
-                ->andCompanyId()
-                ->all();
+                ]);
+        }
+        
+        return $employees->andCompanyId()->all();
     }
 }

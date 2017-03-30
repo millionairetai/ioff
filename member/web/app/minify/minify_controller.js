@@ -3792,11 +3792,10 @@ appRoot.controller('searchCtrl', ['$scope', 'taskService', 'eventService', 'proj
             pageProject: 1
         };
 
-        //array store task collection response from server
+        //array store item collection response from server
         $scope.collection = [];
         $scope.totalItems = 0;
         $scope.maxPageSize = MAX_PAGE_SIZE;
-
         //get list with pagination
         $scope.searchGlobal = function (type, $event) {
             if ($event != '') {
@@ -3814,8 +3813,7 @@ appRoot.controller('searchCtrl', ['$scope', 'taskService', 'eventService', 'proj
             $('#event').removeClass('active');
             $('#project').removeClass('active');
             switch (type) {
-                case 'task':
-                    {
+                case 'task': {
                         $('.task').addClass('active');
                         $('#task').addClass('active');
                         $scope.params.page = $scope.search.pageTask;
@@ -3825,8 +3823,7 @@ appRoot.controller('searchCtrl', ['$scope', 'taskService', 'eventService', 'proj
                         });
                     }
                     break;
-                case 'event':
-                    {
+                case 'event': {
                         $('.event').addClass('active');
                         $('#event').addClass('active');
                         $scope.params.page = $scope.search.pageEvent;
@@ -3836,8 +3833,7 @@ appRoot.controller('searchCtrl', ['$scope', 'taskService', 'eventService', 'proj
                         });
                     }
                     break;
-                case 'project':
-                    {
+                case 'project': {
                          $('.project').addClass('active');
                          $('#project').addClass('active');
                         $scope.params.page = $scope.search.pageProject;
@@ -4163,7 +4159,6 @@ appRoot.controller('addTaskCtrl', ['socketService', '$scope', 'taskService', '$l
         //status
         statusService.getTaskStatus({}, function (data) {
             $scope.statuses = data.objects;
-
             if ($scope.statuses.length > 0) {
                 $scope.task.status_id = $scope.statuses[0].id;
             }
@@ -4176,6 +4171,13 @@ appRoot.controller('addTaskCtrl', ['socketService', '$scope', 'taskService', '$l
                 if ($scope.step == 1) {
                     if (taskService.validate_step1($scope.task)) {
                         $scope.step++;
+                        console.log($scope.task.project_id);
+                        if (!$scope.task.project_id) {
+                            $scope.task.project_id = 0;
+                            employeeService.searchEmployeeByProjectIdAndKeyword({keyword: '', project_id: $scope.task.project_id}, function (response) {
+                                $scope.employees = response.objects.collection;
+                            });
+                        }
                     }
                 } else {
                     if ($scope.step == 2) {
@@ -4760,6 +4762,13 @@ appRoot.controller('editTaskCtrl', ['socketService', 'data', '$scope', 'taskServ
                 //check validate when go to step 2
                 if ($scope.step == 1) {
                     if (taskService.validate_step1($scope.task)) {
+                        console.log($scope.task.project_id);
+                        if (!$scope.task.project_id) {
+                            $scope.task.project_id = 0;
+                            employeeService.searchEmployeeByProjectIdAndKeyword({keyword: '', project_id: $scope.task.project_id}, function (response) {
+                                $scope.employees = response.objects.collection;
+                            });
+                        }
                         $scope.step++;
                     }
                 } else {
