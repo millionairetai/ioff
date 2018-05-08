@@ -86,7 +86,7 @@ class Department extends ActiveRecord
      * @param string $name
      * @return Active Record|false
      */
-    public static function getByName($name) {
-        return self::find()->andWhere(['name' => $name])->andCompanyId()->one();
-    }
+//    public static function getByName($name) {
+//        return self::find()->andWhere(['name' => $name])->andCompanyId()->one();
+//    }
 }

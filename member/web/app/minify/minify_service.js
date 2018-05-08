@@ -962,7 +962,7 @@ appRoot.factory('requestmentCategoryService', ['apiService', '$rootScope', 'aler
     }]);
 appRoot.factory('socketService', ['socketFactory', function (socketFactory) {
 
-        var myIoSocket = io.connect('http://localhost:3000');
+        var myIoSocket = io.connect('http://company.iofficez.dev:3000');
         mySocket = socketFactory({
             ioSocket: myIoSocket
         });
@@ -1014,10 +1014,6 @@ appRoot.factory('taskService', ['apiService','$rootScope','alertify', function (
                 if(object.name.length > 255){
                     message += $rootScope.$lang.name_less_than_255_character + "<br/>";
                 }
-                
-//                if(object.project_id == 0 || object.project_id == null){
-//                    message += $rootScope.$lang.task_project_name_error_empty + "<br/>";
-//                }
                 
                 if(object.description.length == 0){
                     message += $rootScope.$lang.task_description_error_empty + "<br/>";

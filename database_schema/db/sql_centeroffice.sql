@@ -11,8 +11,8 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 -- Dumping database structure for centeroffice
-CREATE DATABASE IF NOT EXISTS `centeroffice` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci */;
-USE `centeroffice`;
+CREATE DATABASE IF NOT EXISTS `iofficez` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci */;
+USE `iofficez`;
 
 
 -- Dumping structure for table centeroffice.action

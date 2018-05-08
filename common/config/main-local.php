@@ -3,9 +3,9 @@ return [
     'components' => [
         'db' => [
             'class' => 'common\components\db\Connection',
-            'dsn' => 'mysql:host=localhost;dbname=iofficez_change',
+            'dsn' => 'mysql:host=localhost;dbname=iofficez',
             'username' => 'root',
-            'password' => '',
+            'password' => 'greatman',
             'charset' => 'utf8',
         ],
         'mailer' => [

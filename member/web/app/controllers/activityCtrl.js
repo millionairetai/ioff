@@ -8,7 +8,7 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
         $scope.profile = null;
         $scope.comment = '';
         $scope.activity = {
-            data: null,
+            data: [],
             total: 0,
             end: false,
             page: 1,

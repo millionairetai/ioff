@@ -8,7 +8,7 @@ appRoot.controller('activityCtrl', ['$scope', '$rootScope', 'alertify', 'activit
         $scope.profile = null;
         $scope.comment = '';
         $scope.activity = {
-            data: null,
+            data: [],
             total: 0,
             end: false,
             page: 1,
@@ -4171,7 +4171,6 @@ appRoot.controller('addTaskCtrl', ['socketService', '$scope', 'taskService', '$l
                 if ($scope.step == 1) {
                     if (taskService.validate_step1($scope.task)) {
                         $scope.step++;
-                        console.log($scope.task.project_id);
                         if (!$scope.task.project_id) {
                             $scope.task.project_id = 0;
                             employeeService.searchEmployeeByProjectIdAndKeyword({keyword: '', project_id: $scope.task.project_id}, function (response) {
@@ -4762,7 +4761,6 @@ appRoot.controller('editTaskCtrl', ['socketService', 'data', '$scope', 'taskServ
                 //check validate when go to step 2
                 if ($scope.step == 1) {
                     if (taskService.validate_step1($scope.task)) {
-                        console.log($scope.task.project_id);
                         if (!$scope.task.project_id) {
                             $scope.task.project_id = 0;
                             employeeService.searchEmployeeByProjectIdAndKeyword({keyword: '', project_id: $scope.task.project_id}, function (response) {

@@ -65,6 +65,7 @@ class ActivityPostController extends ApiController {
 
             throw new \Exception('Can not initialize object');
         } catch (\Exception $ex) {
+            \yii\helpers\VarDumper::dump($ex);
             $transaction->rollBack();
             $this->_error = true;
             return $this->sendResponse($this->_error, \Yii::t('member', 'error_system'), []);
