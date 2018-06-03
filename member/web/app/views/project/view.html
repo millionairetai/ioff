@@ -74,7 +74,7 @@
                     </tr>
                     <tr>
                         <td colspan="3">
-                            <div  ng-if="collection.file_info != ''" ng-repeat="files in collection.file_info| limitTo:limitFile">
+                            <div ng-if="collection.file_info != ''" ng-repeat="files in collection.file_info| limitTo:limitFile">
                                 <div>
                                     <a href="file/download-file?fileId={{files.id}}"><span class="glyphicon glyphicon-file" aria-hidden="true"></span>{{files.name}}</a>
                                     <i ng-click="removeFileProject($index, files.id)" class="fa fa-remove cursor-point"></i>
